@@ -50,7 +50,7 @@ typedef enum _smc_power_mode_protection
 #if (defined(FSL_FEATURE_SMC_HAS_HIGH_SPEED_RUN_MODE) && FSL_FEATURE_SMC_HAS_HIGH_SPEED_RUN_MODE)
                               | kSMC_AllowPowerModeHsrun
 #endif                          /* FSL_FEATURE_SMC_HAS_HIGH_SPEED_RUN_MODE */
-                              ) /*!< Allow all power mode.              */
+                             ) /*!< Allow all power mode.              */
 } smc_power_mode_protection_t;
 
 /*!

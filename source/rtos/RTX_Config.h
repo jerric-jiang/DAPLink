@@ -1,6 +1,6 @@
 /**
  * @file    RTX_Config.h
- * @brief   
+ * @brief
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -51,11 +51,11 @@ extern U16 const mp_tmr_size;
 extern U8  const os_fifo_size;
 
 /* Functions */
-extern void os_idle_demon   (void);
-extern int  os_tick_init    (void);
-extern void os_tick_irqack  (void);
-extern void os_tmr_call     (U16  info);
-extern void os_error        (U32 err_code);
+extern void os_idle_demon(void);
+extern int  os_tick_init(void);
+extern void os_tick_irqack(void);
+extern void os_tmr_call(U16  info);
+extern void os_error(U32 err_code);
 
 /*----------------------------------------------------------------------------
  * end of file

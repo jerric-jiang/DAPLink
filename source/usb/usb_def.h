@@ -31,20 +31,20 @@
 #include <stddef.h>
 
 #ifndef NULL
- #ifdef __cplusplus
-  #define NULL          0
- #else
-  #define NULL          ((void *) 0)
- #endif
+#ifdef __cplusplus
+#define NULL          0
+#else
+#define NULL          ((void *) 0)
+#endif
 #endif
 
 #ifndef EOF
- #define EOF            (-1)
+#define EOF            (-1)
 #endif
 
 #ifndef __size_t
- #define __size_t       1
- typedef unsigned int   size_t;
+#define __size_t       1
+typedef unsigned int   size_t;
 #endif
 
 typedef int8_t   S8;
@@ -59,10 +59,10 @@ typedef unsigned char   BIT;
 typedef unsigned int    BOOL;
 
 #ifndef __TRUE
- #define __TRUE         1
+#define __TRUE         1
 #endif
 #ifndef __FALSE
- #define __FALSE        0
+#define __FALSE        0
 #endif
 
 
@@ -83,7 +83,8 @@ typedef unsigned int    BOOL;
 #define REQUEST_TO_OTHER           3
 
 /* bmRequestType Definition */
-typedef __PACKED_STRUCT _REQUEST_TYPE {
+typedef __PACKED_STRUCT _REQUEST_TYPE
+{
     U8 Recipient : 5;                     /* D4..0: Recipient */
     U8 Type      : 2;                     /* D6..5: Type */
     U8 Dir       : 1;                     /* D7:    Data Phase Txsfer Direction */
@@ -112,7 +113,8 @@ typedef __PACKED_STRUCT _REQUEST_TYPE {
 #define USB_FEATURE_REMOTE_WAKEUP              1
 
 /* USB Default Control Pipe Setup Packet */
-typedef __PACKED_STRUCT _USB_SETUP_PACKET {
+typedef __PACKED_STRUCT _USB_SETUP_PACKET
+{
     REQUEST_TYPE bmRequestType;           /* bmRequestType */
     U8  bRequest;                         /* bRequest */
     __PACKED_UNION {
@@ -209,7 +211,8 @@ typedef __PACKED_STRUCT _USB_SETUP_PACKET {
 #define USB_DEVICE_CAPABILITY_WIRELESS_USB_EXT              12
 
 /* USB Standard Device Descriptor */
-typedef __PACKED_STRUCT _USB_DEVICE_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_DEVICE_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U16 bcdUSB;
@@ -227,7 +230,8 @@ typedef __PACKED_STRUCT _USB_DEVICE_DESCRIPTOR {
 } USB_DEVICE_DESCRIPTOR;
 
 /* USB 2.0 Device Qualifier Descriptor */
-typedef __PACKED_STRUCT _USB_DEVICE_QUALIFIER_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_DEVICE_QUALIFIER_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U16 bcdUSB;
@@ -240,7 +244,8 @@ typedef __PACKED_STRUCT _USB_DEVICE_QUALIFIER_DESCRIPTOR {
 } USB_DEVICE_QUALIFIER_DESCRIPTOR;
 
 /* USB Standard Configuration Descriptor */
-typedef __PACKED_STRUCT _USB_CONFIGURATION_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_CONFIGURATION_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U16 wTotalLength;
@@ -252,7 +257,8 @@ typedef __PACKED_STRUCT _USB_CONFIGURATION_DESCRIPTOR {
 } USB_CONFIGURATION_DESCRIPTOR;
 
 /* USB Standard Interface Descriptor */
-typedef __PACKED_STRUCT _USB_INTERFACE_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_INTERFACE_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U8  bInterfaceNumber;
@@ -265,7 +271,8 @@ typedef __PACKED_STRUCT _USB_INTERFACE_DESCRIPTOR {
 } USB_INTERFACE_DESCRIPTOR;
 
 /* USB Standard Endpoint Descriptor */
-typedef __PACKED_STRUCT _USB_ENDPOINT_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_ENDPOINT_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U8  bEndpointAddress;
@@ -275,20 +282,23 @@ typedef __PACKED_STRUCT _USB_ENDPOINT_DESCRIPTOR {
 } USB_ENDPOINT_DESCRIPTOR;
 
 /* USB String Descriptor */
-typedef __PACKED_STRUCT _USB_STRING_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_STRING_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U16 bString/*[]*/;
 } USB_STRING_DESCRIPTOR;
 
 /* USB Common Descriptor */
-typedef __PACKED_STRUCT _USB_COMMON_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_COMMON_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
 } USB_COMMON_DESCRIPTOR;
 
 /* USB Interface Association Descriptor */
-typedef __PACKED_STRUCT _USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_INTERFACE_ASSOCIATION_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U8  bFirstInterface;
@@ -300,7 +310,8 @@ typedef __PACKED_STRUCT _USB_INTERFACE_ASSOCIATION_DESCRIPTOR {
 } USB_INTERFACE_ASSOCIATION_DESCRIPTOR;
 
 /* USB Binary Object Store Descriptor */
-typedef __PACKED_STRUCT _USB_BINARY_OBJECT_STORE_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_BINARY_OBJECT_STORE_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U16 wTotalLength;
@@ -308,7 +319,8 @@ typedef __PACKED_STRUCT _USB_BINARY_OBJECT_STORE_DESCRIPTOR {
 } USB_BINARY_OBJECT_STORE_DESCRIPTOR;
 
 /* Union Functional Descriptor */
-typedef __PACKED_STRUCT _UNION_FUNCTIONAL_DESCRIPTOR {
+typedef __PACKED_STRUCT _UNION_FUNCTIONAL_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U8  bDescriptorSubtype;
@@ -316,7 +328,8 @@ typedef __PACKED_STRUCT _UNION_FUNCTIONAL_DESCRIPTOR {
     U8  bSlaveInterface0;
 } UNION_FUNCTIONAL_DESCRIPTOR;
 
-typedef __PACKED_STRUCT _WINUSB_FUNCTION_SUBSET_HEADER {
+typedef __PACKED_STRUCT _WINUSB_FUNCTION_SUBSET_HEADER
+{
     U16 wLength;
     U16 wDescriptorType;
     U8  bFirstInterface;
@@ -324,7 +337,8 @@ typedef __PACKED_STRUCT _WINUSB_FUNCTION_SUBSET_HEADER {
 } WINUSB_FUNCTION_SUBSET_HEADER;
 
 /* USB Device Capability Descriptor */
-typedef __PACKED_STRUCT _USB_DEVICE_CAPABILITY_DESCRIPTOR {
+typedef __PACKED_STRUCT _USB_DEVICE_CAPABILITY_DESCRIPTOR
+{
     U8  bLength;
     U8  bDescriptorType;
     U8  bDevCapabilityType;

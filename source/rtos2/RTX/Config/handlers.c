@@ -50,12 +50,14 @@
 #define FSR_ASYNC_EXTERNAL_ABORT             0x16   //DFSR only - async/external
 #define FSR_ASYNC_PARITY_ERROR               0x18   //DFSR only - async/external
 
-void CDAbtHandler(uint32_t DFSR, uint32_t DFAR, uint32_t LR) {
+void CDAbtHandler(uint32_t DFSR, uint32_t DFAR, uint32_t LR)
+{
     uint32_t FS = (DFSR & (1U << 10U)) >> 6U | (DFSR & 0x0FU); //Store Fault Status
     (void)DFAR;
     (void)LR;
-  
-    switch(FS) {
+
+    switch (FS)
+    {
         //Synchronous parity errors - retry
         case FSR_SYNC_PARITY_ERROR:
         case FSR_SYNC_PARITY_TTB_WALK_FIRST:
@@ -83,16 +85,18 @@ void CDAbtHandler(uint32_t DFSR, uint32_t DFAR, uint32_t LR) {
         case FSR_ASYNC_EXTERNAL_ABORT: //DFAR invalid
         case FSR_ASYNC_PARITY_ERROR:   //DFAR invalid
         default:
-            while(1);
+            while (1);
     }
 }
 
-void CPAbtHandler(uint32_t IFSR, uint32_t IFAR, uint32_t LR) {
+void CPAbtHandler(uint32_t IFSR, uint32_t IFAR, uint32_t LR)
+{
     uint32_t FS = (IFSR & (1U << 10U)) >> 6U | (IFSR & 0x0FU); //Store Fault Status
     (void)IFAR;
     (void)LR;
-    
-    switch(FS) {
+
+    switch (FS)
+    {
         //Synchronous parity errors - retry
         case FSR_SYNC_PARITY_ERROR:
         case FSR_SYNC_PARITY_TTB_WALK_FIRST:
@@ -116,7 +120,7 @@ void CPAbtHandler(uint32_t IFSR, uint32_t IFAR, uint32_t LR) {
         case FSR_LOCKDOWN:
         case FSR_COPROCESSOR_ABORT:
         default:
-            while(1);
+            while (1);
     }
 }
 
@@ -125,7 +129,8 @@ void CPAbtHandler(uint32_t IFSR, uint32_t IFAR, uint32_t LR) {
 //this will be 0 when we have emulated the instruction and want to execute the next instruction
 //this will be 2 when we have performed some maintenance and want to retry the instruction in Thumb (state == 2)
 //this will be 4 when we have performed some maintenance and want to retry the instruction in Arm   (state == 4)
-uint32_t CUndefHandler(uint32_t opcode, uint32_t state, uint32_t LR) {
+uint32_t CUndefHandler(uint32_t opcode, uint32_t state, uint32_t LR)
+{
     const uint32_t THUMB = 2U;
     const uint32_t ARM = 4U;
     (void)LR;
@@ -136,8 +141,10 @@ uint32_t CUndefHandler(uint32_t opcode, uint32_t state, uint32_t LR) {
     // (Arm Architecture Reference Manual section A7.8) VFP/NEON register data transfer instruction?
     // (Arm Architecture Reference Manual section A7.9) VFP/NEON 64-bit register data transfer instruction?
     if ((state == ARM   && ((opcode & 0x0C000000U) >> 26U == 0x03U)) ||
-        (state == THUMB && ((opcode & 0xEC000000U) >> 26U == 0x3BU))) {
-        if (((opcode & 0x00000E00U) >> 9U) == 5U) {
+        (state == THUMB && ((opcode & 0xEC000000U) >> 26U == 0x3BU)))
+    {
+        if (((opcode & 0x00000E00U) >> 9U) == 5U)
+        {
             __FPU_Enable();
             return state;
         }
@@ -146,13 +153,14 @@ uint32_t CUndefHandler(uint32_t opcode, uint32_t state, uint32_t LR) {
     // (Arm Architecture Reference Manual section A7.4) NEON data processing instruction?
     if ((state == ARM   && ((opcode & 0xFE000000U) >> 24U == 0xF2U)) ||
         (state == THUMB && ((opcode & 0xEF000000U) >> 24U == 0xEFU)) ||
-    // (Arm Architecture Reference Manual section A7.7) NEON load/store instruction?
+        // (Arm Architecture Reference Manual section A7.7) NEON load/store instruction?
         (state == ARM   && ((opcode >> 24U) == 0xF4U)) ||
-        (state == THUMB && ((opcode >> 24U) == 0xF9U))) {
-            __FPU_Enable();
-            return state;
+        (state == THUMB && ((opcode >> 24U) == 0xF9U)))
+    {
+        __FPU_Enable();
+        return state;
     }
 
     //Add code here for other Undef cases
-    while(1);
+    while (1);
 }

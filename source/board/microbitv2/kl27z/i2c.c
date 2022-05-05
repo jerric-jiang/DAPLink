@@ -56,7 +56,8 @@ static void i2c_clearTxBuffer(void);
 static void i2c_scheduleCallback(void);
 
 
-static void i2c_slave_callback(I2C_Type *base, i2c_slave_transfer_t *xfer, void *userData) {
+static void i2c_slave_callback(I2C_Type *base, i2c_slave_transfer_t *xfer, void *userData)
+{
     switch (xfer->event)
     {
         /*  Address match event */
@@ -102,7 +103,8 @@ static void i2c_slave_callback(I2C_Type *base, i2c_slave_transfer_t *xfer, void 
             // Default driver couldn't differentiate between RX or TX completion
             // Check flag set in kI2C_SlaveReceiveEvent
             // Ignore NOP cmd in I2C Write
-            if (!(g_SlaveRxFlag && g_slave_RX_buff[0] == gNopCmd_c)) {
+            if (!(g_SlaveRxFlag && g_slave_RX_buff[0] == gNopCmd_c))
+            {
                 // Only process events if the busy error was not read
                 i2c_scheduleCallback();
             }
@@ -114,16 +116,22 @@ static void i2c_slave_callback(I2C_Type *base, i2c_slave_transfer_t *xfer, void 
     }
 }
 
-static void i2c_scheduleCallback() {
-    if (g_SlaveRxFlag) {
+static void i2c_scheduleCallback()
+{
+    if (g_SlaveRxFlag)
+    {
         // Raise an RTOS event to run the heavier I2C RX callback in main task
         main_board_event();
-    } else {
+    }
+    else
+    {
         // Run the I2C TX callback in the interrupt context
-        if (pfReadCommsCallback && address_match == I2C_SLAVE_NRF_KL_COMMS) {
+        if (pfReadCommsCallback && address_match == I2C_SLAVE_NRF_KL_COMMS)
+        {
             pfReadCommsCallback(&g_slave_TX_buff[0], transferredCount);
         }
-        if (pfReadFlashCallback && address_match == I2C_SLAVE_FLASH) {
+        if (pfReadFlashCallback && address_match == I2C_SLAVE_FLASH)
+        {
             pfReadFlashCallback(&g_slave_TX_buff[0], transferredCount);
         }
         i2c_clearTxBuffer();
@@ -132,17 +140,21 @@ static void i2c_scheduleCallback() {
 }
 
 // Hook function executed in the main task
-void board_custom_event() {
-    if (pfWriteCommsCallback && address_match == I2C_SLAVE_NRF_KL_COMMS) {
+void board_custom_event()
+{
+    if (pfWriteCommsCallback && address_match == I2C_SLAVE_NRF_KL_COMMS)
+    {
         pfWriteCommsCallback(&g_slave_RX_buff[0], transferredCount);
     }
-    if (pfWriteFlashCallback && address_match == I2C_SLAVE_FLASH) {
+    if (pfWriteFlashCallback && address_match == I2C_SLAVE_FLASH)
+    {
         pfWriteFlashCallback(&g_slave_RX_buff[0], transferredCount);
     }
     i2c_allow_sleep = true;
 }
 
-static void i2c_init_pins(void) {
+static void i2c_init_pins(void)
+{
     /* Port C Clock Gate Control: Clock enabled */
     CLOCK_EnableClock(kCLOCK_PortC);
 
@@ -153,15 +165,16 @@ static void i2c_init_pins(void) {
     PORT_SetPinMux(PORTC, 2U, kPORT_MuxAlt2);
 }
 
-static int32_t i2c_start_transfer(void) {
+static int32_t i2c_start_transfer(void)
+{
     memset(&g_s_handle, 0, sizeof(g_s_handle));
 
     I2C_SlaveTransferCreateHandle(I2C_SLAVE_BASEADDR, &g_s_handle,
-            i2c_slave_callback, &address_match);
+                                  i2c_slave_callback, &address_match);
 
     /* Set up slave transfer. */
     I2C_SlaveTransferNonBlocking(I2C_SLAVE_BASEADDR, &g_s_handle,
-            kI2C_SlaveCompletionEvent | kI2C_SlaveAddressMatchEvent);
+                                 kI2C_SlaveCompletionEvent | kI2C_SlaveAddressMatchEvent);
 
     // i2c handle will be busy until an address match
     g_s_handle.isBusy = false;
@@ -169,7 +182,8 @@ static int32_t i2c_start_transfer(void) {
     return 1;
 }
 
-void i2c_initialize() {
+void i2c_initialize()
+{
     i2c_slave_config_t slaveConfig;
 
     i2c_init_pins();
@@ -192,7 +206,8 @@ void i2c_initialize() {
     return;
 }
 
-void i2c_deinitialize(void) {
+void i2c_deinitialize(void)
+{
     I2C_SlaveDeinit(I2C_SLAVE_BASEADDR);
     return ;
 }
@@ -201,7 +216,8 @@ i2c_status_t i2c_registerWriteCallback(i2cCallback_t writeCallback, uint8_t slav
 {
     i2c_status_t status = I2C_STATUS_SUCCESS;
 
-    switch (slaveAddress){
+    switch (slaveAddress)
+    {
         case I2C_SLAVE_NRF_KL_COMMS:
             pfWriteCommsCallback = writeCallback;
             break;
@@ -222,7 +238,8 @@ i2c_status_t i2c_registerReadCallback(i2cCallback_t readCallback, uint8_t slaveA
 {
     i2c_status_t status = I2C_STATUS_SUCCESS;
 
-    switch (slaveAddress) {
+    switch (slaveAddress)
+    {
         case I2C_SLAVE_NRF_KL_COMMS:
             pfReadCommsCallback = readCallback;
             break;
@@ -260,12 +277,15 @@ void i2c_clearTxBuffer(void)
     g_slave_TX_buff[1] = gErrorBusy_c;
 }
 
-void i2c_fillBuffer (uint8_t* data, uint32_t position, uint32_t size) {
-    if ((position + size) > I2C_DATA_LENGTH) {
+void i2c_fillBuffer(uint8_t* data, uint32_t position, uint32_t size)
+{
+    if ((position + size) > I2C_DATA_LENGTH)
+    {
         return;
     }
     memcpy(g_slave_TX_buff + position, data, size);
-    if (position + size > g_slave_TX_i) {
+    if (position + size > g_slave_TX_i)
+    {
         g_slave_TX_i = position + size;
     }
     i2c_allow_sleep = false;
@@ -274,7 +294,8 @@ void i2c_fillBuffer (uint8_t* data, uint32_t position, uint32_t size) {
 void i2c_fillBufferHead(uint8_t data)
 {
     g_slave_TX_buff[0] = data;
-    if (0 == g_slave_TX_i) {
+    if (0 == g_slave_TX_i)
+    {
         g_slave_TX_i = 1;
     }
     i2c_allow_sleep = false;
@@ -287,7 +308,8 @@ bool i2c_canSleep()
 
 void i2c_30ms_tick()
 {
-    if (i2c_wake_timeout > 0) {
+    if (i2c_wake_timeout > 0)
+    {
         i2c_wake_timeout--;
     }
 }

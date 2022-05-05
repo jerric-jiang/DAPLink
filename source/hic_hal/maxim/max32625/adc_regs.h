@@ -72,7 +72,8 @@ extern "C" {
 /**
  * Structure type to access the ADC Registers.
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t ctrl;                                     /**< <tt>\b 0x000:</tt> ADC CTRL Register                            */
     __IO uint32_t status;                                   /**< <tt>\b 0x004:</tt> ADC STATUS Register                          */
     __IO uint32_t data;                                     /**< <tt>\b 0x008:</tt> ADC DATA Register                            */

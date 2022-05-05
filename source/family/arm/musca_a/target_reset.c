@@ -103,7 +103,7 @@ static void musca_a_target_before_init_debug(void)
 
 static uint8_t musca_a_target_set_state(target_state_t state)
 {
-    if(state == RESET_RUN)
+    if (state == RESET_RUN)
     {
         // go through controlled reset
         power_off_sequence();
@@ -117,7 +117,7 @@ static uint8_t musca_a_target_set_state(target_state_t state)
 
         return 1;
     }
-    if(state == SHUTDOWN)
+    if (state == SHUTDOWN)
     {
         // go through controlled shutdown
         power_off_sequence();
@@ -132,7 +132,7 @@ static uint8_t musca_a_target_set_state(target_state_t state)
 
         return 1;
     }
-    if(state == POWER_ON)
+    if (state == POWER_ON)
     {
         // Switch on power supply - PSUON
         LPC_GPIO->SET[PIN_PSUON_PORT] = PIN_PSUON;
@@ -153,7 +153,8 @@ static uint8_t musca_a_target_set_state(target_state_t state)
     return swd_set_target_state_sw(state);
 }
 
-const target_family_descriptor_t g_target_family_musca_a = {
+const target_family_descriptor_t g_target_family_musca_a =
+{
     .target_before_init_debug = musca_a_target_before_init_debug,
     .target_set_state = musca_a_target_set_state,
     .apsel = 0x01000000,

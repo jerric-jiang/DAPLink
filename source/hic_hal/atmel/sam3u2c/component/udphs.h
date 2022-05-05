@@ -38,40 +38,43 @@
 
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief UdphsDma hardware registers */
-typedef struct {
-  RwReg     UDPHS_DMANXTDSC; /**< \brief (UdphsDma Offset: 0x0) UDPHS DMA Next Descriptor Address Register */
-  RwReg     UDPHS_DMAADDRESS; /**< \brief (UdphsDma Offset: 0x4) UDPHS DMA Channel Address Register */
-  RwReg     UDPHS_DMACONTROL; /**< \brief (UdphsDma Offset: 0x8) UDPHS DMA Channel Control Register */
-  RwReg     UDPHS_DMASTATUS; /**< \brief (UdphsDma Offset: 0xC) UDPHS DMA Channel Status Register */
+typedef struct
+{
+    RwReg     UDPHS_DMANXTDSC; /**< \brief (UdphsDma Offset: 0x0) UDPHS DMA Next Descriptor Address Register */
+    RwReg     UDPHS_DMAADDRESS; /**< \brief (UdphsDma Offset: 0x4) UDPHS DMA Channel Address Register */
+    RwReg     UDPHS_DMACONTROL; /**< \brief (UdphsDma Offset: 0x8) UDPHS DMA Channel Control Register */
+    RwReg     UDPHS_DMASTATUS; /**< \brief (UdphsDma Offset: 0xC) UDPHS DMA Channel Status Register */
 } UdphsDma;
 /** \brief UdphsEpt hardware registers */
-typedef struct {
-  RwReg     UDPHS_EPTCFG;  /**< \brief (UdphsEpt Offset: 0x0) UDPHS Endpoint Configuration Register */
-  RwReg     UDPHS_EPTCTLENB; /**< \brief (UdphsEpt Offset: 0x4) UDPHS Endpoint Control Enable Register */
-  RwReg     UDPHS_EPTCTLDIS; /**< \brief (UdphsEpt Offset: 0x8) UDPHS Endpoint Control Disable Register */
-  RwReg     UDPHS_EPTCTL;  /**< \brief (UdphsEpt Offset: 0xC) UDPHS Endpoint Control Register */
-  RoReg     Reserved1[1];
-  RwReg     UDPHS_EPTSETSTA; /**< \brief (UdphsEpt Offset: 0x14) UDPHS Endpoint Set Status Register */
-  RwReg     UDPHS_EPTCLRSTA; /**< \brief (UdphsEpt Offset: 0x18) UDPHS Endpoint Clear Status Register */
-  RwReg     UDPHS_EPTSTA;  /**< \brief (UdphsEpt Offset: 0x1C) UDPHS Endpoint Status Register */
+typedef struct
+{
+    RwReg     UDPHS_EPTCFG;  /**< \brief (UdphsEpt Offset: 0x0) UDPHS Endpoint Configuration Register */
+    RwReg     UDPHS_EPTCTLENB; /**< \brief (UdphsEpt Offset: 0x4) UDPHS Endpoint Control Enable Register */
+    RwReg     UDPHS_EPTCTLDIS; /**< \brief (UdphsEpt Offset: 0x8) UDPHS Endpoint Control Disable Register */
+    RwReg     UDPHS_EPTCTL;  /**< \brief (UdphsEpt Offset: 0xC) UDPHS Endpoint Control Register */
+    RoReg     Reserved1[1];
+    RwReg     UDPHS_EPTSETSTA; /**< \brief (UdphsEpt Offset: 0x14) UDPHS Endpoint Set Status Register */
+    RwReg     UDPHS_EPTCLRSTA; /**< \brief (UdphsEpt Offset: 0x18) UDPHS Endpoint Clear Status Register */
+    RwReg     UDPHS_EPTSTA;  /**< \brief (UdphsEpt Offset: 0x1C) UDPHS Endpoint Status Register */
 } UdphsEpt;
 /** \brief Udphs hardware registers */
 #define UDPHSEPT_NUMBER 7
 #define UDPHSDMA_NUMBER 6
-typedef struct {
-  RwReg     UDPHS_CTRL;    /**< \brief (Udphs Offset: 0x00) UDPHS Control Register */
-  RoReg     UDPHS_FNUM;    /**< \brief (Udphs Offset: 0x04) UDPHS Frame Number Register */
-  RoReg     Reserved1[2];
-  RwReg     UDPHS_IEN;     /**< \brief (Udphs Offset: 0x10) UDPHS Interrupt Enable Register */
-  RoReg     UDPHS_INTSTA;  /**< \brief (Udphs Offset: 0x14) UDPHS Interrupt Status Register */
-  WoReg     UDPHS_CLRINT;  /**< \brief (Udphs Offset: 0x18) UDPHS Clear Interrupt Register */
-  WoReg     UDPHS_EPTRST;  /**< \brief (Udphs Offset: 0x1C) UDPHS Endpoints Reset Register */
-  RoReg     Reserved2[48];
-  RwReg     UDPHS_TST;     /**< \brief (Udphs Offset: 0xE0) UDPHS Test Register */
-  RoReg     Reserved3[7];
-  UdphsEpt  UDPHS_EPT[UDPHSEPT_NUMBER]; /**< \brief (Udphs Offset: 0x100) endpoint = 0 .. 6 */
-  RoReg     Reserved4[72];
-  UdphsDma  UDPHS_DMA[UDPHSDMA_NUMBER]; /**< \brief (Udphs Offset: 0x300) channel = 0 .. 5 */
+typedef struct
+{
+    RwReg     UDPHS_CTRL;    /**< \brief (Udphs Offset: 0x00) UDPHS Control Register */
+    RoReg     UDPHS_FNUM;    /**< \brief (Udphs Offset: 0x04) UDPHS Frame Number Register */
+    RoReg     Reserved1[2];
+    RwReg     UDPHS_IEN;     /**< \brief (Udphs Offset: 0x10) UDPHS Interrupt Enable Register */
+    RoReg     UDPHS_INTSTA;  /**< \brief (Udphs Offset: 0x14) UDPHS Interrupt Status Register */
+    WoReg     UDPHS_CLRINT;  /**< \brief (Udphs Offset: 0x18) UDPHS Clear Interrupt Register */
+    WoReg     UDPHS_EPTRST;  /**< \brief (Udphs Offset: 0x1C) UDPHS Endpoints Reset Register */
+    RoReg     Reserved2[48];
+    RwReg     UDPHS_TST;     /**< \brief (Udphs Offset: 0xE0) UDPHS Test Register */
+    RoReg     Reserved3[7];
+    UdphsEpt  UDPHS_EPT[UDPHSEPT_NUMBER]; /**< \brief (Udphs Offset: 0x100) endpoint = 0 .. 6 */
+    RoReg     Reserved4[72];
+    UdphsDma  UDPHS_DMA[UDPHSDMA_NUMBER]; /**< \brief (Udphs Offset: 0x300) channel = 0 .. 5 */
 } Udphs;
 #endif /* !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__)) */
 /* -------- UDPHS_CTRL : (UDPHS Offset: 0x00) UDPHS Control Register -------- */

@@ -32,63 +32,79 @@ static inline uint32_t test_range(const uint32_t test, const uint32_t min, const
 
 uint8_t validate_bin_nvic(const uint8_t *buf)
 {
-    if (g_target_family && g_target_family->validate_bin_nvic) {
+    if (g_target_family && g_target_family->validate_bin_nvic)
+    {
         return g_target_family && g_target_family->validate_bin_nvic(buf);
-    } else {
+    }
+    else
+    {
         return validate_bin_nvic_base(buf);
     }
 }
 
 uint8_t validate_bin_nvic_base(const uint8_t *buf)
 {
-    if (g_board_info.target_cfg) {
+    if (g_board_info.target_cfg)
+    {
         uint32_t i = 4, nvic_val = 0;
         uint8_t in_range = 0;
         // test the initial SP value
         memcpy(&nvic_val, buf + 0, sizeof(nvic_val));
 
         region_info_t * region = g_board_info.target_cfg->ram_regions;
-        for (; region->start != 0 || region->end != 0; ++region) {
-            if (1 == test_range(nvic_val, region->start, region->end)) {
+        for (; region->start != 0 || region->end != 0; ++region)
+        {
+            if (1 == test_range(nvic_val, region->start, region->end))
+            {
                 in_range = 1;
                 break;
             }
         }
 
-        if (in_range == 0) {
+        if (in_range == 0)
+        {
             return 0;
         }
 
         // Reset_Handler
         // NMI_Handler
         // HardFault_Handler
-        for (; i <= 12; i += 4) {
+        for (; i <= 12; i += 4)
+        {
             in_range = 0;
             memcpy(&nvic_val, buf + i, sizeof(nvic_val));
             region_info_t * region = g_board_info.target_cfg->flash_regions;
-            for (; region->start != 0 || region->end != 0; ++region) {
-                if (1 == test_range(nvic_val, region->start, region->end)) {
+            for (; region->start != 0 || region->end != 0; ++region)
+            {
+                if (1 == test_range(nvic_val, region->start, region->end))
+                {
                     in_range = 1;
                     break;
                 }
             }
-            if (in_range == 0) {
+            if (in_range == 0)
+            {
                 return 0;
             }
         }
 
         return 1;
 
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
 
 uint8_t validate_hexfile(const uint8_t *buf)
 {
-    if (g_target_family && g_target_family->validate_hexfile) {
+    if (g_target_family && g_target_family->validate_hexfile)
+    {
         return g_target_family->validate_hexfile(buf);
-    } else {
+    }
+    else
+    {
         // look here for known hex records
         // add hex identifier b[0] == ':' && b[8] == {'0', '2', '3', '4', '5'}
         return ((buf[0] == ':') && ((buf[8] == '0') || (buf[8] == '2') || (buf[8] == '3') || (buf[8] == '4') || (buf[8] == '5'))) ? 1 : 0;

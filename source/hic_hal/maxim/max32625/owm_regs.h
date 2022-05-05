@@ -69,7 +69,8 @@ extern "C" {
 /**
  * Structure type for the 1-Wire Master module registers allowing direct 32-bit access to each register.
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t cfg;                                  /**< <tt>\b 0x0000:</tt> OWM_CFG Register - 1-Wire Master Configuration           */
     __IO uint32_t clk_div_1us;                          /**< <tt>\b 0x0004:</tt> OWM_CLK_DIV_1US Register - 1-Wire Master Clock Divisor   */
     __IO uint32_t ctrl_stat;                            /**< <tt>\b 0x0008:</tt> OWM_CTRL_STAT Register - 1-Wire Master Control/Status    */

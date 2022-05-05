@@ -21,7 +21,8 @@
 // Originating from 'NXP.LPC55S69_DFP.13.1.0.pack'
 // digest = c672c27550f789743829bb8832245f8c6f0c8ea81b9291b53827849eeabbe52c, file size = 22316
 // algo version = 0x101, algo size = 1696 (0x6a0)
-static const uint32_t LPC55XX_640_flash_prog_blob[] = {
+static const uint32_t LPC55XX_640_flash_prog_blob[] =
+{
     0xe7fdbe00,
     0xf240b580, 0xf2c00004, 0xf6420000, 0xf84961e0, 0xf2401000, 0xf2c52000, 0x21000000, 0x1080f8c0,
     0x1084f8c0, 0x1180f8c0, 0x71fbf647, 0xf6406001, 0x21ff6004, 0x0000f2c5, 0x01def2cc, 0xf04f6001,
@@ -90,11 +91,13 @@ static const uint32_t flash_size = 0x00098000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0x00000000, 0x00008000},
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000005, // Init
     0x20000061, // UnInit
     0x20000065, // EraseChip

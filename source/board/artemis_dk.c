@@ -35,12 +35,12 @@ static void set_board_id(artemis_dk_version_t board_version)
 {
     switch (board_version)
     {
-    case BOARD_VERSION_v10:
-        target_device.rt_board_id = board_id_artemis_dk_v10;
-        break;
-    default:
-        target_device.rt_board_id = board_id_artemis_dk_v10;
-        break;
+        case BOARD_VERSION_v10:
+            target_device.rt_board_id = board_id_artemis_dk_v10;
+            break;
+        default:
+            target_device.rt_board_id = board_id_artemis_dk_v10;
+            break;
     }
 }
 
@@ -56,12 +56,17 @@ static void prerun_board_config(void)
 uint8_t usbd_hid_no_activity(uint8_t *buf)
 {
     if (buf[0] == ID_DAP_Vendor3 && buf[1] == 0)
+    {
         return 1;
+    }
     else
+    {
         return 0;
+    }
 }
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = 0x1,
     .family_id = kAmbiq_ama3b1kk_FamilyID,
     .daplink_url_name = "ARTEMIS_HTM",

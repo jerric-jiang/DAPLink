@@ -143,7 +143,8 @@ static int _SetBaudrate(U32 Baudrate)
     U32 Div;
     Div = _DetermineDivider(Baudrate);
 
-    if (Div >= 1) {
+    if (Div >= 1)
+    {
         UART_BRGR = Div;
         _Baudrate = _CPU_CLK_HZ / Div / 16;
         return _Baudrate;
@@ -180,7 +181,8 @@ static void _ResetBuffers(void)
 
 static int get_tx_ready()
 {
-    if (!_FlowControlEnabled) {
+    if (!_FlowControlEnabled)
+    {
         return 1;
     }
     return ((PIOA->PIO_PDSR >> BIT_CDC_USB2UART_CTS) & 1) == 0;
@@ -188,9 +190,12 @@ static int get_tx_ready()
 
 static void set_rx_ready(int ready)
 {
-    if (ready || !_FlowControlEnabled) {
+    if (ready || !_FlowControlEnabled)
+    {
         PIOA->PIO_CODR = 1 << BIT_CDC_USB2UART_RTS;
-    } else {
+    }
+    else
+    {
         PIOA->PIO_SODR = 1 << BIT_CDC_USB2UART_RTS;
     }
 }
@@ -213,17 +218,23 @@ void uart_software_flow_control()
 {
     int v;
 
-    if (((PIOA->PIO_PDSR >> BIT_CDC_USB2UART_CTS) & 1) == 0) {
+    if (((PIOA->PIO_PDSR >> BIT_CDC_USB2UART_CTS) & 1) == 0)
+    {
         _TxInProgress = 0;
         v = circ_buf_count_used(&write_buffer); // NumBytes in write buffer
 
-        if (v == 0) {  // No more characters to send ?: Disable further tx interrupts
+        if (v == 0)    // No more characters to send ?: Disable further tx interrupts
+        {
             UART_IER = UART_TX_INT_FLAG;
-        } else {
+        }
+        else
+        {
             _Send1();    //More bytes to send? Trigger sending of next byte
         }
 
-    } else {
+    }
+    else
+    {
         UART_IDR = UART_TX_INT_FLAG;
     }
 }
@@ -366,7 +377,8 @@ int32_t uart_write_data(uint8_t *data, uint16_t size)
     // Atomically trigger transfer if not already in progress
     //
     state = cortex_int_get_and_disable();
-    if (_TxInProgress == 0 && get_tx_ready()) {
+    if (_TxInProgress == 0 && get_tx_ready())
+    {
         _Send1();
     }
     cortex_int_restore(state);
@@ -383,7 +395,8 @@ int32_t uart_read_data(uint8_t *data, uint16_t size)
 
     // Atomically check if RTS had been asserted, if there is space on the buffer then deassert RTS
     state = cortex_int_get_and_disable();
-    if (circ_buf_count_free(&read_buffer) > RX_OVRF_MSG_SIZE) {
+    if (circ_buf_count_free(&read_buffer) > RX_OVRF_MSG_SIZE)
+    {
         set_rx_ready(1);
     }
     cortex_int_restore(state);
@@ -403,32 +416,43 @@ void UART_IRQHandler(void)
     U8 data;
     Status = UART_SR;                                 // Examine status register
 
-    if (Status & UART_RX_ERR_FLAGS) {                 // In case of error: Set RSTSTA to reset status bits PARE, FRAME, OVRE and RXBRK
+    if (Status & UART_RX_ERR_FLAGS)                   // In case of error: Set RSTSTA to reset status bits PARE, FRAME, OVRE and RXBRK
+    {
         UART_CR = (1 << 8);
     }
 
     //
     // Handle Rx event
     //
-    if (Status & UART_RXRDY_FLAG) {                   // Data received?
+    if (Status & UART_RXRDY_FLAG)                     // Data received?
+    {
         data = UART_RHR;
         cnt = (int32_t)circ_buf_count_free(&read_buffer) - RX_OVRF_MSG_SIZE;
-        if (cnt > 0) {
+        if (cnt > 0)
+        {
             circ_buf_push(&read_buffer, data);
-        } else if (config_get_overflow_detect()) {
-            if (0 == cnt) {
+        }
+        else if (config_get_overflow_detect())
+        {
+            if (0 == cnt)
+            {
                 circ_buf_write(&read_buffer, (uint8_t*)RX_OVRF_MSG, RX_OVRF_MSG_SIZE);
-            } else {
+            }
+            else
+            {
                 // Drop newest
             }
-        } else {
+        }
+        else
+        {
             // Drop oldest
             circ_buf_pop(&read_buffer);
             circ_buf_push(&read_buffer, data);
         }
 
         //If this was the last available byte on the buffer then assert RTS
-        if (cnt == 1) {
+        if (cnt == 1)
+        {
             set_rx_ready(0);
         }
     }
@@ -436,15 +460,21 @@ void UART_IRQHandler(void)
     //
     // Handle Tx event
     //
-    if (Status & UART_IMR & UART_TX_INT_FLAG) {       // Byte has been send by UART
+    if (Status & UART_IMR & UART_TX_INT_FLAG)         // Byte has been send by UART
+    {
         cnt = circ_buf_count_used(&write_buffer); // NumBytes in write buffer
-        if (cnt == 0) {                               // No more characters to send ?: Disable further tx interrupts
+        if (cnt == 0)                                 // No more characters to send ?: Disable further tx interrupts
+        {
             UART_IDR = UART_TX_INT_FLAG;
             PIOA->PIO_MDER = (1 << UART_TX_PIN);    //enable open-drain
             _TxInProgress = 0;
-        } else if (get_tx_ready()) {
+        }
+        else if (get_tx_ready())
+        {
             _Send1();                               //More bytes to send? Trigger sending of next byte
-        } else {
+        }
+        else
+        {
             UART_IDR = UART_TX_INT_FLAG;            // disable Tx interrupt
             PIOA->PIO_MDER = (1 << UART_TX_PIN);    //enable open-drain
         }

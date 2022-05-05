@@ -24,7 +24,8 @@
 
 extern target_cfg_t target_device_nrf52_64;
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "9014",
     .family_id = kNordic_Nrf52_FamilyID,

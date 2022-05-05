@@ -53,7 +53,7 @@
 #if defined(__CC_ARM) || (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
 #ifndef __MICROLIB
 /* Avoids early implicit call to osKernelInitialize() */
-void _platform_post_stackheap_init (void) {}
+void _platform_post_stackheap_init(void) {}
 #endif
 #if (defined(__ARMCC_VERSION) && (__ARMCC_VERSION >= 6010050))
 /* Avoids the semihosting issue */
@@ -61,9 +61,9 @@ __asm("  .global __ARM_use_no_argv\n");
 #endif
 #elif defined(__GNUC__)
 /* Avoids early implicit call to osKernelInitialize() */
-void software_init_hook (void) {}
+void software_init_hook(void) {}
 /* Disables part of C/C++ runtime startup/teardown */
-void __libc_init_array (void) {}
+void __libc_init_array(void) {}
 #endif
 
 // Event flags for main task
@@ -115,21 +115,23 @@ osThreadId_t main_task_id;
 #ifndef USE_LEGACY_CMSIS_RTOS
 static uint32_t s_main_thread_cb[WORDS(sizeof(osRtxThread_t))];
 static uint64_t s_main_task_stack[MAIN_TASK_STACK / sizeof(uint64_t)];
-static const osThreadAttr_t k_main_thread_attr = {
-        .name = "main",
-        .cb_mem = s_main_thread_cb,
-        .cb_size = sizeof(s_main_thread_cb),
-        .stack_mem = s_main_task_stack,
-        .stack_size = sizeof(s_main_task_stack),
-        .priority = MAIN_TASK_PRIORITY,
-    };
+static const osThreadAttr_t k_main_thread_attr =
+{
+    .name = "main",
+    .cb_mem = s_main_thread_cb,
+    .cb_size = sizeof(s_main_thread_cb),
+    .stack_mem = s_main_task_stack,
+    .stack_size = sizeof(s_main_task_stack),
+    .priority = MAIN_TASK_PRIORITY,
+};
 
 static uint32_t s_timer_30ms_cb[WORDS(sizeof(osRtxTimer_t))];
-static const osTimerAttr_t k_timer_30ms_attr = {
-        .name = "30ms",
-        .cb_mem = s_timer_30ms_cb,
-        .cb_size = sizeof(s_timer_30ms_cb),
-    };
+static const osTimerAttr_t k_timer_30ms_attr =
+{
+    .name = "30ms",
+    .cb_mem = s_timer_30ms_cb,
+    .cb_size = sizeof(s_timer_30ms_cb),
+};
 #endif
 
 // USB busy LED state; when TRUE the LED will flash once using 30mS clock tick
@@ -151,11 +153,12 @@ __WEAK void board_30ms_hook(void)
 
 __WEAK void handle_reset_button(void)
 {
-	// button state
+    // button state
     static uint8_t reset_pressed = 0;
 
     // handle reset button without eventing
-    if (!reset_pressed && gpio_get_reset_btn_fwrd()) {
+    if (!reset_pressed && gpio_get_reset_btn_fwrd())
+    {
 #ifdef DRAG_N_DROP_SUPPORT
         if (!flash_intf_target->flash_busy()) //added checking if flashing on target is in progress
 #endif
@@ -164,7 +167,9 @@ __WEAK void handle_reset_button(void)
             target_set_state(RESET_HOLD);
             reset_pressed = 1;
         }
-    } else if (reset_pressed && !gpio_get_reset_btn_fwrd()) {
+    }
+    else if (reset_pressed && !gpio_get_reset_btn_fwrd())
+    {
         // Reset button released
         target_set_state(RESET_RUN);
         reset_pressed = 0;
@@ -186,7 +191,8 @@ void timer_task_30mS(void * arg)
 {
     static uint32_t i = 0;
     osThreadFlagsSet(main_task_id, FLAGS_MAIN_30MS);
-    if (!(i++ % 3)) {
+    if (!(i++ % 3))
+    {
         osThreadFlagsSet(main_task_id, FLAGS_MAIN_90MS);
     }
 }
@@ -298,22 +304,26 @@ void main_task(void * arg)
     util_assert(g_board_info.info_version == kBoardInfoVersion);
 
     // do some init with the target before USB and files are configured
-    if (g_board_info.prerun_board_config) {
+    if (g_board_info.prerun_board_config)
+    {
         g_board_info.prerun_board_config();
     }
 
     //initialize the family
     init_family();
 
-    if (g_target_family && g_target_family->prerun_target_config) {
+    if (g_target_family && g_target_family->prerun_target_config)
+    {
         g_target_family->prerun_target_config();
     }
 
     //setup some flags
-    if (g_board_info.flags & kEnableUnderResetConnect) {
+    if (g_board_info.flags & kEnableUnderResetConnect)
+    {
         swd_set_reset_connect(CONNECT_UNDER_RESET);
     }
-    if (g_board_info.flags & kEnablePageErase) {
+    if (g_board_info.flags & kEnablePageErase)
+    {
 #ifdef DRAG_N_DROP_SUPPORT
         flash_manager_set_page_erase(true);
 #endif
@@ -326,7 +336,7 @@ void main_task(void * arg)
     // USB
     usbd_init();
 #ifdef DRAG_N_DROP_SUPPORT
-    vfs_mngr_fs_enable((config_ram_get_disable_msd()==0));
+    vfs_mngr_fs_enable((config_ram_get_disable_msd() == 0));
 #endif
     usbd_connect(0);
     usb_state = USB_CONNECTING;
@@ -339,20 +349,23 @@ void main_task(void * arg)
     osTimerId_t tmr_id = osTimerNew(timer_task_30mS, osTimerPeriodic, NULL, NULL);
 #endif
     osTimerStart(tmr_id, 3);
-    while (1) {
+    while (1)
+    {
         flags = osThreadFlagsWait(FLAGS_MAIN_RESET             // Put target in reset state
-                       | FLAGS_MAIN_90MS            // 90mS tick
-                       | FLAGS_MAIN_30MS            // 30mS tick
-                       | FLAGS_MAIN_POWERDOWN       // Power down interface
-                       | FLAGS_MAIN_DISABLEDEBUG    // Disable target debug
-                       | FLAGS_MAIN_PROC_USB        // process usb events
-                       | FLAGS_MAIN_CDC_EVENT       // cdc event
-                       | FLAGS_BOARD_EVENT          // custom board event
-                       , osFlagsWaitAny
-                       , osWaitForever);
+                                  | FLAGS_MAIN_90MS            // 90mS tick
+                                  | FLAGS_MAIN_30MS            // 30mS tick
+                                  | FLAGS_MAIN_POWERDOWN       // Power down interface
+                                  | FLAGS_MAIN_DISABLEDEBUG    // Disable target debug
+                                  | FLAGS_MAIN_PROC_USB        // process usb events
+                                  | FLAGS_MAIN_CDC_EVENT       // cdc event
+                                  | FLAGS_BOARD_EVENT          // custom board event
+                                  , osFlagsWaitAny
+                                  , osWaitForever);
 
-        if (flags & FLAGS_MAIN_PROC_USB) {
-            if (usb_test_mode) {
+        if (flags & FLAGS_MAIN_PROC_USB)
+        {
+            if (usb_test_mode)
+            {
                 // When in USB test mode Insert a delay to
                 // simulate worst-case behavior.
                 osDelay(1);
@@ -360,11 +373,13 @@ void main_task(void * arg)
             USBD_Handler();
         }
 
-        if (flags & FLAGS_MAIN_RESET) {
+        if (flags & FLAGS_MAIN_RESET)
+        {
             target_set_state(RESET_RUN);
         }
 
-        if (flags & FLAGS_MAIN_POWERDOWN) {
+        if (flags & FLAGS_MAIN_POWERDOWN)
+        {
             // Disable debug
             target_set_state(NO_DEBUG);
             // Disable board power before USB is disconnected.
@@ -379,26 +394,31 @@ void main_task(void * arg)
             board_handle_powerdown();
         }
 
-        if (flags & FLAGS_MAIN_DISABLEDEBUG) {
+        if (flags & FLAGS_MAIN_DISABLEDEBUG)
+        {
             // Disable debug
             target_set_state(NO_DEBUG);
         }
 
-        if (flags & FLAGS_MAIN_CDC_EVENT) {
+        if (flags & FLAGS_MAIN_CDC_EVENT)
+        {
             cdc_process_event();
         }
-        
-        if (flags & FLAGS_BOARD_EVENT) {
+
+        if (flags & FLAGS_BOARD_EVENT)
+        {
             board_custom_event();
         }
 
-        if (flags & FLAGS_MAIN_90MS) {
+        if (flags & FLAGS_MAIN_90MS)
+        {
             // Update USB busy status
 #ifdef DRAG_N_DROP_SUPPORT
             vfs_mngr_periodic(90); // FLAGS_MAIN_90MS
 #endif
             // Update USB connect status
-            switch (usb_state) {
+            switch (usb_state)
+            {
                 case USB_DISCONNECTING:
                     usb_state = USB_DISCONNECTED;
                     // Disable board power before USB is disconnected.
@@ -408,7 +428,8 @@ void main_task(void * arg)
 
                 case USB_CONNECTING:
                     // Wait before connecting
-                    if (DECZERO(usb_state_count) == 0) {
+                    if (DECZERO(usb_state_count) == 0)
+                    {
                         usbd_connect(1);
                         usb_state = USB_CHECK_CONNECTED;
                         // Reset connect timeout
@@ -418,13 +439,15 @@ void main_task(void * arg)
                     break;
 
                 case USB_CHECK_CONNECTED:
-                    if (usbd_configured()) {
+                    if (usbd_configured())
+                    {
                         // Let the HIC enable power to the target now that high power has been negotiated.
                         gpio_set_board_power(true);
 
                         usb_state = USB_CONNECTED;
                     }
-                    else if (DECZERO(usb_no_config_count) == 0) {
+                    else if (DECZERO(usb_no_config_count) == 0)
+                    {
                         // USB configuration timed out, which most likely indicates that the HIC is
                         // powered by a USB wall wart or similar power source. Go ahead and enable
                         // board power.
@@ -436,10 +459,12 @@ void main_task(void * arg)
 
                 case USB_CONNECTED:
                 case USB_DISCONNECTED:
-                    if (usbd_configured()) {
+                    if (usbd_configured())
+                    {
                         usb_state = USB_CONNECTED;
                     }
-                    else {
+                    else
+                    {
                         usb_state = USB_DISCONNECTED;
                         usb_state_count = USB_CONNECT_DELAY;
                         usb_no_config_count = USB_CONFIGURE_TIMEOUT;
@@ -450,15 +475,16 @@ void main_task(void * arg)
         }
 
         // 30mS tick used for flashing LED when USB is busy
-        if (flags & FLAGS_MAIN_30MS) {
+        if (flags & FLAGS_MAIN_30MS)
+        {
 
             handle_reset_button();
 
 #ifdef PBON_BUTTON
             // handle PBON pressed
-            if(gpio_get_pbon_btn())
+            if (gpio_get_pbon_btn())
             {
-                if(power_on)
+                if (power_on)
                 {
                     // Loop till PBON is pressed
                     while (gpio_get_pbon_btn()) {;}
@@ -480,18 +506,23 @@ void main_task(void * arg)
             board_30ms_hook();
 
             // DAP LED
-            if (hid_led_usb_activity) {
+            if (hid_led_usb_activity)
+            {
 
-                if ((hid_led_state == MAIN_LED_FLASH) || (hid_led_state == MAIN_LED_FLASH_PERMANENT)) {
+                if ((hid_led_state == MAIN_LED_FLASH) || (hid_led_state == MAIN_LED_FLASH_PERMANENT))
+                {
                     // Toggle LED value
                     hid_led_value = GPIO_LED_ON == hid_led_value ? GPIO_LED_OFF : GPIO_LED_ON;
 
                     // If in flash mode stop after one cycle
-                    if ((HID_LED_DEF == hid_led_value) && (MAIN_LED_FLASH == hid_led_state)) {
+                    if ((HID_LED_DEF == hid_led_value) && (MAIN_LED_FLASH == hid_led_state))
+                    {
                         hid_led_usb_activity = 0;
                         hid_led_state = MAIN_LED_DEF;
                     }
-                } else {
+                }
+                else
+                {
                     //LED next state is MAIN_LED_DEF
                     hid_led_value = HID_LED_DEF;
                     hid_led_usb_activity = 0;
@@ -502,18 +533,23 @@ void main_task(void * arg)
             }
 
             // MSD LED
-            if (msc_led_usb_activity) {
+            if (msc_led_usb_activity)
+            {
 
-                if ((msc_led_state == MAIN_LED_FLASH) || (msc_led_state == MAIN_LED_FLASH_PERMANENT)) {
+                if ((msc_led_state == MAIN_LED_FLASH) || (msc_led_state == MAIN_LED_FLASH_PERMANENT))
+                {
                     // Toggle LED value
                     msc_led_value = GPIO_LED_ON == msc_led_value ? GPIO_LED_OFF : GPIO_LED_ON;
 
                     // If in flash mode stop after one cycle
-                    if ((MSC_LED_DEF == msc_led_value) && (MAIN_LED_FLASH == msc_led_state)) {
+                    if ((MSC_LED_DEF == msc_led_value) && (MAIN_LED_FLASH == msc_led_state))
+                    {
                         msc_led_usb_activity = 0;
                         msc_led_state = MAIN_LED_DEF;
                     }
-                } else {
+                }
+                else
+                {
                     //LED next state is MAIN_LED_DEF
                     msc_led_value = MSC_LED_DEF;
                     msc_led_usb_activity = 0;
@@ -524,18 +560,23 @@ void main_task(void * arg)
             }
 
             // CDC LED
-            if (cdc_led_usb_activity) {
+            if (cdc_led_usb_activity)
+            {
 
-                if ((cdc_led_state == MAIN_LED_FLASH) || (cdc_led_state == MAIN_LED_FLASH_PERMANENT)){
+                if ((cdc_led_state == MAIN_LED_FLASH) || (cdc_led_state == MAIN_LED_FLASH_PERMANENT))
+                {
                     // Toggle LED value
                     cdc_led_value = GPIO_LED_ON == cdc_led_value ? GPIO_LED_OFF : GPIO_LED_ON;
 
                     // If in flash mode stop after one cycle
-                    if ((CDC_LED_DEF == cdc_led_value) && (MAIN_LED_FLASH == cdc_led_state)) {
+                    if ((CDC_LED_DEF == cdc_led_value) && (MAIN_LED_FLASH == cdc_led_state))
+                    {
                         cdc_led_usb_activity = 0;
                         cdc_led_state = MAIN_LED_DEF;
                     }
-                }else{
+                }
+                else
+                {
                     //LED next state is MAIN_LED_DEF
                     cdc_led_value = CDC_LED_DEF;
                     cdc_led_usb_activity = 0;

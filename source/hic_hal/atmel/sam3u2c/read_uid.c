@@ -1,6 +1,6 @@
 /**
  * @file    read_uid.c
- * @brief   
+ * @brief
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -30,7 +30,8 @@ bool unique_id_created = false;
 static uint32_t unique_id[4];
 void read_unique_id(uint32_t *id)
 {
-    if (!unique_id_created) {
+    if (!unique_id_created)
+    {
         create_unique_id();
         unique_id_created = true;
     }

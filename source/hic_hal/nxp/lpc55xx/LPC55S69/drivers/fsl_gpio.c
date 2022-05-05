@@ -102,7 +102,7 @@ void GPIO_PinInit(GPIO_Type *base, uint32_t port, uint32_t pin, const gpio_pin_c
         {
             base->SET[port] = (1UL << pin);
         }
-/* Set pin direction */
+        /* Set pin direction */
 #if defined(FSL_FEATURE_GPIO_DIRSET_AND_DIRCLR) && (FSL_FEATURE_GPIO_DIRSET_AND_DIRCLR)
         base->DIRSET[port] = 1UL << pin;
 #else

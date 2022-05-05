@@ -64,27 +64,36 @@ void gpio_init(void)
 
 void gpio_set_hid_led(gpio_led_state_t state)
 {
-    if (GPIO_LED_ON == state) {
+    if (GPIO_LED_ON == state)
+    {
         PIN_DAP_LED_PORT->PIO_CODR = PIN_DAP_LED; // LED == on
-    } else {
+    }
+    else
+    {
         PIN_DAP_LED_PORT->PIO_SODR = PIN_DAP_LED; // LED == off
     }
 }
 
 void gpio_set_cdc_led(gpio_led_state_t state)
 {
-    if (GPIO_LED_ON == state) {
+    if (GPIO_LED_ON == state)
+    {
         PIN_CDC_LED_PORT->PIO_CODR = PIN_CDC_LED; //  LED == on
-    } else {
+    }
+    else
+    {
         PIN_CDC_LED_PORT->PIO_SODR = PIN_CDC_LED; //  LED == off
     }
 }
 
 void gpio_set_msc_led(gpio_led_state_t state)
 {
-    if (GPIO_LED_ON == state) {
+    if (GPIO_LED_ON == state)
+    {
         PIN_MSD_LED_PORT->PIO_CODR = PIN_MSD_LED; //  LED == on
-    } else {
+    }
+    else
+    {
         PIN_MSD_LED_PORT->PIO_SODR = PIN_MSD_LED; //  LED == off
     }
 }
@@ -96,7 +105,8 @@ void PIOA_IRQHandler(void)
     //
     uint32_t interrupts = PIOA->PIO_ISR;
 
-    if ((interrupts >> 9) & 1) { //CTS
+    if ((interrupts >> 9) & 1)   //CTS
+    {
         uart_software_flow_control();
     }
 }

@@ -28,7 +28,8 @@ static inline int FLC_Busy(void)
 uint32_t Init(uint32_t adr, uint32_t clk, uint32_t fnc)
 {
     /* Check if the flash controller is busy */
-    if (FLC_Busy()) {
+    if (FLC_Busy())
+    {
         return 1;
     }
 
@@ -61,7 +62,8 @@ uint32_t UnInit(uint32_t fnc)
 int EraseChip(void)
 {
     /* Check if the flash controller is busy */
-    if (FLC_Busy()) {
+    if (FLC_Busy())
+    {
         return 1;
     }
 
@@ -84,7 +86,8 @@ int EraseChip(void)
     MXC_FLC->ctrl &= ~(MXC_F_FLC_CTRL_FLSH_UNLOCK | MXC_F_FLC_CTRL_ERASE_CODE);
 
     /* Check for failures */
-    if (MXC_FLC->intr & MXC_F_FLC_INTR_FAILED_IF) {
+    if (MXC_FLC->intr & MXC_F_FLC_INTR_FAILED_IF)
+    {
         /* Interrupt flags can only be written to zero, so this is safe */
         MXC_FLC->intr &= ~MXC_F_FLC_INTR_FAILED_IF;
         return 1;
@@ -124,7 +127,8 @@ int EraseSector(unsigned long address)
     MXC_FLC->ctrl &= ~(MXC_F_FLC_CTRL_FLSH_UNLOCK | MXC_F_FLC_CTRL_ERASE_CODE);
 
     /* Check for failures */
-    if (MXC_FLC->intr & MXC_F_FLC_INTR_FAILED_IF) {
+    if (MXC_FLC->intr & MXC_F_FLC_INTR_FAILED_IF)
+    {
         /* Interrupt flags can only be written to zero, so this is safe */
         MXC_FLC->intr &= ~MXC_F_FLC_INTR_FAILED_IF;
         return 1;
@@ -147,20 +151,23 @@ int ProgramPage(unsigned long address, unsigned long size, unsigned char *buffer
     unsigned long *buffer = (unsigned long *)buffer8;
 
     // Only accept 32-bit aligned pointers
-    if ((unsigned long)buffer8 & 0x3) {
+    if ((unsigned long)buffer8 & 0x3)
+    {
         return 1;
     }
     buffer = (unsigned long *)buffer8;
 
     /* Check if the flash controller is busy */
-    if (FLC_Busy()) {
+    if (FLC_Busy())
+    {
         return 1;
     }
 
     /* Unlock flash */
     MXC_FLC->ctrl = (MXC_FLC->ctrl & ~MXC_F_FLC_CTRL_FLSH_UNLOCK) | (MXC_V_FLC_FLSH_UNLOCK_KEY << MXC_F_FLC_CTRL_FLSH_UNLOCK_POS);
 
-    while (remaining >= 4) {
+    while (remaining >= 4)
+    {
         MXC_FLC->faddr = address;
         MXC_FLC->fdata = *buffer++;
         MXC_FLC->ctrl |= MXC_F_FLC_CTRL_WRITE_ENABLE;
@@ -173,14 +180,16 @@ int ProgramPage(unsigned long address, unsigned long size, unsigned char *buffer
         remaining -= 4;
     }
 
-    if (remaining > 0) {
+    if (remaining > 0)
+    {
         uint32_t last_word;
         uint32_t mask;
 
         last_word = 0xffffffff;
         mask = 0xff;
 
-        while (remaining > 0) {
+        while (remaining > 0)
+        {
             last_word &= (*buffer | ~mask);
             mask <<= 8;
             remaining--;
@@ -198,7 +207,8 @@ int ProgramPage(unsigned long address, unsigned long size, unsigned char *buffer
     MXC_FLC->ctrl &= ~MXC_F_FLC_CTRL_FLSH_UNLOCK;
 
     /* Check for failures */
-    if (MXC_FLC->intr & MXC_F_FLC_INTR_FAILED_IF) {
+    if (MXC_FLC->intr & MXC_F_FLC_INTR_FAILED_IF)
+    {
         /* Interrupt flags can only be written to zero, so this is safe */
         MXC_FLC->intr &= ~MXC_F_FLC_INTR_FAILED_IF;
         return 1;

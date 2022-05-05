@@ -44,7 +44,8 @@ static uint32_t pwr_mon_adc_to_mv(uint32_t raw_adc);
 
 void pwr_mon_init(void)
 {
-    gpio_pin_config_t pin_config = {
+    gpio_pin_config_t pin_config =
+    {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
@@ -58,30 +59,39 @@ void pwr_mon_init(void)
     PORT_SetPinMux(PIN_VMON_BAT_PORT, PIN_VMON_BAT_BIT, PIN_VMON_BAT_ALT_MODE);
 }
 
-power_source_t pwr_mon_get_power_source(void) {
+power_source_t pwr_mon_get_power_source(void)
+{
     power_source_t power_source = PWR_SOURCE_NONE;
     uint32_t bat_voltage_mv = 0;
     uint32_t vin_voltage_mv = 0;
 
     // Read WAKE_ON_EDGE pin for detecting if board is USB powered
     bool usb_on = (((PIN_WAKE_ON_EDGE_GPIO->PDIR) >> PIN_WAKE_ON_EDGE_BIT) & 0x01U) ? false : true;
-    
+
     // Read battery voltage
     bat_voltage_mv = pwr_mon_get_vbat_mv();
-    
+
     // Read Vin voltage
     vin_voltage_mv = pwr_mon_get_vin_mv();
-    
+
     // Get power source based on battery and USB
-    if (usb_on == true && bat_voltage_mv < (BATT_MIN_VOLTAGE)) {
+    if (usb_on == true && bat_voltage_mv < (BATT_MIN_VOLTAGE))
+    {
         power_source = PWR_USB_ONLY;
-    } else if (usb_on == true && bat_voltage_mv >= (BATT_MIN_VOLTAGE)) {
+    }
+    else if (usb_on == true && bat_voltage_mv >= (BATT_MIN_VOLTAGE))
+    {
         power_source = PWR_USB_AND_BATT;
-    } else if (usb_on == false && bat_voltage_mv >= (BATT_MIN_VOLTAGE)) {
+    }
+    else if (usb_on == false && bat_voltage_mv >= (BATT_MIN_VOLTAGE))
+    {
         // If battery voltage is greater than Vin, it means the battery is used
-        if ( bat_voltage_mv + 200 > vin_voltage_mv ) {
+        if (bat_voltage_mv + 200 > vin_voltage_mv)
+        {
             power_source = PWR_BATT_ONLY;
-        } else { 
+        }
+        else
+        {
             power_source = PWR_SOURCE_NONE;
         }
     }
@@ -108,7 +118,8 @@ uint32_t pwr_mon_get_vbat_mv(void)
     return pwr_mon_adc_to_mv(bat_adc);
 }
 
-uint32_t pwr_mon_get_vin_mv(void) {
+uint32_t pwr_mon_get_vin_mv(void)
+{
     // ADC read the Vref (same as Vdda) and the Vbg 1V internal reference
     uint32_t vref_high = adc_read_channel(0, ADC_VREFH_CHANNEL, ADC_VREFH_MUX);
     uint32_t ref_volt = pwr_mon_read_vbg(0);
@@ -117,17 +128,20 @@ uint32_t pwr_mon_get_vin_mv(void) {
     return vref_high * 1000 / ref_volt;
 }
 
-static void pwr_mon_bandgap_init(void) {
+static void pwr_mon_bandgap_init(void)
+{
     pmc_bandgap_buffer_config_t pmcBandgapConfig;
     pmcBandgapConfig.enable = true;
     pmcBandgapConfig.enableInLowPowerMode = false;
     PMC_ConfigureBandgapBuffer(PMC, &pmcBandgapConfig);
 }
 
-static uint32_t pwr_mon_read_vbg(uint32_t channelGroup) {
+static uint32_t pwr_mon_read_vbg(uint32_t channelGroup)
+{
     // Ensure the Vbg is enabled from first use only
     static bool bandgap_enabled = false;
-    if (!bandgap_enabled) {
+    if (!bandgap_enabled)
+    {
         pwr_mon_bandgap_init();
         bandgap_enabled = true;
     }

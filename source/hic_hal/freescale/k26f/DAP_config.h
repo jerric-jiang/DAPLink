@@ -434,8 +434,9 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
-  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
+{
+    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}
@@ -466,12 +467,12 @@ __STATIC_INLINE void DAP_SETUP(void)
                   SIM_SCGC5_PORTD_MASK;   /* Enable Port D Clock */
     /* Configure I/O pin SWCLK */
     PIN_SWCLK_PORT->PCR[PIN_SWCLK_BIT]         = PORT_PCR_MUX(1) |   /* GPIO */
-             PORT_PCR_DSE_MASK; /* High drive strength */
+            PORT_PCR_DSE_MASK; /* High drive strength */
     PIN_SWCLK_GPIO->PSOR  = 1 << PIN_SWCLK_BIT;                      /* High level */
     PIN_SWCLK_GPIO->PDDR |= 1 << PIN_SWCLK_BIT;                      /* Output */
     /* Configure I/O pin SWDIO_OUT */
     PIN_SWDIO_OUT_PORT->PCR[PIN_SWDIO_OUT_BIT] = PORT_PCR_MUX(1) |   /* GPIO */
-             PORT_PCR_DSE_MASK; /* High drive strength */
+            PORT_PCR_DSE_MASK; /* High drive strength */
     PIN_SWDIO_OUT_GPIO->PSOR  = 1 << PIN_SWDIO_OUT_BIT;              /* High level */
     PIN_SWDIO_OUT_GPIO->PDDR |= 1 << PIN_SWDIO_OUT_BIT;              /* Output */
     /* Configure I/O pin SWDIO_IN */
@@ -481,12 +482,12 @@ __STATIC_INLINE void DAP_SETUP(void)
     PIN_SWDIO_IN_GPIO->PDDR &= ~(1 << PIN_SWDIO_IN_BIT);             /* Input */
     /* Configure I/O pin SWDIO_OE */
     PIN_SWDIO_OE_PORT->PCR[PIN_SWDIO_OE_BIT] = PORT_PCR_MUX(1) |     /* GPIO */
-             PORT_PCR_DSE_MASK; /* High drive strength */
+            PORT_PCR_DSE_MASK; /* High drive strength */
     PIN_SWDIO_OE_GPIO->PCOR  = 1 << PIN_SWDIO_OE_BIT;                /* Low level */
     PIN_SWDIO_OE_GPIO->PDDR |= 1 << PIN_SWDIO_OE_BIT;                /* Output */
     /* Configure I/O pin SWD_OE */
     PIN_SWD_OE_PORT->PCR[PIN_SWD_OE_BIT]     = PORT_PCR_MUX(1) |     /* GPIO */
-             PORT_PCR_DSE_MASK; /* High drive strength */
+            PORT_PCR_DSE_MASK; /* High drive strength */
     PIN_SWD_OE_GPIO->PCOR  = 1 << PIN_SWD_OE_BIT;                    /* Low level */
     PIN_SWD_OE_GPIO->PDDR |= 1 << PIN_SWD_OE_BIT;                    /* Output */
     /* Configure I/O pin nRESET */

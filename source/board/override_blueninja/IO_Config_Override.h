@@ -42,7 +42,7 @@ COMPILER_ASSERT(DAPLINK_HIC_ID == DAPLINK_HIC_ID_LPC11U35);
 #define PULL_UP_ENABLED                 (2 << 3)
 #define OPENDRAIN                       (1 << 10)
 
-// POW LED                              
+// POW LED
 #define PIN_POW_LED_PORT                0
 #define PIN_POW_LED_BIT                 15
 #define PIN_POW_LED                     (1 << PIN_POW_LED_BIT)

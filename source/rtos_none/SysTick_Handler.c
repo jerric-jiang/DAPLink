@@ -36,7 +36,7 @@
 
 
 static volatile uint32_t tick_counter = 0;
-static volatile uint32_t event_flags =0;
+static volatile uint32_t event_flags = 0;
 static volatile uint32_t wait_counter = 0;
 
 static osTimerFunc_t sysTickCb = NULL;
@@ -46,7 +46,7 @@ static osThreadFunc_t mainFuncCb = NULL;
 void sysTickInit(void)
 {
     tick_counter = 0;
-    event_flags=0;
+    event_flags = 0;
     wait_counter = 0;
     sysTickCb = NULL;
     tickFreq = 0;
@@ -57,11 +57,13 @@ void sysTickInit(void)
 
 void SysTick_Handler(void)
 {
-    if (sysTickCb && tickFreq && (tick_counter % tickFreq)==0) {
+    if (sysTickCb && tickFreq && (tick_counter % tickFreq) == 0)
+    {
         sysTickCb(NULL);
     }
     tick_counter++;
-    if(wait_counter){
+    if (wait_counter)
+    {
         --wait_counter;
     }
 }
@@ -79,7 +81,7 @@ void sysTickFreqSet(uint32_t ticks)
 void sysTickWait(uint32_t wait)
 {
     wait_counter = wait;
-    while(wait_counter);
+    while (wait_counter);
 }
 
 void sysTickEvtSet(uint32_t flag)
@@ -91,8 +93,8 @@ void sysTickEvtSet(uint32_t flag)
 
 uint32_t sysTickEvtWaitOr(uint32_t flag)
 {
-    uint32_t return_flags=0;
-    while ((flag&event_flags)==0);
+    uint32_t return_flags = 0;
+    while ((flag & event_flags) == 0);
     return_flags = event_flags;
     __disable_irq();
     event_flags &= ~return_flags;
@@ -112,7 +114,8 @@ void sysTickRegMainFunc(osThreadFunc_t func)
 
 void sysTickStartMain(void)
 {
-    if(mainFuncCb){
+    if (mainFuncCb)
+    {
         mainFuncCb(NULL);
     }
 }

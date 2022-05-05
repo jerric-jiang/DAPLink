@@ -21,7 +21,8 @@
 
 #include "flash_blob.h"
 
-static const uint32_t K64F_FLM[] = {
+static const uint32_t K64F_FLM[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4604b570, 0x4616460d, 0x5020f24c, 0x81c84932, 0x1028f64d, 0x460881c8, 0xf0208800, 0x80080001,
     0x4448482e, 0xf8dcf000, 0x2001b108, 0x2000bd70, 0x4601e7fc, 0x47702000, 0x4929b510, 0x44484827,
@@ -68,18 +69,20 @@ static const uint32_t K64F_FLM[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info_k64[] = {
+static const sector_info_t sectors_info_k64[] =
+{
     {0, 4096},
- };
+};
 
-static const program_target_t flash_k64 = {
+static const program_target_t flash_k64 =
+{
     0x20000021, // Init
     0x20000049, // UnInit
     0x20000059, // EraseChip
     0x2000007D, // EraseSector
     0x200000AB, // ProgramPage
     0x0,        // Verify
-    
+
     // breakpoint = RAM start + 1
     // RSB : base address is address of Execution Region PrgData in map file
     //       to access global/static data

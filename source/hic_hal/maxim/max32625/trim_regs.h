@@ -64,7 +64,8 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __R  uint32_t rsv000[10];                           /*  0x0000-0x0024                                                                                */
     __IO uint32_t reg10_mem_size;                       /*  0x0028          Shadow Trim for Flash and SRAM Memory Size                                   */
     __IO uint32_t reg11_adc_trim0;                      /*  0x002C          Shadow Trim for ADC R0                                                       */

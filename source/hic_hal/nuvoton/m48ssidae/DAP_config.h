@@ -428,8 +428,9 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
-  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
+{
+    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}

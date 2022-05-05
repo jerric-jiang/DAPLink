@@ -40,23 +40,26 @@
  * is unavailable for 1024 clocks after reset.
  * This code will reset and halt after the SWD lockout period.
  */
-static uint8_t target_set_state_max326xx(target_state_t state, uint32_t reg_flc_perform) 
+static uint8_t target_set_state_max326xx(target_state_t state, uint32_t reg_flc_perform)
 {
     unsigned int halt_timeout, halt_retries = 10;
     unsigned int lockout_delay, i;
     uint32_t val;
 
-    if (state != RESET_PROGRAM) {
+    if (state != RESET_PROGRAM)
+    {
         return swd_set_target_state_hw(state);
     }
 
     /* Reset the target and halt it when SWD is available */
-    while (halt_retries--) {
+    while (halt_retries--)
+    {
         halt_timeout = 10;
         lockout_delay = 7450;   // ~700.6us
 
         /* Wait for SWD lockout period after reset */
-        do {
+        do
+        {
             swd_init();
 
             PIN_nRESET_OUT(0);
@@ -68,11 +71,13 @@ static uint8_t target_set_state_max326xx(target_state_t state, uint32_t reg_flc_
 
         } while ((JTAG2SWD() == 0) && (lockout_delay < MAX_DELAY));
 
-        if (lockout_delay >= MAX_DELAY) {
+        if (lockout_delay >= MAX_DELAY)
+        {
             continue;
         }
 
-        if (!swd_write_dp(DP_CTRL_STAT, CSYSPWRUPREQ | CDBGPWRUPREQ | TRNNORMAL | MASKLANE)) {
+        if (!swd_write_dp(DP_CTRL_STAT, CSYSPWRUPREQ | CDBGPWRUPREQ | TRNNORMAL | MASKLANE))
+        {
             continue;
         }
 
@@ -85,16 +90,21 @@ static uint8_t target_set_state_max326xx(target_state_t state, uint32_t reg_flc_
         swd_read_byte(g_board_info.target_cfg->flash_regions[0].start + 0x2000, &tmp);
 
         /* Set the Debug, and Halt bits and wait until core is halted or timeout */
-        if (swd_write_word(DBG_HCSR, DBGKEY | C_DEBUGEN | C_HALT)) {
-            do {
-                if (!swd_read_word(DBG_HCSR, &val)) {
+        if (swd_write_word(DBG_HCSR, DBGKEY | C_DEBUGEN | C_HALT))
+        {
+            do
+            {
+                if (!swd_read_word(DBG_HCSR, &val))
+                {
                     break;
                 }
             } while (((val & S_HALT) == 0) && (halt_timeout--));
         }
 
-        if (val & S_HALT) {
-            if (reg_flc_perform) {
+        if (val & S_HALT)
+        {
+            if (reg_flc_perform)
+            {
                 /* Setting the Flash Controller Perform register to 0 allows
                  * the Flash Controller pending bit to clear, otherwise the
                  * bit remains set which could fail flash operation.
@@ -110,21 +120,25 @@ static uint8_t target_set_state_max326xx(target_state_t state, uint32_t reg_flc_
     return 0;
 }
 
-static uint8_t  target_set_state_max3262x(target_state_t state) {
+static uint8_t  target_set_state_max3262x(target_state_t state)
+{
     return target_set_state_max326xx(state, MAX3262X_R_FLC_PERFORM);
 }
 
-static uint8_t target_set_state_max3266x(target_state_t state) {
+static uint8_t target_set_state_max3266x(target_state_t state)
+{
     return target_set_state_max326xx(state, 0);
 }
 
-const target_family_descriptor_t g_maxim_max3262x_family = {
+const target_family_descriptor_t g_maxim_max3262x_family =
+{
     .family_id = kMaxim_MAX3262X_FamilyID,
     .target_set_state = target_set_state_max3262x,
     .default_reset_type = kHardwareReset,
 };
 
-const target_family_descriptor_t g_maxim_max3266x_family = {
+const target_family_descriptor_t g_maxim_max3266x_family =
+{
     .family_id = kMaxim_MAX3266X_FamilyID,
     .target_set_state = target_set_state_max3266x,
     .default_reset_type = kHardwareReset,

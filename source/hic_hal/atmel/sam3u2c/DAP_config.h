@@ -302,10 +302,13 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 */
 __STATIC_FORCEINLINE void     PIN_SWDIO_OUT(uint32_t bit)
 {
-    if (bit & 1) {
+    if (bit & 1)
+    {
         PIN_SWDIO_PORT->PIO_SODR = PIN_SWDIO;
 
-    } else {
+    }
+    else
+    {
         PIN_SWDIO_PORT->PIO_CODR = PIN_SWDIO;
     }
 }
@@ -402,22 +405,27 @@ __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
     Enable reset through the RESET register in the POWER peripheral.
     Hold the SWDCLK and SWDIO/nRESET line low for a minimum of 100 us.
      */
-    if (bit & 1) {
+    if (bit & 1)
+    {
         PIN_SWDIO_PORT->PIO_SODR = PIN_SWDIO;
 
         PIN_SWDIO_PORT->PIO_MDER = PIN_SWDIO;
         PIN_SWCLK_PORT->PIO_MDER = PIN_SWCLK;
         PIN_nRESET_PORT->PIO_MDER = PIN_nRESET;
 
-    } else {
+    }
+    else
+    {
         swd_init_debug();
 
         //Set POWER->RESET on NRF to 1
-        if (!swd_write_ap(AP_TAR, 0x40000000 + 0x544)) {
+        if (!swd_write_ap(AP_TAR, 0x40000000 + 0x544))
+        {
             return;
         }
 
-        if (!swd_write_ap(AP_DRW, 1)) {
+        if (!swd_write_ap(AP_DRW, 1))
+        {
             return;
         }
 
@@ -432,10 +440,13 @@ __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 #else
 __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 {
-    if (bit & 1) {
+    if (bit & 1)
+    {
         PIN_nRESET_PORT->PIO_SODR = PIN_nRESET;
 
-    } else {
+    }
+    else
+    {
         PIN_nRESET_PORT->PIO_CODR = PIN_nRESET;
     }
 }
@@ -493,8 +504,9 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
-  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
+{
+    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}

@@ -124,89 +124,100 @@ uint32_t SystemCoreClock = DEFAULT_SYSTEM_CLOCK;
    -- SystemInit()
    ---------------------------------------------------------------------------- */
 
-void SystemInit (void) {
+void SystemInit(void)
+{
 
 #if (ACK_ISOLATION)
-  if(PMC->REGSC &  PMC_REGSC_ACKISO_MASK) {
-    PMC->REGSC |= PMC_REGSC_ACKISO_MASK; /* VLLSx recovery */
-  }
+    if (PMC->REGSC &  PMC_REGSC_ACKISO_MASK)
+    {
+        PMC->REGSC |= PMC_REGSC_ACKISO_MASK; /* VLLSx recovery */
+    }
 #endif
 
 #if (DISABLE_WDOG)
-  /* SIM->COPC: ?=0,COPCLKSEL=0,COPDBGEN=0,COPSTPEN=0,COPT=0,COPCLKS=0,COPW=0 */
-  SIM->COPC = (uint32_t)0x00u;
+    /* SIM->COPC: ?=0,COPCLKSEL=0,COPDBGEN=0,COPSTPEN=0,COPT=0,COPCLKS=0,COPW=0 */
+    SIM->COPC = (uint32_t)0x00u;
 #endif /* (DISABLE_WDOG) */
 
-  /* System clock initialization */
+    /* System clock initialization */
 
-  /* Set system prescalers and clock sources */
-  SIM->CLKDIV1 = SYSTEM_SIM_CLKDIV1_VALUE;    /* Set system prescalers */
-  SIM->SOPT1 = ((SIM->SOPT1) & (uint32_t)(~(SIM_SOPT1_OSC32KSEL_MASK))) | ((SYSTEM_SIM_SOPT1_VALUE) & (SIM_SOPT1_OSC32KSEL_MASK)); /* Set 32 kHz clock source (ERCLK32K) */
-  SIM->SOPT2 = ((SIM->SOPT2) & (uint32_t)(~(
-                 SIM_SOPT2_TPMSRC_MASK |
-                 SIM_SOPT2_LPUART0SRC_MASK |
-                 SIM_SOPT2_LPUART1SRC_MASK |
-                 SIM_SOPT2_USBSRC_MASK
-                 ))) | ((SYSTEM_SIM_SOPT2_VALUE) & (
-                 SIM_SOPT2_TPMSRC_MASK |
-                 SIM_SOPT2_LPUART0SRC_MASK |
-                 SIM_SOPT2_LPUART1SRC_MASK |
-                 SIM_SOPT2_USBSRC_MASK
-                 ));   /* Select TPM, LPUARTs, USB clock sources. */
+    /* Set system prescalers and clock sources */
+    SIM->CLKDIV1 = SYSTEM_SIM_CLKDIV1_VALUE;    /* Set system prescalers */
+    SIM->SOPT1 = ((SIM->SOPT1) & (uint32_t)(~(SIM_SOPT1_OSC32KSEL_MASK))) | ((SYSTEM_SIM_SOPT1_VALUE) & (SIM_SOPT1_OSC32KSEL_MASK)); /* Set 32 kHz clock source (ERCLK32K) */
+    SIM->SOPT2 = ((SIM->SOPT2) & (uint32_t)(~(
+            SIM_SOPT2_TPMSRC_MASK |
+            SIM_SOPT2_LPUART0SRC_MASK |
+            SIM_SOPT2_LPUART1SRC_MASK |
+            SIM_SOPT2_USBSRC_MASK
+                                            ))) | ((SYSTEM_SIM_SOPT2_VALUE) & (
+                                                    SIM_SOPT2_TPMSRC_MASK |
+                                                    SIM_SOPT2_LPUART0SRC_MASK |
+                                                    SIM_SOPT2_LPUART1SRC_MASK |
+                                                    SIM_SOPT2_USBSRC_MASK
+                                                    ));   /* Select TPM, LPUARTs, USB clock sources. */
 #if (MCG_MODE == MCG_MODE_LIRC_2M || MCG_MODE == MCG_MODE_LIRC_8M || MCG_MODE == MCG_MODE_HIRC)
-  /* Set MCG and OSC0 */
+    /* Set MCG and OSC0 */
 #if  (((OSC0_CR_VALUE) & OSC_CR_ERCLKEN_MASK) != 0x00U)
-  /* SIM_SCGC5: PORTA=1 */
-  SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
-  /* PORTA_PCR3: ISF=0,MUX=0 */
-  PORTA_PCR18 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  if (((MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U) {
-    PORTA_PCR19 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  }
+    /* SIM_SCGC5: PORTA=1 */
+    SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
+    /* PORTA_PCR3: ISF=0,MUX=0 */
+    PORTA_PCR18 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+    if (((MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U)
+    {
+        PORTA_PCR19 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+    }
 #endif
-  MCG->SC = MCG_SC_VALUE;              /* Set SC (internal reference clock divider) */
-  MCG->MC = MCG_MC_VALUE;              /* Set MC (high-frequency IRC enable, second LIRC divider) */
-  MCG->C1 = MCG_C1_VALUE;              /* Set C1 (clock source selection, int. reference enable etc.) */
-  MCG->C2 = MCG_C2_VALUE;              /* Set C2 (ext. and int. reference clock selection) */
-  OSC0->CR = OSC0_CR_VALUE;            /* Set OSC0_CR (OSCERCLK enable, oscillator capacitor load) */
+    MCG->SC = MCG_SC_VALUE;              /* Set SC (internal reference clock divider) */
+    MCG->MC = MCG_MC_VALUE;              /* Set MC (high-frequency IRC enable, second LIRC divider) */
+    MCG->C1 = MCG_C1_VALUE;              /* Set C1 (clock source selection, int. reference enable etc.) */
+    MCG->C2 = MCG_C2_VALUE;              /* Set C2 (ext. and int. reference clock selection) */
+    OSC0->CR = OSC0_CR_VALUE;            /* Set OSC0_CR (OSCERCLK enable, oscillator capacitor load) */
 
 #else /* MCG_MODE */
-  /* Set MCG and OSC0 */
-  /* SIM_SCGC5: PORTA=1 */
-  SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
-  /* PORTA_PCR3: ISF=0,MUX=0 */
-  PORTA_PCR18 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  if (((MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U) {
-    PORTA_PCR19 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
-  }
-  MCG->SC = MCG_SC_VALUE;              /* Set SC (internal reference clock divider) */
-  MCG->C2 = MCG_C2_VALUE;              /* Set C2 (ext. and int. reference clock selection) */
-  OSC0->CR = OSC0_CR_VALUE;            /* Set OSC0_CR (OSCERCLK enable, oscillator capacitor load) */
-  MCG->C1 = MCG_C1_VALUE;              /* Set C1 (clock source selection, int. reference enable etc.) */
-  MCG->MC = MCG_MC_VALUE;              /* Set MC (high-frequency IRC enable, second LIRC divider) */
-  if (((MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0U) {
-    while((MCG->S & MCG_S_OSCINIT0_MASK) == 0x00U) { /* Check that the oscillator is running */
+    /* Set MCG and OSC0 */
+    /* SIM_SCGC5: PORTA=1 */
+    SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
+    /* PORTA_PCR3: ISF=0,MUX=0 */
+    PORTA_PCR18 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
+    if (((MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0x00U)
+    {
+        PORTA_PCR19 &= (uint32_t)~(uint32_t)((PORT_PCR_ISF_MASK | PORT_PCR_MUX(0x07)));
     }
-  }
+    MCG->SC = MCG_SC_VALUE;              /* Set SC (internal reference clock divider) */
+    MCG->C2 = MCG_C2_VALUE;              /* Set C2 (ext. and int. reference clock selection) */
+    OSC0->CR = OSC0_CR_VALUE;            /* Set OSC0_CR (OSCERCLK enable, oscillator capacitor load) */
+    MCG->C1 = MCG_C1_VALUE;              /* Set C1 (clock source selection, int. reference enable etc.) */
+    MCG->MC = MCG_MC_VALUE;              /* Set MC (high-frequency IRC enable, second LIRC divider) */
+    if (((MCG_C2_VALUE) & MCG_C2_EREFS0_MASK) != 0U)
+    {
+        while ((MCG->S & MCG_S_OSCINIT0_MASK) == 0x00U)  /* Check that the oscillator is running */
+        {
+        }
+    }
 #endif /* MCG_MODE */
 
-  /* Common for all MCG modes */
+    /* Common for all MCG modes */
 
 #if (MCG_MODE == MCG_MODE_HIRC)
-  while((MCG->S & MCG_S_CLKST_MASK) != 0x00U) { /* Wait until high internal reference clock is selected as MCG_Lite output */
-  }
-#elif (MCG_MODE == MCG_MODE_LIRC_2M || MCG_MODE == MCG_MODE_LIRC_8M)
-  while((MCG->S & MCG_S_CLKST_MASK) != 0x04U) { /* Wait until low internal reference clock is selected as MCG_Lite output */
-  }
-#elif (MCG_MODE == MCG_MODE_EXT)
-  while((MCG->S & MCG_S_CLKST_MASK) != 0x08U) { /* Wait until external reference clock is selected as MCG_Lite output */
-  }
-#endif
-  if (((SMC_PMCTRL_VALUE) & SMC_PMCTRL_RUNM_MASK) == SMC_PMCTRL_RUNM(0x02U)) {
-    SMC->PMCTRL = (uint8_t)((SMC_PMCTRL_VALUE) & (SMC_PMCTRL_RUNM_MASK)); /* Enable VLPR mode */
-    while(SMC->PMSTAT != 0x04U) {      /* Wait until the system is in VLPR mode */
+    while ((MCG->S & MCG_S_CLKST_MASK) != 0x00U)  /* Wait until high internal reference clock is selected as MCG_Lite output */
+    {
     }
-  }
+#elif (MCG_MODE == MCG_MODE_LIRC_2M || MCG_MODE == MCG_MODE_LIRC_8M)
+    while ((MCG->S & MCG_S_CLKST_MASK) != 0x04U)  /* Wait until low internal reference clock is selected as MCG_Lite output */
+    {
+    }
+#elif (MCG_MODE == MCG_MODE_EXT)
+    while ((MCG->S & MCG_S_CLKST_MASK) != 0x08U)  /* Wait until external reference clock is selected as MCG_Lite output */
+    {
+    }
+#endif
+    if (((SMC_PMCTRL_VALUE) & SMC_PMCTRL_RUNM_MASK) == SMC_PMCTRL_RUNM(0x02U))
+    {
+        SMC->PMCTRL = (uint8_t)((SMC_PMCTRL_VALUE) & (SMC_PMCTRL_RUNM_MASK)); /* Enable VLPR mode */
+        while (SMC->PMSTAT != 0x04U)       /* Wait until the system is in VLPR mode */
+        {
+        }
+    }
 
 }
 
@@ -214,25 +225,33 @@ void SystemInit (void) {
    -- SystemCoreClockUpdate()
    ---------------------------------------------------------------------------- */
 
-void SystemCoreClockUpdate (void) {
+void SystemCoreClockUpdate(void)
+{
 
-  uint32_t MCGOUTClock;                                 /* Variable to store output clock frequency of the MCG module */
-  uint16_t Divider;
+    uint32_t MCGOUTClock;                                 /* Variable to store output clock frequency of the MCG module */
+    uint16_t Divider;
 
-  if ((MCG->S & MCG_S_CLKST_MASK) == 0x00U) {
-    /* High internal reference clock is selected */
-    MCGOUTClock = CPU_INT_FAST_CLK_HZ;                                  /* Fast internal reference clock selected */
-  } else if ((MCG->S & MCG_S_CLKST_MASK) == 0x04U) {
-    /* Internal reference clock is selected */
-    Divider = (uint16_t)(0x01LU << ((MCG->SC & MCG_SC_FCRDIV_MASK) >> MCG_SC_FCRDIV_SHIFT));
-    MCGOUTClock = (uint32_t) (CPU_INT_SLOW_CLK_HZ / Divider);           /* Slow internal reference clock 8MHz selected */
-  } else if ((MCG->S & MCG_S_CLKST_MASK) == 0x08U) {
-    /* External reference clock is selected */
-    MCGOUTClock = CPU_XTAL_CLK_HZ;
-  } else {
-    /* Reserved value */
-    return;
-  } /* (!((MCG->S & MCG_S_CLKST_MASK) == 0x08U)) */
-  SystemCoreClock = (MCGOUTClock / (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDIV1_OUTDIV1_SHIFT)));
+    if ((MCG->S & MCG_S_CLKST_MASK) == 0x00U)
+    {
+        /* High internal reference clock is selected */
+        MCGOUTClock = CPU_INT_FAST_CLK_HZ;                                  /* Fast internal reference clock selected */
+    }
+    else if ((MCG->S & MCG_S_CLKST_MASK) == 0x04U)
+    {
+        /* Internal reference clock is selected */
+        Divider = (uint16_t)(0x01LU << ((MCG->SC & MCG_SC_FCRDIV_MASK) >> MCG_SC_FCRDIV_SHIFT));
+        MCGOUTClock = (uint32_t)(CPU_INT_SLOW_CLK_HZ / Divider);            /* Slow internal reference clock 8MHz selected */
+    }
+    else if ((MCG->S & MCG_S_CLKST_MASK) == 0x08U)
+    {
+        /* External reference clock is selected */
+        MCGOUTClock = CPU_XTAL_CLK_HZ;
+    }
+    else
+    {
+        /* Reserved value */
+        return;
+    } /* (!((MCG->S & MCG_S_CLKST_MASK) == 0x08U)) */
+    SystemCoreClock = (MCGOUTClock / (0x01U + ((SIM->CLKDIV1 & SIM_CLKDIV1_OUTDIV1_MASK) >> SIM_CLKDIV1_OUTDIV1_SHIFT)));
 
 }

@@ -68,7 +68,8 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __IO uint32_t faddr;                                /*  0x0000          Flash Operation Address                                                      */
     __IO uint32_t fckdiv;                               /*  0x0004          Flash Clock Pulse Divisor                                                    */
     __IO uint32_t ctrl;                                 /*  0x0008          Flash Control Register                                                       */

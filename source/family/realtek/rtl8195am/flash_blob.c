@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t rtl8195am_flash_prog_blob[] = {
+static const uint32_t rtl8195am_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x01f8e92d, 0x8400f8df, 0x46172200, 0x0604f1a8, 0x4cff4dfe, 0x0c04f108, 0x5330f247, 0xf8cc2000,
     0x20010000, 0x0000f8c8, 0x21002005, 0x1000f8cc, 0xf4216831, 0xf4412170, 0x60317140, 0x20017020,
@@ -70,11 +71,13 @@ static const uint32_t rtl8195am_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0, KB(4)},
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x10007237, // Init
     0x10007353, // UnInit
     0x100073f5, // EraseChip

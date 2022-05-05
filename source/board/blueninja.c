@@ -27,14 +27,16 @@
 static uint8_t target_set_state_by_board(target_state_t state)
 {
 
-    if (RESET_PROGRAM == state) {
+    if (RESET_PROGRAM == state)
+    {
         LPC_GPIO->SET[PIN_PWH_PORT] = PIN_PWH;
         osDelay(10);
     }
     return 1;
 }
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "7010",
     .family_id = kToshiba_Tz_FamilyID,

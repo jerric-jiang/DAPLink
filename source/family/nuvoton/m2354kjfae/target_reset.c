@@ -34,24 +34,33 @@ static uint8_t m2354_target_set_state(target_state_t state)
 {
     uint32_t i, val, load_address;
 
-    if (state == RESET_PROGRAM) {
-        if (!swd_set_target_state_sw(state)) {
+    if (state == RESET_PROGRAM)
+    {
+        if (!swd_set_target_state_sw(state))
+        {
             return 0;
         }
 
-        if (!swd_read_word(SCS_DHCSR, &val)) {
+        if (!swd_read_word(SCS_DHCSR, &val))
+        {
             return 0;
         }
 
-        if (val & SCS_DHCSR_S_SDE) {
+        if (val & SCS_DHCSR_S_SDE)
+        {
             load_address = 0x20000000;
-        } else {
-            if (!swd_read_word(0x10000000 + SCU_SRAMNSSET, &val)) {
+        }
+        else
+        {
+            if (!swd_read_word(0x10000000 + SCU_SRAMNSSET, &val))
+            {
                 return 0;
             }
 
-            for (i = 0; i < 15; i++) {
-                if (val & (1 << i)) {
+            for (i = 0; i < 15; i++)
+            {
+                if (val & (1 << i))
+                {
                     break;
                 }
             }
@@ -62,8 +71,10 @@ static uint8_t m2354_target_set_state(target_state_t state)
         const program_target_t M2354_flash = M2354_PROGRAM_TARGET(load_address);
         memcpy(&flash, &M2354_flash, sizeof(program_target_t));
 
-        for (i = 0; i < MAX_REGIONS; i++) {
-            if (target_device.flash_regions[i].start & 0x10000000) {
+        for (i = 0; i < MAX_REGIONS; i++)
+        {
+            if (target_device.flash_regions[i].start & 0x10000000)
+            {
                 target_device.flash_regions[i].flash_algo = (program_target_t *)&flash;
             }
         }
@@ -74,7 +85,8 @@ static uint8_t m2354_target_set_state(target_state_t state)
     return swd_set_target_state_sw(state);
 }
 
-const target_family_descriptor_t g_target_family_m2354 = {
+const target_family_descriptor_t g_target_family_m2354 =
+{
     .target_set_state = m2354_target_set_state,
 };
 

@@ -37,22 +37,28 @@ __WEAK BOOL USBD_EndPoint0_Setup_WebUSB_ReqToDevice(void)
     U32 len, n;
 
     BOOL success = (__FALSE);
-    if (USBD_SetupPacket.bRequest == usbd_webusb_vendor_code) {			/* vendor code correct? */
-        switch (USBD_SetupPacket.wIndex) {
+    if (USBD_SetupPacket.bRequest == usbd_webusb_vendor_code)           /* vendor code correct? */
+    {
+        switch (USBD_SetupPacket.wIndex)
+        {
             case WEBUSB_REQUEST_GET_URL:
                 pD = (U8 *)USBD_WebUSBURLDescriptor;
-                if (USBD_SetupPacket.wValueL == 0) {
+                if (USBD_SetupPacket.wValueL == 0)
+                {
                     success = (__FALSE);
                     break;
                 }
 
-                for (n = 0; n + 1 < USBD_SetupPacket.wValueL; n++) {
-                    if (((WEBUSB_URL_DESCRIPTOR *)pD)->bLength != 0) {
+                for (n = 0; n + 1 < USBD_SetupPacket.wValueL; n++)
+                {
+                    if (((WEBUSB_URL_DESCRIPTOR *)pD)->bLength != 0)
+                    {
                         pD += ((WEBUSB_URL_DESCRIPTOR *)pD)->bLength;
                     }
                 }
 
-                if (((WEBUSB_URL_DESCRIPTOR *)pD)->bLength == 0) {
+                if (((WEBUSB_URL_DESCRIPTOR *)pD)->bLength == 0)
+                {
                     success = (__FALSE);
                     break;
                 }
@@ -68,13 +74,18 @@ __WEAK BOOL USBD_EndPoint0_Setup_WebUSB_ReqToDevice(void)
         }
     }
 
-    if (success) {
-        if (len < USBD_SetupPacket.wLength) {
+    if (success)
+    {
+        if (len < USBD_SetupPacket.wLength)
+        {
             USBD_EP0Data.Count = len;
-            if (!(len & (usbd_max_packet0 - 1))) {
+            if (!(len & (usbd_max_packet0 - 1)))
+            {
                 USBD_ZLP = 1;
             }
-        } else {
+        }
+        else
+        {
             USBD_EP0Data.Count = USBD_SetupPacket.wLength;
         }
 

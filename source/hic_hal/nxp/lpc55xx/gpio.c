@@ -45,9 +45,9 @@ void gpio_init(void)
 
     // Ensure clocks are enabled.
     SYSCON->AHBCLKCTRLSET[0] = SYSCON_AHBCLKCTRL0_IOCON_MASK
-                                | SYSCON_AHBCLKCTRL0_GPIO0_MASK;
+                               | SYSCON_AHBCLKCTRL0_GPIO0_MASK;
     SYSCON->AHBCLKCTRLSET[1] = SYSCON_AHBCLKCTRL1_FC0_MASK
-                                | SYSCON_AHBCLKCTRL1_FC3_MASK;
+                               | SYSCON_AHBCLKCTRL1_FC3_MASK;
 
     // Reset peripherals.
     RESET_PeripheralReset(kIOCON_RST_SHIFT_RSTn);
@@ -82,7 +82,8 @@ void gpio_set_board_power(bool powerEnabled)
 __WEAK void gpio_set_leds(uint32_t leds, gpio_led_state_t state)
 {
     // LED is active low, so set to inverse of the enum value.
-    if (leds & (LED_T_CONNECTED | LED_T_HID | LED_T_CDC | LED_T_MSC)) {
+    if (leds & (LED_T_CONNECTED | LED_T_HID | LED_T_CDC | LED_T_MSC))
+    {
         GPIO->B[LED_A_PORT][LED_A_PIN] = (uint8_t)((state == GPIO_LED_ON) ? 0 : 1);
     }
 }

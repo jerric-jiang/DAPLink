@@ -46,7 +46,8 @@ static uint8_t return_dap_string(char *dst, const char *src)
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetVendorString (char *str) {
+__STATIC_INLINE uint8_t DAP_GetVendorString(char *str)
+{
 #if defined(CMSIS_DAP_VENDOR_NAME)
     return return_dap_string(str, CMSIS_DAP_VENDOR_NAME);
 #else
@@ -59,7 +60,8 @@ __STATIC_INLINE uint8_t DAP_GetVendorString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetProductString (char *str) {
+__STATIC_INLINE uint8_t DAP_GetProductString(char *str)
+{
     return return_dap_string(str, CMSIS_DAP_PRODUCT_NAME);
 }
 
@@ -67,7 +69,8 @@ __STATIC_INLINE uint8_t DAP_GetProductString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetSerNumString (char *str) {
+__STATIC_INLINE uint8_t DAP_GetSerNumString(char *str)
+{
     return return_dap_string(str, info_get_unique_id());
 }
 
@@ -75,11 +78,14 @@ __STATIC_INLINE uint8_t DAP_GetSerNumString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString (char *str) {
-    if (g_board_info.target_cfg && g_board_info.target_cfg->target_vendor) {
+__STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString(char *str)
+{
+    if (g_board_info.target_cfg && g_board_info.target_cfg->target_vendor)
+    {
         return return_dap_string(str, g_board_info.target_cfg->target_vendor);
     }
-    else {
+    else
+    {
         return (0U);
     }
 }
@@ -88,11 +94,14 @@ __STATIC_INLINE uint8_t DAP_GetTargetDeviceVendorString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString (char *str) {
-    if (g_board_info.target_cfg && g_board_info.target_cfg->target_part_number) {
+__STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString(char *str)
+{
+    if (g_board_info.target_cfg && g_board_info.target_cfg->target_part_number)
+    {
         return return_dap_string(str, g_board_info.target_cfg->target_part_number);
     }
-    else {
+    else
+    {
         return (0U);
     }
 }
@@ -101,11 +110,14 @@ __STATIC_INLINE uint8_t DAP_GetTargetDeviceNameString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString (char *str) {
-    if (g_board_info.board_vendor) {
+__STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString(char *str)
+{
+    if (g_board_info.board_vendor)
+    {
         return return_dap_string(str, g_board_info.board_vendor);
     }
-    else {
+    else
+    {
         return (0U);
     }
 }
@@ -114,11 +126,14 @@ __STATIC_INLINE uint8_t DAP_GetTargetBoardVendorString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetTargetBoardNameString (char *str) {
-    if (g_board_info.board_name) {
+__STATIC_INLINE uint8_t DAP_GetTargetBoardNameString(char *str)
+{
+    if (g_board_info.board_name)
+    {
         return return_dap_string(str, g_board_info.board_name);
     }
-    else {
+    else
+    {
         return (0U);
     }
 }
@@ -127,6 +142,7 @@ __STATIC_INLINE uint8_t DAP_GetTargetBoardNameString (char *str) {
 \param str Pointer to buffer to store the string (max 60 characters).
 \return String length (including terminating NULL character) or 0 (no string).
 */
-__STATIC_INLINE uint8_t DAP_GetProductFirmwareVersionString (char *str) {
+__STATIC_INLINE uint8_t DAP_GetProductFirmwareVersionString(char *str)
+{
     return return_dap_string(str, info_get_version());
 }

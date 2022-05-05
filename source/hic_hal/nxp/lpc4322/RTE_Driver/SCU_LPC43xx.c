@@ -1,5 +1,5 @@
-/* -------------------------------------------------------------------------- 
- * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All 
+/* --------------------------------------------------------------------------
+ * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All
  * rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -48,11 +48,15 @@
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_PinConfigure (uint8_t port, uint8_t pin, uint32_t pin_cfg) {
+int32_t SCU_PinConfigure(uint8_t port, uint8_t pin, uint32_t pin_cfg)
+{
 
-  if ((port > 15) || (pin > 31)) return -1;
-  SCU_SFSPx(port, pin) = pin_cfg;
-  return 0;
+    if ((port > 15) || (pin > 31))
+    {
+        return -1;
+    }
+    SCU_SFSPx(port, pin) = pin_cfg;
+    return 0;
 }
 
 /**
@@ -63,11 +67,15 @@ int32_t SCU_PinConfigure (uint8_t port, uint8_t pin, uint32_t pin_cfg) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_CLK_PinConfigure (uint8_t pin_clk, uint32_t pin_cfg) {
+int32_t SCU_CLK_PinConfigure(uint8_t pin_clk, uint32_t pin_cfg)
+{
 
-  if (pin_clk > 3) return -1;
-  SCU_SFSCLKx(pin_clk) = pin_cfg;
-  return 0;
+    if (pin_clk > 3)
+    {
+        return -1;
+    }
+    SCU_SFSCLKx(pin_clk) = pin_cfg;
+    return 0;
 }
 
 /**
@@ -77,9 +85,10 @@ int32_t SCU_CLK_PinConfigure (uint8_t pin_clk, uint32_t pin_cfg) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_USB1_PinConfigure (uint32_t USB1_pin_cfg) {
-  LPC_SCU->SFSUSB = USB1_pin_cfg;
-  return 0;
+int32_t SCU_USB1_PinConfigure(uint32_t USB1_pin_cfg)
+{
+    LPC_SCU->SFSUSB = USB1_pin_cfg;
+    return 0;
 }
 
 /**
@@ -91,16 +100,22 @@ int32_t SCU_USB1_PinConfigure (uint32_t USB1_pin_cfg) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_I2C_PinConfigure (uint32_t I2C_mode) {
+int32_t SCU_I2C_PinConfigure(uint32_t I2C_mode)
+{
 
-  switch (I2C_mode) {
-    case SCU_I2C_PIN_MODE_DISABLED:      break;
-    case SCU_I2C_PIN_MODE_STANDARD_FAST: break;
-    case SCU_I2C_PIN_MODE_FAST_PLUS:     break;
-    default: return -1;
-  }
-  LPC_SCU->SFSI2C0 = I2C_mode;
-  return 0;
+    switch (I2C_mode)
+    {
+        case SCU_I2C_PIN_MODE_DISABLED:
+            break;
+        case SCU_I2C_PIN_MODE_STANDARD_FAST:
+            break;
+        case SCU_I2C_PIN_MODE_FAST_PLUS:
+            break;
+        default:
+            return -1;
+    }
+    LPC_SCU->SFSI2C0 = I2C_mode;
+    return 0;
 }
 
 /**
@@ -112,11 +127,15 @@ int32_t SCU_I2C_PinConfigure (uint32_t I2C_mode) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_ADC_ChannelPinConfigure (uint8_t ADC_num, uint8_t channel, uint32_t cmd) {
+int32_t SCU_ADC_ChannelPinConfigure(uint8_t ADC_num, uint8_t channel, uint32_t cmd)
+{
 
-  if ((ADC_num > 1) || (channel > 7) || (cmd > 1)) return -1;
-  cmd ? (SCU_ENAIOx(ADC_num) |= (1 << channel)) : (SCU_ENAIOx(ADC_num) &= ~(1 << channel));
-  return 0;
+    if ((ADC_num > 1) || (channel > 7) || (cmd > 1))
+    {
+        return -1;
+    }
+    cmd ? (SCU_ENAIOx(ADC_num) |= (1 << channel)) : (SCU_ENAIOx(ADC_num) &= ~(1 << channel));
+    return 0;
 }
 
 /**
@@ -126,11 +145,15 @@ int32_t SCU_ADC_ChannelPinConfigure (uint8_t ADC_num, uint8_t channel, uint32_t 
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_DAC_PinConfigure (uint32_t cmd) {
+int32_t SCU_DAC_PinConfigure(uint32_t cmd)
+{
 
-  if (cmd > 1) return -1;
-  cmd ? (LPC_SCU->ENAIO2 |= SCU_ENAIO2_DAC) : (LPC_SCU->ENAIO2 &= ~SCU_ENAIO2_DAC);
-  return 0;
+    if (cmd > 1)
+    {
+        return -1;
+    }
+    cmd ? (LPC_SCU->ENAIO2 |= SCU_ENAIO2_DAC) : (LPC_SCU->ENAIO2 &= ~SCU_ENAIO2_DAC);
+    return 0;
 }
 
 /**
@@ -143,18 +166,25 @@ int32_t SCU_DAC_PinConfigure (uint32_t cmd) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t SCU_PinInterruptSourceSelect (uint8_t pin_int, uint8_t port, uint8_t pin) {
+int32_t SCU_PinInterruptSourceSelect(uint8_t pin_int, uint8_t port, uint8_t pin)
+{
 
-  if ((port > 7) || (pin > 31) || (pin_int > 7)) return -1;
+    if ((port > 7) || (pin > 31) || (pin_int > 7))
+    {
+        return -1;
+    }
 
-  if (pin_int < 4) {
-    LPC_SCU->PINTSEL0 &= ~(0xFFUL << (8 * pin_int));
-    LPC_SCU->PINTSEL0 |=  ((uint32_t)(pin | (port << 5)) << (8 * pin_int));
-  } else {
-    pin_int -= 4;
-    LPC_SCU->PINTSEL1 &= ~(0xFFUL << (8 * pin_int));
-    LPC_SCU->PINTSEL1 |=  ((uint32_t)(pin | (port << 5)) << (8 * pin_int));
-  }
+    if (pin_int < 4)
+    {
+        LPC_SCU->PINTSEL0 &= ~(0xFFUL << (8 * pin_int));
+        LPC_SCU->PINTSEL0 |= ((uint32_t)(pin | (port << 5)) << (8 * pin_int));
+    }
+    else
+    {
+        pin_int -= 4;
+        LPC_SCU->PINTSEL1 &= ~(0xFFUL << (8 * pin_int));
+        LPC_SCU->PINTSEL1 |= ((uint32_t)(pin | (port << 5)) << (8 * pin_int));
+    }
 
-  return 0;
+    return 0;
 }

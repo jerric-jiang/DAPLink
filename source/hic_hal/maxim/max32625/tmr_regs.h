@@ -79,7 +79,8 @@ extern "C" {
 /**
  * Structure type to access the Timer Registers, see #MXC_TMR_GET_TMR(i) to get a pointer to the Timer[i] register structure.
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t ctrl;                                 /**< <tt>\b 0x0000</tt> - TMR_CTRL Register - Timer Control Register                                            */
     __IO uint32_t count32;                              /**< <tt>\b 0x0004</tt> - TMR_COUNT32 Register - Timer [32 bit] Current Count Value                             */
     __IO uint32_t term_cnt32;                           /**< <tt>\b 0x0008</tt> - TMR_TERM_CNT32 Register - Timer [32 bit] Terminal Count Setting                       */

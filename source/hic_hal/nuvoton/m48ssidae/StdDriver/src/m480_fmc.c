@@ -15,7 +15,7 @@
  *   3. Neither the name of Nuvoton Technology Corp. nor the names of its contributors
  *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -69,18 +69,21 @@ int32_t FMC_Erase(uint32_t u32PageAddr)
 {
     int32_t  ret = 0;
 
-    if (u32PageAddr == FMC_SPROM_BASE) {
+    if (u32PageAddr == FMC_SPROM_BASE)
+    {
         ret = FMC_Erase_SPROM();
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->ISPCMD = FMC_ISPCMD_PAGE_ERASE;
         FMC->ISPADDR = u32PageAddr;
         FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
 
         while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-        if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+        if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+        {
             FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
             ret = -1;
         }
@@ -106,7 +109,8 @@ int32_t FMC_Erase_SPROM(void)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         ret = -1;
     }
@@ -131,7 +135,8 @@ int32_t FMC_Erase_Block(uint32_t u32BlockAddr)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         ret = -1;
     }
@@ -155,7 +160,8 @@ int32_t FMC_Erase_Bank(uint32_t u32BankAddr)
 
     while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_ISPFF_Msk)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_ISPFF_Msk;
         ret = -1;
     }
@@ -173,7 +179,8 @@ int32_t FMC_GetBootSource(void)
 {
     int32_t  ret = 0;
 
-    if (FMC->ISPCTL & FMC_ISPCTL_BS_Msk) {
+    if (FMC->ISPCTL & FMC_ISPCTL_BS_Msk)
+    {
         ret = 1;
     }
 
@@ -228,10 +235,13 @@ int32_t FMC_Read_64(uint32_t u32addr, uint32_t *u32data0, uint32_t *u32data1)
 
     while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) { }
 
-    if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+    if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+    {
         FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
         ret = -1;
-    } else {
+    }
+    else
+    {
         *u32data0 = FMC->MPDAT0;
         *u32data1 = FMC->MPDAT1;
     }
@@ -261,9 +271,12 @@ uint32_t FMC_ReadDataFlashBaseAddr(void)
   */
 void FMC_SetBootSource(int32_t i32BootSrc)
 {
-    if (i32BootSrc) {
+    if (i32BootSrc)
+    {
         FMC->ISPCTL |= FMC_ISPCTL_BS_Msk; /* Boot from LDROM */
-    } else {
+    }
+    else
+    {
         FMC->ISPCTL &= ~FMC_ISPCTL_BS_Msk;/* Boot from APROM */
     }
 }
@@ -305,7 +318,8 @@ int32_t FMC_Write8Bytes(uint32_t u32addr, uint32_t u32data0, uint32_t u32data1)
 
     while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) { }
 
-    if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+    if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+    {
         FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
         ret = -1;
     }
@@ -327,14 +341,16 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Len)
 {
     int   i, idx, retval = 0;
 
-    if ((u32Addr >= FMC_APROM_END) || ((u32Addr % 8) != 0)) {
+    if ((u32Addr >= FMC_APROM_END) || ((u32Addr % 8) != 0))
+    {
         return -1;
     }
 
     u32Len = u32Len - (u32Len % 8);         /* u32Len must be multiple of 8. */
     idx = 0;
 
-    while (u32Len >= 8) {
+    while (u32Len >= 8)
+    {
         FMC->ISPADDR = u32Addr;
         FMC->MPDAT0  = pu32Buf[idx++];
         FMC->MPDAT1  = pu32Buf[idx++];
@@ -343,18 +359,21 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Len)
         FMC->ISPCMD  = FMC_ISPCMD_PROGRAM_MUL;
         FMC->ISPTRG  = FMC_ISPTRG_ISPGO_Msk;
 
-        for (i = 16; i < FMC_MULTI_WORD_PROG_LEN;) {
+        for (i = 16; i < FMC_MULTI_WORD_PROG_LEN;)
+        {
             while (FMC->MPSTS & (FMC_MPSTS_D0_Msk | FMC_MPSTS_D1_Msk))
                 ;
 
             retval += 8;
             u32Len -= 8;
 
-            if (u32Len < 8) {
+            if (u32Len < 8)
+            {
                 return retval;
             }
 
-            if (!(FMC->MPSTS & FMC_MPSTS_MPBUSY_Msk)) {
+            if (!(FMC->MPSTS & FMC_MPSTS_MPBUSY_Msk))
+            {
                 /* printf("    [WARNING] busy cleared after D0D1 cleared!\n"); */
                 i += 8;
                 break;
@@ -363,7 +382,8 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Len)
             FMC->MPDAT0 = pu32Buf[idx++];
             FMC->MPDAT1 = pu32Buf[idx++];
 
-            if (i == FMC_MULTI_WORD_PROG_LEN / 4) {
+            if (i == FMC_MULTI_WORD_PROG_LEN / 4)
+            {
                 break;    // done
             }
 
@@ -373,11 +393,13 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Len)
             retval += 8;
             u32Len -= 8;
 
-            if (u32Len < 8) {
+            if (u32Len < 8)
+            {
                 return retval;
             }
 
-            if (!(FMC->MPSTS & FMC_MPSTS_MPBUSY_Msk)) {
+            if (!(FMC->MPSTS & FMC_MPSTS_MPBUSY_Msk))
+            {
                 /* printf("    [WARNING] busy cleared after D2D3 cleared!\n"); */
                 i += 8;
                 break;
@@ -387,7 +409,8 @@ int32_t FMC_WriteMultiple(uint32_t u32Addr, uint32_t pu32Buf[], uint32_t u32Len)
             FMC->MPDAT3 = pu32Buf[idx++];
         }
 
-        if (i != FMC_MULTI_WORD_PROG_LEN) {
+        if (i != FMC_MULTI_WORD_PROG_LEN)
+        {
             /* printf("    [WARNING] Multi-word program interrupted at 0x%x !!\n", i); */
             return retval;
         }
@@ -414,11 +437,13 @@ int32_t FMC_Write_OTP(uint32_t otp_num, uint32_t low_word, uint32_t high_word)
 {
     int32_t  ret = 0;
 
-    if (otp_num > 255UL) {
+    if (otp_num > 255UL)
+    {
         ret = -2;
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->ISPCMD = FMC_ISPCMD_PROGRAM;
         FMC->ISPADDR = FMC_OTP_BASE + otp_num * 8UL;
         FMC->ISPDAT = low_word;
@@ -426,13 +451,15 @@ int32_t FMC_Write_OTP(uint32_t otp_num, uint32_t low_word, uint32_t high_word)
 
         while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+        {
             FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
             ret = -1;
         }
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->ISPCMD = FMC_ISPCMD_PROGRAM;
         FMC->ISPADDR = FMC_OTP_BASE + otp_num * 8UL + 4UL;
         FMC->ISPDAT = high_word;
@@ -440,7 +467,8 @@ int32_t FMC_Write_OTP(uint32_t otp_num, uint32_t low_word, uint32_t high_word)
 
         while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+        {
             FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
             ret = -1;
         }
@@ -462,11 +490,13 @@ int32_t FMC_Read_OTP(uint32_t otp_num, uint32_t *low_word, uint32_t *high_word)
 {
     int32_t  ret = 0;
 
-    if (otp_num > 255UL) {
+    if (otp_num > 255UL)
+    {
         ret = -2;
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->ISPCMD = FMC_ISPCMD_READ_64;
         FMC->ISPADDR    = FMC_OTP_BASE + otp_num * 8UL ;
         FMC->ISPDAT = 0x0UL;
@@ -474,10 +504,13 @@ int32_t FMC_Read_OTP(uint32_t otp_num, uint32_t *low_word, uint32_t *high_word)
 
         while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) { }
 
-        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+        {
             FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
             ret = -1;
-        } else {
+        }
+        else
+        {
             *low_word = FMC->MPDAT0;
             *high_word = FMC->MPDAT1;
         }
@@ -497,11 +530,13 @@ int32_t FMC_Lock_OTP(uint32_t otp_num)
 {
     int32_t  ret = 0;
 
-    if (otp_num > 255UL) {
+    if (otp_num > 255UL)
+    {
         ret = -2;
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->ISPCMD = FMC_ISPCMD_PROGRAM;
         FMC->ISPADDR = FMC_OTP_BASE + 0x800UL + otp_num * 4UL;
         FMC->ISPDAT = 0UL;
@@ -509,7 +544,8 @@ int32_t FMC_Lock_OTP(uint32_t otp_num)
 
         while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+        {
             FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
             ret = -1;
         }
@@ -530,22 +566,28 @@ int32_t FMC_Is_OTP_Locked(uint32_t otp_num)
 {
     int32_t  ret = 0;
 
-    if (otp_num > 255UL) {
+    if (otp_num > 255UL)
+    {
         ret = -2;
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->ISPCMD = FMC_ISPCMD_READ;
         FMC->ISPADDR = FMC_OTP_BASE + 0x800UL + otp_num * 4UL;
         FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
 
         while (FMC->ISPTRG & FMC_ISPTRG_ISPGO_Msk) { }
 
-        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk) {
+        if (FMC->ISPSTS & FMC_ISPSTS_ISPFF_Msk)
+        {
             FMC->ISPSTS |= FMC_ISPSTS_ISPFF_Msk;
             ret = -1;
-        } else {
-            if (FMC->ISPDAT != 0xFFFFFFFFUL) {
+        }
+        else
+        {
+            if (FMC->ISPDAT != 0xFFFFFFFFUL)
+            {
                 ret = 1;   /* Lock work was progrmmed. OTP was locked. */
             }
         }
@@ -568,9 +610,12 @@ int32_t FMC_ReadConfig(uint32_t u32Config[], uint32_t u32Count)
     int32_t   ret = 0;
     u32Config[0] = FMC_Read(FMC_CONFIG_BASE);
 
-    if (u32Count < 2UL) {
+    if (u32Count < 2UL)
+    {
         ret = -1;
-    } else {
+    }
+    else
+    {
         u32Config[1] = FMC_Read(FMC_CONFIG_BASE + 4UL);
     }
 
@@ -610,9 +655,12 @@ uint32_t  FMC_GetChkSum(uint32_t u32addr, uint32_t u32count)
 {
     uint32_t   ret;
 
-    if ((u32addr % 512UL) || (u32count % 512UL)) {
+    if ((u32addr % 512UL) || (u32count % 512UL))
+    {
         ret = 0xFFFFFFFF;
-    } else {
+    }
+    else
+    {
         FMC->ISPCMD  = FMC_ISPCMD_RUN_CKS;
         FMC->ISPADDR = u32addr;
         FMC->ISPDAT  = u32count;
@@ -652,7 +700,8 @@ uint32_t  FMC_CheckAllOne(uint32_t u32addr, uint32_t u32count)
 
     while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) { }
 
-    do {
+    do
+    {
         FMC->ISPCMD = FMC_ISPCMD_READ_ALL1;
         FMC->ISPADDR    = u32addr;
         FMC->ISPTRG = FMC_ISPTRG_ISPGO_Msk;
@@ -660,11 +709,13 @@ uint32_t  FMC_CheckAllOne(uint32_t u32addr, uint32_t u32count)
         while (FMC->ISPSTS & FMC_ISPSTS_ISPBUSY_Msk) { }
     } while (FMC->ISPDAT == 0UL);
 
-    if (FMC->ISPDAT == READ_ALLONE_YES) {
+    if (FMC->ISPDAT == READ_ALLONE_YES)
+    {
         ret = FMC->ISPDAT;
     }
 
-    if (FMC->ISPDAT == READ_ALLONE_NOT) {
+    if (FMC->ISPDAT == READ_ALLONE_NOT)
+    {
         ret = FMC->ISPDAT;
     }
 
@@ -696,27 +747,33 @@ int32_t  FMC_SetSPKey(uint32_t key[3], uint32_t kpmax, uint32_t kemax,
     uint32_t  u32KeySts;
     int32_t   ret = 0;
 
-    if (FMC->KPKEYSTS != 0x200UL) {
+    if (FMC->KPKEYSTS != 0x200UL)
+    {
         ret = -1;
     }
 
-    if (FMC_Erase(FMC_KPROM_BASE)) {
+    if (FMC_Erase(FMC_KPROM_BASE))
+    {
         ret = -2;
     }
 
-    if (FMC_Erase(FMC_KPROM_BASE + 0x200UL)) {
+    if (FMC_Erase(FMC_KPROM_BASE + 0x200UL))
+    {
         ret = -3;
     }
 
-    if (!lock_CONFIG) {
+    if (!lock_CONFIG)
+    {
         lock_ctrl |= 0x1UL;
     }
 
-    if (!lock_SPROM) {
+    if (!lock_SPROM)
+    {
         lock_ctrl |= 0x2UL;
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC_Write(FMC_KPROM_BASE, key[0]);
         FMC_Write(FMC_KPROM_BASE + 0x4UL, key[1]);
         FMC_Write(FMC_KPROM_BASE + 0x8UL, key[2]);
@@ -728,21 +785,30 @@ int32_t  FMC_SetSPKey(uint32_t key[3], uint32_t kpmax, uint32_t kemax,
 
         u32KeySts = FMC->KPKEYSTS;
 
-        if (!(u32KeySts & FMC_KPKEYSTS_KEYLOCK_Msk)) {
+        if (!(u32KeySts & FMC_KPKEYSTS_KEYLOCK_Msk))
+        {
             /* Security key lock failed! */
             ret = -4;
-        } else if ((lock_CONFIG && (!(u32KeySts & FMC_KPKEYSTS_CFGFLAG_Msk))) ||
-                   ((!lock_CONFIG) && (u32KeySts & FMC_KPKEYSTS_CFGFLAG_Msk))) {
+        }
+        else if ((lock_CONFIG && (!(u32KeySts & FMC_KPKEYSTS_CFGFLAG_Msk))) ||
+                 ((!lock_CONFIG) && (u32KeySts & FMC_KPKEYSTS_CFGFLAG_Msk)))
+        {
             /* CONFIG lock failed! */
             ret = -5;
-        } else if ((lock_SPROM && (!(u32KeySts & FMC_KPKEYSTS_SPFLAG_Msk))) ||
-                   ((!lock_SPROM) && (u32KeySts & FMC_KPKEYSTS_SPFLAG_Msk))) {
+        }
+        else if ((lock_SPROM && (!(u32KeySts & FMC_KPKEYSTS_SPFLAG_Msk))) ||
+                 ((!lock_SPROM) && (u32KeySts & FMC_KPKEYSTS_SPFLAG_Msk)))
+        {
             /* CONFIG lock failed! */
             ret = -6;
-        } else if (((FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos) != kpmax) {
+        }
+        else if (((FMC->KPCNT & FMC_KPCNT_KPMAX_Msk) >> FMC_KPCNT_KPMAX_Pos) != kpmax)
+        {
             /* KPMAX failed! */
             ret = -7;
-        } else if (((FMC->KPKEYCNT & FMC_KPKEYCNT_KPKEMAX_Msk) >> FMC_KPKEYCNT_KPKEMAX_Pos) != kemax) {
+        }
+        else if (((FMC->KPKEYCNT & FMC_KPKEYCNT_KPKEMAX_Msk) >> FMC_KPKEYCNT_KPKEMAX_Pos) != kemax)
+        {
             /* KEMAX failed! */
             ret = -8;
         }
@@ -765,17 +831,20 @@ int32_t  FMC_CompareSPKey(uint32_t key[3])
     uint32_t  u32KeySts;
     int32_t   ret = 0;
 
-    if (FMC->KPKEYSTS & FMC_KPKEYSTS_FORBID_Msk) {
+    if (FMC->KPKEYSTS & FMC_KPKEYSTS_FORBID_Msk)
+    {
         /* FMC_CompareSPKey - FORBID!  */
         ret = -1;
     }
 
-    if (!(FMC->KPKEYSTS & FMC_KPKEYSTS_KEYLOCK_Msk)) {
+    if (!(FMC->KPKEYSTS & FMC_KPKEYSTS_KEYLOCK_Msk))
+    {
         /* FMC_CompareSPKey - key is not locked!  */
         ret = -3;
     }
 
-    if (ret == 0) {
+    if (ret == 0)
+    {
         FMC->KPKEY0 = key[0];
         FMC->KPKEY1 = key[1];
         FMC->KPKEY2 = key[2];
@@ -785,10 +854,13 @@ int32_t  FMC_CompareSPKey(uint32_t key[3])
 
         u32KeySts = FMC->KPKEYSTS;
 
-        if (!(u32KeySts & FMC_KPKEYSTS_KEYMATCH_Msk)) {
+        if (!(u32KeySts & FMC_KPKEYSTS_KEYMATCH_Msk))
+        {
             /* Key mismatched! */
             ret = -2;
-        } else if (u32KeySts & FMC_KPKEYSTS_KEYLOCK_Msk) {
+        }
+        else if (u32KeySts & FMC_KPKEYSTS_KEYLOCK_Msk)
+        {
             /* Key matched, but still be locked! */
             ret = -2;
         }

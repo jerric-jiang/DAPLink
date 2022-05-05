@@ -1,6 +1,6 @@
 /**
  * @file    uart.c
- * @brief   
+ * @brief
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -114,19 +114,22 @@ int32_t uart_set_configuration(UART_Configuration *config)
     LPC_USART->LCR &= ~(1 << 7);
 
     // set data bits, stop bits, parity
-    if ((config->DataBits < 5) || (config->DataBits > 8)) {
+    if ((config->DataBits < 5) || (config->DataBits > 8))
+    {
         data_bits = 8;
     }
 
     data_bits -= 5;
 
-    if (config->StopBits != 1 && config->StopBits != 2) {
+    if (config->StopBits != 1 && config->StopBits != 2)
+    {
         stop_bits = 1;
     }
 
     stop_bits -= 1;
 
-    switch (config->Parity) {
+    switch (config->Parity)
+    {
         case UART_PARITY_ODD:
             parity = 0x01;
             break;     // Parity Odd
@@ -149,12 +152,15 @@ int32_t uart_set_configuration(UART_Configuration *config)
             break;
     }
 
-    if (flow_control_enabled) {
+    if (flow_control_enabled)
+    {
         LPC_IOCON->PIO0_17 |= 0x01;     // RTS
         LPC_IOCON->PIO0_7  |= 0x01;     // CTS
         // enable auto RTS and CTS
         LPC_USART->MCR = (1 << 6) | (1 << 7);
-    } else {
+    }
+    else
+    {
         LPC_IOCON->PIO0_17 &= ~0x01;     // RTS
         LPC_IOCON->PIO0_7  &= ~0x01;     // CTS
         // disable auto RTS and CTS
@@ -179,14 +185,18 @@ int32_t uart_get_configuration(UART_Configuration *config)
     br  = SystemCoreClock / (dll * 16);
 
     // If inside +/- 2% tolerance
-    if (((br * 100) <= (baudrate * 102)) && ((br * 100) >= (baudrate * 98))) {
+    if (((br * 100) <= (baudrate * 102)) && ((br * 100) >= (baudrate * 98)))
+    {
         config->Baudrate = baudrate;
-    } else {
+    }
+    else
+    {
         config->Baudrate = br;
     }
 
     // get data bits
-    switch ((lcr >> 0) & 3) {
+    switch ((lcr >> 0) & 3)
+    {
         case 0:
             config->DataBits = UART_DATA_BITS_5;
             break;
@@ -208,7 +218,8 @@ int32_t uart_get_configuration(UART_Configuration *config)
     }
 
     // get parity
-    switch ((lcr >> 3) & 7) {
+    switch ((lcr >> 3) & 7)
+    {
         case 0:
         case 2:
         case 4:
@@ -237,7 +248,8 @@ int32_t uart_get_configuration(UART_Configuration *config)
     }
 
     // get stop bits
-    switch ((lcr >> 2) & 1) {
+    switch ((lcr >> 2) & 1)
+    {
         case 0:
             config->StopBits = UART_STOP_BITS_1;
             break;
@@ -251,11 +263,13 @@ int32_t uart_get_configuration(UART_Configuration *config)
     }
 
     // get flow control
-    if (flow_control_enabled) {
-    	config->FlowControl = UART_FLOW_CONTROL_RTS_CTS;
+    if (flow_control_enabled)
+    {
+        config->FlowControl = UART_FLOW_CONTROL_RTS_CTS;
     }
-    else {
-    	config->FlowControl = UART_FLOW_CONTROL_NONE;
+    else
+    {
+        config->FlowControl = UART_FLOW_CONTROL_NONE;
     }
     return 1;
 }
@@ -278,7 +292,8 @@ int32_t uart_write_data(uint8_t *data, uint16_t size)
     // enable THRE interrupt
     LPC_USART->IER |= (1 << 1);
 
-    if (!tx_in_progress) {
+    if (!tx_in_progress)
+    {
         // force THRE interrupt to start
         NVIC_SetPendingIRQ(UART_IRQn);
     }
@@ -304,14 +319,18 @@ void UART_IRQHandler(void)
     iir = LPC_USART->IIR;
 
     // handle character to transmit
-    if (circ_buf_count_used(&write_buffer) > 0) {
+    if (circ_buf_count_used(&write_buffer) > 0)
+    {
         // if THR is empty
-        if (LPC_USART->LSR & (1 << 5)) {
+        if (LPC_USART->LSR & (1 << 5))
+        {
             LPC_USART->THR = circ_buf_pop(&write_buffer);
             tx_in_progress = 1;
         }
 
-    } else if (tx_in_progress) {
+    }
+    else if (tx_in_progress)
+    {
         tx_in_progress = 0;
         // disable THRE interrupt
         LPC_USART->IER &= ~(1 << 1);
@@ -319,22 +338,32 @@ void UART_IRQHandler(void)
 
     // handle received character
     if (((iir & 0x0E) == 0x04)  ||        // Rx interrupt (RDA)
-            ((iir & 0x0E) == 0x0C))  {        // Rx interrupt (CTI)
-        while (LPC_USART->LSR & 0x01) {
+        ((iir & 0x0E) == 0x0C))           // Rx interrupt (CTI)
+    {
+        while (LPC_USART->LSR & 0x01)
+        {
             uint32_t free;
             uint8_t data;
-            
+
             data = LPC_USART->RBR;
             free = circ_buf_count_free(&read_buffer);
-            if (free > RX_OVRF_MSG_SIZE) {
+            if (free > RX_OVRF_MSG_SIZE)
+            {
                 circ_buf_push(&read_buffer, data);
-            } else if (config_get_overflow_detect()) {
-                if (RX_OVRF_MSG_SIZE == free) {
+            }
+            else if (config_get_overflow_detect())
+            {
+                if (RX_OVRF_MSG_SIZE == free)
+                {
                     circ_buf_write(&read_buffer, (uint8_t*)RX_OVRF_MSG, RX_OVRF_MSG_SIZE);
-                } else {
+                }
+                else
+                {
                     // Drop newest
                 }
-            } else {
+            }
+            else
+            {
                 // Drop oldest
                 circ_buf_pop(&read_buffer);
                 circ_buf_push(&read_buffer, data);
@@ -362,14 +391,16 @@ static int32_t reset(void)
     LPC_USART->MCR = mcr | (1 << 4);
 
     // Ensure a clean start, no data in either TX or RX FIFO
-    while ((LPC_USART->LSR & ((1 << 5) | (1 << 6))) != ((1 << 5) | (1 << 6))) {
+    while ((LPC_USART->LSR & ((1 << 5) | (1 << 6))) != ((1 << 5) | (1 << 6)))
+    {
         LPC_USART->FCR = (1 << 1) | (1 << 2);
     }
 
     // Restore previous mode (loopback off)
     LPC_USART->MCR = mcr;
 
-    while (LPC_USART->LSR & 0x01) {
+    while (LPC_USART->LSR & 0x01)
+    {
         LPC_USART->RBR;    // Dump data from RX FIFO
     }
 

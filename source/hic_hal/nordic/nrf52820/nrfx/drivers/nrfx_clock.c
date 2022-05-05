@@ -46,69 +46,69 @@ extern bool nrfx_power_irq_enabled;
 #endif
 
 #if defined(CLOCK_LFCLKSRC_SRC_RC) || defined(__NRFX_DOXYGEN__)
-    #define LF_SRC_RC CLOCK_LFCLKSRC_SRC_RC
+#define LF_SRC_RC CLOCK_LFCLKSRC_SRC_RC
 #else
-    #define LF_SRC_RC CLOCK_LFCLKSRC_SRC_LFRC
+#define LF_SRC_RC CLOCK_LFCLKSRC_SRC_LFRC
 #endif
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-    #if (NRF_CLOCK_HAS_CALIBRATION == 0)
-        #error "Calibration is not available in the SoC that is used."
-    #endif
-    #if (NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_RC)
-        #error "Calibration can be performed only for the RC Oscillator."
-    #endif
+#if (NRF_CLOCK_HAS_CALIBRATION == 0)
+#error "Calibration is not available in the SoC that is used."
+#endif
+#if (NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_RC)
+#error "Calibration can be performed only for the RC Oscillator."
+#endif
 #endif
 
 #if !defined(USE_WORKAROUND_FOR_ANOMALY_132) && \
     (defined(NRF52832_XXAA) || defined(NRF52832_XXAB))
-    // ANOMALY 132 - LFCLK needs to avoid frame from 66us to 138us after LFCLK stop. This solution
-    //               applies delay of 138us before starting LFCLK.
-    #define USE_WORKAROUND_FOR_ANOMALY_132 1
+// ANOMALY 132 - LFCLK needs to avoid frame from 66us to 138us after LFCLK stop. This solution
+//               applies delay of 138us before starting LFCLK.
+#define USE_WORKAROUND_FOR_ANOMALY_132 1
 
-    // Convert time to cycles (nRF52832 is clocked with 64 MHz, use delay of 138 us).
-    #define ANOMALY_132_DELAY_CYCLES (64UL * 138)
+// Convert time to cycles (nRF52832 is clocked with 64 MHz, use delay of 138 us).
+#define ANOMALY_132_DELAY_CYCLES (64UL * 138)
 #endif
 
 #if !defined(USE_WORKAROUND_FOR_ANOMALY_192) && \
     (defined(NRF52810_XXAA) || \
      defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
      defined(NRF52840_XXAA))
-    // Enable workaround for nRF52 anomaly 192 (LFRC oscillator frequency is wrong
-    // after calibration, exceeding 500 ppm).
-    #define USE_WORKAROUND_FOR_ANOMALY_192 1
+// Enable workaround for nRF52 anomaly 192 (LFRC oscillator frequency is wrong
+// after calibration, exceeding 500 ppm).
+#define USE_WORKAROUND_FOR_ANOMALY_192 1
 #endif
 
 #if !defined(USE_WORKAROUND_FOR_ANOMALY_201) && \
     (defined(NRF52810_XXAA) || \
      defined(NRF52832_XXAA) || defined(NRF52832_XXAB) || \
      defined(NRF52840_XXAA))
-    // Enable workaround for nRF52 anomaly 201 (EVENTS_HFCLKSTARTED might be generated twice).
-    #define USE_WORKAROUND_FOR_ANOMALY_201 1
+// Enable workaround for nRF52 anomaly 201 (EVENTS_HFCLKSTARTED might be generated twice).
+#define USE_WORKAROUND_FOR_ANOMALY_201 1
 #endif
 
 #if defined(CLOCK_LFCLKSRC_SRC_Xtal)
-    #define LF_SRC_LFXO CLOCK_LFCLKSRC_SRC_Xtal
+#define LF_SRC_LFXO CLOCK_LFCLKSRC_SRC_Xtal
 #else
-    #define LF_SRC_LFXO CLOCK_LFCLKSRC_SRC_LFXO
+#define LF_SRC_LFXO CLOCK_LFCLKSRC_SRC_LFXO
 #endif
 
 #if defined(NRF_CLOCK_USE_EXTERNAL_LFCLK_SOURCES)
-    #define LF_SRC_XTAL_LOW  (CLOCK_LFCLKSRC_SRC_Xtal | \
+#define LF_SRC_XTAL_LOW  (CLOCK_LFCLKSRC_SRC_Xtal | \
                              (CLOCK_LFCLKSRC_EXTERNAL_Enabled << CLOCK_LFCLKSRC_EXTERNAL_Pos))
-    #define LF_SRC_XTAL_FULL (CLOCK_LFCLKSRC_SRC_Xtal | \
+#define LF_SRC_XTAL_FULL (CLOCK_LFCLKSRC_SRC_Xtal | \
                              (CLOCK_LFCLKSRC_BYPASS_Enabled   << CLOCK_LFCLKSRC_BYPASS_Pos) | \
                              (CLOCK_LFCLKSRC_EXTERNAL_Enabled << CLOCK_LFCLKSRC_EXTERNAL_Pos))
 #else
-    #define LF_SRC_XTAL_LOW  LF_SRC_LFXO
-    #define LF_SRC_XTAL_FULL LF_SRC_LFXO
+#define LF_SRC_XTAL_LOW  LF_SRC_LFXO
+#define LF_SRC_XTAL_FULL LF_SRC_LFXO
 #endif
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED) && \
     NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_LFXO && \
     NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_XTAL_LOW && \
     NRFX_CLOCK_CONFIG_LF_SRC != LF_SRC_XTAL_FULL
-    #error "Two-stage LFXO start procedure enabled but LFCLK source is not set to LFXO!"
+#error "Two-stage LFXO start procedure enabled but LFCLK source is not set to LFXO!"
 #endif
 
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
@@ -232,11 +232,11 @@ void nrfx_clock_disable(void)
         NRFX_IRQ_DISABLE(nrfx_get_irq_number(NRF_CLOCK));
     }
     nrf_clock_int_disable(NRF_CLOCK, CLOCK_INTENSET_HFCLKSTARTED_Msk |
-                                     CLOCK_INTENSET_LFCLKSTARTED_Msk |
+                          CLOCK_INTENSET_LFCLKSTARTED_Msk |
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
-                                     CLOCK_INTENSET_DONE_Msk |
+                          CLOCK_INTENSET_DONE_Msk |
 #if NRF_HAS_CALIBRATION_TIMER
-                                     CLOCK_INTENSET_CTTO_Msk |
+                          CLOCK_INTENSET_CTTO_Msk |
 #endif
 #endif // NRFX_CHECK(NRFX_CLOCK_CONFIG_LF_CAL_ENABLED)
                           0);
@@ -268,31 +268,31 @@ void nrfx_clock_start(nrf_clock_domain_t domain)
     {
         case NRF_CLOCK_DOMAIN_LFCLK:
 #if NRFX_CHECK(NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED)
+        {
+            nrf_clock_lfclk_t lfclksrc;
+            if (nrf_clock_is_running(NRF_CLOCK, NRF_CLOCK_DOMAIN_LFCLK, &lfclksrc) &&
+                lfclksrc == NRFX_CLOCK_CONFIG_LF_SRC)
             {
-                nrf_clock_lfclk_t lfclksrc;
-                if (nrf_clock_is_running(NRF_CLOCK, NRF_CLOCK_DOMAIN_LFCLK, &lfclksrc) &&
-                    lfclksrc == NRFX_CLOCK_CONFIG_LF_SRC)
-                {
-                    // If the two-stage LFXO procedure has finished already
-                    // use the configured LF clock source.
-                    nrf_clock_lf_src_set(NRF_CLOCK, (nrf_clock_lfclk_t)NRFX_CLOCK_CONFIG_LF_SRC);
-                }
-                else
-                {
-                    // If the two-stage LFXO procedure hasn't started yet
-                    // or the RC stage is in progress,
-                    // use the RC oscillator as LF clock source.
-                    nrf_clock_lf_src_set(NRF_CLOCK, NRF_CLOCK_LFCLK_RC);
-                }
+                // If the two-stage LFXO procedure has finished already
+                // use the configured LF clock source.
+                nrf_clock_lf_src_set(NRF_CLOCK, (nrf_clock_lfclk_t)NRFX_CLOCK_CONFIG_LF_SRC);
             }
+            else
+            {
+                // If the two-stage LFXO procedure hasn't started yet
+                // or the RC stage is in progress,
+                // use the RC oscillator as LF clock source.
+                nrf_clock_lf_src_set(NRF_CLOCK, NRF_CLOCK_LFCLK_RC);
+            }
+        }
 #endif // NRFX_CHECK(NRFX_CLOCK_CONFIG_LFXO_TWO_STAGE_ENABLED)
-            nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_LFCLKSTARTED);
-            nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_LF_STARTED_MASK);
+        nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_LFCLKSTARTED);
+        nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_LF_STARTED_MASK);
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_132)
-            nrfx_clock_anomaly_132();
+        nrfx_clock_anomaly_132();
 #endif
-            nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_LFCLKSTART);
-            break;
+        nrf_clock_task_trigger(NRF_CLOCK, NRF_CLOCK_TASK_LFCLKSTART);
+        break;
         case NRF_CLOCK_DOMAIN_HFCLK:
             nrf_clock_event_clear(NRF_CLOCK, NRF_CLOCK_EVENT_HFCLKSTARTED);
             nrf_clock_int_enable(NRF_CLOCK, NRF_CLOCK_INT_HF_STARTED_MASK);
@@ -372,7 +372,7 @@ void nrfx_clock_stop(nrf_clock_domain_t domain)
 #if NRFX_CHECK(USE_WORKAROUND_FOR_ANOMALY_201)
     if (domain == NRF_CLOCK_DOMAIN_HFCLK)
     {
-            m_clock_cb.hfclk_started = false;
+        m_clock_cb.hfclk_started = false;
     }
 #endif
 }
@@ -455,7 +455,7 @@ void nrfx_clock_calibration_timer_stop(void)
 nrfx_err_t nrfx_clock_divider_set(nrf_clock_domain_t domain,
                                   nrf_clock_hfclk_div_t div)
 {
-    switch(domain)
+    switch (domain)
     {
 #if defined(CLOCK_FEATURE_HFCLK_DIVIDE_PRESENT)
         case NRF_CLOCK_DOMAIN_HFCLK:

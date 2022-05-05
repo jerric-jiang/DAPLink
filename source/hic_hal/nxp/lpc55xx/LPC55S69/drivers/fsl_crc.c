@@ -85,7 +85,8 @@ void CRC_GetDefaultConfig(crc_config_t *config)
 
     static const crc_config_t default_config = {CRC_DRIVER_DEFAULT_POLYNOMIAL,     CRC_DRIVER_DEFAULT_REVERSE_IN,
                                                 CRC_DRIVER_DEFAULT_COMPLEMENT_IN,  CRC_DRIVER_DEFAULT_REVERSE_OUT,
-                                                CRC_DRIVER_DEFAULT_COMPLEMENT_OUT, CRC_DRIVER_DEFAULT_SEED};
+                                                CRC_DRIVER_DEFAULT_COMPLEMENT_OUT, CRC_DRIVER_DEFAULT_SEED
+                                               };
 
     *config = default_config;
 }
@@ -147,7 +148,7 @@ void CRC_WriteData(CRC_Type *base, const uint8_t *data, size_t dataSize)
     /* 8-bit reads and writes till source address is aligned 4 bytes */
     while ((0U != dataSize) && (0U != ((uint32_t)data & 3U)))
     {
-        *((__O uint8_t *)&(base->WR_DATA)) = *data;
+        *((__O uint8_t *) & (base->WR_DATA)) = *data;
         data++;
         dataSize--;
     }
@@ -156,7 +157,7 @@ void CRC_WriteData(CRC_Type *base, const uint8_t *data, size_t dataSize)
     data32 = (const uint32_t *)data;
     while (dataSize >= sizeof(uint32_t))
     {
-        *((__O uint32_t *)&(base->WR_DATA)) = *data32;
+        *((__O uint32_t *) & (base->WR_DATA)) = *data32;
         data32++;
         dataSize -= sizeof(uint32_t);
     }
@@ -166,7 +167,7 @@ void CRC_WriteData(CRC_Type *base, const uint8_t *data, size_t dataSize)
     /* 8-bit reads and writes till end of data buffer */
     while (0U != dataSize)
     {
-        *((__O uint8_t *)&(base->WR_DATA)) = *data;
+        *((__O uint8_t *) & (base->WR_DATA)) = *data;
         data++;
         dataSize--;
     }

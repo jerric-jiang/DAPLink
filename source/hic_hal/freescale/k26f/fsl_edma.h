@@ -386,8 +386,8 @@ void EDMA_SetMinorOffsetConfig(DMA_Type *base, uint32_t channel, const edma_mino
  * @param config A pointer to the channel preemption configuration structure.
  */
 static inline void EDMA_SetChannelPreemptionConfig(DMA_Type *base,
-                                                   uint32_t channel,
-                                                   const edma_channel_Preemption_config_t *config)
+        uint32_t channel,
+        const edma_channel_Preemption_config_t *config)
 {
     assert(channel < FSL_FEATURE_EDMA_MODULE_CHANNEL);
     assert(config != NULL);

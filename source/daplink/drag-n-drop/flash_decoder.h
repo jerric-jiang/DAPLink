@@ -35,7 +35,8 @@ extern "C" {
 // Enough space for 12 vectors
 #define FLASH_DECODER_MIN_SIZE      0x30
 
-typedef enum {
+typedef enum
+{
     FLASH_DECODER_TYPE_UNKNOWN,
     FLASH_DECODER_TYPE_BOOTLOADER,
     FLASH_DECODER_TYPE_INTERFACE,

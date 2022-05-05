@@ -39,7 +39,8 @@ extern "C" {
 #define I2C_PROTOCOL_VERSION        (0x02)
 
 /*! i2c command Id type enumeration */
-typedef enum cmdId_tag {
+typedef enum cmdId_tag
+{
     gNopCmd_c        = 0x00,
     gReadRequest_c   = 0x10,
     gReadResponse_c  = 0x11,
@@ -49,7 +50,8 @@ typedef enum cmdId_tag {
 } cmdId_t;
 
 /*! property Id type enumeration */
-typedef enum propertyId_tag {
+typedef enum propertyId_tag
+{
     gDAPLinkBoardVersion_c  = 0x01,
     gI2CProtocolVersion_c   = 0x02,
     gDAPLinkVersion_c       = 0x03,
@@ -63,14 +65,16 @@ typedef enum propertyId_tag {
 } propertyId_t;
 
 /*! user event type enumeration */
-typedef enum userEventType_tag {
+typedef enum userEventType_tag
+{
     gWakeFromResetButton_c  = 0x01,
     gWakeFromWakeOnEdge_c   = 0x02,
     gResetButtonLongPress_c = 0x03,
 } userEventType_t;
 
 /*! property Id type enumeration */
-typedef enum errorCode_tag {
+typedef enum errorCode_tag
+{
     gErrorSuccess               = 0x30,
     gErrorIncompleteCommand_c   = 0x31,
     gErrorUnknownCommand_c      = 0x32,
@@ -83,34 +87,40 @@ typedef enum errorCode_tag {
     gErrorBusy_c                = 0x39
 } errorCode_t;
 
-typedef __PACKED_STRUCT readReqCmd_tag {
+typedef __PACKED_STRUCT readReqCmd_tag
+{
     uint8_t     propertyId;
 } readReqCmd_t;
 
 #define MAX_PROPERTY_SIZE   8
 
-typedef __PACKED_STRUCT readRspCmd_tag {
+typedef __PACKED_STRUCT readRspCmd_tag
+{
     uint8_t     propertyId;
     uint8_t     dataSize;
     uint8_t     data[MAX_PROPERTY_SIZE];
 } readRspCmd_t;
 
-typedef __PACKED_STRUCT writeReqCmd_tag {
+typedef __PACKED_STRUCT writeReqCmd_tag
+{
     uint8_t     propertyId;
     uint8_t     dataSize;
     uint8_t     data[MAX_PROPERTY_SIZE];
 } writeReqCmd_t;
 
-typedef __PACKED_STRUCT writeRspCmd_tag {
+typedef __PACKED_STRUCT writeRspCmd_tag
+{
     uint8_t     propertyId;
 } writeRspCmd_t;
 
-typedef __PACKED_STRUCT errorRspCmd_tag {
+typedef __PACKED_STRUCT errorRspCmd_tag
+{
     uint8_t     errorCode;
 } errorRspCmd_t;
 
 /*! i2c command structure*/
-typedef __PACKED_STRUCT i2cCommand_tag {
+typedef __PACKED_STRUCT i2cCommand_tag
+{
     uint8_t cmdId;
     __PACKED_UNION {
         readReqCmd_t    readReqCmd;
@@ -122,7 +132,8 @@ typedef __PACKED_STRUCT i2cCommand_tag {
 } i2cCommand_t;
 
 /*! Flash interface command type */
-typedef enum flashCmdId_tag {
+typedef enum flashCmdId_tag
+{
     gFlashCfgFileName_c     = 0x01,
     gFlashCfgFileSize_c     = 0x02,
     gFlashCfgFileVisible_c  = 0x03,
@@ -138,7 +149,8 @@ typedef enum flashCmdId_tag {
     gFlashError_c           = 0x20
 } flashCmdId_t;
 
-typedef __PACKED_STRUCT flashDataWriteCmd_tag {
+typedef __PACKED_STRUCT flashDataWriteCmd_tag
+{
     uint8_t addr2;
     uint8_t addr1;
     uint8_t addr0;
@@ -146,7 +158,8 @@ typedef __PACKED_STRUCT flashDataWriteCmd_tag {
     uint8_t data[1024];
 } flashDataWriteCmd_t;
 
-typedef __PACKED_STRUCT flashDataEraseCmd_tag {
+typedef __PACKED_STRUCT flashDataEraseCmd_tag
+{
     uint8_t sAddr2;
     uint8_t sAddr1;
     uint8_t sAddr0;
@@ -157,7 +170,8 @@ typedef __PACKED_STRUCT flashDataEraseCmd_tag {
 } flashDataEraseCmd_t;
 
 /*! i2c command structure*/
-typedef __PACKED_STRUCT i2cFlashCmd_tag {
+typedef __PACKED_STRUCT i2cFlashCmd_tag
+{
     uint8_t cmdId;
     __PACKED_UNION {
         flashDataWriteCmd_t write;

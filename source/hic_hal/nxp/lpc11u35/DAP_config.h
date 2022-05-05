@@ -338,9 +338,12 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 */
 __STATIC_FORCEINLINE void     PIN_SWDIO_OUT(uint32_t bit)
 {
-    if (bit & 0x1) {
+    if (bit & 0x1)
+    {
         LPC_GPIO->SET[PIN_SWDIO_PORT] = PIN_SWDIO;
-    } else {
+    }
+    else
+    {
         LPC_GPIO->CLR[PIN_SWDIO_PORT] = PIN_SWDIO;
     }
 }
@@ -385,9 +388,12 @@ __STATIC_FORCEINLINE void     PIN_TDI_OUT(uint32_t bit)
 {
 #if (DAP_JTAG != 0)
 
-    if (bit & 0x1) {
+    if (bit & 0x1)
+    {
         LPC_GPIO->SET[PIN_TDI_PORT] = PIN_TDI;
-    } else {
+    }
+    else
+    {
         LPC_GPIO->CLR[PIN_TDI_PORT] = PIN_TDI;
     }
 
@@ -460,16 +466,22 @@ __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 {
 #if !defined(PIN_nRESET_FET_DRIVE)
     // open drain logic
-    if (bit) {
+    if (bit)
+    {
         LPC_GPIO->DIR[PIN_nRESET_PORT] &= ~PIN_nRESET;    // input (pulled high external)
-    } else {
+    }
+    else
+    {
         LPC_GPIO->DIR[PIN_nRESET_PORT] |=  PIN_nRESET;    // output (low)
     }
 #else
     // FET drive logic
-    if (bit) {
+    if (bit)
+    {
         LPC_GPIO->CLR[PIN_nRESET_PORT] = (PIN_nRESET);
-    } else {
+    }
+    else
+    {
         LPC_GPIO->SET[PIN_nRESET_PORT] = (PIN_nRESET);
     }
 #endif
@@ -528,8 +540,9 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
-  return 0; //(DWT->CYCCNT);
+__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
+{
+    return 0; //(DWT->CYCCNT);
 }
 
 ///@}

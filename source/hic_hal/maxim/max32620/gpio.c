@@ -27,12 +27,14 @@ void gpio_init(void)
     uint32_t out_mode;
 
     // Ensure that the GPIO clock is enabled
-    if (MXC_CLKMAN->sys_clk_ctrl_6_gpio == MXC_S_CLKMAN_CLK_SCALE_DISABLED) {
+    if (MXC_CLKMAN->sys_clk_ctrl_6_gpio == MXC_S_CLKMAN_CLK_SCALE_DISABLED)
+    {
         MXC_CLKMAN->sys_clk_ctrl_6_gpio = MXC_S_CLKMAN_CLK_SCALE_DIV_1;
     }
 
     // All inputs readable
-    for (i = 0; i < MXC_GPIO_NUM_PORTS; i++) {
+    for (i = 0; i < MXC_GPIO_NUM_PORTS; i++)
+    {
         MXC_GPIO->in_mode[i] = 0x00000000;
     }
 
@@ -68,9 +70,12 @@ void gpio_init(void)
 /******************************************************************************/
 void gpio_set_hid_led(gpio_led_state_t state)
 {
-    if (state == GPIO_LED_ON) {
+    if (state == GPIO_LED_ON)
+    {
         MXC_CLRBIT(&MXC_GPIO->out_val[PIN_DAP_LED_PORT], PIN_DAP_LED_PIN);
-    } else {
+    }
+    else
+    {
         MXC_SETBIT(&MXC_GPIO->out_val[PIN_DAP_LED_PORT], PIN_DAP_LED_PIN);
     }
 }
@@ -78,9 +83,12 @@ void gpio_set_hid_led(gpio_led_state_t state)
 /******************************************************************************/
 void gpio_set_msc_led(gpio_led_state_t state)
 {
-    if (state == GPIO_LED_ON) {
+    if (state == GPIO_LED_ON)
+    {
         MXC_CLRBIT(&MXC_GPIO->out_val[PIN_MSD_LED_PORT], PIN_MSD_LED_PIN);
-    } else {
+    }
+    else
+    {
         MXC_SETBIT(&MXC_GPIO->out_val[PIN_MSD_LED_PORT], PIN_MSD_LED_PIN);
     }
 }
@@ -88,9 +96,12 @@ void gpio_set_msc_led(gpio_led_state_t state)
 /******************************************************************************/
 void gpio_set_cdc_led(gpio_led_state_t state)
 {
-    if (state == GPIO_LED_ON) {
+    if (state == GPIO_LED_ON)
+    {
         MXC_CLRBIT(&MXC_GPIO->out_val[PIN_CDC_LED_PORT], PIN_CDC_LED_PIN);
-    } else {
+    }
+    else
+    {
         MXC_SETBIT(&MXC_GPIO->out_val[PIN_CDC_LED_PORT], PIN_CDC_LED_PIN);
     }
 }

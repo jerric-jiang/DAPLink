@@ -94,7 +94,8 @@
 #define SWD_GNDDET_CH       3
 #define HDR_GNDDET_CH       2
 
-typedef enum {
+typedef enum
+{
     IO_SWD_EXT,
     IO_DIP_EXT
 } TARGET_INTERFACE;

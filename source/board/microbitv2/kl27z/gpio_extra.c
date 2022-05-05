@@ -36,12 +36,13 @@ void gpio_enable_hid_led()
 
 void gpio_disable_hid_led()
 {
-   PIN_HID_LED_PORT->PCR[PIN_HID_LED_BIT] = PORT_PCR_MUX(0);
+    PIN_HID_LED_PORT->PCR[PIN_HID_LED_BIT] = PORT_PCR_MUX(0);
 }
 
 void gpio_init_combined_int()
 {
-    gpio_pin_config_t pin_config = {
+    gpio_pin_config_t pin_config =
+    {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };

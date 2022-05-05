@@ -187,7 +187,8 @@ COMPILER_ASSERT(DAPLINK_HIC_ID == DAPLINK_HIC_ID_LPC55XX);
 #define PIN_HW_VERS_4           (5U)
 #define PIN_HW_VERS_4_MASK      (1U << PIN_HW_VERS_4)
 
-typedef enum led_types {
+typedef enum led_types
+{
     LED_T_CONNECTED = 1 << 0,
     LED_T_RUNNING = 1 << 1,
     LED_T_HID = 1 << 2,

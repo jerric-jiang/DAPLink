@@ -238,10 +238,10 @@ static void DMA_SetupXferCFG(dma_xfercfg_t *xfercfg, uint32_t *xfercfg_addr)
     xfer |= DMA_CHANNEL_XFERCFG_WIDTH(xfercfg->byteWidth == 4U ? 2U : xfercfg->byteWidth - 1UL);
     /* set source increment value */
     xfer |= DMA_CHANNEL_XFERCFG_SRCINC(
-        (xfercfg->srcInc == (uint8_t)kDMA_AddressInterleave4xWidth) ? (xfercfg->srcInc - 1UL) : xfercfg->srcInc);
+                (xfercfg->srcInc == (uint8_t)kDMA_AddressInterleave4xWidth) ? (xfercfg->srcInc - 1UL) : xfercfg->srcInc);
     /* set destination increment value */
     xfer |= DMA_CHANNEL_XFERCFG_DSTINC(
-        (xfercfg->dstInc == (uint8_t)kDMA_AddressInterleave4xWidth) ? (xfercfg->dstInc - 1UL) : xfercfg->dstInc);
+                (xfercfg->dstInc == (uint8_t)kDMA_AddressInterleave4xWidth) ? (xfercfg->dstInc - 1UL) : xfercfg->dstInc);
     /* set transfer count */
     xfer |= DMA_CHANNEL_XFERCFG_XFERCOUNT(xfercfg->transferCount - 1UL);
 
@@ -900,8 +900,8 @@ status_t DMA_SubmitChannelTransfer(dma_handle_t *handle, dma_channel_config_t *c
         descriptor, config->xferCfg, config->srcStartAddr, config->dstStartAddr, config->nextDesc,
         config->trigger == NULL ? kDMA_NoWrap : config->trigger->wrap,
         (config->trigger == NULL ? (uint32_t)kDMA_BurstSize1 :
-                                   ((uint32_t)config->trigger->burst & (DMA_CHANNEL_CFG_BURSTPOWER_MASK)) >>
-                                       DMA_CHANNEL_CFG_BURSTPOWER_SHIFT));
+         ((uint32_t)config->trigger->burst & (DMA_CHANNEL_CFG_BURSTPOWER_MASK)) >>
+         DMA_CHANNEL_CFG_BURSTPOWER_SHIFT));
 
     /* Set channel XFERCFG register according first channel descriptor. */
     handle->base->CHANNEL[handle->channel].XFERCFG = config->xferCfg;

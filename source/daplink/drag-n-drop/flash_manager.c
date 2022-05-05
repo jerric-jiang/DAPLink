@@ -4,7 +4,7 @@
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2019, ARM Limited, All Rights Reserved
- * Copyright 2019, Cypress Semiconductor Corporation 
+ * Copyright 2019, Cypress Semiconductor Corporation
  * or a subsidiary of Cypress Semiconductor Corporation.
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -36,7 +36,8 @@
 #define flash_manager_printf(...)
 #endif
 
-typedef enum {
+typedef enum
+{
     STATE_CLOSED,
     STATE_OPEN,
     STATE_ERROR
@@ -67,13 +68,15 @@ error_t flash_manager_init(const flash_intf_t *flash_intf)
     // Assert that interface has been properly uninitialized
     flash_manager_printf("flash_manager_init()\r\n");
 
-    if (state != STATE_CLOSED) {
+    if (state != STATE_CLOSED)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
     // Check for a valid flash interface
-    if (!flash_intf_valid(flash_intf)) {
+    if (!flash_intf_valid(flash_intf))
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
@@ -92,16 +95,19 @@ error_t flash_manager_init(const flash_intf_t *flash_intf)
     status = intf->init();
     flash_manager_printf("    intf->init ret=%i\r\n", status);
 
-    if (ERROR_SUCCESS != status) {
+    if (ERROR_SUCCESS != status)
+    {
         return status;
     }
 
-    if (!page_erase_enabled) {
+    if (!page_erase_enabled)
+    {
         // Erase flash and unint if there are errors
         status = intf->erase_chip();
         flash_manager_printf("    intf->erase_chip ret=%i\r\n", status);
 
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             intf->uninit();
             return status;
         }
@@ -119,16 +125,19 @@ error_t flash_manager_data(uint32_t addr, const uint8_t *data, uint32_t size)
     error_t status = ERROR_SUCCESS;
     flash_manager_printf("flash_manager_data(addr=0x%x size=0x%x)\r\n", addr, size);
 
-    if (state != STATE_OPEN) {
+    if (state != STATE_OPEN)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
     // Setup the current sector if it is not setup already
-    if (!current_sector_valid) {
+    if (!current_sector_valid)
+    {
         status = setup_next_sector(addr);
 
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             state = STATE_ERROR;
             return status;
         }
@@ -137,42 +146,52 @@ error_t flash_manager_data(uint32_t addr, const uint8_t *data, uint32_t size)
     }
 
     //non-increasing address support
-    if (ROUND_DOWN(addr, current_write_block_size) != ROUND_DOWN(last_addr, current_write_block_size)) {
+    if (ROUND_DOWN(addr, current_write_block_size) != ROUND_DOWN(last_addr, current_write_block_size))
+    {
         status = flush_current_block(addr);
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             state = STATE_ERROR;
             return status;
         }
     }
 
-    if (ROUND_DOWN(addr, current_sector_size) != ROUND_DOWN(last_addr, current_sector_size)) {
+    if (ROUND_DOWN(addr, current_sector_size) != ROUND_DOWN(last_addr, current_sector_size))
+    {
         status = setup_next_sector(addr);
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             state = STATE_ERROR;
             return status;
         }
     }
 
-    while (true) {
+    while (true)
+    {
         // flush if necessary
-        if (addr >= current_write_block_addr + current_write_block_size) {
+        if (addr >= current_write_block_addr + current_write_block_size)
+        {
             status = flush_current_block(addr);
-            if (ERROR_SUCCESS != status) {
+            if (ERROR_SUCCESS != status)
+            {
                 state = STATE_ERROR;
                 return status;
             }
         }
 
         // Check for end
-        if (size <= 0) {
+        if (size <= 0)
+        {
             break;
         }
 
         // Change sector if necessary
-        if (addr >= current_sector_addr + current_sector_size) {
+        if (addr >= current_sector_addr + current_sector_size)
+        {
             status = setup_next_sector(addr);
 
-            if (ERROR_SUCCESS != status) {
+            if (ERROR_SUCCESS != status)
+            {
                 state = STATE_ERROR;
                 return status;
             }
@@ -200,15 +219,17 @@ error_t flash_manager_uninit(void)
     error_t flash_write_error = ERROR_SUCCESS;
     flash_manager_printf("flash_manager_uninit()\r\n");
 
-    if (STATE_CLOSED == state) {
+    if (STATE_CLOSED == state)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
     // Flush last buffer if its not empty
-    if (STATE_OPEN == state) {
+    if (STATE_OPEN == state)
+    {
         flash_write_error = flush_current_block(0);
-        flash_manager_printf("    last flush_current_block ret=%i\r\n",flash_write_error);
+        flash_manager_printf("    last flush_current_block ret=%i\r\n", flash_write_error);
     }
     // Close flash interface (even if there was an error during program_page)
     flash_uninit_error = intf->uninit();
@@ -226,11 +247,13 @@ error_t flash_manager_uninit(void)
 
     // Make sure an error from a page write or from an
     // uninit gets propagated
-    if (flash_uninit_error != ERROR_SUCCESS) {
+    if (flash_uninit_error != ERROR_SUCCESS)
+    {
         return flash_uninit_error;
     }
 
-    if (flash_write_error != ERROR_SUCCESS) {
+    if (flash_write_error != ERROR_SUCCESS)
+    {
         return flash_write_error;
     }
 
@@ -246,45 +269,55 @@ void flash_manager_set_page_erase(bool enabled)
 static bool flash_intf_valid(const flash_intf_t *flash_intf)
 {
     // Check for all requried members
-    if (0 == flash_intf) {
+    if (0 == flash_intf)
+    {
         return false;
     }
 
-    if (0 == flash_intf->uninit) {
+    if (0 == flash_intf->uninit)
+    {
         return false;
     }
 
-    if (0 == flash_intf->program_page) {
+    if (0 == flash_intf->program_page)
+    {
         return false;
     }
 
-    if (0 == flash_intf->erase_sector) {
+    if (0 == flash_intf->erase_sector)
+    {
         return false;
     }
 
-    if (0 == flash_intf->erase_chip) {
+    if (0 == flash_intf->erase_chip)
+    {
         return false;
     }
 
-    if (0 == flash_intf->program_page_min_size) {
+    if (0 == flash_intf->program_page_min_size)
+    {
         return false;
     }
 
-    if (0 == flash_intf->erase_sector_size) {
+    if (0 == flash_intf->erase_sector_size)
+    {
         return false;
     }
 
-    if (0 == flash_intf->flash_busy) {
+    if (0 == flash_intf->flash_busy)
+    {
         return false;
     }
 
     return true;
 }
 
-static error_t flush_current_block(uint32_t addr){
+static error_t flush_current_block(uint32_t addr)
+{
     // Write out current buffer if there is data in it
     error_t status = ERROR_SUCCESS;
-    if (!buf_empty) {
+    if (!buf_empty)
+    {
         status = intf->program_page(current_write_block_addr, buf, current_write_block_size);
         flash_manager_printf("    intf->program_page(addr=0x%x, size=0x%x) ret=%i\r\n", current_write_block_addr, current_write_block_size, status);
         buf_empty = true;
@@ -292,7 +325,7 @@ static error_t flush_current_block(uint32_t addr){
 
     // Setup for next block
     memset(buf, 0xFF, current_write_block_size);
-    current_write_block_addr = ROUND_DOWN(addr,current_write_block_size);
+    current_write_block_addr = ROUND_DOWN(addr, current_write_block_size);
     return status;
 }
 
@@ -304,7 +337,8 @@ static error_t setup_next_sector(uint32_t addr)
     min_prog_size = intf->program_page_min_size(addr);
     sector_size = intf->erase_sector_size(addr);
 
-    if ((min_prog_size <= 0) || (sector_size <= 0)) {
+    if ((min_prog_size <= 0) || (sector_size <= 0))
+    {
         // Either of these conditions could cause divide by 0 error
         util_assert(0);
         return ERROR_INTERNAL;
@@ -322,19 +356,23 @@ static error_t setup_next_sector(uint32_t addr)
     current_write_block_size = MIN(sector_size, sizeof(buf));
 
     //check flash algo every sector change, addresses with different flash algo should be sector aligned
-    if (intf->flash_algo_set) {
+    if (intf->flash_algo_set)
+    {
         status = intf->flash_algo_set(current_sector_addr);
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             intf->uninit();
             return status;
         }
     }
 
-    if (page_erase_enabled) {
+    if (page_erase_enabled)
+    {
         // Erase the current sector
         status = intf->erase_sector(current_sector_addr);
         flash_manager_printf("    intf->erase_sector(addr=0x%x) ret=%i\r\n", current_sector_addr);
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             intf->uninit();
             return status;
         }

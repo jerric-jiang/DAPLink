@@ -4,7 +4,7 @@
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
- * Copyright 2019, Cypress Semiconductor Corporation 
+ * Copyright 2019, Cypress Semiconductor Corporation
  * or a subsidiary of Cypress Semiconductor Corporation.
  * SPDX-License-Identifier: Apache-2.0
  *
@@ -30,7 +30,8 @@
 extern "C" {
 #endif
 
-typedef enum {
+typedef enum
+{
     ASSERT_SOURCE_NONE = 0,
     ASSERT_SOURCE_BL = 1,
     ASSERT_SOURCE_APP = 2

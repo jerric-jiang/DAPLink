@@ -24,11 +24,12 @@
 
 extern target_cfg_t target_device_nrf51822_32;
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "1019",
     .family_id = kNordic_Nrf51_FamilyID,
-    .daplink_drive_name = 		"MBED       ",
+    .daplink_drive_name =       "MBED       ",
     .target_cfg = &target_device_nrf51822_32,
     .board_vendor = "Switch Science",
     .board_name = "mbed TY51822r3",

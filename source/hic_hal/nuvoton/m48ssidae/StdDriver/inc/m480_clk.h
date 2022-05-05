@@ -15,7 +15,7 @@
  *   3. Neither the name of Nuvoton Technology Corp. nor the names of its contributors
  *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
- * 
+ *
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -540,7 +540,8 @@ __STATIC_INLINE void CLK_SysTickDelay(uint32_t us)
     SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk | SysTick_CTRL_ENABLE_Msk;
 
     /* Waiting for down-count to zero */
-    while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL) {
+    while ((SysTick->CTRL & SysTick_CTRL_COUNTFLAG_Msk) == 0UL)
+    {
     }
 
     /* Disable SysTick counter */
@@ -561,10 +562,14 @@ __STATIC_INLINE void CLK_SysTickLongDelay(uint32_t us)
     /* It should <= 349525us for each delay loop */
     delay = 349525UL;
 
-    do {
-        if (us > delay) {
+    do
+    {
+        if (us > delay)
+        {
             us -= delay;
-        } else {
+        }
+        else
+        {
             delay = us;
             us = 0UL;
         }

@@ -31,7 +31,8 @@ void sdk_init(void)
     CGU_EnableEntity(CGU_CLKSRC_PLL0, DISABLE);
 
     /* the usb core require output clock = 480MHz */
-    if (CGU_SetPLL0() != CGU_ERROR_SUCCESS) {
+    if (CGU_SetPLL0() != CGU_ERROR_SUCCESS)
+    {
         while (1);
     }
 

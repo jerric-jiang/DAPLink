@@ -28,7 +28,8 @@
 #define FLASH_SIZE      MB(1)
 #define FLASH_SECTOR    KB(8)
 
-static const uint32_t flash_algo_blob[] = {
+static const uint32_t flash_algo_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x44494975, 0x68826808, 0x0f07f012, 0x2001bf1c, 0x68494770, 0x20006041, 0x486f4770, 0x68004448,
     0xf0216881, 0x60814170, 0x47702000, 0xb510486a, 0x68044448, 0xf8b4f000, 0x68a0b9b0, 0x407ff420,
@@ -55,11 +56,13 @@ static const uint32_t flash_algo_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     FLASH_BASE, FLASH_SECTOR,
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000021, // Init
     0x2000003b, // UnInit
     0x2000004d, // EraseChip

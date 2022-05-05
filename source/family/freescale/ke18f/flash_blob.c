@@ -21,7 +21,8 @@
 
 #include "flash_blob.h"
 
-static const uint32_t mke18f16_flash_prog_blob[] = {
+static const uint32_t mke18f16_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xb510483f, 0x6041493d, 0x71fff64f, 0x68016081, 0x0180f021, 0x0120f041, 0x483a6001, 0xf00168c1,
     0x29400160, 0x2101bf0c, 0x4a372100, 0x7011444a, 0x68c1b139, 0x0160f021, 0x68c160c1, 0x0f60f011,
@@ -74,11 +75,13 @@ static const uint32_t mke18f16_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0, 4096},
- };
+};
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000021, // Init
     0x20000073, // UnInit
     0x20000097, // EraseChip

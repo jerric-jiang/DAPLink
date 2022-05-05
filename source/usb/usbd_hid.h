@@ -26,7 +26,8 @@
 /*--------------------------- Global constants -------------------------------*/
 
 /* USB HID Class API enumerated constants                                     */
-enum {
+enum
+{
     USBD_HID_REQ_EP_CTRL = 0,             /* Request from control endpoint      */
     USBD_HID_REQ_EP_INT,                  /* Request from interrupt endpoint    */
     USBD_HID_REQ_PERIOD_UPDATE            /* Request from periodic update       */

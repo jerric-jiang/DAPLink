@@ -22,12 +22,13 @@
 #include "target_board.h"
 #include "target_family.h"
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "0201",
     .family_id = kNXP_KinetisL_FamilyID,
     .daplink_url_name =       "PRODINFOHTM",
-    .daplink_drive_name = 	"FRDM-KW41Z",
+    .daplink_drive_name =   "FRDM-KW41Z",
     .daplink_target_url = "http://www.nxp.com/frdm-kw41z",
     .target_cfg = &target_device,
     .board_vendor = "NXP",

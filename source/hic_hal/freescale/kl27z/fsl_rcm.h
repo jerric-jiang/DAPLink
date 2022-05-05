@@ -29,7 +29,7 @@
 typedef enum _rcm_reset_source
 {
 #if (defined(FSL_FEATURE_RCM_REG_WIDTH) && (FSL_FEATURE_RCM_REG_WIDTH == 32))
-/* RCM register bit width is 32. */
+    /* RCM register bit width is 32. */
 #if (defined(FSL_FEATURE_RCM_HAS_WAKEUP) && FSL_FEATURE_RCM_HAS_WAKEUP)
     kRCM_SourceWakeup = RCM_SRS_WAKEUP_MASK, /*!< Low-leakage wakeup reset */
 #endif
@@ -57,7 +57,7 @@ typedef enum _rcm_reset_source
     kRCM_SourceSackerr = RCM_SRS_SACKERR_MASK, /*!< Parameter could get all reset flags */
 
 #else /* (FSL_FEATURE_RCM_REG_WIDTH == 32) */
-/* RCM register bit width is 8. */
+    /* RCM register bit width is 8. */
 #if (defined(FSL_FEATURE_RCM_HAS_WAKEUP) && FSL_FEATURE_RCM_HAS_WAKEUP)
     kRCM_SourceWakeup  = RCM_SRS0_WAKEUP_MASK,        /*!< Low-leakage wakeup reset */
 #endif

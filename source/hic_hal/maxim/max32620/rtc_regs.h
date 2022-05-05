@@ -64,7 +64,8 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __IO uint32_t ctrl;                                 /*  0x0000          RTC Timer Control                                                            */
     __IO uint32_t timer;                                /*  0x0004          RTC Timer Count Value                                                        */
     __IO uint32_t comp[2];                              /*  0x0008-0x000C   RTC Time of Day Alarm [0..1] Compare Register                                */
@@ -81,7 +82,8 @@ typedef struct {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __IO uint32_t nano_cntr;                            /*  0x0000          Nano Oscillator Counter Read Register                                        */
     __IO uint32_t clk_ctrl;                             /*  0x0004          RTC Clock Control Settings                                                   */
     __R  uint32_t rsv008;                               /*  0x0008                                                                                       */

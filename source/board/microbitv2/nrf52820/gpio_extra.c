@@ -64,14 +64,16 @@ void gpio_disable_hid_led()
 void gpio_init_combined_int()
 {
 #ifdef NRF528XX_DYNAMIC_PIN
-    if (NRF_FICR->INFO.PART == 0x52833) {
+    if (NRF_FICR->INFO.PART == 0x52833)
+    {
         // nRF52833
         COMBINED_SENSOR_INT_PIN = NRF52833_COMBINED_SENSOR_INT_PIN;
 
         // Configure the NFC pins as GPIO in the UICR if not done already
         volatile uint32_t* const nrf_uicr_nfcpins = (uint32_t *) NRF52833_UCIR_NFCPINS_ADDRESS;
         if ((*nrf_uicr_nfcpins & NRF52833_UICR_NFCPINS_PROTECT_Msk) ==
-                (NRF52833_UICR_NFCPINS_PROTECT_NFC << NRF52833_UICR_NFCPINS_PROTECT_Pos)) {
+            (NRF52833_UICR_NFCPINS_PROTECT_NFC << NRF52833_UICR_NFCPINS_PROTECT_Pos))
+        {
             nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_WRITE);
             *nrf_uicr_nfcpins &= ~NRF52833_UICR_NFCPINS_PROTECT_Msk;
             while (!nrf_nvmc_ready_check(NRF_NVMC));
@@ -80,7 +82,9 @@ void gpio_init_combined_int()
             // TODO: This does not seem to reset the system correctly, it hangs somewhere
             NVIC_SystemReset();
         }
-    } else {
+    }
+    else
+    {
         // nRF52820
         COMBINED_SENSOR_INT_PIN = NRF52820_COMBINED_SENSOR_INT_PIN;
     }

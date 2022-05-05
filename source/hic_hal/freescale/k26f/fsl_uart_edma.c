@@ -382,7 +382,7 @@ status_t UART_TransferGetReceiveCountEDMA(UART_Type *base, uart_edma_handle_t *h
 
     *count = handle->rxDataSizeAll -
              (uint32_t)handle->nbytes *
-                 EDMA_GetRemainingMajorLoopCount(handle->rxEdmaHandle->base, handle->rxEdmaHandle->channel);
+             EDMA_GetRemainingMajorLoopCount(handle->rxEdmaHandle->base, handle->rxEdmaHandle->channel);
 
     return kStatus_Success;
 }
@@ -413,7 +413,7 @@ status_t UART_TransferGetSendCountEDMA(UART_Type *base, uart_edma_handle_t *hand
 
     *count = handle->txDataSizeAll -
              (uint32_t)handle->nbytes *
-                 EDMA_GetRemainingMajorLoopCount(handle->txEdmaHandle->base, handle->txEdmaHandle->channel);
+             EDMA_GetRemainingMajorLoopCount(handle->txEdmaHandle->base, handle->txEdmaHandle->channel);
 
     return kStatus_Success;
 }

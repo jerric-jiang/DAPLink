@@ -142,8 +142,8 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     {
         // Must use kFlashMargin_User, or kFlashMargin_Factory for verify program
         status = FLASH_VerifyProgram(&g_flash, adr, sz,
-                              buf, kFLASH_marginValueUser,
-                              NULL, NULL);
+                                     buf, kFLASH_marginValueUser,
+                                     NULL, NULL);
     }
     cortex_int_restore(state);
     return status;

@@ -722,9 +722,9 @@ status_t UART_TransferGetSendCount(UART_Type *base, uart_handle_t *handle, uint3
  * @retval kStatus_InvalidArgument Invalid argument.
  */
 status_t UART_TransferReceiveNonBlocking(UART_Type *base,
-                                         uart_handle_t *handle,
-                                         uart_transfer_t *xfer,
-                                         size_t *receivedBytes);
+        uart_handle_t *handle,
+        uart_transfer_t *xfer,
+        size_t *receivedBytes);
 
 /*!
  * @brief Aborts the interrupt-driven data receiving.

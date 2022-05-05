@@ -26,7 +26,8 @@ static void busy_wait(uint32_t cycles)
     volatile uint32_t i;
     i = cycles;
 
-    while (i > 0) {
+    while (i > 0)
+    {
         i--;
     }
 }

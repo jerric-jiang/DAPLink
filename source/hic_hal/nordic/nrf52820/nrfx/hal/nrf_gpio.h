@@ -176,8 +176,8 @@ NRF_STATIC_INLINE void nrf_gpio_range_cfg_output(uint32_t pin_range_start, uint3
  * @param pull_config      State of the pin range pull resistor (no pull, pulled down, or pulled high).
  */
 NRF_STATIC_INLINE void nrf_gpio_range_cfg_input(uint32_t            pin_range_start,
-                                                uint32_t            pin_range_end,
-                                                nrf_gpio_pin_pull_t pull_config);
+        uint32_t            pin_range_end,
+        nrf_gpio_pin_pull_t pull_config);
 
 /**
  * @brief Pin configuration function.
@@ -253,8 +253,8 @@ NRF_STATIC_INLINE void nrf_gpio_input_disconnect(uint32_t pin_number);
  * @param sense_config Sense level of the pin (no sense, sense low, or sense high).
  */
 NRF_STATIC_INLINE void nrf_gpio_cfg_sense_input(uint32_t             pin_number,
-                                                nrf_gpio_pin_pull_t  pull_config,
-                                                nrf_gpio_pin_sense_t sense_config);
+        nrf_gpio_pin_pull_t  pull_config,
+        nrf_gpio_pin_sense_t sense_config);
 
 /**
  * @brief Function for configuring sense level for the given GPIO.
@@ -263,7 +263,7 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_sense_input(uint32_t             pin_number,
  * @param sense_config Sense configuration.
  */
 NRF_STATIC_INLINE void nrf_gpio_cfg_sense_set(uint32_t             pin_number,
-                                              nrf_gpio_pin_sense_t sense_config);
+        nrf_gpio_pin_sense_t sense_config);
 
 /**
  * @brief Function for setting the direction for a GPIO pin.
@@ -443,8 +443,8 @@ NRF_STATIC_INLINE void nrf_gpio_port_out_clear(NRF_GPIO_Type * p_reg, uint32_t c
  * @param p_masks    Pointer to output array where port states will be stored.
  */
 NRF_STATIC_INLINE void nrf_gpio_ports_read(uint32_t   start_port,
-                                           uint32_t   length,
-                                           uint32_t * p_masks);
+        uint32_t   length,
+        uint32_t * p_masks);
 
 #if defined(NRF_GPIO_LATCH_PRESENT)
 /**
@@ -455,8 +455,8 @@ NRF_STATIC_INLINE void nrf_gpio_ports_read(uint32_t   start_port,
  * @param p_masks    Pointer to output array where latch states will be stored.
  */
 NRF_STATIC_INLINE void nrf_gpio_latches_read(uint32_t   start_port,
-                                             uint32_t   length,
-                                             uint32_t * p_masks);
+        uint32_t   length,
+        uint32_t * p_masks);
 
 /**
  * @brief Function for reading and immediate clearing latch state of multiple consecutive ports.
@@ -466,8 +466,8 @@ NRF_STATIC_INLINE void nrf_gpio_latches_read(uint32_t   start_port,
  * @param p_masks    Pointer to output array where latch states will be stored.
  */
 NRF_STATIC_INLINE void nrf_gpio_latches_read_and_clear(uint32_t   start_port,
-                                                       uint32_t   length,
-                                                       uint32_t * p_masks);
+        uint32_t   length,
+        uint32_t * p_masks);
 
 /**
  * @brief Function for reading latch state of single pin.
@@ -537,11 +537,13 @@ NRF_STATIC_INLINE NRF_GPIO_Type * nrf_gpio_pin_port_decode(uint32_t * p_pin)
             NRFX_ASSERT(0);
 #if defined(P0_FEATURE_PINS_PRESENT)
         /* FALLTHROUGH */
-        case 0: return NRF_P0;
+        case 0:
+            return NRF_P0;
 #endif
 #if defined(P1_FEATURE_PINS_PRESENT)
         /* FALLTHROUGH */
-        case 1: return NRF_P1;
+        case 1:
+            return NRF_P1;
 #endif
     }
 }
@@ -557,8 +559,8 @@ NRF_STATIC_INLINE void nrf_gpio_range_cfg_output(uint32_t pin_range_start, uint3
 
 
 NRF_STATIC_INLINE void nrf_gpio_range_cfg_input(uint32_t            pin_range_start,
-                                                uint32_t            pin_range_end,
-                                                nrf_gpio_pin_pull_t pull_config)
+        uint32_t            pin_range_end,
+        nrf_gpio_pin_pull_t pull_config)
 {
     for (; pin_range_start <= pin_range_end; pin_range_start++)
     {
@@ -648,8 +650,8 @@ NRF_STATIC_INLINE void nrf_gpio_input_disconnect(uint32_t pin_number)
 
 
 NRF_STATIC_INLINE void nrf_gpio_cfg_sense_input(uint32_t             pin_number,
-                                                nrf_gpio_pin_pull_t  pull_config,
-                                                nrf_gpio_pin_sense_t sense_config)
+        nrf_gpio_pin_pull_t  pull_config,
+        nrf_gpio_pin_sense_t sense_config)
 {
     nrf_gpio_cfg(
         pin_number,
@@ -662,7 +664,7 @@ NRF_STATIC_INLINE void nrf_gpio_cfg_sense_input(uint32_t             pin_number,
 
 
 NRF_STATIC_INLINE void nrf_gpio_cfg_sense_set(uint32_t             pin_number,
-                                              nrf_gpio_pin_sense_t sense_config)
+        nrf_gpio_pin_sense_t sense_config)
 {
     NRF_GPIO_Type * reg = nrf_gpio_pin_port_decode(&pin_number);
     uint32_t cnf = reg->PIN_CNF[pin_number] & ~GPIO_PIN_CNF_SENSE_Msk;
@@ -835,8 +837,8 @@ NRF_STATIC_INLINE void nrf_gpio_port_out_clear(NRF_GPIO_Type * p_reg, uint32_t c
 
 
 NRF_STATIC_INLINE void nrf_gpio_ports_read(uint32_t   start_port,
-                                           uint32_t   length,
-                                           uint32_t * p_masks)
+        uint32_t   length,
+        uint32_t * p_masks)
 {
     NRF_GPIO_Type * gpio_regs[GPIO_COUNT] = GPIO_REG_LIST;
 
@@ -853,8 +855,8 @@ NRF_STATIC_INLINE void nrf_gpio_ports_read(uint32_t   start_port,
 
 #if defined(NRF_GPIO_LATCH_PRESENT)
 NRF_STATIC_INLINE void nrf_gpio_latches_read(uint32_t   start_port,
-                                             uint32_t   length,
-                                             uint32_t * p_masks)
+        uint32_t   length,
+        uint32_t * p_masks)
 {
     NRF_GPIO_Type * gpio_regs[GPIO_COUNT] = GPIO_REG_LIST;
     uint32_t        i;
@@ -867,8 +869,8 @@ NRF_STATIC_INLINE void nrf_gpio_latches_read(uint32_t   start_port,
 }
 
 NRF_STATIC_INLINE void nrf_gpio_latches_read_and_clear(uint32_t   start_port,
-                                                       uint32_t   length,
-                                                       uint32_t * p_masks)
+        uint32_t   length,
+        uint32_t * p_masks)
 {
     NRF_GPIO_Type * gpio_regs[GPIO_COUNT] = GPIO_REG_LIST;
     uint32_t        i;

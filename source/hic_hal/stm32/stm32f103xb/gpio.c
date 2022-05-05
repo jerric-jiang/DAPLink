@@ -32,14 +32,16 @@ static void busy_wait(uint32_t cycles)
     volatile uint32_t i;
     i = cycles;
 
-    while (i > 0) {
+    while (i > 0)
+    {
         i--;
     }
 }
 
 static uint32_t tim1_clk_div(uint32_t apb2clkdiv)
 {
-    switch (apb2clkdiv) {
+    switch (apb2clkdiv)
+    {
         case RCC_CFGR_PPRE2_DIV2:
             return 1;
         case RCC_CFGR_PPRE2_DIV4:
@@ -78,13 +80,15 @@ static void output_clock_enable(void)
     __HAL_RCC_TIM1_CLK_ENABLE();
 
     ret = HAL_TIM_PWM_DeInit(&timer);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         util_assert(0);
         return;
     }
 
     ret = HAL_TIM_PWM_Init(&timer);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         util_assert(0);
         return;
     }
@@ -97,14 +101,16 @@ static void output_clock_enable(void)
     pwm_config.OCIdleState = TIM_OCIDLESTATE_RESET;
     pwm_config.OCNIdleState = TIM_OCIDLESTATE_RESET;
     ret = HAL_TIM_PWM_ConfigChannel(&timer, &pwm_config, TIM_CHANNEL_1);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         util_assert(0);
         return;
     }
 
     __HAL_TIM_SET_COMPARE(&timer, TIM_CHANNEL_1, period / 2);
     ret = HAL_TIM_PWM_Start(&timer, TIM_CHANNEL_1);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         util_assert(0);
         return;
     }

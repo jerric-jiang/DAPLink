@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t lpc54018_flash_prog_blob[] = {
+static const uint32_t lpc54018_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4d70b570, 0x444d4c70, 0x0110f105, 0xf0004620, 0x69e1fa08, 0x0f20f011, 0x7d21d0fb, 0x0f01f011,
     0xbd70d1f2, 0x4d67b570, 0x444d4c67, 0x0120f105, 0xf0004620, 0xf105f9f6, 0x46200128, 0xf9f1f000,
@@ -73,11 +74,13 @@ static const uint32_t flash_size = 0x01000000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0x10000000, 0x00001000},
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000091, // Init
     0x20000125, // UnInit
     0x20000129, // EraseChip

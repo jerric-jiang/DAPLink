@@ -61,7 +61,8 @@ COMPILER_ASSERT(GPIO_CHECK_PRESENT_NRF52820(LED_PWR));
 void sdk_init()
 {
 #ifdef NRF528XX_DYNAMIC_PIN
-    if (NRF_FICR->INFO.PART == 0x52833) {
+    if (NRF_FICR->INFO.PART == 0x52833)
+    {
         // nRF52833
         sw_reset_pin = NRF52833_RESET_PIN;
         led_usb_pin = NRF52833_USB_LED_PIN;
@@ -70,7 +71,9 @@ void sdk_init()
         uart_rx_pin = NRF52833_UART_RX_PIN;
         i2c_scl_pin = NRF52833_I2C_SCL_PIN;
         i2c_sda_pin = NRF52833_I2C_SDA_PIN;
-    } else {
+    }
+    else
+    {
         // nRF52820
         sw_reset_pin = NRF52820_RESET_PIN;
         led_usb_pin = NRF52820_USB_LED_PIN;
@@ -82,7 +85,8 @@ void sdk_init()
     }
 #endif
 
-    if (!nrfx_clock_hfclk_is_running()) {
+    if (!nrfx_clock_hfclk_is_running())
+    {
         nrfx_clock_hfclk_start();
     }
 }

@@ -28,7 +28,8 @@
 extern "C" {
 #endif
 
-typedef enum {
+typedef enum
+{
     PWR_SOURCE_NONE = 0,
     PWR_USB_ONLY,
     PWR_BATT_ONLY,

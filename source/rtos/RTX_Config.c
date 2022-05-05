@@ -160,7 +160,8 @@ __task void os_idle_demon(void)
 {
     /* The idle demon is a system task, running when no other task is ready */
     /* to run. The 'os_xxx' function calls are not allowed from this task.  */
-    for (;;) {
+    for (;;)
+    {
         /* HERE: include optional user code to be executed when no task runs.*/
     }
 }
@@ -182,7 +183,8 @@ void os_error(U32 err_code)
 {
     /* This function is called when a runtime error is detected. Parameter */
     /* 'err_code' holds the runtime error code (defined in RTL.H).         */
-    switch (err_code) {
+    switch (err_code)
+    {
         case OS_ERR_STK_OVF:
             util_assert(0);
             break;

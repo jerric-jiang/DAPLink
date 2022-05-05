@@ -26,13 +26,15 @@
 #include <stdbool.h>
 
 // LED state
-typedef enum main_led_state {
+typedef enum main_led_state
+{
     MAIN_LED_DEF = 0,
     MAIN_LED_FLASH,
     MAIN_LED_FLASH_PERMANENT
 } main_led_state_t;
 
-typedef enum main_usb_connect {
+typedef enum main_usb_connect
+{
     USB_DISCONNECTED,
     USB_CONNECTING,
     USB_CONNECTED,

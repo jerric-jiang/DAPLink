@@ -1119,7 +1119,8 @@ status_t CLOCK_TrimInternalRefClk(uint32_t extFreq, uint32_t desireFreq, uint32_
     uint32_t actv;  /* Auto trim value. */
     uint8_t mcg_sc;
 
-    static const uint32_t trimRange[2][2] = {
+    static const uint32_t trimRange[2][2] =
+    {
         /*     Min           Max      */
         {TRIM_SIRC_MIN, TRIM_SIRC_MAX}, /* Slow IRC. */
         {TRIM_FIRC_MIN, TRIM_FIRC_MAX}  /* Fast IRC. */
@@ -1319,7 +1320,7 @@ status_t CLOCK_SetFeiMode(mcg_dmx32_t dmx32, mcg_drs_t drs, void (*fllStableDela
     /* Set CLKS and IREFS. */
     MCG->C1 =
         ((MCG->C1 & ~(MCG_C1_CLKS_MASK | MCG_C1_IREFS_MASK))) | (MCG_C1_CLKS(kMCG_ClkOutSrcOut)        /* CLKS = 0 */
-                                                                 | MCG_C1_IREFS(kMCG_FllSrcInternal)); /* IREFS = 1 */
+                | MCG_C1_IREFS(kMCG_FllSrcInternal)); /* IREFS = 1 */
 
     /* Wait and check status. */
     while (kMCG_FllSrcInternal != MCG_S_IREFST_VAL)
@@ -1452,7 +1453,7 @@ status_t CLOCK_SetFbiMode(mcg_dmx32_t dmx32, mcg_drs_t drs, void (*fllStableDela
     /* Set CLKS and IREFS. */
     MCG->C1 =
         ((MCG->C1 & ~(MCG_C1_CLKS_MASK | MCG_C1_IREFS_MASK)) | (MCG_C1_CLKS(kMCG_ClkOutSrcInternal)    /* CLKS = 1 */
-                                                                | MCG_C1_IREFS(kMCG_FllSrcInternal))); /* IREFS = 1 */
+                | MCG_C1_IREFS(kMCG_FllSrcInternal))); /* IREFS = 1 */
 
     /* Wait and check status. */
     while (kMCG_FllSrcInternal != MCG_S_IREFST_VAL)
@@ -1729,7 +1730,7 @@ status_t CLOCK_BootToBlpeMode(mcg_oscsel_t oscsel)
     /* Set to FBE mode. */
     MCG->C1 =
         ((MCG->C1 & ~(MCG_C1_CLKS_MASK | MCG_C1_IREFS_MASK)) | (MCG_C1_CLKS(kMCG_ClkOutSrcExternal)    /* CLKS = 2 */
-                                                                | MCG_C1_IREFS(kMCG_FllSrcExternal))); /* IREFS = 0 */
+                | MCG_C1_IREFS(kMCG_FllSrcExternal))); /* IREFS = 0 */
 
     /* Wait for MCG_S[CLKST] and MCG_S[IREFST]. */
     while ((MCG->S & (MCG_S_IREFST_MASK | MCG_S_CLKST_MASK)) !=
@@ -1769,23 +1770,40 @@ status_t CLOCK_BootToPeeMode(mcg_oscsel_t oscsel, mcg_pll_clk_select_t pllcs, mc
    3. Current mode PBE, next mode is mcgModeMatrix[PBE][PEE] = PEE, so swith to PEE.
    Thus the MCG mode has changed from FEI to PEE.
  */
-static const mcg_mode_t mcgModeMatrix[8][8] = {
-    {kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE,
-     kMCG_ModeFBE}, /* FEI */
-    {kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeBLPI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE,
-     kMCG_ModeFBE}, /* FBI */
-    {kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeBLPI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFBI,
-     kMCG_ModeFBI}, /* BLPI */
-    {kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE,
-     kMCG_ModeFBE}, /* FEE */
-    {kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeBLPE, kMCG_ModePBE,
-     kMCG_ModePBE}, /* FBE */
-    {kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeBLPE, kMCG_ModePBE,
-     kMCG_ModePBE}, /* BLPE */
-    {kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeBLPE, kMCG_ModePBE,
-     kMCG_ModePEE}, /* PBE */
-    {kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE,
-     kMCG_ModePBE} /* PEE */
+static const mcg_mode_t mcgModeMatrix[8][8] =
+{
+    {
+        kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE,
+        kMCG_ModeFBE
+    }, /* FEI */
+    {
+        kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeBLPI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE,
+        kMCG_ModeFBE
+    }, /* FBI */
+    {
+        kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeBLPI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFBI,
+        kMCG_ModeFBI
+    }, /* BLPI */
+    {
+        kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE,
+        kMCG_ModeFBE
+    }, /* FEE */
+    {
+        kMCG_ModeFEI, kMCG_ModeFBI, kMCG_ModeFBI, kMCG_ModeFEE, kMCG_ModeFBE, kMCG_ModeBLPE, kMCG_ModePBE,
+        kMCG_ModePBE
+    }, /* FBE */
+    {
+        kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeBLPE, kMCG_ModePBE,
+        kMCG_ModePBE
+    }, /* BLPE */
+    {
+        kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeFBE, kMCG_ModeBLPE, kMCG_ModePBE,
+        kMCG_ModePEE
+    }, /* PBE */
+    {
+        kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE, kMCG_ModePBE,
+        kMCG_ModePBE
+    } /* PEE */
     /*    FEI           FBI           BLPI           FEE           FBE           BLPE           PBE           PEE */
 };
 

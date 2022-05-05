@@ -70,7 +70,8 @@ extern "C" {
 /**
  * Structure type for the Real-Time Clock module registers allowing direct 32-bit access to each register.
  */
- typedef struct {
+typedef struct
+{
     __IO uint32_t ctrl;                                 /**< <tt>\b 0x0000: </tt> RTC_CTRL Register - RTC Timer Control                                                          */
     __IO uint32_t timer;                                /**< <tt>\b 0x0004: </tt> RTC_TIMER Register - RTC Timer Count Value                                            */
     __IO uint32_t comp[2];                              /**< <tt>\b 0x0008-0x000C: </tt> RTC_COMP0/RTC_COMP1 Registers - RTC Time of Day Alarm [0..1] Compare Register */
@@ -88,7 +89,8 @@ extern "C" {
 /**
  * Structure type for access to the RTC CFG hardware.
  */
-typedef struct {
+typedef struct
+{
     __IO uint32_t nano_cntr;                            /**< <tt>\b 0x0000: </tt> - RTCCFG_NANO_CNTR - Nano Oscillator Counter Read Register    */
     __IO uint32_t clk_ctrl;                             /**< <tt>\b 0x0004: </tt> - RTCCFG_CLK_CTRL - RTC Clock Control Settings                */
     __R  uint32_t rsv008;                               /**< <tt>\b 0x0008: </tt> - RESERVED                                                    */

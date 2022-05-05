@@ -64,7 +64,8 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __IO uint32_t clk_config;                           /*  0x0000          System Clock Configuration                                                   */
     __IO uint32_t clk_ctrl;                             /*  0x0004          System Clock Controls                                                        */
     __IO uint32_t intfl;                                /*  0x0008          Interrupt Flags                                                              */

@@ -62,20 +62,29 @@ uint32_t SystemCoreClock = RO_FREQ;
 
 void SystemCoreClockUpdate(void)
 {
-    if(MXC_PWRSEQ->reg0 & MXC_F_PWRSEQ_REG0_PWR_RCEN_RUN) {
+    if (MXC_PWRSEQ->reg0 & MXC_F_PWRSEQ_REG0_PWR_RCEN_RUN)
+    {
         /* 4 MHz source */
-        if(MXC_PWRSEQ->reg3 & MXC_F_PWRSEQ_REG3_PWR_RC_DIV) {
+        if (MXC_PWRSEQ->reg3 & MXC_F_PWRSEQ_REG3_PWR_RC_DIV)
+        {
             SystemCoreClock = (4000000 / (0x1 << ((MXC_PWRSEQ->reg3 & MXC_F_PWRSEQ_REG3_PWR_RC_DIV) >>
-                MXC_F_PWRSEQ_REG3_PWR_RC_DIV_POS)));
-        } else {
+                                                  MXC_F_PWRSEQ_REG3_PWR_RC_DIV_POS)));
+        }
+        else
+        {
             SystemCoreClock = 4000000;
         }
-    } else {
+    }
+    else
+    {
         /* 96 MHz source */
-        if(MXC_PWRSEQ->reg3 & MXC_F_PWRSEQ_REG3_PWR_RO_DIV) {
+        if (MXC_PWRSEQ->reg3 & MXC_F_PWRSEQ_REG3_PWR_RO_DIV)
+        {
             SystemCoreClock = (RO_FREQ / (0x1 << ((MXC_PWRSEQ->reg3 & MXC_F_PWRSEQ_REG3_PWR_RO_DIV) >>
-                MXC_F_PWRSEQ_REG3_PWR_RO_DIV_POS)));
-        } else {
+                                                  MXC_F_PWRSEQ_REG3_PWR_RO_DIV_POS)));
+        }
+        else
+        {
             SystemCoreClock = RO_FREQ;
         }
     }
@@ -91,7 +100,7 @@ void CLKMAN_TrimRO(void)
     MXC_PWRSEQ->reg0 |= MXC_F_PWRSEQ_REG0_PWR_RTCEN_RUN;
 
     /* Wait for RTC warm-up */
-    while(MXC_RTCCFG->osc_ctrl & MXC_F_RTC_OSC_CTRL_OSC_WARMUP_ENABLE) {}
+    while (MXC_RTCCFG->osc_ctrl & MXC_F_RTC_OSC_CTRL_OSC_WARMUP_ENABLE) {}
 
     /* Step 2: enable RO calibration complete interrupt */
     MXC_ADC->intr |= MXC_F_ADC_INTR_RO_CAL_DONE_IE;
@@ -116,7 +125,7 @@ void CLKMAN_TrimRO(void)
     MXC_ADC->ro_cal0 |= MXC_F_ADC_RO_CAL0_RO_CAL_ATOMIC;
 
     /* Step 9: waiting for ro_cal_done flag */
-    while(!(MXC_ADC->intr & MXC_F_ADC_INTR_RO_CAL_DONE_IF));
+    while (!(MXC_ADC->intr & MXC_F_ADC_INTR_RO_CAL_DONE_IF));
 
     /* Step 10: stop frequency calibration */
     MXC_ADC->ro_cal0 &= ~MXC_F_ADC_RO_CAL0_RO_CAL_RUN;
@@ -132,7 +141,8 @@ void CLKMAN_TrimRO(void)
                        ((trim << MXC_F_PWRSEQ_REG6_PWR_TRIM_OSC_VREF_POS) & MXC_F_PWRSEQ_REG6_PWR_TRIM_OSC_VREF);
 
     /* Step 14: restore RTC status */
-    if (!running) {
+    if (!running)
+    {
         MXC_PWRSEQ->reg0 &= ~MXC_F_PWRSEQ_REG0_PWR_RTCEN_RUN;
     }
 
@@ -208,11 +218,14 @@ __weak void SystemInit(void)
     /* Copy trim information from shadow registers into power manager registers */
     /* NOTE: Checks have been added to prevent bad/missing trim values from being loaded */
     if ((MXC_FLC->ctrl & MXC_F_FLC_CTRL_INFO_BLOCK_VALID) &&
-            (MXC_TRIM->for_pwr_reg5 != 0xffffffff) &&
-            (MXC_TRIM->for_pwr_reg6 != 0xffffffff)) {
+        (MXC_TRIM->for_pwr_reg5 != 0xffffffff) &&
+        (MXC_TRIM->for_pwr_reg6 != 0xffffffff))
+    {
         MXC_PWRSEQ->reg5 = MXC_TRIM->for_pwr_reg5;
         MXC_PWRSEQ->reg6 = MXC_TRIM->for_pwr_reg6;
-    } else {
+    }
+    else
+    {
         /* No valid info block, use some reasonable defaults */
         MXC_PWRSEQ->reg6 &= ~MXC_F_PWRSEQ_REG6_PWR_TRIM_OSC_VREF;
         MXC_PWRSEQ->reg6 |= (0x1e0 << MXC_F_PWRSEQ_REG6_PWR_TRIM_OSC_VREF_POS);
@@ -220,9 +233,9 @@ __weak void SystemInit(void)
 
     /* Improve flash access timing */
     MXC_FLC->perform |= (/*MXC_F_FLC_PERFORM_EN_BACK2BACK_RDS | */
-                         MXC_F_FLC_PERFORM_EN_MERGE_GRAB_GNT |
-                         MXC_F_FLC_PERFORM_AUTO_TACC |
-                         MXC_F_FLC_PERFORM_AUTO_CLKDIV);
+                            MXC_F_FLC_PERFORM_EN_MERGE_GRAB_GNT |
+                            MXC_F_FLC_PERFORM_AUTO_TACC |
+                            MXC_F_FLC_PERFORM_AUTO_CLKDIV);
 
     /* First, eliminate the unnecessary RTC handshake between clock domains. Must be set as a pair. */
     MXC_RTCTMR->ctrl |= (MXC_F_RTC_CTRL_USE_ASYNC_FLAGS |
@@ -234,18 +247,21 @@ __weak void SystemInit(void)
 
     /* Clear the GPIO WUD event if not waking up from LP0 */
     /* this is necessary because WUD flops come up in undetermined state out of POR or SRST*/
-    if(MXC_PWRSEQ->reg0 & MXC_F_PWRSEQ_REG0_PWR_FIRST_BOOT ||
-       !(MXC_PWRMAN->pwr_rst_ctrl & MXC_F_PWRMAN_PWR_RST_CTRL_POR)) {
+    if (MXC_PWRSEQ->reg0 & MXC_F_PWRSEQ_REG0_PWR_FIRST_BOOT ||
+        !(MXC_PWRMAN->pwr_rst_ctrl & MXC_F_PWRMAN_PWR_RST_CTRL_POR))
+    {
         /* Clear GPIO WUD event and configuration registers, globally */
         MXC_PWRSEQ->reg1 |= (MXC_F_PWRSEQ_REG1_PWR_CLR_IO_EVENT_LATCH |
-			     MXC_F_PWRSEQ_REG1_PWR_CLR_IO_CFG_LATCH);
+                             MXC_F_PWRSEQ_REG1_PWR_CLR_IO_CFG_LATCH);
         MXC_PWRSEQ->reg1 &= ~(MXC_F_PWRSEQ_REG1_PWR_CLR_IO_EVENT_LATCH |
-			      MXC_F_PWRSEQ_REG1_PWR_CLR_IO_CFG_LATCH);
-    } else {
-				/* Unfreeze the GPIO by clearing MBUS_GATE, when returning from LP0 */
-				MXC_PWRSEQ->reg1 &= ~(MXC_F_PWRSEQ_REG1_PWR_MBUS_GATE);
-				/* LP0 wake-up: Turn off special switch to eliminate ~50nA of leakage on VDD12 */
-				MXC_PWRSEQ->reg1 &= ~MXC_F_PWRSEQ_REG1_PWR_SRAM_NWELL_SW;
+                              MXC_F_PWRSEQ_REG1_PWR_CLR_IO_CFG_LATCH);
+    }
+    else
+    {
+        /* Unfreeze the GPIO by clearing MBUS_GATE, when returning from LP0 */
+        MXC_PWRSEQ->reg1 &= ~(MXC_F_PWRSEQ_REG1_PWR_MBUS_GATE);
+        /* LP0 wake-up: Turn off special switch to eliminate ~50nA of leakage on VDD12 */
+        MXC_PWRSEQ->reg1 &= ~MXC_F_PWRSEQ_REG1_PWR_SRAM_NWELL_SW;
     }
 
     /* Turn on retention regulator */
@@ -268,9 +284,9 @@ __weak void SystemInit(void)
 
     /* Improve wake-up time by changing ROSEL to 140ns */
     MXC_PWRSEQ->reg3 = (1 << MXC_F_PWRSEQ_REG3_PWR_ROSEL_POS) |
-        (1 << MXC_F_PWRSEQ_REG3_PWR_FAILSEL_POS) |
-        (MXC_PWRSEQ->reg3 & ~(MXC_F_PWRSEQ_REG3_PWR_ROSEL |
-           MXC_F_PWRSEQ_REG3_PWR_FLTRROSEL));
+                       (1 << MXC_F_PWRSEQ_REG3_PWR_FAILSEL_POS) |
+                       (MXC_PWRSEQ->reg3 & ~(MXC_F_PWRSEQ_REG3_PWR_ROSEL |
+                               MXC_F_PWRSEQ_REG3_PWR_FLTRROSEL));
 
     /* Enable RTOS Mode: Enable 32kHz clock synchronizer to SysTick external clock input */
     MXC_CLKMAN->clk_ctrl |= MXC_F_CLKMAN_CLK_CTRL_RTOS_MODE;

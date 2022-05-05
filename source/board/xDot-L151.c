@@ -30,22 +30,26 @@ static uint8_t xdot_set_state(target_state_t state)
 {
     uint32_t val;
 
-    if (state == RESET_PROGRAM) {
+    if (state == RESET_PROGRAM)
+    {
         swd_init();
         swd_set_target_reset(1);
         osDelay(2);
 
-        if (!swd_init_debug()) {
+        if (!swd_init_debug())
+        {
             return 0;
         }
 
         // Enable debug
-        if (!swd_write_word(DBG_HCSR, DBGKEY | C_HALT | C_DEBUGEN)) {
+        if (!swd_write_word(DBG_HCSR, DBGKEY | C_HALT | C_DEBUGEN))
+        {
             return 0;
         }
 
         // Enable halt on reset
-        if (!swd_write_word(DBG_EMCR, VC_CORERESET)) {
+        if (!swd_write_word(DBG_EMCR, VC_CORERESET))
+        {
             return 0;
         }
 
@@ -53,24 +57,30 @@ static uint8_t xdot_set_state(target_state_t state)
         swd_set_target_reset(0);
         osDelay(2);
 
-        do {
-            if (!swd_read_word(DBG_HCSR, &val)) {
+        do
+        {
+            if (!swd_read_word(DBG_HCSR, &val))
+            {
                 return 0;
             }
         } while ((val & S_HALT) == 0);
 
         // Disable halt on reset
-        if (!swd_write_word(DBG_EMCR, 0)) {
+        if (!swd_write_word(DBG_EMCR, 0))
+        {
             return 0;
         }
-    } else {
+    }
+    else
+    {
         return swd_set_target_state_hw(state);
     }
 
     return 1;
 }
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "0350",
     .family_id = kStub_HWReset_FamilyID,

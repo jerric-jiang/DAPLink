@@ -120,7 +120,7 @@ NRF_STATIC_INLINE bool nrf_nvmc_write_ready_check(NRF_NVMC_Type const * p_reg);
  * @param[in] mode  Desired operating mode for NVMC.
  */
 NRF_STATIC_INLINE void nrf_nvmc_mode_set(NRF_NVMC_Type * p_reg,
-                                         nrf_nvmc_mode_t mode);
+        nrf_nvmc_mode_t mode);
 
 #if defined(NVMC_CONFIGNS_WEN_Msk) || defined(__NRFX_DOXYGEN__)
 /**
@@ -130,7 +130,7 @@ NRF_STATIC_INLINE void nrf_nvmc_mode_set(NRF_NVMC_Type * p_reg,
  * @param[in] mode  Desired operating mode for NVMC.
  */
 NRF_STATIC_INLINE void nrf_nvmc_nonsecure_mode_set(NRF_NVMC_Type *    p_reg,
-                                                   nrf_nvmc_ns_mode_t mode);
+        nrf_nvmc_ns_mode_t mode);
 #endif
 
 /**
@@ -143,7 +143,7 @@ NRF_STATIC_INLINE void nrf_nvmc_nonsecure_mode_set(NRF_NVMC_Type *    p_reg,
  * @param[in] page_addr Address of the first word of the page to erase.
  */
 NRF_STATIC_INLINE void nrf_nvmc_page_erase_start(NRF_NVMC_Type * p_reg,
-                                                 uint32_t        page_addr);
+        uint32_t        page_addr);
 
 #if defined(NVMC_ERASEUICR_ERASEUICR_Msk) || defined(__NRFX_DOXYGEN__)
 /**
@@ -171,7 +171,7 @@ NRF_STATIC_INLINE void nrf_nvmc_erase_all_start(NRF_NVMC_Type * p_reg);
  * @param[in] duration_ms Page partial erase duration in milliseconds.
  */
 NRF_STATIC_INLINE void nrf_nvmc_partial_erase_duration_set(NRF_NVMC_Type * p_reg,
-                                                           uint32_t        duration_ms);
+        uint32_t        duration_ms);
 
 /**
  * @brief Function for getting the current setting for the page partial erase duration.
@@ -191,7 +191,7 @@ NRF_STATIC_INLINE uint32_t nrf_nvmc_partial_erase_duration_get(NRF_NVMC_Type con
  * @param[in] page_addr Address of the first word of the page to erase.
  */
 NRF_STATIC_INLINE void nrf_nvmc_page_partial_erase_start(NRF_NVMC_Type * p_reg,
-                                                         uint32_t        page_addr);
+        uint32_t        page_addr);
 #endif // defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
 
 #if defined(NVMC_FEATURE_CACHE_PRESENT)
@@ -206,7 +206,7 @@ NRF_STATIC_INLINE void nrf_nvmc_page_partial_erase_start(NRF_NVMC_Type * p_reg,
  * @param[in] config ICache configuration.
  */
 NRF_STATIC_INLINE void nrf_nvmc_icache_config_set(NRF_NVMC_Type *          p_reg,
-                                                  nrf_nvmc_icache_config_t config);
+        nrf_nvmc_icache_config_t config);
 
 /**
  * @brief Function for checking if ICache is enabled.
@@ -251,7 +251,7 @@ NRF_STATIC_INLINE uint32_t nrf_nvmc_icache_miss_get(NRF_NVMC_Type const * p_reg)
  *
  * @param[in] p_reg Pointer to the structure of registers of the peripheral.
  */
- NRF_STATIC_INLINE void nrf_nvmc_icache_hit_miss_reset(NRF_NVMC_Type * p_reg);
+NRF_STATIC_INLINE void nrf_nvmc_icache_hit_miss_reset(NRF_NVMC_Type * p_reg);
 #endif // defined(NVMC_FEATURE_CACHE_PRESENT)
 
 #ifndef NRF_DECLARE_ONLY
@@ -269,21 +269,21 @@ NRF_STATIC_INLINE bool nrf_nvmc_write_ready_check(NRF_NVMC_Type const * p_reg)
 #endif
 
 NRF_STATIC_INLINE void nrf_nvmc_mode_set(NRF_NVMC_Type * p_reg,
-                                         nrf_nvmc_mode_t mode)
+        nrf_nvmc_mode_t mode)
 {
     p_reg->CONFIG = (uint32_t)mode;
 }
 
 #if defined(NVMC_CONFIGNS_WEN_Msk)
 NRF_STATIC_INLINE void nrf_nvmc_nonsecure_mode_set(NRF_NVMC_Type *    p_reg,
-                                                   nrf_nvmc_ns_mode_t mode)
+        nrf_nvmc_ns_mode_t mode)
 {
     p_reg->CONFIGNS = (uint32_t)mode;
 }
 #endif
 
 NRF_STATIC_INLINE void nrf_nvmc_page_erase_start(NRF_NVMC_Type * p_reg,
-                                                 uint32_t        page_addr)
+        uint32_t        page_addr)
 {
 #if defined(NRF51)
     /* On nRF51, the code area can be divided into two regions: CR0 and CR1.
@@ -306,7 +306,7 @@ NRF_STATIC_INLINE void nrf_nvmc_page_erase_start(NRF_NVMC_Type * p_reg,
     *(volatile uint32_t *)page_addr = 0xFFFFFFFF;
     (void)p_reg;
 #else
-    #error "Unknown device."
+#error "Unknown device."
 #endif
 }
 
@@ -324,7 +324,7 @@ NRF_STATIC_INLINE void nrf_nvmc_erase_all_start(NRF_NVMC_Type * p_reg)
 
 #if defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
 NRF_STATIC_INLINE void nrf_nvmc_partial_erase_duration_set(NRF_NVMC_Type * p_reg,
-                                                           uint32_t        duration_ms)
+        uint32_t        duration_ms)
 {
     p_reg->ERASEPAGEPARTIALCFG = duration_ms;
 }
@@ -335,21 +335,21 @@ NRF_STATIC_INLINE uint32_t nrf_nvmc_partial_erase_duration_get(NRF_NVMC_Type con
 }
 
 NRF_STATIC_INLINE void nrf_nvmc_page_partial_erase_start(NRF_NVMC_Type * p_reg,
-                                                         uint32_t        page_addr)
+        uint32_t        page_addr)
 {
 #if defined(NVMC_ERASEPAGEPARTIAL_ERASEPAGEPARTIAL_Msk)
     p_reg->ERASEPAGEPARTIAL = page_addr;
 #elif defined(NRF9160_XXAA) || defined(NRF5340_XXAA_APPLICATION) || defined(NRF5340_XXAA_NETWORK)
     nrf_nvmc_page_erase_start(p_reg, page_addr);
 #else
-    #error "Unknown device."
+#error "Unknown device."
 #endif
 }
 #endif // defined(NRF_NVMC_PARTIAL_ERASE_PRESENT)
 
 #if defined(NVMC_FEATURE_CACHE_PRESENT)
 NRF_STATIC_INLINE void nrf_nvmc_icache_config_set(NRF_NVMC_Type *          p_reg,
-                                                  nrf_nvmc_icache_config_t config)
+        nrf_nvmc_icache_config_t config)
 {
 #if defined(NRF5340_XXAA_NETWORK) || defined(NRF9160_XXAA)
     // Apply workaround for the anomalies:

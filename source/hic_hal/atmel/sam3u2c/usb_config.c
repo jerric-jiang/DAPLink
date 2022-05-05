@@ -418,7 +418,7 @@
 #define USBD_EP_NUM_CALC6           MAX(USBD_EP_NUM_CALC4, USBD_EP_NUM_CALC5)
 #define USBD_EP_NUM_CALC7           MAX((USBD_BULK_ENABLE*(USBD_BULK_EP_BULKIN)), (USBD_BULK_ENABLE*(USBD_BULK_EP_BULKOUT)))
 #define USBD_EP_NUM                 MAX(USBD_EP_NUM_CALC6, USBD_EP_NUM_CALC7)
- 
+
 #if (USBD_EP_NUM > 6)
 #error "SAM3U only have 7 endpoints including EP0!"
 #endif

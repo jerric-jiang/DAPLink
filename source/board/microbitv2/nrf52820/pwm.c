@@ -75,14 +75,20 @@ void pwm_deinit_pins()
 
 void pwm_set_dutycycle(uint8_t duty)
 {
-    if (pwm_duty != duty) {
-        if (duty == 0) {
+    if (pwm_duty != duty)
+    {
+        if (duty == 0)
+        {
             pwm_stop();
             gpio_clear(GPIO_REG(LED_PWR), GPIO_IDX(LED_PWR));
-        } else if (duty == 255) {
+        }
+        else if (duty == 255)
+        {
             pwm_stop();
             gpio_set(GPIO_REG(LED_PWR), GPIO_IDX(LED_PWR));
-        } else {
+        }
+        else
+        {
             pwm_configure();
             PWM_TIMER->CC[PWM_CC_MARK] = PWM_DUTY_TO_COUNT(duty);
             pwm_start();
@@ -94,7 +100,8 @@ void pwm_set_dutycycle(uint8_t duty)
 
 static void pwm_stop()
 {
-    if (pwm_duty != 0 && pwm_duty != 255) {
+    if (pwm_duty != 0 && pwm_duty != 255)
+    {
         NVIC_DisableIRQ(PWM_IRQ);
         NRF_PPI->CHENCLR = NRF_PPI->CHENSET;
         PWM_TIMER->TASKS_STOP = 1;
@@ -110,7 +117,8 @@ static void pwm_stop()
 
 static void pwm_start()
 {
-    if (pwm_duty == 0 || pwm_duty == 255) {
+    if (pwm_duty == 0 || pwm_duty == 255)
+    {
         NVIC_EnableIRQ(PWM_IRQ);
         NRF_PPI->CHENSET = (1 << PWM_PPI_CLR) | (1 << PWM_PPI_SET);
         PWM_TIMER->TASKS_CLEAR = 1;
@@ -120,7 +128,8 @@ static void pwm_start()
 
 static void pwm_configure()
 {
-    if (pwm_duty == 0 || pwm_duty == 255) {
+    if (pwm_duty == 0 || pwm_duty == 255)
+    {
         PWM_TIMER->BITMODE          = TIMER_BITMODE_BITMODE_32Bit << TIMER_BITMODE_BITMODE_Pos;
         PWM_TIMER->PRESCALER        = PWM_PRESCALER;
         PWM_TIMER->SHORTS           = TIMER_SHORTS_COMPARE0_CLEAR_Msk << PWM_CC_END;
@@ -129,8 +138,8 @@ static void pwm_configure()
         PWM_TIMER->CC[PWM_CC_END]   = PWM_COUNT_MAX;
 
         NRF_GPIOTE->CONFIG[PWM_GPIOTE_CH] = LED_PWR                         << GPIOTE_CONFIG_PSEL_Pos       |
-                                            GPIOTE_CONFIG_MODE_Task         << GPIOTE_CONFIG_MODE_Pos       | 
-                                            GPIOTE_CONFIG_POLARITY_Toggle   << GPIOTE_CONFIG_POLARITY_Pos   | 
+                                            GPIOTE_CONFIG_MODE_Task         << GPIOTE_CONFIG_MODE_Pos       |
+                                            GPIOTE_CONFIG_POLARITY_Toggle   << GPIOTE_CONFIG_POLARITY_Pos   |
                                             GPIOTE_CONFIG_OUTINIT_High << GPIOTE_CONFIG_OUTINIT_Pos;
 
         NRF_PPI->CH[PWM_PPI_CLR].EEP = (uint32_t)&PWM_TIMER->EVENTS_COMPARE[PWM_CC_MARK];

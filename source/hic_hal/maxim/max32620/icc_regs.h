@@ -64,7 +64,8 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __IO uint32_t id;                                   /*  0x0000          Cache ID Register (INTERNAL USE ONLY)                                        */
     __IO uint32_t mem_cfg;                              /*  0x0004          Memory Configuration Register                                                */
     __R  uint32_t rsv008[62];                           /*  0x0008-0x00FC                                                                                */

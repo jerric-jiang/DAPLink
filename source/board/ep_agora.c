@@ -24,7 +24,8 @@
 
 extern target_cfg_t target_device_nrf52840;
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .flags = kEnablePageErase,
     .board_id = "2600",

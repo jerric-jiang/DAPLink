@@ -111,7 +111,7 @@ void configure_syscon(unsigned int pc)
     // CPU0 boot from QSPI/eFlash0/eFlash1/SRAM
     // pc = 0x10000000/0x1A000000/0x1A200000/0x1A400000;
     syscon_writereg(0x058, pc);
-    
+
     // CPU1 boot from QSPI/eFlash0/eFlash1/SRAM
     // pc = 0x10000000/0x1A000000/0x1A200000/0x1A400000;
     syscon_writereg(0x060, pc);
@@ -241,7 +241,7 @@ void BOD_IRQHandler(void)
     // Turn OFF power
     i2cio_power_off();
 
-    while(1)
+    while (1)
     {
         delay(100);
         gpio_set_hid_led(GPIO_LED_ON);

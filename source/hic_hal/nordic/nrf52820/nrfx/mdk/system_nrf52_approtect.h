@@ -40,22 +40,22 @@ extern "C" {
          ENABLE_SECURE_APPROTECT and ENABLE_SECURE_APPROTECT_USER_HANDLING. */
 static inline void nrf52_handle_approtect(void)
 {
-    #if NRF52_ERRATA_249_PRESENT
-        #if defined (ENABLE_APPROTECT)
-            if (nrf52_errata_249())
-            {
-                /* Prevent processor from unlocking APPROTECT soft branch after this point. */
-                NRF_APPROTECT->FORCEPROTECT = APPROTECT_FORCEPROTECT_FORCEPROTECT_Force;
-            }
-        #else
-            if (nrf52_errata_249())
-            {
-                /* Load APPROTECT soft branch from UICR.
-                   If UICR->APPROTECT is disabled, POWER->APPROTECT will be disabled. */
-                NRF_APPROTECT->DISABLE = NRF_UICR->APPROTECT;
-            }
-        #endif
-    #endif
+#if NRF52_ERRATA_249_PRESENT
+#if defined (ENABLE_APPROTECT)
+    if (nrf52_errata_249())
+    {
+        /* Prevent processor from unlocking APPROTECT soft branch after this point. */
+        NRF_APPROTECT->FORCEPROTECT = APPROTECT_FORCEPROTECT_FORCEPROTECT_Force;
+    }
+#else
+    if (nrf52_errata_249())
+    {
+        /* Load APPROTECT soft branch from UICR.
+           If UICR->APPROTECT is disabled, POWER->APPROTECT will be disabled. */
+        NRF_APPROTECT->DISABLE = NRF_UICR->APPROTECT;
+    }
+#endif
+#endif
 }
 
 #ifdef __cplusplus

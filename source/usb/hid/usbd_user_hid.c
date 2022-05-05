@@ -46,10 +46,14 @@ void hid_send_packet()
 {
     uint8_t * sbuf;
     int slen;
-    if (DAP_queue_get_send_buf(&DAP_Cmd_queue, &sbuf, &slen)) {
-        if (slen > USBD_HID_OUTREPORT_MAX_SZ){
+    if (DAP_queue_get_send_buf(&DAP_Cmd_queue, &sbuf, &slen))
+    {
+        if (slen > USBD_HID_OUTREPORT_MAX_SZ)
+        {
             util_assert(0);
-        }else {
+        }
+        else
+        {
             usbd_hid_get_report_trigger(0, sbuf, USBD_HID_OUTREPORT_MAX_SZ);
         }
     }
@@ -67,22 +71,30 @@ int usbd_hid_get_report(U8 rtype, U8 rid, U8 *buf, U8 req)
 {
     uint8_t * sbuf;
     int slen;
-    switch (rtype) {
+    switch (rtype)
+    {
         case HID_REPORT_INPUT:
-            switch (req) {
+            switch (req)
+            {
                 case USBD_HID_REQ_PERIOD_UPDATE:
                     break;
 
                 case USBD_HID_REQ_EP_CTRL:
                 case USBD_HID_REQ_EP_INT:
-                    if (DAP_queue_get_send_buf(&DAP_Cmd_queue, &sbuf, &slen)) {
-                        if (slen > USBD_HID_OUTREPORT_MAX_SZ){
+                    if (DAP_queue_get_send_buf(&DAP_Cmd_queue, &sbuf, &slen))
+                    {
+                        if (slen > USBD_HID_OUTREPORT_MAX_SZ)
+                        {
                             util_assert(0);
-                        }else {
+                        }
+                        else
+                        {
                             memcpy(buf, sbuf, slen);
                             return (USBD_HID_OUTREPORT_MAX_SZ);
                         }
-                    } else if (req == USBD_HID_REQ_EP_INT) {
+                    }
+                    else if (req == USBD_HID_REQ_EP_INT)
+                    {
                         USB_ResponseIdle = 1;
                     }
                     break;
@@ -109,28 +121,36 @@ void usbd_hid_set_report(U8 rtype, U8 rid, U8 *buf, int len, U8 req)
 {
     uint8_t * rbuf;
     main_led_state_t led_next_state = MAIN_LED_FLASH;
-    switch (rtype) {
+    switch (rtype)
+    {
         case HID_REPORT_OUTPUT:
-            if (len == 0) {
+            if (len == 0)
+            {
                 break;
             }
 
-            if (buf[0] == ID_DAP_TransferAbort) {
+            if (buf[0] == ID_DAP_TransferAbort)
+            {
                 DAP_TransferAbort = 1;
                 break;
             }
 
             // execute and store to DAP_queue
-            if (DAP_queue_execute_buf(&DAP_Cmd_queue, buf, len, &rbuf)) {
-                if(usbd_hid_no_activity(rbuf) == 1){
+            if (DAP_queue_execute_buf(&DAP_Cmd_queue, buf, len, &rbuf))
+            {
+                if (usbd_hid_no_activity(rbuf) == 1)
+                {
                     //revert HID LED to default if the response is null
                     led_next_state = MAIN_LED_DEF;
                 }
-                if (USB_ResponseIdle) {
+                if (USB_ResponseIdle)
+                {
                     hid_send_packet();
                     USB_ResponseIdle = 0;
                 }
-            } else {
+            }
+            else
+            {
                 util_assert(0);
             }
 

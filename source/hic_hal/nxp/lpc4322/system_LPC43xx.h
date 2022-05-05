@@ -1,11 +1,11 @@
 /**********************************************************************
-* $Id$		system_LPC43xx.h			2011-06-02
+* $Id$      system_LPC43xx.h            2011-06-02
 *//**
-* @file		system_LPC43xx.h
-* @brief	Cortex-M3 Device System Header File for NXP lpc43xx Series.
-* @version	1.0
-* @date		02. June. 2011
-* @author	NXP MCU SW Application Team, modified by KEIL
+* @file     system_LPC43xx.h
+* @brief    Cortex-M3 Device System Header File for NXP lpc43xx Series.
+* @version  1.0
+* @date     02. June. 2011
+* @author   NXP MCU SW Application Team, modified by KEIL
 *
 * Copyright(C) 2011, NXP Semiconductor
 * All rights reserved.
@@ -32,7 +32,7 @@ extern "C" {
 
 /**
   \brief  System clock frequency (core clock).
-    The system clock frequency supplied to the SysTick timer and the 
+    The system clock frequency supplied to the SysTick timer and the
     processor core clock.
  */
 extern uint32_t SystemCoreClock;
@@ -42,7 +42,7 @@ extern uint32_t SystemCoreClock;
 
     Initialize the System and update the SystemCoreClock variable.
  */
-extern void SystemInit (void);
+extern void SystemInit(void);
 
 /**
   \brief  Update SystemCoreClock variable.
@@ -50,7 +50,7 @@ extern void SystemInit (void);
     Updates the SystemCoreClock with current core Clock
     retrieved from cpu registers.
  */
-extern void SystemCoreClockUpdate (void);
+extern void SystemCoreClockUpdate(void);
 
 #ifdef __cplusplus
 }

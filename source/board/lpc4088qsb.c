@@ -22,7 +22,8 @@
 #include "target_board.h"
 #include "target_family.h"
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "1060",
     .family_id = CREATE_FAMILY_ID(kNXP_VendorID, 0), //custom

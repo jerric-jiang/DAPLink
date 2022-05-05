@@ -97,13 +97,13 @@ void CTIMER_Init(CTIMER_Type *base, const ctimer_config_t *config)
 #endif /* FSL_SDK_DISABLE_DRIVER_CLOCK_CONTROL */
 
 #if !(defined(FSL_SDK_DISABLE_DRIVER_RESET_CONTROL) && FSL_SDK_DISABLE_DRIVER_RESET_CONTROL)
-/* Reset the module. */
+    /* Reset the module. */
 #if !(defined(FSL_FEATURE_CTIMER_HAS_NO_RESET) && (FSL_FEATURE_CTIMER_HAS_NO_RESET))
     RESET_PeripheralReset(s_ctimerResets[CTIMER_GetInstance(base)]);
 #endif
 #endif /* FSL_SDK_DISABLE_DRIVER_RESET_CONTROL */
 
-/* Setup the cimer mode and count select */
+    /* Setup the cimer mode and count select */
 #if !(defined(FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE) && (FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE))
     base->CTCR = CTIMER_CTCR_CTMODE(config->mode) | CTIMER_CTCR_CINSEL(config->input);
 #endif
@@ -269,7 +269,7 @@ status_t CTIMER_SetupPwm(CTIMER_Type *base,
 status_t CTIMER_SetupPwmPeriod(
     CTIMER_Type *base, ctimer_match_t matchChannel, uint32_t pwmPeriod, uint32_t pulsePeriod, bool enableInt)
 {
-/* Some CTimers only have 16bits , so the value is limited*/
+    /* Some CTimers only have 16bits , so the value is limited*/
 #if defined(FSL_FEATURE_SOC_CTIMER16B) && FSL_FEATURE_SOC_CTIMER16B
     assert(!((FSL_FEATURE_CTIMER_BIT_SIZEn(base) < 32) && (pulsePeriod > 0xFFFFU)));
 #endif
@@ -359,7 +359,7 @@ void CTIMER_UpdatePwmDutycycle(CTIMER_Type *base, ctimer_match_t matchChannel, u
  */
 void CTIMER_SetupMatch(CTIMER_Type *base, ctimer_match_t matchChannel, const ctimer_match_config_t *config)
 {
-/* Some CTimers only have 16bits , so the value is limited*/
+    /* Some CTimers only have 16bits , so the value is limited*/
 #if defined(FSL_FEATURE_SOC_CTIMER16B) && FSL_FEATURE_SOC_CTIMER16B
     assert(!(FSL_FEATURE_CTIMER_BIT_SIZEn(base) < 32 && config->matchValue > 0xFFFFU));
 #endif

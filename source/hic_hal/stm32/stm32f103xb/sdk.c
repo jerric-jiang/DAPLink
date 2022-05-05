@@ -59,7 +59,8 @@ void sdk_init()
     /* Select HSI as system clock source to allow modification of the PLL configuration */
     RCC_ClkInitStruct.ClockType = RCC_CLOCKTYPE_SYSCLK;
     RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_HSI;
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK) {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_1) != HAL_OK)
+    {
         /* Initialization Error */
         util_assert(0);
     }
@@ -71,7 +72,8 @@ void sdk_init()
     RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
     RCC_OscInitStruct.HSEPredivValue = RCC_HSE_PREDIV_DIV1;
     RCC_OscInitStruct.PLL.PLLMUL = RCC_PLL_MUL9;
-    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK) {
+    if (HAL_RCC_OscConfig(&RCC_OscInitStruct) != HAL_OK)
+    {
         /* Initialization Error */
         util_assert(0);
     }
@@ -82,7 +84,8 @@ void sdk_init()
     RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
     RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
     RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK) {
+    if (HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2) != HAL_OK)
+    {
         /* Initialization Error */
         util_assert(0);
     }
@@ -114,18 +117,21 @@ HAL_StatusTypeDef HAL_InitTick(uint32_t TickPriority)
     __HAL_RCC_TIM2_CLK_ENABLE();
 
     ret = HAL_TIM_Base_DeInit(&timer);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         return ret;
     }
 
     time_count = 0;
     ret = HAL_TIM_Base_Init(&timer);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         return ret;
     }
 
     ret = HAL_TIM_Base_Start(&timer);
-    if (ret != HAL_OK) {
+    if (ret != HAL_OK)
+    {
         return ret;
     }
 
@@ -160,7 +166,8 @@ void HAL_ResumeTick(void)
 
 static uint32_t tim2_clk_div(uint32_t apb1clkdiv)
 {
-    switch (apb1clkdiv) {
+    switch (apb1clkdiv)
+    {
         case RCC_CFGR_PPRE1_DIV2:
             return 1;
         case RCC_CFGR_PPRE1_DIV4:

@@ -48,10 +48,10 @@
 void pwm_init(void)
 {
     flexio_config_t fxioUserConfig;
-    
+
     /* Enable the LIRC clock in the MCG */
     MCG->C1 |= MCG_C1_IRCLKEN_MASK | MCG_C1_IREFSTEN_MASK;
-    
+
     /* Select the clock source for the FlexIO
         00 - Clock disabled
         01 - MCGPCLK clock
@@ -72,7 +72,7 @@ void pwm_init(void)
 void pwm_set_dutycycle(uint8_t duty)
 {
     uint32_t freq_Hz = DEMO_FLEXIO_FREQUENCY;
-    
+
     assert((freq_Hz <= FLEXIO_MAX_FREQUENCY) && (freq_Hz >= FLEXIO_MIN_FREQUENCY));
 
     uint32_t lowerValue = 0; /* Number of clock cycles in high logic state in one period */
@@ -95,7 +95,8 @@ void pwm_set_dutycycle(uint8_t duty)
         PIN_RED_LED_GPIO->PCOR = PIN_RED_LED;
         PORT_SetPinMux(PIN_RED_LED_PORT, PIN_RED_LED_BIT, kPORT_MuxAsGpio);
     }
-    else {
+    else
+    {
         pwm_init_pins();
     }
 
@@ -127,7 +128,7 @@ void pwm_set_dutycycle(uint8_t duty)
     fxioTimerConfig.timerCompare = ((upperValue - 1) << 8U) | (lowerValue - 1);
 
     FLEXIO_SetTimerConfig(DEMO_FLEXIO_BASEADDR, DEMO_FLEXIO_TIMER_CH, &fxioTimerConfig);
-    
+
     /* Set Timer mode to kFLEXIO_TimerModeDual8BitPWM to start timer */
     DEMO_FLEXIO_BASEADDR->TIMCTL[DEMO_FLEXIO_TIMER_CH] |= FLEXIO_TIMCTL_TIMOD(kFLEXIO_TimerModeDual8BitPWM);
 }

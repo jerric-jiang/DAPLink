@@ -32,7 +32,8 @@
 #define FLASH_ALGO_GEN_ADDER    32
 #define DEV_CFG_LOCAL_ADDRESS   ((uint8_t*)((unsigned int)flash_algo_blob + DEV_CFG_TARGET_ADDRESS + FLASH_ALGO_GEN_ADDER))
 
-const uint32_t flash_algo_blob[] = {
+const uint32_t flash_algo_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4603b510, 0x4893460c, 0x68414448, 0xf0006888, 0xb1087080, 0xbd102001, 0x4448488e, 0x60486880,
     0xe7f82000, 0x488b4602, 0x68414448, 0xf0206888, 0x60884070, 0x47702000, 0x44484886, 0x68886841,
@@ -63,11 +64,13 @@ const uint32_t flash_algo_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {FLASH_BASE, FLASH_SECTOR},
- };
+};
 
-const program_target_t flash = {
+const program_target_t flash =
+{
     0x20000021, // Init
     0x20000045, // UnInit
     0x20000093, // EraseChip

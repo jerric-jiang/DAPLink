@@ -32,30 +32,34 @@
 #define INIT_INTS     (MXC_F_USB_DEV_INTEN_BRST | MXC_F_USB_DEV_INTFL_BRST_DN | MXC_F_USB_DEV_INTEN_VBUS | MXC_F_USB_DEV_INTFL_NO_VBUS)
 #define CONNECT_INTS  (MXC_F_USB_DEV_INTEN_SETUP | MXC_F_USB_DEV_INTEN_EP_IN | MXC_F_USB_DEV_INTEN_EP_OUT | MXC_F_USB_DEV_INTEN_DMA_ERR)
 
-typedef struct {
+typedef struct
+{
     volatile uint32_t buf0_desc;
     volatile uint32_t buf0_address;
     volatile uint32_t buf1_desc;
     volatile uint32_t buf1_address;
 } ep_buffer_t;
 
-typedef struct {
+typedef struct
+{
     ep_buffer_t out_buffer;
     ep_buffer_t in_buffer;
 } ep0_buffer_t;
 
-typedef struct {
+typedef struct
+{
     ep0_buffer_t ep0;
     ep_buffer_t ep[MXC_USB_NUM_EP - 1];
 } ep_buffer_descriptor_t;
 
-typedef struct {
+typedef struct
+{
     U8 type;
     U16 len;
 } ep_info_t;
 
 /* static storage for endpoint buffer descriptor table, must be 512 byte aligned for DMA */
-__attribute__ ((aligned (512)))
+__attribute__((aligned(512)))
 ep_buffer_descriptor_t ep_buffer_descriptor;
 
 static uint32_t ep_buffer[MXC_USB_NUM_EP][MXC_USB_MAX_PACKET / sizeof(uint32_t)];
@@ -74,7 +78,8 @@ void TMR0_IRQHandler(void)
 {
     MXC_TMR0->intfl = MXC_TMR0->intfl;
 
-    if (usbd_configured()) {
+    if (usbd_configured())
+    {
         USBD_CDC_ACM_SOF_Event();
     }
 }
@@ -85,11 +90,16 @@ static ep_buffer_t *get_desc(U32 EPNum)
 {
     ep_buffer_t *desc;
 
-    if (EPNum == 0x80) {
+    if (EPNum == 0x80)
+    {
         desc = &ep_buffer_descriptor.ep0.in_buffer;
-    } else if (EPNum == 0x00) {
+    }
+    else if (EPNum == 0x00)
+    {
         desc = &ep_buffer_descriptor.ep0.out_buffer;
-    } else {
+    }
+    else
+    {
         desc = &ep_buffer_descriptor.ep[(EPNum & EPNUM_MASK) - 1];
     }
 
@@ -115,12 +125,15 @@ void          USBD_IntrEna(void)
  *                       1: enable interrupt
  */
 #ifdef __RTX
-void __svc(1) USBD_Intr (int ena);
-void __SVC_1 (int ena)
+void __svc(1) USBD_Intr(int ena);
+void __SVC_1(int ena)
 {
-    if (ena) {
+    if (ena)
+    {
         NVIC_EnableIRQ(USB_IRQn);           /* Enable USB interrupt               */
-    } else {
+    }
+    else
+    {
         NVIC_DisableIRQ(USB_IRQn);          /* Disable USB interrupt              */
     }
 }
@@ -137,7 +150,8 @@ static void reset_state(void)
     memset(ep_info, 0, sizeof(ep_info));
 
     MXC_USB->ep[0] |= (MXC_S_USB_EP_DIR_CONTROL | MXC_F_USB_EP_INT_EN | MXC_F_USB_EP_DT);
-    for (ep = 1; ep < MXC_USB_NUM_EP; ep++) {
+    for (ep = 1; ep < MXC_USB_NUM_EP; ep++)
+    {
         MXC_USB->ep[ep] = MXC_F_USB_EP_DT;
     }
 }
@@ -147,7 +161,7 @@ static void reset_state(void)
  *   Called by the User to initialize USB Device
  *    Return Value:    None
  */
-void USBD_Init (void)
+void USBD_Init(void)
 {
     uint32_t reg;
 
@@ -185,14 +199,17 @@ void USBD_Init (void)
  *    Parameters:      con:   Connect/Disconnect
  *    Return Value:    None
  */
-void USBD_Connect (BOOL con)
+void USBD_Connect(BOOL con)
 {
-    if (con) {
+    if (con)
+    {
         MXC_USB->dev_intfl = 0xFFFF;  // clear interrupts
         MXC_USB->dev_inten |= CONNECT_INTS;
         MXC_USB->ep[0] |= MXC_F_USB_EP_INT_EN;
         MXC_USB->dev_cn |= (MXC_F_USB_DEV_CN_CONNECT | MXC_F_USB_DEV_CN_FIFO_MODE);
-    } else {
+    }
+    else
+    {
         MXC_USB->dev_inten &= ~CONNECT_INTS;
         MXC_USB->ep[0] &= ~MXC_F_USB_EP_INT_EN;
         MXC_USB->dev_cn &= ~MXC_F_USB_DEV_CN_CONNECT;
@@ -204,7 +221,7 @@ void USBD_Connect (BOOL con)
  *    Parameters:      cfg:   Device Enable/Disable
  *    Return Value:    None
  */
-void USBD_WakeUpCfg (BOOL cfg)
+void USBD_WakeUpCfg(BOOL cfg)
 {
 }
 
@@ -213,7 +230,7 @@ void USBD_WakeUpCfg (BOOL cfg)
  *    Parameters:      adr:   USB Device Address
  *    Return Value:    None
  */
-void USBD_SetAddress (U32 adr, U32 setup)
+void USBD_SetAddress(U32 adr, U32 setup)
 {
     /* Performed by Hardware */
 }
@@ -223,7 +240,7 @@ void USBD_SetAddress (U32 adr, U32 setup)
  *    Parameters:      cfg:   Device Configure/Deconfigure
  *    Return Value:    None
  */
-void USBD_Configure (BOOL cfg)
+void USBD_Configure(BOOL cfg)
 {
 #if CDC_ENDPOINT
     /* CDC-ACM class processes FIFOs in the SOF interrupt. The USB Device interface
@@ -231,9 +248,10 @@ void USBD_Configure (BOOL cfg)
      * timer interrupt is used instead.
      */
 
-    #define SOF_INT_US  1000
+#define SOF_INT_US  1000
 
-    if (cfg) {
+    if (cfg)
+    {
         // Setup timer interrupt for SOF
         MXC_TMR0->ctrl = MXC_S_TMR_CTRL_MODE_CONTINUOUS;
         MXC_TMR0->count32 = 0;
@@ -247,7 +265,9 @@ void USBD_Configure (BOOL cfg)
         // Start the timer
         MXC_TMR0->ctrl |= MXC_F_TMR_CTRL_ENABLE0;
 
-    } else {
+    }
+    else
+    {
         // Disable tmr
         MXC_TMR0->ctrl &= ~(MXC_F_TMR_CTRL_ENABLE0);
     }
@@ -259,20 +279,24 @@ void USBD_Configure (BOOL cfg)
  *    Parameters:      pEPD:  Pointer to Device Endpoint Descriptor
  *    Return Value:    None
  */
-void USBD_ConfigEP (USB_ENDPOINT_DESCRIPTOR *pEPD)
+void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
 {
     U32 EPNum;
 
     EPNum = pEPD->bEndpointAddress & EPNUM_MASK;
 
-    if (EPNum < MXC_USB_NUM_EP) {
+    if (EPNum < MXC_USB_NUM_EP)
+    {
 
         // Clear existing configurations
         MXC_USB->ep[EPNum] = MXC_F_USB_EP_DT;
 
-        if (pEPD->bEndpointAddress & USB_ENDPOINT_DIRECTION_MASK) {
+        if (pEPD->bEndpointAddress & USB_ENDPOINT_DIRECTION_MASK)
+        {
             ep_info[EPNum].type = MXC_S_USB_EP_DIR_IN;
-        } else {
+        }
+        else
+        {
             ep_info[EPNum].type = MXC_S_USB_EP_DIR_OUT;
         }
 
@@ -285,7 +309,7 @@ void USBD_ConfigEP (USB_ENDPOINT_DESCRIPTOR *pEPD)
  *    Parameters:      dir:   Out (dir == 0), In (dir <> 0)
  *    Return Value:    None
  */
-void USBD_DirCtrlEP (U32 dir)
+void USBD_DirCtrlEP(U32 dir)
 {
     /* Not needed */
 }
@@ -297,14 +321,15 @@ void USBD_DirCtrlEP (U32 dir)
  *                       EPNum.7:    Dir
  *    Return Value:    None
  */
-void USBD_EnableEP (U32 EPNum)
+void USBD_EnableEP(U32 EPNum)
 {
     ep_buffer_t *desc = get_desc(EPNum);
 
     EPNum &= EPNUM_MASK;
     MXC_USB->ep[EPNum] |= (MXC_F_USB_EP_INT_EN | ep_info[EPNum].type | MXC_F_USB_EP_DT);
 
-    if (ep_info[EPNum].type == MXC_S_USB_EP_DIR_OUT) {
+    if (ep_info[EPNum].type == MXC_S_USB_EP_DIR_OUT)
+    {
         // This is an OUT endpoint. Go ahead and register a request.
         desc = get_desc(EPNum);
         desc->buf0_address = (uint32_t)ep_buffer[EPNum];
@@ -320,7 +345,7 @@ void USBD_EnableEP (U32 EPNum)
  *                       EPNum.7:    Dir
  *    Return Value:    None
  */
-void USBD_DisableEP (U32 EPNum)
+void USBD_DisableEP(U32 EPNum)
 {
     EPNum &= EPNUM_MASK;
     MXC_USB->ep[EPNum] = 0;
@@ -333,14 +358,15 @@ void USBD_DisableEP (U32 EPNum)
  *                       EPNum.7:    Dir
  *    Return Value:    None
  */
-void USBD_ResetEP (U32 EPNum)
+void USBD_ResetEP(U32 EPNum)
 {
     ep_buffer_t *desc = get_desc(EPNum);
 
     EPNum &= EPNUM_MASK;
     MXC_USB->ep[EPNum] |= MXC_F_USB_EP_DT;
 
-    if (ep_info[EPNum].type == MXC_S_USB_EP_DIR_OUT) {
+    if (ep_info[EPNum].type == MXC_S_USB_EP_DIR_OUT)
+    {
         // This is an OUT endpoint. Go ahead and register a request.
         desc = get_desc(EPNum);
         desc->buf0_address = (uint32_t)ep_buffer[EPNum];
@@ -356,13 +382,16 @@ void USBD_ResetEP (U32 EPNum)
  *                       EPNum.7:    Dir
  *    Return Value:    None
  */
-void USBD_SetStallEP (U32 EPNum)
+void USBD_SetStallEP(U32 EPNum)
 {
     EPNum &= EPNUM_MASK;
 
-    if (EPNum == 0) {
+    if (EPNum == 0)
+    {
         MXC_USB->ep[0] |= (MXC_F_USB_EP_ST_STALL | MXC_F_USB_EP_STALL);
-    } else {
+    }
+    else
+    {
         MXC_USB->ep[EPNum] |= MXC_F_USB_EP_STALL;
     }
 }
@@ -374,7 +403,7 @@ void USBD_SetStallEP (U32 EPNum)
  *                       EPNum.7:    Dir
  *    Return Value:    None
  */
-void USBD_ClrStallEP (U32 EPNum)
+void USBD_ClrStallEP(U32 EPNum)
 {
     USBD_ResetEP(EPNum);
     MXC_USB->ep[EPNum & EPNUM_MASK] &= ~MXC_F_USB_EP_STALL;
@@ -388,7 +417,7 @@ void USBD_ClrStallEP (U32 EPNum)
  *                     pData: Pointer to Data Buffer
  *    Return Value:    Number of bytes read
  */
-U32 USBD_ReadEP (U32 EPNum, U8 *pData, U32 size)
+U32 USBD_ReadEP(U32 EPNum, U8 *pData, U32 size)
 {
     U32 cnt;
     ep_buffer_t *desc = get_desc(EPNum);
@@ -396,10 +425,12 @@ U32 USBD_ReadEP (U32 EPNum, U8 *pData, U32 size)
 
     EPNum &= EPNUM_MASK;
 
-    if ((EPNum == 0) && setup_waiting) {
+    if ((EPNum == 0) && setup_waiting)
+    {
         cnt = sizeof(USB_SETUP_PACKET);
 
-        if (size < cnt) {
+        if (size < cnt)
+        {
             util_assert(0);
             return 0;
         }
@@ -408,19 +439,24 @@ U32 USBD_ReadEP (U32 EPNum, U8 *pData, U32 size)
         ((U32 *)pData)[1] = MXC_USB->setup1;
         sup = (USB_SETUP_PACKET*)pData;
 
-        if ( (sup->bmRequestType.Dir == REQUEST_HOST_TO_DEVICE) && (sup->wLength > 0) ) {
+        if ((sup->bmRequestType.Dir == REQUEST_HOST_TO_DEVICE) && (sup->wLength > 0))
+        {
             // There is an OUT stage for this setup packet. Register a request.
-            if (!(MXC_USB->out_owner & 1)) {
+            if (!(MXC_USB->out_owner & 1))
+            {
                 desc = &ep_buffer_descriptor.ep0.out_buffer;
                 desc->buf0_address = (uint32_t)ep_buffer[0];
                 desc->buf0_desc = sup->wLength;
                 MXC_USB->out_owner = 1;
             }
         }
-    } else {
+    }
+    else
+    {
         cnt = desc->buf0_desc;
 
-        if (size < cnt) {
+        if (size < cnt)
+        {
             cnt = size;
         }
         memcpy(pData, ep_buffer[EPNum], cnt);
@@ -443,7 +479,7 @@ U32 USBD_ReadEP (U32 EPNum, U8 *pData, U32 size)
  *                     cnt:   Number of bytes to write
  *    Return Value:    Number of bytes written
  */
-U32 USBD_WriteEP (U32 EPNum, U8 *pData, U32 cnt)
+U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
 {
     ep_buffer_t *desc = get_desc(EPNum);
     uint32_t mask;
@@ -451,25 +487,33 @@ U32 USBD_WriteEP (U32 EPNum, U8 *pData, U32 cnt)
     EPNum &= EPNUM_MASK;
     mask = (1 << EPNum);
 
-    if (MXC_USB->in_owner & mask) {
+    if (MXC_USB->in_owner & mask)
+    {
         return 0;
     }
 
-    if (EPNum == 0) {
+    if (EPNum == 0)
+    {
         // Prepare to ACK the status stage.
         MXC_USB->ep[0] |= MXC_F_USB_EP_ST_ACK;
 
-        if ((cnt == 0) && !ep0_expect_zlp) {
+        if ((cnt == 0) && !ep0_expect_zlp)
+        {
             // This is a status stage ACK. Handled in hardware.
             return 0;
-        } else if (cnt == USBD_MAX_PACKET0) {
+        }
+        else if (cnt == USBD_MAX_PACKET0)
+        {
             ep0_expect_zlp = 1;
-        } else {
+        }
+        else
+        {
             ep0_expect_zlp = 0;
         }
     }
 
-    if (cnt > MXC_USB_MAX_PACKET) {
+    if (cnt > MXC_USB_MAX_PACKET)
+    {
         cnt = MXC_USB_MAX_PACKET;
     }
 
@@ -487,7 +531,7 @@ U32 USBD_WriteEP (U32 EPNum, U8 *pData, U32 cnt)
 /*
  *  USB Device Interrupt Service Routine
  */
-void USB_IRQHandler (void)
+void USB_IRQHandler(void)
 {
     NVIC_DisableIRQ(USB_IRQn);
     USBD_SignalHandler();
@@ -504,15 +548,19 @@ void USBD_Handler(void)
     MXC_USB->dev_intfl = irq_flags;
 
     /* reset interrupt */
-    if (irq_flags & MXC_F_USB_DEV_INTFL_BRST) {
-        if (suspended) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_BRST)
+    {
+        if (suspended)
+        {
             suspended = 0;
 #ifdef __RTX
-            if (USBD_RTX_DevTask) {
+            if (USBD_RTX_DevTask)
+            {
                 isr_evt_set(USBD_EVT_RESUME, USBD_RTX_DevTask);
             }
 #else
-            if (USBD_P_Resume_Event) {
+            if (USBD_P_Resume_Event)
+            {
                 USBD_P_Resume_Event();
             }
 #endif
@@ -522,11 +570,13 @@ void USBD_Handler(void)
         usbd_reset_core();
 
 #ifdef __RTX
-        if (USBD_RTX_DevTask) {
+        if (USBD_RTX_DevTask)
+        {
             isr_evt_set(USBD_EVT_RESET, USBD_RTX_DevTask);
         }
 #else
-        if (USBD_P_Reset_Event) {
+        if (USBD_P_Reset_Event)
+        {
             USBD_P_Reset_Event();
         }
 #endif
@@ -534,76 +584,94 @@ void USBD_Handler(void)
     }
 
     /* reset done interrupt */
-    if (irq_flags & MXC_F_USB_DEV_INTFL_BRST_DN) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_BRST_DN)
+    {
         reset_state();
     }
 
     /* suspend interrupt */
-    if (irq_flags & MXC_F_USB_DEV_INTFL_SUSP) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_SUSP)
+    {
         suspended = 1;
 #ifdef __RTX
-        if (USBD_RTX_DevTask) {
+        if (USBD_RTX_DevTask)
+        {
             isr_evt_set(USBD_EVT_SUSPEND, USBD_RTX_DevTask);
         }
 #else
-        if (USBD_P_Suspend_Event) {
+        if (USBD_P_Suspend_Event)
+        {
             USBD_P_Suspend_Event();
         }
 #endif
     }
 
-    if (irq_flags & MXC_F_USB_DEV_INTFL_VBUS) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_VBUS)
+    {
 #ifdef __RTX
-        if (USBD_RTX_DevTask) {
+        if (USBD_RTX_DevTask)
+        {
             isr_evt_set(USBD_EVT_POWER_ON,  USBD_RTX_DevTask);
         }
 #else
-        if (USBD_P_Power_Event) {
+        if (USBD_P_Power_Event)
+        {
             USBD_P_Power_Event(1);
         }
 #endif
     }
 
-    if (irq_flags & MXC_F_USB_DEV_INTFL_NO_VBUS) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_NO_VBUS)
+    {
 #ifdef __RTX
-        if (USBD_RTX_DevTask) {
+        if (USBD_RTX_DevTask)
+        {
             isr_evt_set(USBD_EVT_POWER_OFF, USBD_RTX_DevTask);
         }
 #else
-        if (USBD_P_Power_Event) {
+        if (USBD_P_Power_Event)
+        {
             USBD_P_Power_Event(0);
         }
 #endif
     }
 
-    if (irq_flags & MXC_F_USB_DEV_INTFL_SETUP) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_SETUP)
+    {
         setup_waiting = 1;
 #ifdef __RTX
-        if (USBD_RTX_EPTask[0]) {
+        if (USBD_RTX_EPTask[0])
+        {
             isr_evt_set(USBD_EVT_SETUP, USBD_RTX_EPTask[0]);
         }
 #else
-        if (USBD_P_EP[0]) {
+        if (USBD_P_EP[0])
+        {
             USBD_P_EP[0](USBD_EVT_SETUP);
         }
 #endif
     }
 
-    if (irq_flags & MXC_F_USB_DEV_INTFL_EP_IN) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_EP_IN)
+    {
 
         // Read and clear endpoint interrupts
         ep_int = MXC_USB->in_int;
         MXC_USB->in_int = ep_int;
 
         mask = 1;
-        for (ep = 0; ep < MXC_USB_NUM_EP; ep++) {
-            if (ep_int & mask) {
+        for (ep = 0; ep < MXC_USB_NUM_EP; ep++)
+        {
+            if (ep_int & mask)
+            {
 #ifdef __RTX
-                if (USBD_RTX_EPTask[ep]) {
+                if (USBD_RTX_EPTask[ep])
+                {
                     isr_evt_set(USBD_EVT_IN,  USBD_RTX_EPTask[ep]);
                 }
 #else
-                if (USBD_P_EP[ep]) {
+                if (USBD_P_EP[ep])
+                {
                     USBD_P_EP[ep](USBD_EVT_IN);
                 }
 #endif
@@ -613,21 +681,26 @@ void USBD_Handler(void)
         }
     }
 
-    if (irq_flags & MXC_F_USB_DEV_INTFL_EP_OUT) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_EP_OUT)
+    {
 
         // Read and clear endpoint interrupts
         ep_int = MXC_USB->out_int;
         MXC_USB->out_int = ep_int;
 
         mask = 1;
-        for (ep = 0; ep < MXC_USB_NUM_EP; ep++) {
-            if (ep_int & mask) {
+        for (ep = 0; ep < MXC_USB_NUM_EP; ep++)
+        {
+            if (ep_int & mask)
+            {
 #ifdef __RTX
-                if (USBD_RTX_EPTask[ep]) {
+                if (USBD_RTX_EPTask[ep])
+                {
                     isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[ep]);
                 }
 #else
-                if (USBD_P_EP[ep]) {
+                if (USBD_P_EP[ep])
+                {
                     USBD_P_EP[ep](USBD_EVT_OUT);
                 }
 #endif
@@ -637,11 +710,12 @@ void USBD_Handler(void)
         }
     }
 
-    if (irq_flags & MXC_F_USB_DEV_INTFL_DMA_ERR) {
+    if (irq_flags & MXC_F_USB_DEV_INTFL_DMA_ERR)
+    {
         // Read and clear endpoint interrupts
         ep_int = MXC_USB->dma_err_int;
         MXC_USB->dma_err_int = ep_int;
-        while(1); // not recoverable
+        while (1); // not recoverable
     }
 
     NVIC_EnableIRQ(USB_IRQn);

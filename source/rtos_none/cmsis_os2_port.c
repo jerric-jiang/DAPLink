@@ -1,6 +1,6 @@
 /**
  * @file    cmsis_os2_port.c
- * @brief   
+ * @brief
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2019, ARM Limited, All Rights Reserved
@@ -73,17 +73,17 @@ osMutexId_t osMutexNew(const osMutexAttr_t *attr)
     return NULL;
 }
 
-osStatus_t osMutexAcquire (osMutexId_t mutex_id, uint32_t timeout)
+osStatus_t osMutexAcquire(osMutexId_t mutex_id, uint32_t timeout)
 {
     return osOK;
 }
 
-osStatus_t osMutexRelease (osMutexId_t mutex_id)
+osStatus_t osMutexRelease(osMutexId_t mutex_id)
 {
     return osOK;
 }
 
-osThreadId_t osThreadGetId (void)
+osThreadId_t osThreadGetId(void)
 {
     return (osThreadId_t)1;
 }

@@ -37,7 +37,8 @@
  * limitations under the License.
  */
 
-static const uint32_t mkw41z4_flash_prog_blob[] = {
+static const uint32_t mkw41z4_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x492db510, 0x60082000, 0x4448482c, 0xf85cf000, 0xd0002800, 0xbd102001, 0x47702000, 0xb5104827,
     0x44484927, 0xf91ef000, 0xd1042800, 0x21004823, 0xf0004448, 0x4a23f9bf, 0x230168d1, 0x4319029b,
@@ -97,18 +98,20 @@ static const uint32_t mkw41z4_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0, 2048},
- };
+};
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000021, // Init
     0x20000039, // UnInit
     0x2000003D, // EraseChip
     0x20000065, // EraseSector
     0x20000097, // ProgramPage
     0x0,        // Verify
-    
+
     // BKPT : start of blob + 1
     // RSB  : blob start + header + rw data offset
     // RSP  : stack pointer

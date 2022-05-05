@@ -38,48 +38,59 @@ static uint8_t target_unlock_sequence(void)
     uint32_t val;
 
     // read the device ID
-    if (!swd_read_ap(MDM_IDR, &val)) {
+    if (!swd_read_ap(MDM_IDR, &val))
+    {
         return 0;
     }
 
     // verify the result
-    if (val != MDM_ID) {
+    if (val != MDM_ID)
+    {
         return 0;
     }
 
-    if (!swd_read_ap(MDM_STATUS, &val)) {
+    if (!swd_read_ap(MDM_STATUS, &val))
+    {
         return 0;
     }
 
     // flash in secured mode
-    if (val & (1 << 2)) {
+    if (val & (1 << 2))
+    {
         // hold the device in reset
         swd_set_target_reset(1);
 
         // write the mass-erase enable bit
-        if (!swd_write_ap(MDM_CTRL, 1)) {
+        if (!swd_write_ap(MDM_CTRL, 1))
+        {
             return 0;
         }
 
-        while (1) {
+        while (1)
+        {
             // wait until mass erase is started
-            if (!swd_read_ap(MDM_STATUS, &val)) {
+            if (!swd_read_ap(MDM_STATUS, &val))
+            {
                 return 0;
             }
 
-            if (val & 1) {
+            if (val & 1)
+            {
                 break;
             }
         }
 
         // mass erase in progress
-        while (1) {
+        while (1)
+        {
             // keep reading until procedure is complete
-            if (!swd_read_ap(MDM_CTRL, &val)) {
+            if (!swd_read_ap(MDM_CTRL, &val))
+            {
                 return 0;
             }
 
-            if (val == 0) {
+            if (val == 0)
+            {
                 break;
             }
         }
@@ -110,17 +121,20 @@ static uint8_t security_bits_set(uint32_t addr, uint8_t *data, uint32_t size)
 {
     const uint32_t fsec_addr = 0x40C;
 
-    if ((addr <= fsec_addr) && (addr + size) > fsec_addr) {
+    if ((addr <= fsec_addr) && (addr + size) > fsec_addr)
+    {
         uint8_t fsec = data[fsec_addr - addr];
 
         // make sure we can unsecure the device or dont program at all
-        if ((fsec & 0x30) == 0x20) {
+        if ((fsec & 0x30) == 0x20)
+        {
             // Dont allow programming mass-erase disabled state
             return 1;
         }
 
         // Security is OK long as we can mass-erase (comment the following out to enable target security)
-        if ((fsec & 0x03) != 0x02) {
+        if ((fsec & 0x03) != 0x02)
+        {
             return 1;
         }
     }
@@ -128,7 +142,8 @@ static uint8_t security_bits_set(uint32_t addr, uint8_t *data, uint32_t size)
     return 0;
 }
 
-const target_family_descriptor_t g_nxp_kinetis_kseries = {
+const target_family_descriptor_t g_nxp_kinetis_kseries =
+{
     .family_id = kNXP_KinetisK_FamilyID,
     .default_reset_type = kHardwareReset,
     .target_before_init_debug = target_before_init_debug,

@@ -1,6 +1,6 @@
 /**
  * @file    read_uid.c
- * @brief   
+ * @brief
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved

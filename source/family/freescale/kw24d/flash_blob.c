@@ -21,7 +21,8 @@
 
 #include "flash_blob.h"
 
-const uint32_t mkw24d5_flash_prog_blob[] = {
+const uint32_t mkw24d5_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xb510483e, 0x5120f24c, 0xf64d81c1, 0x81c11128, 0xf0218801, 0x80010101, 0x78414839, 0x0160f001,
     0xbf0c2940, 0x21002101, 0x444a4a36, 0xb1397011, 0xf0217841, 0x70410160, 0xf0117841, 0xd1fb0f60,
@@ -73,18 +74,20 @@ const uint32_t mkw24d5_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0, 2048},
- };
+};
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000021, // Init
     0x20000071, // UnInit
     0x20000095, // EraseChip
     0x200000B5, // EraseSector
     0x200000E1, // ProgramPage
     0x0,        // Verify
-    
+
     // BKPT : start of blob + 1
     // RSB  : blob start + header + rw data offset
     // RSP  : stack pointer

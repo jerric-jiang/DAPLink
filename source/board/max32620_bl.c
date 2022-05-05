@@ -30,15 +30,17 @@
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0x00000000 + 0x10000, 0x2000},
- };
+};
 
 /* ME02 -- MAX32620 2MiB Flash, 256KiB RAM */
-target_cfg_t target_device = {
+target_cfg_t target_device =
+{
     .version                    = kTargetConfigVersion,
     .sectors_info               = sectors_info,
-    .sector_info_length         = (sizeof(sectors_info))/(sizeof(sector_info_t)),
+    .sector_info_length         = (sizeof(sectors_info)) / (sizeof(sector_info_t)),
     .flash_regions[0].start     = 0x00000000 + 0x10000,
     .flash_regions[0].end       = 0x00000000 + MB(2),
     .flash_regions[0].flags     = kRegionIsDefault,
@@ -50,7 +52,8 @@ target_cfg_t target_device = {
 //bootloader has no family
 const target_family_descriptor_t *g_target_family = NULL;
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "0000",
     .daplink_url_name =       "HELP_FAQHTM",

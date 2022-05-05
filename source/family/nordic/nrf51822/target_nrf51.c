@@ -25,10 +25,11 @@
 #include "flash_blob.c"
 
 // target information for model with 16 KB RAM
-target_cfg_t target_device_nrf51822_16 = {
+target_cfg_t target_device_nrf51822_16 =
+{
     .version                        = kTargetConfigVersion,
     .sectors_info                   = sectors_info_nrf51,
-    .sector_info_length             = (sizeof(sectors_info_nrf51))/(sizeof(sector_info_t)),
+    .sector_info_length             = (sizeof(sectors_info_nrf51)) / (sizeof(sector_info_t)),
     .flash_regions[0].start         = 0,
     .flash_regions[0].end           = KB(256),
     .flash_regions[0].flags         = kRegionIsDefault,
@@ -41,10 +42,11 @@ target_cfg_t target_device_nrf51822_16 = {
 };
 
 // target information for model with 32 KB RAM
-target_cfg_t target_device_nrf51822_32 = {
+target_cfg_t target_device_nrf51822_32 =
+{
     .version                        = kTargetConfigVersion,
     .sectors_info                   = sectors_info_nrf51,
-    .sector_info_length             = (sizeof(sectors_info_nrf51))/(sizeof(sector_info_t)),
+    .sector_info_length             = (sizeof(sectors_info_nrf51)) / (sizeof(sector_info_t)),
     .flash_regions[0].start         = 0,
     .flash_regions[0].end           = KB(256),
     .flash_regions[0].flags         = kRegionIsDefault,

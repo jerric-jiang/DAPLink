@@ -25,10 +25,11 @@
 #include "flash_blob.c"
 
 // target information
-target_cfg_t target_device = {
+target_cfg_t target_device =
+{
     .version                        = kTargetConfigVersion,
     .sectors_info                   = sectors_info,
-    .sector_info_length             = (sizeof(sectors_info))/(sizeof(sector_info_t)),
+    .sector_info_length             = (sizeof(sectors_info)) / (sizeof(sector_info_t)),
     .flash_regions[0].start         = 0,
     .flash_regions[0].end           = KB(512),
     .flash_regions[0].flags         = kRegionIsDefault,

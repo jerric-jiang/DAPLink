@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t M251_AP_256_flash_prog_blob[] = {
+static const uint32_t M251_AP_256_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xb088b5b0, 0x460c4613, 0x90064605, 0x92049105, 0x90032064, 0x1000f240, 0x0000f2c4, 0x60012159,
     0x60012116, 0x60012188, 0x21016800, 0x93024208, 0x95009401, 0xe7ffd103, 0x90072001, 0xf240e038,
@@ -73,7 +74,8 @@ static const uint32_t M251_AP_256_flash_prog_blob[] = {
     0x9806e7ff, 0xbdb0b007, 0x00000000
 };
 
-static const uint32_t M251_LD_4_flash_prog_blob[] = {
+static const uint32_t M251_LD_4_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xb089b5b0, 0x460c4613, 0x90074605, 0x92059106, 0x90032064, 0x1000f240, 0x0000f2c4, 0x60012159,
     0x60012116, 0x60012188, 0x21016800, 0x93024208, 0x95009401, 0xe7ffd103, 0x90082001, 0xf240e044,
@@ -141,12 +143,14 @@ static const uint32_t M251_LD_4_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     { 0x00000000, 0x00000200 },
     { 0x00100000, 0x00000200 },
 };
 
-static const program_target_t M251_AP_256_flash = {
+static const program_target_t M251_AP_256_flash =
+{
     0x20000021, // Init
     0x200000d7, // UnInit
     0x0,        // EraseChip
@@ -170,7 +174,8 @@ static const program_target_t M251_AP_256_flash = {
     0x00000200       // ram_to_flash_bytes_to_be_written
 };
 
-static const program_target_t M251_LD_4_flash = {
+static const program_target_t M251_LD_4_flash =
+{
     0x20000021, // Init
     0x200000ef, // UnInit
     0x0,        // EraseChip

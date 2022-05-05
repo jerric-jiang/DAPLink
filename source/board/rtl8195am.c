@@ -23,7 +23,8 @@
 #include "target_family.h"
 #include "target_board.h"
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "4600",
     .family_id = kRealtek_Rtl8195am_FamilyID,

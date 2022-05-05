@@ -7,7 +7,8 @@
 
  */
 
-static const uint32_t ama3b1kk_flash_prog_blob[] = {
+static const uint32_t ama3b1kk_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x2040f04f, 0x61812147, 0x61412100, 0x46086181, 0x20004770, 0xe92d4770, 0x4e3341f0, 0x4f332500,
     0x444e2406, 0x68734622, 0x46382100, 0x43054798, 0x2c401c64, 0x6832dbf6, 0x46382101, 0x43284790,
@@ -81,7 +82,8 @@ static const uint32_t ama3b1kk_flash_prog_blob[] = {
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
     0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000,
-    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000};
+    0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000, 0x00000000
+};
 
 // Start address of flash
 static const uint32_t flash_start = 0x0000C000;
@@ -95,12 +97,14 @@ static const uint32_t flash_size = 0x000f4000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const uint32_t sectors_info[] = {
+static const uint32_t sectors_info[] =
+{
     0x0000C000,
     0x00002000,
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x10000021, // Init
     0x10000033, // UnInit
     0x10000037, // EraseChip
@@ -114,7 +118,8 @@ static const program_target_t flash = {
     {
         0x10000001,
         0x10000114,
-        0x10000400},
+        0x10000400
+    },
 
     0x10000000 + 0x00000A00,          // mem buffer location
     0x10000000,                       // location to write prog_blob in target RAM

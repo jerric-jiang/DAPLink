@@ -21,7 +21,8 @@
 
 #include "flash_blob.h"
 
-static const uint32_t nRF51822AA_FLM[] = {
+static const uint32_t nRF51822AA_FLM[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
 
     /*0x020*/ 0x47702000, 0x47702000, 0x4c26b570, 0x60602002, 0x60e02001, 0x68284d24, 0xd00207c0L, 0x60602000,
@@ -40,11 +41,13 @@ static const uint32_t nRF51822AA_FLM[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info_nrf51[] = {
+static const sector_info_t sectors_info_nrf51[] =
+{
     {0, 1024},
- };
+};
 
-static const program_target_t flash_nrf51 = {
+static const program_target_t flash_nrf51 =
+{
     .init = 0x20000021,
     .uninit = 0x20000025,
     .erase_chip = 0x20000029,

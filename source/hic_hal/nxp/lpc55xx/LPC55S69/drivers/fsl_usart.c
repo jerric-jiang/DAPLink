@@ -340,7 +340,7 @@ void USART_GetDefaultConfig(usart_config_t *config)
  */
 status_t USART_SetBaudRate(USART_Type *base, uint32_t baudrate_Bps, uint32_t srcClock_Hz)
 {
-    uint32_t best_diff = (uint32_t)-1, best_osrval = 0xf, best_brgval = (uint32_t)-1;
+    uint32_t best_diff = (uint32_t) -1, best_osrval = 0xf, best_brgval = (uint32_t) -1;
     uint32_t osrval, brgval, diff, baudrate;
 
     /* check arguments */
@@ -782,9 +782,9 @@ status_t USART_TransferGetSendCount(USART_Type *base, usart_handle_t *handle, ui
  * retval kStatus_InvalidArgument Invalid argument.
  */
 status_t USART_TransferReceiveNonBlocking(USART_Type *base,
-                                          usart_handle_t *handle,
-                                          usart_transfer_t *xfer,
-                                          size_t *receivedBytes)
+        usart_handle_t *handle,
+        usart_transfer_t *xfer,
+        size_t *receivedBytes)
 {
     uint32_t i;
     /* How many bytes to copy from ring buffer to user memory. */

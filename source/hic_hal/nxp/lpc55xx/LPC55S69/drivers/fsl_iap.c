@@ -327,13 +327,13 @@ status_t FLASH_VerifyProgram(flash_config_t *config,
         function_command_option_t runCmdFuncOption;
         runCmdFuncOption.commandAddr = 0x1300427dU; /*!< get the flash verify program api location adress in rom*/
         return runCmdFuncOption.verifyProgramCommand(config, start, lengthInBytes, expectedData, failedAddress,
-                                                     failedData);
+                failedData);
     }
     else
     {
         assert(VERSION1_FLASH_API_TREE);
         return VERSION1_FLASH_API_TREE->flash_verify_program(config, start, lengthInBytes, expectedData, failedAddress,
-                                                             failedData);
+                failedData);
     }
 }
 
@@ -584,7 +584,7 @@ skboot_status_t skboot_authenticate(const uint8_t *imageStartAddr, secure_bool_t
 {
     assert(BOOTLOADER_API_TREE_POINTER);
     return BOOTLOADER_API_TREE_POINTER->skbootAuthenticate->skboot_authenticate_function(imageStartAddr,
-                                                                                         isSignVerified);
+            isSignVerified);
 }
 
 /*!

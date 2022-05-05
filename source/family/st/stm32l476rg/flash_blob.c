@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t STM32L476RG_flash_prog_blob[] = {
+static const uint32_t STM32L476RG_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x6a094953, 0xd5040289, 0x42884952, 0x2001d301, 0x20004770, 0x484e4770, 0x6081494f, 0x6081494f,
     0x60012100, 0x31faf244, 0x6a006101, 0xd40803c0, 0xf245484b, 0x60015155, 0x60412106, 0x71fff640,
@@ -37,11 +38,13 @@ static const uint32_t STM32L476RG_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0x08000000, 0x800},
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000037, // Init
     0x20000067, // UnInit
     0x20000079, // EraseChip

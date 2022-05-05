@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t flash_prog_blob[] = {
+static const uint32_t flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4770ba40, 0x4770bac0, 0x2000b5fe, 0x21009002, 0x680048fc, 0x0d000400, 0x26619002, 0x98020176,
     0xd10a42b0, 0x6bc048f8, 0x42b04ef8, 0x0780d101, 0x2005e001, 0x46010700, 0x4ef5e00e, 0x42b09802,
@@ -76,12 +77,14 @@ static const uint32_t flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     { 0x00000000, 0x00001000 },
     { 0x0F100000, 0x00001000 },
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000029, // Init
     0x200001c1, // UnInit
     0x0,        // EraseChip

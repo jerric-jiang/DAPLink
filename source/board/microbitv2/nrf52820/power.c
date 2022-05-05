@@ -66,10 +66,12 @@ uint32_t power_gpiote_intenset;
 
 void power_init()
 {
-    if (NRF_POWER->RESETREAS & POWER_RESETREAS_VBUS_Msk) {
+    if (NRF_POWER->RESETREAS & POWER_RESETREAS_VBUS_Msk)
+    {
         wake_from_usb = 1;
     }
-    if (NRF_POWER->RESETREAS & POWER_RESETREAS_OFF_Msk) {
+    if (NRF_POWER->RESETREAS & POWER_RESETREAS_OFF_Msk)
+    {
         wake_from_reset = 1;
     }
 
@@ -81,17 +83,17 @@ void power_init()
 
     // Override hic_hal gpio_init() RESET_BUTTON_PULL (=NRF_GPIO_PIN_PULLUP)
     gpio_cfg_input(GPIO_REG(RESET_BUTTON), GPIO_IDX(RESET_BUTTON), NRF_GPIO_PIN_NOPULL);
-    
+
     // Configure VBUS_ABSENT (WAKE_ON_EDGE) pin as input */
     gpio_cfg_input(GPIO_REG(PIN_VBUS_ABSENT), GPIO_IDX(PIN_VBUS_ABSENT), NRF_GPIO_PIN_NOPULL);
-    
+
 #ifdef POWER_IRQ_VBUS_ABSENT
     // Configure VBUS_ABSENT (WAKE_ON_EDGE) pin to detect USB attach/detach */
-    power_gpio_set_sense_from_read(GPIO_REG(PIN_VBUS_ABSENT), GPIO_IDX(PIN_VBUS_ABSENT)); 
+    power_gpio_set_sense_from_read(GPIO_REG(PIN_VBUS_ABSENT), GPIO_IDX(PIN_VBUS_ABSENT));
 #endif // POWER_IRQ_VBUS_ABSENT
 
     NRF_GPIOTE->EVENTS_PORT = 0;
-    NRF_GPIOTE->INTENSET = power_gpiote_intenset | ( GPIOTE_INTENSET_PORT_Set << GPIOTE_INTENSET_PORT_Pos);
+    NRF_GPIOTE->INTENSET = power_gpiote_intenset | (GPIOTE_INTENSET_PORT_Set << GPIOTE_INTENSET_PORT_Pos);
     NVIC_EnableIRQ(GPIOTE_IRQn);
 
 #ifdef POWER_IRQ_USBDETECTED
@@ -121,11 +123,12 @@ static void power_before(bool systemoff)
     uart_uninitialize(); // disables RX and TX pins
 
     gpio_disable_hid_led();
-    
+
     /* Disable I/O pin SWCLK, SWDIO */
     PORT_OFF();
 
-    if (systemoff) {
+    if (systemoff)
+    {
         i2c_deinitialize(); // disables I2C SCL & SDA
     }
 
@@ -139,11 +142,11 @@ static void power_before(bool systemoff)
     power_gpio_set_sense(GPIO_REG(PIN_VBUS_ABSENT), GPIO_IDX(PIN_VBUS_ABSENT), NRF_GPIO_PIN_SENSE_LOW);
 #endif // POWER_IRQ_VBUS_ABSENT
 
-    // Enable IRQ from RESET_BUTTON 
+    // Enable IRQ from RESET_BUTTON
     power_gpio_set_sense(GPIO_REG(RESET_BUTTON), GPIO_IDX(RESET_BUTTON), NRF_GPIO_PIN_SENSE_LOW);
 
     NRF_GPIOTE->EVENTS_PORT = 0;
-    NRF_GPIOTE->INTENSET = power_gpiote_intenset | ( GPIOTE_INTENSET_PORT_Set << GPIOTE_INTENSET_PORT_Pos);
+    NRF_GPIOTE->INTENSET = power_gpiote_intenset | (GPIOTE_INTENSET_PORT_Set << GPIOTE_INTENSET_PORT_Pos);
     NVIC_EnableIRQ(GPIOTE_IRQn);
 
 #ifdef POWER_IRQ_USBDETECTED
@@ -164,7 +167,8 @@ static void power_after()
 #endif // POWER_IRQ_USBDETECTED
 
     // Restore GPIOTE state
-    if (!power_gpiote_enabled) {
+    if (!power_gpiote_enabled)
+    {
         NVIC_DisableIRQ(GPIOTE_IRQn);
     }
     NRF_GPIOTE->INTENCLR = NRF_GPIOTE->INTENSET;
@@ -179,13 +183,14 @@ static void power_after()
 
     NRF_GPIOTE->EVENTS_PORT = 0;
     NRF_GPIOTE->INTENSET = power_gpiote_intenset;
-    if (power_gpiote_enabled) {
+    if (power_gpiote_enabled)
+    {
         NVIC_EnableIRQ(GPIOTE_IRQn);
     }
 
     /* Configure I/O pin SWCLK, SWDIO */
     PORT_SWD_SETUP();
-    
+
     uart_initialize();
     // The KL27 code calls i2c_deinitialize() and i2c_initialize()
     // but tests have indicated this is not necessary here
@@ -207,25 +212,29 @@ static void power_wfi()
 }
 
 
-static void power_gpio_set_sense(NRF_GPIO_Type *reg, uint32_t idx, nrf_gpio_pin_sense_t sense) {
-    reg->PIN_CNF[idx] = ( reg->PIN_CNF[idx] & ~GPIO_PIN_CNF_SENSE_Msk) | ( sense << GPIO_PIN_CNF_SENSE_Pos);
+static void power_gpio_set_sense(NRF_GPIO_Type *reg, uint32_t idx, nrf_gpio_pin_sense_t sense)
+{
+    reg->PIN_CNF[idx] = (reg->PIN_CNF[idx] & ~GPIO_PIN_CNF_SENSE_Msk) | (sense << GPIO_PIN_CNF_SENSE_Pos);
     reg->LATCH = 1 << idx;
 }
 
-static void power_gpio_set_sense_from_read(NRF_GPIO_Type *reg, uint32_t idx) {
+static void power_gpio_set_sense_from_read(NRF_GPIO_Type *reg, uint32_t idx)
+{
     uint32_t sense = gpio_read(reg, idx) ? NRF_GPIO_PIN_SENSE_LOW : NRF_GPIO_PIN_SENSE_HIGH;
-    reg->PIN_CNF[idx] = ( reg->PIN_CNF[idx] & ~GPIO_PIN_CNF_SENSE_Msk) | ( sense << GPIO_PIN_CNF_SENSE_Pos);
+    reg->PIN_CNF[idx] = (reg->PIN_CNF[idx] & ~GPIO_PIN_CNF_SENSE_Msk) | (sense << GPIO_PIN_CNF_SENSE_Pos);
     reg->LATCH = 1 << idx;
 }
 
 void GPIOTE_IRQHandler(void)
 {
-    if (NRF_GPIOTE->EVENTS_PORT) {
+    if (NRF_GPIOTE->EVENTS_PORT)
+    {
         NRF_GPIOTE->EVENTS_PORT = 0;
 
         NRF_GPIO_Type *reg = GPIO_REG(RESET_BUTTON);
         uint32_t idx = GPIO_IDX(RESET_BUTTON);
-        if (reg->LATCH & (1 << idx)) {
+        if (reg->LATCH & (1 << idx))
+        {
             reg->LATCH = 1 << idx;
             // Disable RESET_BUTTON edge events
             power_gpio_set_sense(reg, idx, NRF_GPIO_PIN_NOSENSE);
@@ -235,9 +244,10 @@ void GPIOTE_IRQHandler(void)
 #ifdef POWER_IRQ_VBUS_ABSENT
         reg = GPIO_REG(PIN_VBUS_ABSENT);
         idx = GPIO_IDX(PIN_VBUS_ABSENT);
-        if (reg->LATCH & (1 << idx)) {
+        if (reg->LATCH & (1 << idx))
+        {
             reg->LATCH = 1 << idx;
-            
+
             bool absent = NRF_GPIO_PIN_SENSE_HIGH == ((reg->PIN_CNF[idx] & GPIO_PIN_CNF_SENSE_Msk) >> GPIO_PIN_CNF_SENSE_Pos);
 
             power_gpio_set_sense(reg, idx, absent ? NRF_GPIO_PIN_SENSE_LOW : NRF_GPIO_PIN_SENSE_HIGH);
@@ -245,13 +255,16 @@ void GPIOTE_IRQHandler(void)
             power_source = pwr_mon_get_power_source();
 
             // Read VBUS_ABSENT (WAKE_ON_EDGE) pin for detecting if board is USB powered
-            if (absent) {
+            if (absent)
+            {
                 /* Reset USB on cable detach (VBUS falling edge) */
                 USBD_Reset();
                 usbd_reset_core();
                 usb_pc_connected = false;
                 usb_state = USB_DISCONNECTED;
-            } else {
+            }
+            else
+            {
                 // Cable inserted
                 wake_from_usb = 1;
             }
@@ -264,13 +277,15 @@ void GPIOTE_IRQHandler(void)
 #ifdef POWER_IRQ_USBDETECTED
 void POWER_CLOCK_IRQHandler(void)
 {
-    if (NRF_POWER->EVENTS_USBDETECTED) {
+    if (NRF_POWER->EVENTS_USBDETECTED)
+    {
         NRF_POWER->EVENTS_USBDETECTED = 0;
         power_source = pwr_mon_get_power_source();
         wake_from_usb = 1;
     }
 
-    if (NRF_POWER->EVENTS_USBREMOVED) {
+    if (NRF_POWER->EVENTS_USBREMOVED)
+    {
         NRF_POWER->EVENTS_USBREMOVED = 0;
         power_source = pwr_mon_get_power_source();
         /* Reset USB on cable detach (VBUS falling edge) */

@@ -83,7 +83,8 @@
 //! The EP1 OUT buffer starts after the EP0 OUT buffer, SETUP buffer, and EP0 IN buffer.
 #define EP1_BUF_BASE (3 * USBD_MAX_PACKET0 + EP_BUF_BASE)
 
-typedef struct BUF_INFO {
+typedef struct BUF_INFO
+{
     uint32_t  buf_len;
     uint32_t  buf_ptr;
 } EP_BUF_INFO;
@@ -115,7 +116,8 @@ uint32_t *GetEpCmdStatPtr(uint32_t EPNum)
     ptr += (EPNum & USB_LOGICAL_EP_MASK) * 4;
 
     // For IN endpoints,
-    if (EPNum & USB_IN_MASK) {
+    if (EPNum & USB_IN_MASK)
+    {
         ptr += 2;
     }
 
@@ -134,9 +136,12 @@ uint32_t *GetEpCmdStatPtr(uint32_t EPNum)
 void __svc(1) USBD_Intr(int ena);
 void __SVC_1(int ena)
 {
-    if (ena) {
+    if (ena)
+    {
         NVIC_EnableIRQ(USB1_IRQn);           /* Enable USB interrupt */
-    } else {
+    }
+    else
+    {
         NVIC_DisableIRQ(USB1_IRQn);          /* Disable USB interrupt */
     }
 }
@@ -176,9 +181,12 @@ void USBD_Init(void)
 
 void USBD_Connect(BOOL con)
 {
-    if (con) {
+    if (con)
+    {
         USBHSD->DEVCMDSTAT |= USBHSD_DEVCMDSTAT_DCON_MASK;    /* Set device connect status */
-    } else {
+    }
+    else
+    {
         USBHSD->DEVCMDSTAT &= ~USBHSD_DEVCMDSTAT_DCON_MASK;   /* Clear device connect status */
     }
 
@@ -202,7 +210,8 @@ void NO_OPTIMIZE_INLINE USBD_Reset(void)
     s_next_ep_buf_addr = EP1_BUF_BASE;
 
     // Disable all EPs.
-    for (i = 0; i < sizeof(EPList) / sizeof(uint32_t); i++) {
+    for (i = 0; i < sizeof(EPList) / sizeof(uint32_t); i++)
+    {
         EPList[i] = EP_DISABLED;
     }
 
@@ -221,9 +230,9 @@ void NO_OPTIMIZE_INLINE USBD_Reset(void)
     USBHSD->DEVCMDSTAT |= USBHSD_DEVCMDSTAT_DEV_EN_MASK;         /*USB device enable */
     USBHSD->INTSTAT     = 0x2FC;              /* clear EP interrupt flags */
     USBHSD->INTEN = (USBHSD_INTEN_FRAME_INT_EN_MASK |            /* SOF intr enable */
-                      USBHSD_INTEN_EP_INT_EN(0)     | /* EP0 OUT intr enable */
-                      USBHSD_INTEN_EP_INT_EN(1)     | /* EP0 IN intr enable */
-                      USBHSD_INTEN_DEV_INT_EN_MASK);    /* stat change int en */
+                     USBHSD_INTEN_EP_INT_EN(0)     | /* EP0 OUT intr enable */
+                     USBHSD_INTEN_EP_INT_EN(1)     | /* EP0 IN intr enable */
+                     USBHSD_INTEN_DEV_INT_EN_MASK);    /* stat change int en */
 
     // Set bus speed.
     uint32_t speed = (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_Speed_MASK) >> USBHSD_DEVCMDSTAT_Speed_SHIFT;
@@ -280,9 +289,12 @@ void USBD_WakeUp(void)
 
 void USBD_WakeUpCfg(BOOL cfg)
 {
-    if (cfg == __TRUE) {
+    if (cfg == __TRUE)
+    {
         USBHSD->DEVCMDSTAT &= ~USBHSD_DEVCMDSTAT_FORCE_NEEDCLK_MASK; /*PPL_ON=0, in suspend clk is stoped */
-    } else {
+    }
+    else
+    {
         USBHSD->DEVCMDSTAT |= USBHSD_DEVCMDSTAT_FORCE_NEEDCLK_MASK;  /*PPL_ON=1, in suspend clk isnt stoped */
         SYSCON->USB1NEEDCLKCTRL = 0;
     }
@@ -297,7 +309,8 @@ void USBD_WakeUpCfg(BOOL cfg)
 
 void USBD_SetAddress(uint32_t adr, uint32_t setup)
 {
-    if (!setup) {
+    if (!setup)
+    {
         USBHSD->DEVCMDSTAT &= ~USBHSD_DEVCMDSTAT_DEV_ADDR_MASK;
         USBHSD->DEVCMDSTAT |= adr | USBHSD_DEVCMDSTAT_DEV_EN_MASK;
     }
@@ -332,7 +345,8 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
     type = pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK;
 
     /* IN EPs */
-    if (num & USB_IN_MASK) {
+    if (num & USB_IN_MASK)
+    {
         num &= ~USB_IN_MASK;
         EPBufInfo[EP_IN_IDX(num)].buf_len  = val;
         EPBufInfo[EP_IN_IDX(num)].buf_ptr  = s_next_ep_buf_addr;
@@ -340,16 +354,19 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
         ptr  = GetEpCmdStatPtr(num | USB_IN_MASK);
         *ptr = EP_DISABLED;
 
-        if (type == USB_ENDPOINT_TYPE_INTERRUPT) {
+        if (type == USB_ENDPOINT_TYPE_INTERRUPT)
+        {
             *ptr |= EP_TYPE | EP_RF_TV;
         }
-        else if (type == USB_ENDPOINT_TYPE_ISOCHRONOUS) {
+        else if (type == USB_ENDPOINT_TYPE_ISOCHRONOUS)
+        {
             *ptr |= EP_TYPE;
         }
     }
 
     /* OUT EPs */
-    else {
+    else
+    {
         EPBufInfo[EP_OUT_IDX(num)].buf_len  = val;
         EPBufInfo[EP_OUT_IDX(num)].buf_ptr  = s_next_ep_buf_addr;
         ptr  = GetEpCmdStatPtr(num);
@@ -357,10 +374,12 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
                BUF_ADDR(EPBufInfo[EP_OUT_IDX(num)].buf_ptr) |
                EP_DISABLED;
 
-        if (type == USB_ENDPOINT_TYPE_INTERRUPT) {
+        if (type == USB_ENDPOINT_TYPE_INTERRUPT)
+        {
             *ptr |= EP_TYPE | EP_RF_TV;
         }
-        else if (type == USB_ENDPOINT_TYPE_ISOCHRONOUS) {
+        else if (type == USB_ENDPOINT_TYPE_ISOCHRONOUS)
+        {
             *ptr |= EP_TYPE;
         }
 
@@ -395,7 +414,8 @@ void USBD_EnableEP(uint32_t EPNum)
     ptr = GetEpCmdStatPtr(EPNum);
 
     /* IN EP */
-    if (EPNum & USB_IN_MASK) {
+    if (EPNum & USB_IN_MASK)
+    {
         EPNum &= ~USB_IN_MASK;
         *ptr &= ~EP_DISABLED;
         USBHSD->INTSTAT = (1 << EP_IN_IDX(EPNum));
@@ -403,7 +423,8 @@ void USBD_EnableEP(uint32_t EPNum)
     }
 
     /* OUT EP */
-    else {
+    else
+    {
         *ptr &= ~EP_DISABLED;
         *ptr |=  EP_BUF_ACTIVE;
         USBHSD->INTSTAT = (1 << EP_OUT_IDX(EPNum));
@@ -426,11 +447,14 @@ void USBD_DisableEP(uint32_t EPNum)
     ptr = GetEpCmdStatPtr(EPNum);
     *ptr = EP_DISABLED;
 
-    if (EPNum & USB_IN_MASK) {
+    if (EPNum & USB_IN_MASK)
+    {
         EPNum &= ~USB_IN_MASK;
         USBHSD->INTEN &= ~(1 << EP_IN_IDX(EPNum));
 
-    } else {
+    }
+    else
+    {
         USBHSD->INTEN &= ~(1 << EP_OUT_IDX(EPNum));
     }
 }
@@ -465,26 +489,34 @@ void USBD_SetStallEP(uint32_t EPNum)
     uint32_t *ptr;
     ptr = GetEpCmdStatPtr(EPNum);
 
-    if (EPNum & USB_LOGICAL_EP_MASK) {
-        if (*ptr & EP_BUF_ACTIVE) {
+    if (EPNum & USB_LOGICAL_EP_MASK)
+    {
+        if (*ptr & EP_BUF_ACTIVE)
+        {
             *ptr &= ~(EP_BUF_ACTIVE);
         }
 
-    } else {
-        if (EPNum & USB_IN_MASK) {
+    }
+    else
+    {
+        if (EPNum & USB_IN_MASK)
+        {
             EPNum &= ~USB_IN_MASK;
             USBHSD->EPSKIP |= (1 << EP_IN_IDX(EPNum));
 
             while (USBHSD->EPSKIP & (1 << EP_IN_IDX(EPNum)));
 
-        } else {
+        }
+        else
+        {
             USBHSD->EPSKIP |= (1 << EP_OUT_IDX(EPNum));
 
             while (USBHSD->EPSKIP & (1 << EP_OUT_IDX(EPNum)));
         }
     }
 
-    if ((EPNum & USB_LOGICAL_EP_MASK) == 0) {
+    if ((EPNum & USB_LOGICAL_EP_MASK) == 0)
+    {
         /* Endpoint is stalled so control out won't be next */
         s_read_ctrl_out_next = 0;
     }
@@ -506,10 +538,13 @@ void USBD_ClrStallEP(uint32_t EPNum)
     uint32_t *ptr;
     ptr = GetEpCmdStatPtr(EPNum);
 
-    if (EPNum & USB_IN_MASK) {
+    if (EPNum & USB_IN_MASK)
+    {
         *ptr &=  ~EP_STALL;
 
-    } else {
+    }
+    else
+    {
         *ptr &=  ~EP_STALL;
         *ptr |=   EP_BUF_ACTIVE;
     }
@@ -531,20 +566,25 @@ void USBD_ClearEPBuf(uint32_t EPNum)
     uint32_t  cnt, i;
     uint8_t  *dataptr;
 
-    if (EPNum & USB_IN_MASK) {
+    if (EPNum & USB_IN_MASK)
+    {
         EPNum &= ~USB_IN_MASK;
         dataptr = (uint8_t *)EPBufInfo[EP_IN_IDX(EPNum)].buf_ptr;
         cnt     =       EPBufInfo[EP_IN_IDX(EPNum)].buf_len;
 
-        for (i = 0; i < cnt; i++) {
+        for (i = 0; i < cnt; i++)
+        {
             dataptr[i] = 0;
         }
 
-    } else {
+    }
+    else
+    {
         dataptr = (uint8_t *)EPBufInfo[EP_OUT_IDX(EPNum)].buf_ptr;
         cnt     =       EPBufInfo[EP_OUT_IDX(EPNum)].buf_len;
 
-        for (i = 0; i < cnt; i++) {
+        for (i = 0; i < cnt; i++)
+        {
             dataptr[i] = 0;
         }
     }
@@ -569,10 +609,12 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
     int timeout = 256;
 
     /* Setup packet */
-    if ((EPNum == 0) && !s_read_ctrl_out_next && (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_SETUP_MASK)) {
+    if ((EPNum == 0) && !s_read_ctrl_out_next && (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_SETUP_MASK))
+    {
         cnt = sizeof(USB_SETUP_PACKET);
 
-        if (size < cnt) {
+        if (size < cnt)
+        {
             util_assert(0);
             cnt = size;
         }
@@ -584,7 +626,8 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
         USB_SETUP_PACKET setup;
         memcpy(&setup, pData, sizeof(setup));
 
-        if ((setup.wLength > 0) && setup.bmRequestType.Dir) {
+        if ((setup.wLength > 0) && setup.bmRequestType.Dir)
+        {
             /* This control transfer has a data IN stage            */
             /* and ends with a zero length data OUT transfer.       */
             /* Ensure the data OUT token is not skipped even if     */
@@ -598,12 +641,14 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
         while (USBHSD->EPSKIP & (1 << EP_IN_IDX(EPNum)));
 
         // Clear stall on EP0 IN.
-        if (*(ptr + 2) & EP_STALL) {
+        if (*(ptr + 2) & EP_STALL)
+        {
             *(ptr + 2) &= ~(EP_STALL);
         }
 
         // Clear stall on EP0 OUT.
-        if (*ptr & EP_STALL) {
+        if (*ptr & EP_STALL)
+        {
             *ptr &= ~(EP_STALL);
         }
 
@@ -611,7 +656,8 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
     }
 
     /* OUT packet */
-    else {
+    else
+    {
         ptr = GetEpCmdStatPtr(EPNum);
         cnt = EPBufInfo[EP_OUT_IDX(EPNum)].buf_len - ((*ptr & EP_NBYTES_MASK) >> EP_NBYTES_SHIFT);
         dataptr = (uint8_t *)EPBufInfo[EP_OUT_IDX(EPNum)].buf_ptr;
@@ -619,7 +665,8 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
         while ((timeout-- > 0) && (*ptr & EP_BUF_ACTIVE)); //spin on the hardware until it's done
         util_assert(!(*ptr & EP_BUF_ACTIVE)); //check for timeout
 
-        if (size < cnt) {
+        if (size < cnt)
+        {
             util_assert(0);
             cnt = size;
         }
@@ -633,12 +680,14 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
                BUF_ADDR(EPBufInfo[EP_OUT_IDX(EPNum)].buf_ptr) |
                EP_BUF_ACTIVE;
 
-        if (EPNum == 0) {
+        if (EPNum == 0)
+        {
             /* If s_read_ctrl_out_next is set then this should be a zero length        */
             /* data OUT packet.                                                 */
             util_assert(!s_read_ctrl_out_next || (cnt == 0));
             s_read_ctrl_out_next = 0;
-            if (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_SETUP_MASK)  {
+            if (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_SETUP_MASK)
+            {
                 // A setup packet is still pending so trigger another interrupt
                 USBHSD->INTSETSTAT |= USBHSD_INTSETSTAT_EP_SET_INT(0);
             }
@@ -677,7 +726,8 @@ uint32_t USBD_WriteEP(uint32_t EPNum, uint8_t *pData, uint32_t cnt)
     dataptr = (uint32_t *)EPBufInfo[EP_IN_IDX(EPNum)].buf_ptr;
     memcpy(dataptr, pData, cnt);
 
-    if (EPNum && (*ptr & EP_STALL)) {
+    if (EPNum && (*ptr & EP_STALL))
+    {
         return (0);
     }
 
@@ -715,23 +765,27 @@ void USBD_Handler(void)
     USBHSD->INTSTAT = sts;
 
     /* Device Status Interrupt (Reset, Connect change, Suspend/Resume) */
-    if (sts & USBHSD_INTSTAT_DEV_INT_MASK) {
+    if (sts & USBHSD_INTSTAT_DEV_INT_MASK)
+    {
         val = USBHSD->DEVCMDSTAT;
 
         /* reset interrupt */
-        if (val & USBHSD_DEVCMDSTAT_DRES_C_MASK) {
+        if (val & USBHSD_DEVCMDSTAT_DRES_C_MASK)
+        {
             USBHSD->DEVCMDSTAT |= USBHSD_DEVCMDSTAT_DRES_C_MASK;
             USBD_Reset();
             usbd_reset_core();
 #ifdef __RTX
 
-            if (USBD_RTX_DevTask) {
+            if (USBD_RTX_DevTask)
+            {
                 isr_evt_set(USBD_EVT_RESET, USBD_RTX_DevTask);
             }
 
 #else
 
-            if (USBD_P_Reset_Event) {
+            if (USBD_P_Reset_Event)
+            {
                 USBD_P_Reset_Event();
             }
 
@@ -739,21 +793,27 @@ void USBD_Handler(void)
         }
 
         /* connect interrupt */
-        if (val & USBHSD_DEVCMDSTAT_DCON_C_MASK) {
+        if (val & USBHSD_DEVCMDSTAT_DCON_C_MASK)
+        {
             USBHSD->DEVCMDSTAT |= USBHSD_DEVCMDSTAT_DCON_C_MASK;
 #ifdef __RTX
 
-            if (USBD_RTX_DevTask) {
-                if (val & USBHSD_DEVCMDSTAT_DCON_MASK) {
+            if (USBD_RTX_DevTask)
+            {
+                if (val & USBHSD_DEVCMDSTAT_DCON_MASK)
+                {
                     isr_evt_set(USBD_EVT_POWER_ON,  USBD_RTX_DevTask);
-                } else {
+                }
+                else
+                {
                     isr_evt_set(USBD_EVT_POWER_OFF, USBD_RTX_DevTask);
                 }
             }
 
 #else
 
-            if (USBD_P_Power_Event) {
+            if (USBD_P_Power_Event)
+            {
                 USBD_P_Power_Event((val & USBHSD_DEVCMDSTAT_DCON_MASK) >> USBHSD_DEVCMDSTAT_DCON_SHIFT);
             }
 
@@ -761,21 +821,25 @@ void USBD_Handler(void)
         }
 
         /* suspend/resume interrupt */
-        if (val & USBHSD_DEVCMDSTAT_DSUS_C_MASK) {
+        if (val & USBHSD_DEVCMDSTAT_DSUS_C_MASK)
+        {
             USBHSD->DEVCMDSTAT |= USBHSD_DEVCMDSTAT_DSUS_C_MASK;
 
             /* suspend interrupt */
-            if (val & USBHSD_DEVCMDSTAT_DSUS_MASK) {
+            if (val & USBHSD_DEVCMDSTAT_DSUS_MASK)
+            {
                 USBD_Suspend();
 #ifdef __RTX
 
-                if (USBD_RTX_DevTask) {
+                if (USBD_RTX_DevTask)
+                {
                     isr_evt_set(USBD_EVT_SUSPEND, USBD_RTX_DevTask);
                 }
 
 #else
 
-                if (USBD_P_Suspend_Event) {
+                if (USBD_P_Suspend_Event)
+                {
                     USBD_P_Suspend_Event();
                 }
 
@@ -783,16 +847,19 @@ void USBD_Handler(void)
             }
 
             /* resume interrupt */
-            else {
+            else
+            {
 #ifdef __RTX
 
-                if (USBD_RTX_DevTask) {
+                if (USBD_RTX_DevTask)
+                {
                     isr_evt_set(USBD_EVT_RESUME,  USBD_RTX_DevTask);
                 }
 
 #else
 
-                if (USBD_P_Resume_Event) {
+                if (USBD_P_Resume_Event)
+                {
                     USBD_P_Resume_Event();
                 }
 
@@ -802,16 +869,19 @@ void USBD_Handler(void)
     }
 
     /* Start of Frame */
-    if (sts & USBHSD_INTSTAT_FRAME_INT_MASK) {
+    if (sts & USBHSD_INTSTAT_FRAME_INT_MASK)
+    {
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask) {
+        if (USBD_RTX_DevTask)
+        {
             isr_evt_set(USBD_EVT_SOF, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_SOF_Event) {
+        if (USBD_P_SOF_Event)
+        {
             USBD_P_SOF_Event();
         }
 
@@ -819,26 +889,32 @@ void USBD_Handler(void)
     }
 
     /* EndPoint Interrupt */
-    if (sts & USBHSD_INTEN_EP_INT_EN_MASK) {
+    if (sts & USBHSD_INTEN_EP_INT_EN_MASK)
+    {
         const uint32_t endpoint_count = ((USBD_EP_NUM + 1) * 2);
 
-        for (i = 0; i < endpoint_count; i++) {
+        for (i = 0; i < endpoint_count; i++)
+        {
             // Iterate through endpoints in the reverse order so IN endpoints
             // get processed before OUT endpoints if they are both pending.
             num = endpoint_count - i - 1;
 
-            if (sts & (1UL << num)) {
+            if (sts & (1UL << num))
+            {
                 /* Setup */
-                if ((num == 0) && !s_read_ctrl_out_next && (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_SETUP_MASK)) {
+                if ((num == 0) && !s_read_ctrl_out_next && (USBHSD->DEVCMDSTAT & USBHSD_DEVCMDSTAT_SETUP_MASK))
+                {
 #ifdef __RTX
 
-                    if (USBD_RTX_EPTask[num / 2]) {
+                    if (USBD_RTX_EPTask[num / 2])
+                    {
                         isr_evt_set(USBD_EVT_SETUP, USBD_RTX_EPTask[num / 2]);
                     }
 
 #else
 
-                    if (USBD_P_EP[num / 2]) {
+                    if (USBD_P_EP[num / 2])
+                    {
                         USBD_P_EP[num / 2](USBD_EVT_SETUP);
                     }
 
@@ -846,16 +922,19 @@ void USBD_Handler(void)
                 }
 
                 /* OUT */
-                else if ((num % 2) == 0) {
+                else if ((num % 2) == 0)
+                {
 #ifdef __RTX
 
-                    if (USBD_RTX_EPTask[num / 2]) {
+                    if (USBD_RTX_EPTask[num / 2])
+                    {
                         isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[num / 2]);
                     }
 
 #else
 
-                    if (USBD_P_EP[num / 2]) {
+                    if (USBD_P_EP[num / 2])
+                    {
                         USBD_P_EP[num / 2](USBD_EVT_OUT);
                     }
 
@@ -863,16 +942,19 @@ void USBD_Handler(void)
                 }
 
                 /* IN */
-                else {
+                else
+                {
 #ifdef __RTX
 
-                    if (USBD_RTX_EPTask[num / 2]) {
+                    if (USBD_RTX_EPTask[num / 2])
+                    {
                         isr_evt_set(USBD_EVT_IN,  USBD_RTX_EPTask[num / 2]);
                     }
 
 #else
 
-                    if (USBD_P_EP[num / 2]) {
+                    if (USBD_P_EP[num / 2])
+                    {
                         USBD_P_EP[num / 2](USBD_EVT_IN);
                     }
 

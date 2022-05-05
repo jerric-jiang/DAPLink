@@ -1,5 +1,5 @@
-/* -------------------------------------------------------------------------- 
- * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All 
+/* --------------------------------------------------------------------------
+ * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All
  * rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -28,10 +28,11 @@
 #include <stdint.h>
 
 // Pin identifier
-typedef struct _PIN_ID {
-  uint8_t       port;
-  uint8_t       num;
-  uint32_t      config_val;
+typedef struct _PIN_ID
+{
+    uint8_t       port;
+    uint8_t       num;
+    uint32_t      config_val;
 } PIN_ID;
 
 //------------------------------------------------------------------------------
@@ -130,7 +131,7 @@ typedef struct _PIN_ID {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_PinConfigure (uint8_t port, uint8_t pin, uint32_t pin_cfg);
+extern int32_t SCU_PinConfigure(uint8_t port, uint8_t pin, uint32_t pin_cfg);
 
 /**
   \fn          int32_t SCU_CLK_PinConfigure (uint8_t clk_pin, uint32_t pin_cfg)
@@ -140,7 +141,7 @@ extern int32_t SCU_PinConfigure (uint8_t port, uint8_t pin, uint32_t pin_cfg);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_CLK_PinConfigure (uint8_t pin_clk, uint32_t pin_cfg);
+extern int32_t SCU_CLK_PinConfigure(uint8_t pin_clk, uint32_t pin_cfg);
 
 /**
   \fn          int32_t SCU_USB1_PinConfigure (uint32_t USB1_pin_cfg)
@@ -149,7 +150,7 @@ extern int32_t SCU_CLK_PinConfigure (uint8_t pin_clk, uint32_t pin_cfg);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_USB1_PinConfigure (uint32_t USB1_pin_cfg);
+extern int32_t SCU_USB1_PinConfigure(uint32_t USB1_pin_cfg);
 
 /**
   \fn          int32_t SCU_I2C_PinConfigure (uint32_t I2C_mode)
@@ -160,7 +161,7 @@ extern int32_t SCU_USB1_PinConfigure (uint32_t USB1_pin_cfg);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_I2C_PinConfigure (uint32_t I2C_mode);
+extern int32_t SCU_I2C_PinConfigure(uint32_t I2C_mode);
 
 /**
   \fn          int32_t SCU_ADC_ChannelPinConfigure (uint8_t ADC_num, uint8_t channel, uint32_t cmd)
@@ -171,7 +172,7 @@ extern int32_t SCU_I2C_PinConfigure (uint32_t I2C_mode);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_ADC_ChannelPinConfigure (uint8_t ADC_num, uint8_t channel, uint32_t cmd);
+extern int32_t SCU_ADC_ChannelPinConfigure(uint8_t ADC_num, uint8_t channel, uint32_t cmd);
 
 /**
   \fn          int32_t SCU_DAC_PinConfigure (uint32_t cmd)
@@ -180,7 +181,7 @@ extern int32_t SCU_ADC_ChannelPinConfigure (uint8_t ADC_num, uint8_t channel, ui
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_DAC_PinConfigure (uint32_t cmd);
+extern int32_t SCU_DAC_PinConfigure(uint32_t cmd);
 
 /**
   \fn          int32_t SCU_PinInterruptSourceSelect (uint8_t pin_int, uint8_t port, uint8_t pin)
@@ -192,6 +193,6 @@ extern int32_t SCU_DAC_PinConfigure (uint32_t cmd);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t SCU_PinInterruptSourceSelect (uint8_t pin_int, uint8_t port, uint8_t pin);
+extern int32_t SCU_PinInterruptSourceSelect(uint8_t pin_int, uint8_t port, uint8_t pin);
 
 #endif /* __SCU_LPC43XX_H */

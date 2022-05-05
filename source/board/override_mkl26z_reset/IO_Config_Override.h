@@ -1,6 +1,6 @@
 /**
  * @file    IO_Config.h
- * @brief   
+ * @brief
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -69,7 +69,7 @@ COMPILER_ASSERT(DAPLINK_HIC_ID == DAPLINK_HIC_ID_KL26);
 // HID_LED PTD4
 #define PIN_HID_LED_PORT        PORTD
 #define PIN_HID_LED_GPIO        PTD
-#define PIN_HID_LED_BIT         (4) 
+#define PIN_HID_LED_BIT         (4)
 #define PIN_HID_LED             (1<<PIN_HID_LED_BIT)
 
 // MSC_LED PTD5

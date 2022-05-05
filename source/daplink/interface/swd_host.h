@@ -36,12 +36,14 @@
 extern "C" {
 #endif
 
-typedef enum {
+typedef enum
+{
     CONNECT_NORMAL,
     CONNECT_UNDER_RESET,
 } SWD_CONNECT_TYPE;
 
-typedef enum {
+typedef enum
+{
     FLASHALGO_RETURN_BOOL,
     FLASHALGO_RETURN_POINTER
 } flash_algo_return_t;

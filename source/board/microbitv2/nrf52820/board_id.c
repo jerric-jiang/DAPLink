@@ -26,9 +26,13 @@
 
 mb_version_t board_id_detect(void)
 {
-    switch (NRF_FICR->INFO.PART) {
-        case 0x52833: return BOARD_VERSION_2_2_833;
-        case 0x52820: return BOARD_VERSION_2_2_820;
-        default: return BOARD_VERSION_2_DEF;
+    switch (NRF_FICR->INFO.PART)
+    {
+        case 0x52833:
+            return BOARD_VERSION_2_2_833;
+        case 0x52820:
+            return BOARD_VERSION_2_2_820;
+        default:
+            return BOARD_VERSION_2_DEF;
     }
 }

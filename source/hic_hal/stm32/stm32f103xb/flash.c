@@ -60,7 +60,8 @@ uint32_t EraseChip(void)
     FLASH_EraseInitTypeDef erase_init;
     uint32_t error;
     uint32_t ret = 0;  // O.K.
-    if (g_board_info.target_cfg) {
+    if (g_board_info.target_cfg)
+    {
         HAL_FLASH_Unlock();
         //bootloader, interface flashing only concerns 1 flash region
         util_assert((g_board_info.target_cfg->flash_regions[0].end - g_board_info.target_cfg->flash_regions[0].start) %
@@ -69,12 +70,15 @@ uint32_t EraseChip(void)
         erase_init.TypeErase = FLASH_TYPEERASE_PAGES;
         erase_init.PageAddress = g_board_info.target_cfg->flash_regions[0].start;
         erase_init.NbPages = (g_board_info.target_cfg->flash_regions[0].end - g_board_info.target_cfg->flash_regions[0].start) % FLASH_PAGE_SIZE;
-        if (HAL_FLASHEx_Erase(&erase_init, &error) != HAL_OK) {
+        if (HAL_FLASHEx_Erase(&erase_init, &error) != HAL_OK)
+        {
             ret = 1;
         }
-        
+
         HAL_FLASH_Lock();
-    }else{
+    }
+    else
+    {
         ret = 1;
     }
     return ret;
@@ -87,12 +91,13 @@ uint32_t EraseSector(uint32_t adr)
     uint32_t ret = 0;  // O.K.
 
     HAL_FLASH_Unlock();
-    
+
     memset(&erase_init, 0, sizeof(erase_init));
     erase_init.TypeErase = FLASH_TYPEERASE_PAGES;
     erase_init.PageAddress = adr;
     erase_init.NbPages = 1;
-    if (HAL_FLASHEx_Erase(&erase_init, &error) != HAL_OK) {
+    if (HAL_FLASHEx_Erase(&erase_init, &error) != HAL_OK)
+    {
         ret = 1;
     }
 
@@ -108,8 +113,10 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     HAL_FLASH_Unlock();
 
     util_assert(sz % 4 == 0);
-    for (i = 0; i < sz / 4; i++) {
-        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, adr + i * 4, buf[i]) != HAL_OK) {
+    for (i = 0; i < sz / 4; i++)
+    {
+        if (HAL_FLASH_Program(FLASH_TYPEPROGRAM_WORD, adr + i * 4, buf[i]) != HAL_OK)
+        {
             ret = 1;
             break;
         }

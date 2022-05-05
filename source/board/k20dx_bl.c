@@ -36,15 +36,17 @@ COMPILER_ASSERT(DAPLINK_ROM_IF_SIZE == KB(95));
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {DAPLINK_ROM_IF_START, 1024},
- };
+};
 
 // k20dx128 target information
-target_cfg_t target_device = {
+target_cfg_t target_device =
+{
     .version                    = kTargetConfigVersion,
     .sectors_info               = sectors_info,
-    .sector_info_length         = (sizeof(sectors_info))/(sizeof(sector_info_t)),
+    .sector_info_length         = (sizeof(sectors_info)) / (sizeof(sector_info_t)),
     .flash_regions[0].start     = DAPLINK_ROM_IF_START,
     .flash_regions[0].end       = DAPLINK_ROM_IF_START + DAPLINK_ROM_IF_SIZE,
     .flash_regions[0].flags     = kRegionIsDefault,
@@ -56,11 +58,12 @@ target_cfg_t target_device = {
 //bootloader has no family
 const target_family_descriptor_t *g_target_family = NULL;
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "0000",
     .daplink_url_name =       "HELP_FAQHTM",
-    .daplink_drive_name = 		"MAINTENANCE",
+    .daplink_drive_name =       "MAINTENANCE",
     .daplink_target_url = "https://daplink.io",
     .target_cfg = &target_device,
 };

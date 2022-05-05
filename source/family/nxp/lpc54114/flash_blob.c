@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t lpc54114_flash_prog_blob[] = {
+static const uint32_t lpc54114_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x21002210, 0xf8c00690, 0x4a2c2630, 0xf0236813, 0x60134380, 0x1280f8c0, 0x1284f8c0, 0x68134a28,
     0x4370f423, 0xf8c06013, 0x21021380, 0x20006001, 0x20004770, 0xb5104770, 0x20002107, 0xf844f000,
@@ -40,18 +41,20 @@ static const uint32_t lpc54114_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     {0, 32768},
 };
 
-static const program_target_t flash = {
+static const program_target_t flash =
+{
     0x20000021, // Init
     0x20000053, // UnInit
     0x20000057, // EraseChip
     0x20000075, // EraseSector
     0x20000095, // ProgramPage
     0x0,        // Verify
-    
+
     // BKPT : start of blob + 1
     // RSB  : blob start + header + rw data offset
     // RSP  : stack pointer

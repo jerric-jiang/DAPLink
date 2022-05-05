@@ -134,14 +134,14 @@ typedef enum
      * For the others @ref NRF_CLOCK_LFCLK_Xtal is returned for this setting.
      */
     NRF_CLOCK_LFCLK_Xtal_Low_Swing = (CLOCK_LFCLKSRC_SRC_Xtal |
-        (CLOCK_LFCLKSRC_EXTERNAL_Enabled << CLOCK_LFCLKSRC_EXTERNAL_Pos)),
+                                      (CLOCK_LFCLKSRC_EXTERNAL_Enabled << CLOCK_LFCLKSRC_EXTERNAL_Pos)),
     /**
      * External 32 kHz full swing signal. Used only with the LFCLKSRC register.
      * For the others @ref NRF_CLOCK_LFCLK_Xtal is returned for this setting.
      */
     NRF_CLOCK_LFCLK_Xtal_Full_Swing = (CLOCK_LFCLKSRC_SRC_Xtal |
-        (CLOCK_LFCLKSRC_BYPASS_Enabled   << CLOCK_LFCLKSRC_BYPASS_Pos) |
-        (CLOCK_LFCLKSRC_EXTERNAL_Enabled << CLOCK_LFCLKSRC_EXTERNAL_Pos)),
+                                       (CLOCK_LFCLKSRC_BYPASS_Enabled   << CLOCK_LFCLKSRC_BYPASS_Pos) |
+                                       (CLOCK_LFCLKSRC_EXTERNAL_Enabled << CLOCK_LFCLKSRC_EXTERNAL_Pos)),
 #endif // defined(NRF_CLOCK_USE_EXTERNAL_LFCLK_SOURCES) || defined(__NRFX_DOXYGEN__)
 } nrf_clock_lfclk_t;
 
@@ -220,11 +220,11 @@ typedef enum
     NRF_CLOCK_INT_CTSTOPPED_MASK       = CLOCK_INTENSET_CTSTOPPED_Msk          /**< Interrupt on CTSTOPPED event. */
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
-    NRF_CLOCK_INT_HFAUDIO_STARTED_MASK = CLOCK_INTENSET_HFCLKAUDIOSTARTED_Msk, /**< Interrupt on HFCLKAUDIOSTARTED event. */
+                                         NRF_CLOCK_INT_HFAUDIO_STARTED_MASK = CLOCK_INTENSET_HFCLKAUDIOSTARTED_Msk, /**< Interrupt on HFCLKAUDIOSTARTED event. */
 #endif
 
 #if NRF_CLOCK_HAS_HFCLK192M
-    NRF_CLOCK_INT_HF192M_STARTED_MASK  = CLOCK_INTENSET_HFCLK192MSTARTED_Msk,  /**< Interrupt on HFCLK192MSTARTED event. */
+                                         NRF_CLOCK_INT_HF192M_STARTED_MASK  = CLOCK_INTENSET_HFCLK192MSTARTED_Msk,  /**< Interrupt on HFCLK192MSTARTED event. */
 #endif
 } nrf_clock_int_mask_t;
 
@@ -248,12 +248,12 @@ typedef enum
     NRF_CLOCK_TASK_CTSTOP          = offsetof(NRF_CLOCK_Type, TASKS_CTSTOP)           /**< Stop calibration timer. */
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
-    NRF_CLOCK_TASK_HFCLKAUDIOSTART = offsetof(NRF_CLOCK_Type, TASKS_HFCLKAUDIOSTART), /**< Start HFCLKAUDIO clock source. */
-    NRF_CLOCK_TASK_HFCLKAUDIOSTOP  = offsetof(NRF_CLOCK_Type, TASKS_HFCLKAUDIOSTOP),  /**< Stop HFCLKAUDIO clock source. */
+                                     NRF_CLOCK_TASK_HFCLKAUDIOSTART = offsetof(NRF_CLOCK_Type, TASKS_HFCLKAUDIOSTART), /**< Start HFCLKAUDIO clock source. */
+                                     NRF_CLOCK_TASK_HFCLKAUDIOSTOP  = offsetof(NRF_CLOCK_Type, TASKS_HFCLKAUDIOSTOP),  /**< Stop HFCLKAUDIO clock source. */
 #endif
 #if NRF_CLOCK_HAS_HFCLK192M
-    NRF_CLOCK_TASK_HFCLK192MSTART  = offsetof(NRF_CLOCK_Type, TASKS_HFCLK192MSTART),  /**< Start HFCLK192M clock source. */
-    NRF_CLOCK_TASK_HFCLK192MSTOP   = offsetof(NRF_CLOCK_Type, TASKS_HFCLK192MSTOP),   /**< Stop HFCLK192M clock source. */
+                                     NRF_CLOCK_TASK_HFCLK192MSTART  = offsetof(NRF_CLOCK_Type, TASKS_HFCLK192MSTART),  /**< Start HFCLK192M clock source. */
+                                     NRF_CLOCK_TASK_HFCLK192MSTOP   = offsetof(NRF_CLOCK_Type, TASKS_HFCLK192MSTOP),   /**< Stop HFCLK192M clock source. */
 #endif
 } nrf_clock_task_t;
 
@@ -273,10 +273,10 @@ typedef enum
     NRF_CLOCK_EVENT_CTSTOPPED         = offsetof(NRF_CLOCK_Type, EVENTS_CTSTOPPED)          /**< Calibration timer stopped. */
 #endif
 #if NRF_CLOCK_HAS_HFCLKAUDIO
-    NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED = offsetof(NRF_CLOCK_Type, EVENTS_HFCLKAUDIOSTARTED), /**< HFCLKAUDIO oscillator started. */
+                                        NRF_CLOCK_EVENT_HFCLKAUDIOSTARTED = offsetof(NRF_CLOCK_Type, EVENTS_HFCLKAUDIOSTARTED), /**< HFCLKAUDIO oscillator started. */
 #endif
 #if NRF_CLOCK_HAS_HFCLK192M
-    NRF_CLOCK_EVENT_HFCLK192MSTARTED  = offsetof(NRF_CLOCK_Type, EVENTS_HFCLK192MSTARTED),  /**< HFCLK192M oscillator started. */
+                                        NRF_CLOCK_EVENT_HFCLK192MSTARTED  = offsetof(NRF_CLOCK_Type, EVENTS_HFCLK192MSTARTED),  /**< HFCLK192M oscillator started. */
 #endif
 } nrf_clock_event_t;
 
@@ -316,7 +316,7 @@ NRF_STATIC_INLINE uint32_t nrf_clock_int_enable_check(NRF_CLOCK_Type const * p_r
  * @return Address of the requested task register.
  */
 NRF_STATIC_INLINE uint32_t nrf_clock_task_address_get(NRF_CLOCK_Type const * p_reg,
-                                                      nrf_clock_task_t       task);
+        nrf_clock_task_t       task);
 
 /**
  * @brief Function for setting the specified task.
@@ -336,7 +336,7 @@ NRF_STATIC_INLINE void nrf_clock_task_trigger(NRF_CLOCK_Type * p_reg, nrf_clock_
  * @return Address of the specified event register.
  */
 NRF_STATIC_INLINE uint32_t nrf_clock_event_address_get(NRF_CLOCK_Type const * p_reg,
-                                                       nrf_clock_event_t      event);
+        nrf_clock_event_t      event);
 
 /**
  * @brief Function for clearing the specified event.
@@ -367,7 +367,7 @@ NRF_STATIC_INLINE bool nrf_clock_event_check(NRF_CLOCK_Type const * p_reg, nrf_c
  * @retval true  The task START for the given domain has been triggered.
  */
 NRF_STATIC_INLINE bool nrf_clock_start_task_check(NRF_CLOCK_Type const * p_reg,
-                                                  nrf_clock_domain_t     domain);
+        nrf_clock_domain_t     domain);
 
 /**
  * @brief Function for retrieving the state of the clock.
@@ -383,8 +383,8 @@ NRF_STATIC_INLINE bool nrf_clock_start_task_check(NRF_CLOCK_Type const * p_reg,
  * @retval true  The clock is running.
  */
 NRF_STATIC_INLINE bool nrf_clock_is_running(NRF_CLOCK_Type const * p_reg,
-                                            nrf_clock_domain_t     domain,
-                                            void *                 p_clk_src);
+        nrf_clock_domain_t     domain,
+        void *                 p_clk_src);
 
 /**
  * @brief Function for changing the low-frequency clock source.
@@ -503,7 +503,7 @@ NRF_STATIC_INLINE nrf_clock_hfclk_t nrf_clock_hf_src_get(NRF_CLOCK_Type const * 
  * @retval true  The HFCLK clock is running.
  */
 NRF_STATIC_INLINE bool nrf_clock_hf_is_running(NRF_CLOCK_Type const * p_reg,
-                                               nrf_clock_hfclk_t      clk_src);
+        nrf_clock_hfclk_t      clk_src);
 
 /**
  * @brief Function for retrieving the trigger status of the task HFCLKSTART.
@@ -568,7 +568,7 @@ NRF_STATIC_INLINE void nrf_clock_cal_timer_timeout_set(NRF_CLOCK_Type * p_reg, u
  * @param[in] divider New HFCLK divider.
  */
 NRF_STATIC_INLINE void nrf_clock_hfclk_div_set(NRF_CLOCK_Type *      p_reg,
-                                               nrf_clock_hfclk_div_t divider);
+        nrf_clock_hfclk_div_t divider);
 
 /**
  * @brief Function for retrieving the HFCLK frequency divider.
@@ -588,7 +588,7 @@ NRF_STATIC_INLINE nrf_clock_hfclk_div_t nrf_clock_hfclk_div_get(NRF_CLOCK_Type c
  * @param[in] divider New HFCLK192M divider.
  */
 NRF_STATIC_INLINE void nrf_clock_hfclk192m_div_set(NRF_CLOCK_Type *      p_reg,
-                                                   nrf_clock_hfclk_div_t divider);
+        nrf_clock_hfclk_div_t divider);
 
 /**
  * @brief Function for retrieving the HFCLK192M frequency divider.
@@ -606,7 +606,7 @@ NRF_STATIC_INLINE nrf_clock_hfclk_div_t nrf_clock_hfclk192m_div_get(NRF_CLOCK_Ty
  * @param[in] source New HFCLK192M source.
  */
 NRF_STATIC_INLINE void nrf_clock_hfclk192m_src_set(NRF_CLOCK_Type *  p_reg,
-                                                   nrf_clock_hfclk_t source);
+        nrf_clock_hfclk_t source);
 
 /**
  * @brief Function for retrieving the selected source of the HFCLK192M.
@@ -630,8 +630,8 @@ NRF_STATIC_INLINE nrf_clock_hfclk_t nrf_clock_hfclk192m_src_get(NRF_CLOCK_Type c
  * @param[in] alwaysrun Ensure the clock is always running.
  */
 NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
-                                               nrf_clock_domain_t domain,
-                                               bool               alwaysrun);
+        nrf_clock_domain_t domain,
+        bool               alwaysrun);
 /**
  * @brief Function for checking if the clock domain is configured to always run.
  *
@@ -642,7 +642,7 @@ NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
  * @retval false The clock domain is not configured to always run.
  */
 NRF_STATIC_INLINE bool nrf_clock_alwaysrun_get(NRF_CLOCK_Type const * p_reg,
-                                               nrf_clock_domain_t     domain);
+        nrf_clock_domain_t     domain);
 /**
  * @brief Function for checking if the clock domain always run setting is active.
  *
@@ -653,7 +653,7 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_get(NRF_CLOCK_Type const * p_reg,
  * @retval false The clock domain always run setting is not active.
  */
 NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_reg,
-                                                      nrf_clock_domain_t     domain);
+        nrf_clock_domain_t     domain);
 #endif
 
 #if defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
@@ -666,8 +666,8 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_r
  * @param[in] channel Channel through which to subscribe events.
  */
 NRF_STATIC_INLINE void nrf_clock_subscribe_set(NRF_CLOCK_Type * p_reg,
-                                               nrf_clock_task_t task,
-                                               uint8_t          channel);
+        nrf_clock_task_t task,
+        uint8_t          channel);
 
 /**
  * @brief Function for clearing the subscribe configuration for a given
@@ -687,8 +687,8 @@ NRF_STATIC_INLINE void nrf_clock_subscribe_clear(NRF_CLOCK_Type * p_reg, nrf_clo
  * @param[in] channel Channel through which to publish the event.
  */
 NRF_STATIC_INLINE void nrf_clock_publish_set(NRF_CLOCK_Type *  p_reg,
-                                             nrf_clock_event_t event,
-                                             uint8_t           channel);
+        nrf_clock_event_t event,
+        uint8_t           channel);
 
 /**
  * @brief Function for clearing the publish configuration for a given
@@ -718,7 +718,7 @@ NRF_STATIC_INLINE uint32_t nrf_clock_int_enable_check(NRF_CLOCK_Type const * p_r
 }
 
 NRF_STATIC_INLINE uint32_t nrf_clock_task_address_get(NRF_CLOCK_Type const * p_reg,
-                                                      nrf_clock_task_t       task)
+        nrf_clock_task_t       task)
 {
     return (uint32_t)((uint8_t *)p_reg + (uint32_t)task);
 }
@@ -729,7 +729,7 @@ NRF_STATIC_INLINE void nrf_clock_task_trigger(NRF_CLOCK_Type * p_reg, nrf_clock_
 }
 
 NRF_STATIC_INLINE uint32_t nrf_clock_event_address_get(NRF_CLOCK_Type const * p_reg,
-                                                       nrf_clock_event_t      event)
+        nrf_clock_event_t      event)
 {
     return (uint32_t)((uint8_t *)p_reg + (uint32_t)event);
 }
@@ -742,11 +742,11 @@ NRF_STATIC_INLINE void nrf_clock_event_clear(NRF_CLOCK_Type * p_reg, nrf_clock_e
 
 NRF_STATIC_INLINE bool nrf_clock_event_check(NRF_CLOCK_Type const * p_reg, nrf_clock_event_t event)
 {
-    return (bool)*((volatile uint32_t *)((uint8_t *)p_reg + event));
+    return (bool) * ((volatile uint32_t *)((uint8_t *)p_reg + event));
 }
 
 NRF_STATIC_INLINE bool nrf_clock_start_task_check(NRF_CLOCK_Type const * p_reg,
-                                                  nrf_clock_domain_t     domain)
+        nrf_clock_domain_t     domain)
 {
     switch (domain)
     {
@@ -773,8 +773,8 @@ NRF_STATIC_INLINE bool nrf_clock_start_task_check(NRF_CLOCK_Type const * p_reg,
 }
 
 NRF_STATIC_INLINE bool nrf_clock_is_running(NRF_CLOCK_Type const * p_reg,
-                                            nrf_clock_domain_t     domain,
-                                            void *                 p_clk_src)
+        nrf_clock_domain_t     domain,
+        void *                 p_clk_src)
 {
     switch (domain)
     {
@@ -851,7 +851,7 @@ NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_actv_src_get(NRF_CLOCK_Type con
 NRF_STATIC_INLINE nrf_clock_lfclk_t nrf_clock_lf_srccopy_get(NRF_CLOCK_Type const * p_reg)
 {
     return (nrf_clock_lfclk_t)((p_reg->LFCLKSRCCOPY & CLOCK_LFCLKSRCCOPY_SRC_Msk)
-                                >> CLOCK_LFCLKSRCCOPY_SRC_Pos);
+                               >> CLOCK_LFCLKSRCCOPY_SRC_Pos);
 }
 
 NRF_STATIC_INLINE bool nrf_clock_lf_is_running(NRF_CLOCK_Type const * p_reg)
@@ -863,7 +863,7 @@ NRF_STATIC_INLINE
 nrf_clock_start_task_status_t nrf_clock_lf_start_task_status_get(NRF_CLOCK_Type const * p_reg)
 {
     return (nrf_clock_start_task_status_t)nrf_clock_start_task_check(p_reg,
-                                                                     NRF_CLOCK_DOMAIN_LFCLK);
+            NRF_CLOCK_DOMAIN_LFCLK);
 }
 
 #if NRF_CLOCK_HAS_HFCLKSRC
@@ -879,12 +879,12 @@ NRF_STATIC_INLINE nrf_clock_hfclk_t nrf_clock_hf_src_get(NRF_CLOCK_Type const * 
     return (nrf_clock_hfclk_t)(p_reg->HFCLKSRC);
 #else
     return (nrf_clock_hfclk_t)((p_reg->HFCLKSTAT & CLOCK_HFCLKSTAT_SRC_Msk)
-                                >> CLOCK_HFCLKSTAT_SRC_Pos);
+                               >> CLOCK_HFCLKSTAT_SRC_Pos);
 #endif
 }
 
 NRF_STATIC_INLINE bool nrf_clock_hf_is_running(NRF_CLOCK_Type const * p_reg,
-                                               nrf_clock_hfclk_t      clk_src)
+        nrf_clock_hfclk_t      clk_src)
 {
     nrf_clock_hfclk_t active_clk_src;
     bool ret = nrf_clock_is_running(p_reg, NRF_CLOCK_DOMAIN_HFCLK, &active_clk_src);
@@ -895,7 +895,7 @@ NRF_STATIC_INLINE
 nrf_clock_start_task_status_t nrf_clock_hf_start_task_status_get(NRF_CLOCK_Type const * p_reg)
 {
     return (nrf_clock_start_task_status_t)nrf_clock_start_task_check(p_reg,
-                                                                     NRF_CLOCK_DOMAIN_HFCLK);
+            NRF_CLOCK_DOMAIN_HFCLK);
 }
 
 #if NRF_CLOCK_HAS_HFCLKAUDIO
@@ -961,8 +961,8 @@ NRF_STATIC_INLINE void nrf_clock_cal_timer_timeout_set(NRF_CLOCK_Type * p_reg, u
 
 #if NRF_CLOCK_HAS_ALWAYSRUN
 NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
-                                               nrf_clock_domain_t domain,
-                                               bool               alwaysrun)
+        nrf_clock_domain_t domain,
+        bool               alwaysrun)
 {
     switch (domain)
     {
@@ -997,7 +997,7 @@ NRF_STATIC_INLINE void nrf_clock_alwaysrun_set(NRF_CLOCK_Type *   p_reg,
 }
 
 NRF_STATIC_INLINE bool nrf_clock_alwaysrun_get(NRF_CLOCK_Type const * p_reg,
-                                               nrf_clock_domain_t     domain)
+        nrf_clock_domain_t     domain)
 {
     switch (domain)
     {
@@ -1024,7 +1024,7 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_get(NRF_CLOCK_Type const * p_reg,
 }
 
 NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_reg,
-                                                      nrf_clock_domain_t     domain)
+        nrf_clock_domain_t     domain)
 {
     switch (domain)
     {
@@ -1053,29 +1053,29 @@ NRF_STATIC_INLINE bool nrf_clock_alwaysrun_active_get(NRF_CLOCK_Type const * p_r
 
 #if defined(DPPI_PRESENT)
 NRF_STATIC_INLINE void nrf_clock_subscribe_set(NRF_CLOCK_Type * p_reg,
-                                               nrf_clock_task_t task,
-                                               uint8_t          channel)
+        nrf_clock_task_t task,
+        uint8_t          channel)
 {
-    *((volatile uint32_t *) ((uint8_t *)p_reg+ (uint32_t)task + 0x80uL)) =
-            ((uint32_t)channel | CLOCK_SUBSCRIBE_HFCLKSTART_EN_Msk);
+    *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)task + 0x80uL)) =
+        ((uint32_t)channel | CLOCK_SUBSCRIBE_HFCLKSTART_EN_Msk);
 }
 
 NRF_STATIC_INLINE void nrf_clock_subscribe_clear(NRF_CLOCK_Type * p_reg, nrf_clock_task_t task)
 {
-    *((volatile uint32_t *) ((uint8_t *)p_reg + (uint32_t)task + 0x80uL)) = 0;
+    *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)task + 0x80uL)) = 0;
 }
 
 NRF_STATIC_INLINE void nrf_clock_publish_set(NRF_CLOCK_Type *  p_reg,
-                                             nrf_clock_event_t event,
-                                             uint8_t           channel)
+        nrf_clock_event_t event,
+        uint8_t           channel)
 {
-    *((volatile uint32_t *) ((uint8_t *)p_reg + (uint32_t)event + 0x80uL)) =
-            ((uint32_t)channel | CLOCK_PUBLISH_HFCLKSTARTED_EN_Msk);
+    *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event + 0x80uL)) =
+        ((uint32_t)channel | CLOCK_PUBLISH_HFCLKSTARTED_EN_Msk);
 }
 
 NRF_STATIC_INLINE void nrf_clock_publish_clear(NRF_CLOCK_Type * p_reg, nrf_clock_event_t event)
 {
-    *((volatile uint32_t *) ((uint8_t *)p_reg + (uint32_t)event + 0x80uL)) = 0;
+    *((volatile uint32_t *)((uint8_t *)p_reg + (uint32_t)event + 0x80uL)) = 0;
 }
 #endif // defined(DPPI_PRESENT)
 

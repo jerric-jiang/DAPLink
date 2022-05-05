@@ -28,7 +28,8 @@
  *  @enum main_usb_busy_t
  *  @brief Defines the filtered activity of the USB connection
  */
-typedef enum {
+typedef enum
+{
     MAIN_USB_IDLE,   /*!< MAIN_USB_IDLE value means no bus activity */
     MAIN_USB_ACTIVE  /*!< MAIN_USB_ACTIVE value means MSC transfers are occuring */
 } main_usb_busy_t;
@@ -37,7 +38,8 @@ typedef enum {
  *  @enum main_usb_connect_t
  *  @brief State the USB connection can be in
  */
-typedef enum {
+typedef enum
+{
     MAIN_USB_DISCONNECTED,       /*!< MAIN_USB_DISCONNECTED state for a USB */
     MAIN_USB_CONNECTING,         /*!< MAIN_USB_CONNECTING state for a USB */
     MAIN_USB_CONNECTED,          /*!< MAIN_USB_CONNECTED state for a USB */
@@ -49,7 +51,8 @@ typedef enum {
  *  @enum main_led_state_t
  *  @brief Statest the USB connection can be in
  */
-typedef enum {
+typedef enum
+{
     MAIN_LED_DEF = 0,
     MAIN_LED_FLASH,
     MAIN_LED_FLASH_PERMANENT

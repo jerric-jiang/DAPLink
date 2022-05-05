@@ -34,7 +34,7 @@
 #include "LPC55S69_cm33_core1_features.h"
 
 #else
-    #error "No valid CPU defined!"
+#error "No valid CPU defined!"
 #endif
 
 #endif /* __FSL_DEVICE_REGISTERS_H__ */

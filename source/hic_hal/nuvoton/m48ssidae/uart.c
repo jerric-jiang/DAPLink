@@ -37,7 +37,8 @@ uint8_t write_buffer_data[BUFFER_SIZE];
 circ_buf_t read_buffer;
 uint8_t read_buffer_data[BUFFER_SIZE];
 
-static UART_Configuration configuration = {
+static UART_Configuration configuration =
+{
     .Baudrate = 9600,
     .DataBits = UART_DATA_BITS_8,
     .Parity = UART_PARITY_NONE,
@@ -87,36 +88,54 @@ int32_t uart_set_configuration(UART_Configuration *config)
     /* Set parity */
     configuration.Parity = config->Parity;
 
-    if (config->Parity == UART_PARITY_ODD) {
+    if (config->Parity == UART_PARITY_ODD)
+    {
         u32Reg = 0x08;
-    } else if (config->Parity == UART_PARITY_EVEN) {
+    }
+    else if (config->Parity == UART_PARITY_EVEN)
+    {
         u32Reg = 0x18;
-    } else if (config->Parity == UART_PARITY_NONE) {
+    }
+    else if (config->Parity == UART_PARITY_NONE)
+    {
         u32Reg = 0;
-    } else {
+    }
+    else
+    {
         u32Reg = 0;
     }
 
     /* Stop bit */
     configuration.StopBits = config->StopBits;
 
-    if (config->StopBits == UART_STOP_BITS_2) {
+    if (config->StopBits == UART_STOP_BITS_2)
+    {
         u32Reg |= 0x4;
-    } else if (config->StopBits == UART_STOP_BITS_1_5) {
+    }
+    else if (config->StopBits == UART_STOP_BITS_1_5)
+    {
         u32Reg |= 0x4;
-    } else if (config->StopBits == UART_STOP_BITS_1)
+    }
+    else if (config->StopBits == UART_STOP_BITS_1)
         ;
 
     /* Bit width */
     configuration.DataBits = config->DataBits;
 
-    if (config->DataBits == UART_DATA_BITS_5) {
+    if (config->DataBits == UART_DATA_BITS_5)
+    {
         u32Reg |= 0;
-    } else if (config->DataBits == UART_DATA_BITS_6) {
+    }
+    else if (config->DataBits == UART_DATA_BITS_6)
+    {
         u32Reg |= 1;
-    } else if (config->DataBits == UART_DATA_BITS_7) {
+    }
+    else if (config->DataBits == UART_DATA_BITS_7)
+    {
         u32Reg |= 2;
-    } else if (config->DataBits == UART_DATA_BITS_8) {
+    }
+    else if (config->DataBits == UART_DATA_BITS_8)
+    {
         u32Reg |= 3;
     }
 
@@ -125,9 +144,12 @@ int32_t uart_set_configuration(UART_Configuration *config)
     configuration.Baudrate = config->Baudrate;
     u32Baud_Div = UART_BAUD_MODE2_DIVIDER(__HXT, configuration.Baudrate);
 
-    if (u32Baud_Div > 0xFFFF) {
+    if (u32Baud_Div > 0xFFFF)
+    {
         UART0->BAUD = (UART_BAUD_MODE0 | UART_BAUD_MODE0_DIVIDER(__HXT, configuration.Baudrate));
-    } else {
+    }
+    else
+    {
         UART0->BAUD = (UART_BAUD_MODE2 | u32Baud_Div);
     }
 
@@ -160,8 +182,10 @@ int32_t uart_write_data(uint8_t *data, uint16_t size)
     uint8_t bInChar;
     uint32_t u32Size = circ_buf_write(&write_buffer, data, size);
 
-    if (circ_buf_count_used(&write_buffer) > 0) {
-        if ((UART0->INTEN & UART_INTEN_THREIEN_Msk) == 0) {
+    if (circ_buf_count_used(&write_buffer) > 0)
+    {
+        if ((UART0->INTEN & UART_INTEN_THREIEN_Msk) == 0)
+        {
             bInChar = circ_buf_pop(&write_buffer);
             /* Send one bytes out */
             UART_WRITE(UART0, bInChar);
@@ -185,40 +209,53 @@ void UART0_IRQHandler(void)
     uint32_t u32IntStatus;
     u32IntStatus = UART0->INTSTS;
 
-    if ((u32IntStatus & UART_INTSTS_RDAINT_Msk) || (u32IntStatus & UART_INTSTS_RXTOINT_Msk)) {
+    if ((u32IntStatus & UART_INTSTS_RDAINT_Msk) || (u32IntStatus & UART_INTSTS_RXTOINT_Msk))
+    {
         /* Receiver FIFO threshold level is reached or Rx time out */
         /* Get all the input characters */
-        while ((!UART_GET_RX_EMPTY(UART0))) {
+        while ((!UART_GET_RX_EMPTY(UART0)))
+        {
             /* Get the character from UART Buffer */
             bInChar = UART_READ(UART0); /* Rx trigger level is 1 byte*/
             /* Check if buffer full */
             uint32_t u32Free = circ_buf_count_free(&read_buffer);
 
-            if (u32Free > RX_OVRF_MSG_SIZE) {
+            if (u32Free > RX_OVRF_MSG_SIZE)
+            {
                 circ_buf_push(&read_buffer, bInChar);
-            } else if (RX_OVRF_MSG_SIZE == u32Free) {
+            }
+            else if (RX_OVRF_MSG_SIZE == u32Free)
+            {
                 circ_buf_write(&read_buffer, (uint8_t *)RX_OVRF_MSG, RX_OVRF_MSG_SIZE);
-            } else {
+            }
+            else
+            {
                 // Drop character
             }
         }
     }
 
-    if (u32IntStatus & UART_INTSTS_THREINT_Msk) {
-        if (circ_buf_count_used(&write_buffer) > 0) {
+    if (u32IntStatus & UART_INTSTS_THREINT_Msk)
+    {
+        if (circ_buf_count_used(&write_buffer) > 0)
+        {
             /* Fill the Tx FIFO */
             u32Size = circ_buf_count_used(&write_buffer);
 
-            if (u32Size >= TX_FIFO_SIZE) {
+            if (u32Size >= TX_FIFO_SIZE)
+            {
                 u32Size = TX_FIFO_SIZE;
             }
 
-            while (u32Size) {
+            while (u32Size)
+            {
                 bInChar = circ_buf_pop(&write_buffer);
                 UART_WRITE(UART0, bInChar);
                 u32Size--;
             }
-        } else {
+        }
+        else
+        {
             /* No more data, just stop Tx (Stop work) */
             UART0->INTEN &= ~UART_INTEN_THREIEN_Msk;
         }

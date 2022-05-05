@@ -50,7 +50,8 @@ static uint8_t validate_bin_nvic(const uint8_t *buf)
 {
     // Flash Configuration Block
     // https://www.nxp.com/docs/en/nxp/application-notes/AN12238.pdf
-    if ((buf[0] == 'F' && buf[1] == 'C' && buf[2] == 'F' && buf[3] == 'B')) {
+    if ((buf[0] == 'F' && buf[1] == 'C' && buf[2] == 'F' && buf[3] == 'B'))
+    {
         // FlexSPI Configuration Block
         return 1;
     }
@@ -59,7 +60,8 @@ static uint8_t validate_bin_nvic(const uint8_t *buf)
 }
 #endif
 
-const target_family_descriptor_t g_nxp_mimxrt = {
+const target_family_descriptor_t g_nxp_mimxrt =
+{
     .family_id = kNXP_Mimxrt_FamilyID,
     .default_reset_type = kSoftwareReset,
     .soft_reset_type = VECTRESET,

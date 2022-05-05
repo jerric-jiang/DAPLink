@@ -31,16 +31,19 @@ __USED __NO_RETURN void _fault_handler(uint32_t _lr)
     uint32_t stk_ptr;
     uint32_t * stack = (uint32_t *)__get_MSP();
 
-    if ((_lr & 0xF) == 0xD) { //process stack
+    if ((_lr & 0xF) == 0xD)   //process stack
+    {
         stack = (uint32_t *)__get_PSP();
     }
 
     //calculate stack ptr before fault
     stk_ptr = (uint32_t)stack + 0x20;
-    if ((stack[7] & 0x200) != 0) { //xpsr bit 9 align
+    if ((stack[7] & 0x200) != 0)   //xpsr bit 9 align
+    {
         stk_ptr += 0x4;
     }
-    if ((_lr & 0x10) == 0) { //fp
+    if ((_lr & 0x10) == 0)   //fp
+    {
         stk_ptr += 0x48;
     }
 
@@ -79,7 +82,7 @@ void HardFault_Handler()
 #else // gcc and armclang
 void HardFault_Handler()
 {
-    __ASM volatile (
+    __ASM volatile(
         "    mov    r0, lr              \n\t"
         "    bl     _fault_handler      \n\t"
     );

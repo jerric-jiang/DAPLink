@@ -64,7 +64,8 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct {
+typedef struct
+{
     __IO uint32_t ctrl;                                 /*  0x0000          ADC Control                                                                  */
     __IO uint32_t status;                               /*  0x0004          ADC Status                                                                   */
     __IO uint32_t data;                                 /*  0x0008          ADC Output Data                                                              */

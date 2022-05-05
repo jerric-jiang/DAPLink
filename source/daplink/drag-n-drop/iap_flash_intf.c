@@ -43,7 +43,8 @@ COMPILER_ASSERT(DAPLINK_ROM_UPDATE_START % DAPLINK_SECTOR_SIZE == 0);
 // Update size must be a multiple of sector size
 COMPILER_ASSERT(DAPLINK_ROM_UPDATE_SIZE % DAPLINK_SECTOR_SIZE == 0);
 
-typedef enum {
+typedef enum
+{
     STATE_CLOSED,
     STATE_OPEN,
     STATE_ERROR
@@ -64,7 +65,8 @@ static error_t intercept_sector_erase(uint32_t addr);
 static error_t critical_erase_and_program(uint32_t addr, const uint8_t *data, uint32_t size);
 static uint8_t target_flash_busy(void);
 
-static const flash_intf_t flash_intf = {
+static const flash_intf_t flash_intf =
+{
     init,
     uninit,
     program_page,
@@ -94,18 +96,21 @@ static error_t init()
     int iap_status;
     bool update_supported = DAPLINK_ROM_UPDATE_SIZE != 0;
 
-    if (state != STATE_CLOSED) {
+    if (state != STATE_CLOSED)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
-    if (!update_supported) {
+    if (!update_supported)
+    {
         return ERROR_IAP_UPDT_NOT_SUPPORTED;
     }
 
     iap_status = Init(0, 0, 0);
 
-    if (iap_status != 0) {
+    if (iap_status != 0)
+    {
         return ERROR_IAP_INIT;
     }
 
@@ -127,7 +132,8 @@ static error_t uninit(void)
 {
     int iap_status;
 
-    if (STATE_CLOSED == state) {
+    if (STATE_CLOSED == state)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
@@ -135,11 +141,13 @@ static error_t uninit(void)
     state = STATE_CLOSED;
     iap_status = UnInit(0);
 
-    if (iap_status != 0) {
+    if (iap_status != 0)
+    {
         return ERROR_IAP_UNINIT;
     }
 
-    if (!update_complete && !daplink_is_bootloader()) {
+    if (!update_complete && !daplink_is_bootloader())
+    {
         // Interface - Error if the bootloader update is not complete
         // Bootloader - For 3rd party applications the end of the update
         //              is unknown so it is not an error if the transfer
@@ -158,7 +166,8 @@ static error_t program_page(uint32_t addr, const uint8_t *buf, uint32_t size)
     uint32_t sector_size;
     uint32_t updt_end = DAPLINK_ROM_UPDATE_START + DAPLINK_ROM_UPDATE_SIZE;
 
-    if (state != STATE_OPEN) {
+    if (state != STATE_OPEN)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
@@ -167,35 +176,41 @@ static error_t program_page(uint32_t addr, const uint8_t *buf, uint32_t size)
     sector_size = erase_sector_size(addr);
 
     // Address must be on a write size boundary
-    if (addr % min_prog_size != 0) {
+    if (addr % min_prog_size != 0)
+    {
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
     // Programming size must be a non-zero multiple of the minimum write size
-    if ((size < min_prog_size) || (size % min_prog_size != 0)) {
+    if ((size < min_prog_size) || (size % min_prog_size != 0))
+    {
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
     // Write must not cross a sector boundary
-    if ((addr % sector_size) + size > sector_size) {
+    if ((addr % sector_size) + size > sector_size)
+    {
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
     // Write must be in an erased sector (current_sector is always erased if it is set)
-    if (!mass_erase_performed) {
-        if (!current_sector_set) {
+    if (!mass_erase_performed)
+    {
+        if (!current_sector_set)
+        {
             util_assert(0);
             state = STATE_ERROR;
             return ERROR_INTERNAL;
         }
 
-        if ((addr < current_sector) || (addr >= current_sector + current_sector_size)) {
+        if ((addr < current_sector) || (addr >= current_sector + current_sector_size))
+        {
             util_assert(0);
             state = STATE_ERROR;
             return ERROR_INTERNAL;
@@ -203,13 +218,15 @@ static error_t program_page(uint32_t addr, const uint8_t *buf, uint32_t size)
     }
 
     // Address must be sequential - no gaps
-    if (current_page_set && (addr != current_page + current_page_write_size)) {
+    if (current_page_set && (addr != current_page + current_page_write_size))
+    {
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
-    if (!page_program_allowed(addr, size)) {
+    if (!page_program_allowed(addr, size))
+    {
         state = STATE_ERROR;
         return ERROR_IAP_WRITE;
     }
@@ -219,10 +236,12 @@ static error_t program_page(uint32_t addr, const uint8_t *buf, uint32_t size)
     current_page_write_size = size;
     status = intercept_page_write(addr, buf, size);
 
-    if (status != ERROR_IAP_NO_INTERCEPT) {
+    if (status != ERROR_IAP_NO_INTERCEPT)
+    {
         // The operation has been intercepted so
         // return the result
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             state = STATE_ERROR;
         }
 
@@ -231,12 +250,14 @@ static error_t program_page(uint32_t addr, const uint8_t *buf, uint32_t size)
 
     iap_status = flash_program_page(addr, size, (uint8_t *)buf);
 
-    if (iap_status != 0) {
+    if (iap_status != 0)
+    {
         state = STATE_ERROR;
         return ERROR_IAP_WRITE;
     }
 
-    if (addr + size >= updt_end) {
+    if (addr + size >= updt_end)
+    {
         // Something has been updated so recompute the crc
         info_crc_compute();
         update_complete = true;
@@ -251,7 +272,8 @@ static error_t erase_sector(uint32_t addr)
     error_t status;
     uint32_t sector_size;
 
-    if (state != STATE_OPEN) {
+    if (state != STATE_OPEN)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
@@ -259,20 +281,23 @@ static error_t erase_sector(uint32_t addr)
     // Address must be on a sector boundary
     sector_size = erase_sector_size(addr);
 
-    if (addr % sector_size != 0) {
+    if (addr % sector_size != 0)
+    {
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
     // Address must be sequential - no gaps
-    if (current_sector_set && (addr != current_sector + current_sector_size)) {
+    if (current_sector_set && (addr != current_sector + current_sector_size))
+    {
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
-    if (!sector_erase_allowed(addr)) {
+    if (!sector_erase_allowed(addr))
+    {
         state = STATE_ERROR;
         return ERROR_IAP_ERASE_SECTOR;
     }
@@ -282,10 +307,12 @@ static error_t erase_sector(uint32_t addr)
     current_sector_size = sector_size;
     status = intercept_sector_erase(addr);
 
-    if (status != ERROR_IAP_NO_INTERCEPT) {
+    if (status != ERROR_IAP_NO_INTERCEPT)
+    {
         // The operation has been intercepted so
         // return the result
-        if (ERROR_SUCCESS != status) {
+        if (ERROR_SUCCESS != status)
+        {
             state = STATE_ERROR;
         }
 
@@ -294,7 +321,8 @@ static error_t erase_sector(uint32_t addr)
 
     iap_status = flash_erase_sector(addr);
 
-    if (iap_status != 0) {
+    if (iap_status != 0)
+    {
         state = STATE_ERROR;
         return ERROR_IAP_ERASE_SECTOR;
     }
@@ -307,23 +335,27 @@ static error_t erase_chip(void)
     uint32_t updt_start = DAPLINK_ROM_UPDATE_START;
     uint32_t updt_end = DAPLINK_ROM_UPDATE_START + DAPLINK_ROM_UPDATE_SIZE;
 
-    if (state != STATE_OPEN) {
+    if (state != STATE_OPEN)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
-    if (mass_erase_performed) {
+    if (mass_erase_performed)
+    {
         // Mass erase only allowed once
         util_assert(0);
         state = STATE_ERROR;
         return ERROR_INTERNAL;
     }
 
-    for (uint32_t addr = updt_start; addr < updt_end; addr += DAPLINK_SECTOR_SIZE) {
+    for (uint32_t addr = updt_start; addr < updt_end; addr += DAPLINK_SECTOR_SIZE)
+    {
         error_t status;
         status = erase_sector(addr);
 
-        if (status != ERROR_SUCCESS) {
+        if (status != ERROR_SUCCESS)
+        {
             state = STATE_ERROR;
             return ERROR_IAP_ERASE_ALL;
         }
@@ -346,7 +378,8 @@ static uint32_t erase_sector_size(uint32_t addr)
 static bool page_program_allowed(uint32_t addr, uint32_t size)
 {
     // Check if any data would overlap with the application region
-    if ((addr < DAPLINK_ROM_APP_START + DAPLINK_ROM_APP_SIZE) && (addr + size > DAPLINK_ROM_APP_START)) {
+    if ((addr < DAPLINK_ROM_APP_START + DAPLINK_ROM_APP_SIZE) && (addr + size > DAPLINK_ROM_APP_START))
+    {
         return false;
     }
 
@@ -359,7 +392,8 @@ static bool sector_erase_allowed(uint32_t addr)
     uint32_t app_end = DAPLINK_ROM_APP_START + DAPLINK_ROM_APP_SIZE;
 
     // Check if the sector is part of the application
-    if ((addr >= app_start) && (addr < app_end)) {
+    if ((addr >= app_start) && (addr < app_end))
+    {
         return false;
     }
 
@@ -373,16 +407,19 @@ static error_t intercept_page_write(uint32_t addr, const uint8_t *buf, uint32_t 
     uint32_t updt_start = DAPLINK_ROM_UPDATE_START;
     uint32_t updt_end = DAPLINK_ROM_UPDATE_START + DAPLINK_ROM_UPDATE_SIZE;
 
-    if (state != STATE_OPEN) {
+    if (state != STATE_OPEN)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
-    if ((addr < updt_start) || (addr >= updt_end)) {
+    if ((addr < updt_start) || (addr >= updt_end))
+    {
         return ERROR_IAP_OUT_OF_BOUNDS;
     }
 
-    if (!daplink_is_interface()) {
+    if (!daplink_is_interface())
+    {
         return ERROR_IAP_NO_INTERCEPT;
     }
 
@@ -391,7 +428,8 @@ static error_t intercept_page_write(uint32_t addr, const uint8_t *buf, uint32_t 
     crc = crc32_continue(crc, buf, crc_size);
 
     // Intercept the data if it is in the first sector
-    if ((addr >= updt_start) && (addr < updt_start + DAPLINK_SECTOR_SIZE)) {
+    if ((addr >= updt_start) && (addr < updt_start + DAPLINK_SECTOR_SIZE))
+    {
         uint32_t buf_offset = addr - updt_start;
         memcpy(sector_buf + buf_offset, buf, size);
         // Intercept was successful
@@ -399,7 +437,8 @@ static error_t intercept_page_write(uint32_t addr, const uint8_t *buf, uint32_t 
     }
 
     // Finalize update if this is the last sector
-    if (updt_end == addr + size) {
+    if (updt_end == addr + size)
+    {
         uint32_t iap_status;
         uint32_t size_left = updt_end - addr;
         uint32_t crc_in_image = (buf[size_left - 4] << 0) |
@@ -407,20 +446,23 @@ static error_t intercept_page_write(uint32_t addr, const uint8_t *buf, uint32_t 
                                 (buf[size_left - 2] << 16) |
                                 (buf[size_left - 1] << 24);
 
-        if (crc != crc_in_image) {
+        if (crc != crc_in_image)
+        {
             return ERROR_BL_UPDT_BAD_CRC;
         }
 
         // Program the current buffer
         iap_status = flash_program_page(addr, size, (uint8_t *)buf);
 
-        if (iap_status != 0) {
+        if (iap_status != 0)
+        {
             return ERROR_IAP_WRITE;
         }
 
         status = critical_erase_and_program(DAPLINK_ROM_UPDATE_START, sector_buf, DAPLINK_SECTOR_SIZE);
 
-        if (ERROR_SUCCESS == status) {
+        if (ERROR_SUCCESS == status)
+        {
             status = ERROR_SUCCESS;
         }
 
@@ -439,26 +481,31 @@ static error_t intercept_sector_erase(uint32_t addr)
     uint32_t updt_start = DAPLINK_ROM_UPDATE_START;
     uint32_t updt_end = DAPLINK_ROM_UPDATE_START + DAPLINK_ROM_UPDATE_SIZE;
 
-    if (state != STATE_OPEN) {
+    if (state != STATE_OPEN)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
 
-    if ((addr < updt_start) || (addr >= updt_end)) {
+    if ((addr < updt_start) || (addr >= updt_end))
+    {
         return ERROR_IAP_OUT_OF_BOUNDS;
     }
 
-    if (!daplink_is_interface()) {
+    if (!daplink_is_interface())
+    {
         return ERROR_IAP_NO_INTERCEPT;
     }
 
     /* Everything below here is interface specific */
 
-    if (DAPLINK_ROM_UPDATE_START == addr) {
+    if (DAPLINK_ROM_UPDATE_START == addr)
+    {
         uint32_t addr = DAPLINK_ROM_UPDATE_START;
         status = critical_erase_and_program(addr, (uint8_t *)DAPLINK_ROM_IF_START, DAPLINK_MIN_WRITE_SIZE);
 
-        if (ERROR_SUCCESS == status) {
+        if (ERROR_SUCCESS == status)
+        {
             // Intercept was successful
             status = ERROR_SUCCESS;
         }
@@ -473,7 +520,8 @@ static error_t critical_erase_and_program(uint32_t addr, const uint8_t *data, ui
 {
     uint32_t iap_status;
 
-    if (size < DAPLINK_MIN_WRITE_SIZE) {
+    if (size < DAPLINK_MIN_WRITE_SIZE)
+    {
         util_assert(0);
         return ERROR_INTERNAL;
     }
@@ -485,20 +533,23 @@ static error_t critical_erase_and_program(uint32_t addr, const uint8_t *data, ui
     // Erase the first sector
     iap_status = flash_erase_sector(addr);
 
-    if (iap_status != 0) {
+    if (iap_status != 0)
+    {
         return ERROR_ERASE_ALL;
     }
 
     // Program the interface's vector table
     iap_status = flash_program_page(addr, size, (uint8_t *)data);
 
-    if (iap_status != 0) {
+    if (iap_status != 0)
+    {
         return ERROR_IAP_WRITE;
     }
 
     return ERROR_SUCCESS;
 }
 
-static uint8_t target_flash_busy(void){
+static uint8_t target_flash_busy(void)
+{
     return (state == STATE_OPEN);
 }

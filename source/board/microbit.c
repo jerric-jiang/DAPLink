@@ -27,14 +27,16 @@
 const char * const board_id_mb_1_3 = "9900";
 const char * const board_id_mb_1_5 = "9901";
 
-typedef enum {
+typedef enum
+{
     BOARD_VERSION_1_3 = 0,
     BOARD_VERSION_1_5 = 1,
 } mb_version_t;
 
 // Enables Board Type Pin, reads it and disables it
 // Depends on gpio_init() to have been executed already
-static uint8_t read_board_type_pin(void) {
+static uint8_t read_board_type_pin(void)
+{
     uint8_t pin_state = 0;
     // GPIO mode, Pull enable, pull down, input
     PIN_BOARD_TYPE_PORT->PCR[PIN_BOARD_TYPE_BIT] = PORT_PCR_MUX(1) | PORT_PCR_PE(1) | PORT_PCR_PS(0);
@@ -48,8 +50,10 @@ static uint8_t read_board_type_pin(void) {
     return pin_state;
 }
 
-static void set_board_id(mb_version_t board_version) {
-    switch (board_version) {
+static void set_board_id(mb_version_t board_version)
+{
+    switch (board_version)
+    {
         case BOARD_VERSION_1_3:
             g_board_info.target_cfg->rt_board_id = board_id_mb_1_3;
             break;
@@ -63,7 +67,8 @@ static void set_board_id(mb_version_t board_version) {
 }
 
 // Called in main_task() to init before USB and files are configured
-static void prerun_board_config(void) {
+static void prerun_board_config(void)
+{
     // With only two boards the digital pin read maps directly to the type
     mb_version_t board_version = (mb_version_t)read_board_type_pin();
     set_board_id(board_version);
@@ -72,15 +77,20 @@ static void prerun_board_config(void) {
 // USB HID override function return 1 if the activity is trivial or response is null
 uint8_t usbd_hid_no_activity(uint8_t *buf)
 {
-    if(buf[0] == ID_DAP_Vendor3 &&  buf[1] == 0)
+    if (buf[0] == ID_DAP_Vendor3 &&  buf[1] == 0)
+    {
         return 1;
+    }
     else
+    {
         return 0;
+    }
 }
 
 extern target_cfg_t target_device_nrf51822_16;
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .family_id = kNordic_Nrf51_FamilyID,
     .daplink_url_name = "MICROBITHTM",

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-static const uint32_t M2354_flash_prog_blob[] = {
+static const uint32_t M2354_flash_prog_blob[] =
+{
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x9018b09a, 0x92169117, 0x90154678, 0x90149815, 0x78c0a814, 0x280006c0, 0xe7ffd528, 0x68004860,
     0x280007c0, 0xe7ffd110, 0x2159485d, 0x21166001, 0x21886001, 0x68006001, 0x280007c0, 0xe7ffd103,
@@ -90,7 +91,8 @@ static const uint32_t M2354_flash_prog_blob[] = {
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] = {
+static const sector_info_t sectors_info[] =
+{
     { 0x00000000, 0x00000800 },
     { 0x00100000, 0x00000800 },
     { 0x00110000, 0x00000800 },

@@ -5,8 +5,8 @@
  * Description: Slow and fast implementations of the CRC standards.
  *
  * Notes:       The parameters for each supported CRC standard are
- *				defined in the header file crc.h.  The implementations
- *				here should stand up to further additions to that list.
+ *              defined in the header file crc.h.  The implementations
+ *              here should stand up to further additions to that list.
  *
  *
  * Copyright (c) 2000 by Michael Barr.  This software is placed into
@@ -24,18 +24,18 @@
 #include "compiler.h"
 #include "util.h"
 
-#define FALSE	0
-#define TRUE	!FALSE
+#define FALSE   0
+#define TRUE    !FALSE
 
 typedef unsigned long  crc;
 
-#define CRC_NAME			"CRC-32"
-#define POLYNOMIAL			0x04C11DB7
-#define INITIAL_REMAINDER	0xFFFFFFFF
-#define FINAL_XOR_VALUE		0xFFFFFFFF
-#define REFLECT_DATA		TRUE
-#define REFLECT_REMAINDER	TRUE
-#define CHECK_VALUE			0xCBF43926
+#define CRC_NAME            "CRC-32"
+#define POLYNOMIAL          0x04C11DB7
+#define INITIAL_REMAINDER   0xFFFFFFFF
+#define FINAL_XOR_VALUE     0xFFFFFFFF
+#define REFLECT_DATA        TRUE
+#define REFLECT_REMAINDER   TRUE
+#define CHECK_VALUE         0xCBF43926
 
 /*
  * Derive parameters from the standard-specific parameters in crc.h.
@@ -45,18 +45,18 @@ typedef unsigned long  crc;
 
 #if (REFLECT_DATA == TRUE)
 #undef  REFLECT_DATA
-#define REFLECT_DATA(X)			((unsigned char) reflect((X), 8))
+#define REFLECT_DATA(X)         ((unsigned char) reflect((X), 8))
 #else
 #undef  REFLECT_DATA
-#define REFLECT_DATA(X)			(X)
+#define REFLECT_DATA(X)         (X)
 #endif
 
 #if (REFLECT_REMAINDER == TRUE)
 #undef  REFLECT_REMAINDER
-#define REFLECT_REMAINDER(X)	((crc) reflect((X), WIDTH))
+#define REFLECT_REMAINDER(X)    ((crc) reflect((X), WIDTH))
 #else
 #undef  REFLECT_REMAINDER
-#define REFLECT_REMAINDER(X)	(X)
+#define REFLECT_REMAINDER(X)    (X)
 #endif
 
 
@@ -65,18 +65,18 @@ typedef unsigned long  crc;
  * Function:    reflect()
  *
  * Description: Reorder the bits of a binary sequence, by reflecting
- *				them about the middle position.
+ *              them about the middle position.
  *
- * Notes:		No checking is done that nBits <= 32.
+ * Notes:       No checking is done that nBits <= 32.
  *
- * Returns:		The reflection of the original data.
+ * Returns:     The reflection of the original data.
  *
  *********************************************************************/
-static unsigned long
-reflect(unsigned long data, unsigned char nBits)
+static unsigned long reflect(unsigned long data, unsigned char nBits)
 {
     // util_assert(nBits <= 32);
-    if (nBits == 32) {
+    if (nBits == 32)
+    {
         // Use bit reverse instruction intrinsic. The CMSIS intrinsic also
         // provides an implementation for cores that don't have the instruction.
         return __RBIT(data);
@@ -88,11 +88,13 @@ reflect(unsigned long data, unsigned char nBits)
     /*
      * Reflect the data about the center bit.
      */
-    for (bit = 0; bit < nBits; ++bit) {
+    for (bit = 0; bit < nBits; ++bit)
+    {
         /*
          * If the LSB bit is set, set the reflection of it.
          */
-        if (data & 0x01) {
+        if (data & 0x01)
+        {
             reflection |= (1 << ((nBits - 1) - bit));
         }
 
@@ -100,7 +102,7 @@ reflect(unsigned long data, unsigned char nBits)
     }
 
     return (reflection);
-}	/* reflect() */
+}   /* reflect() */
 
 
 /*********************************************************************
@@ -111,11 +113,10 @@ reflect(unsigned long data, unsigned char nBits)
  *
  * Notes:
  *
- * Returns:		The CRC of the message.
+ * Returns:     The CRC of the message.
  *
  *********************************************************************/
-__WEAK uint32_t
-crc32(const void *data, int nBytes)
+__WEAK uint32_t crc32(const void *data, int nBytes)
 {
     crc            remainder = INITIAL_REMAINDER;
     int            byte;
@@ -125,7 +126,8 @@ crc32(const void *data, int nBytes)
     /*
      * Perform modulo-2 division, a byte at a time.
      */
-    for (byte = 0; byte < nBytes; ++byte) {
+    for (byte = 0; byte < nBytes; ++byte)
+    {
         /*
          * Bring the next byte into the remainder.
          */
@@ -134,13 +136,17 @@ crc32(const void *data, int nBytes)
         /*
          * Perform modulo-2 division, a bit at a time.
          */
-        for (bit = 8; bit > 0; --bit) {
+        for (bit = 8; bit > 0; --bit)
+        {
             /*
              * Try to divide the current data bit.
              */
-            if (remainder & TOPBIT) {
+            if (remainder & TOPBIT)
+            {
                 remainder = (remainder << 1) ^ POLYNOMIAL;
-            } else {
+            }
+            else
+            {
                 remainder = (remainder << 1);
             }
         }
@@ -160,11 +166,10 @@ crc32(const void *data, int nBytes)
  *
  * Notes:
  *
- * Returns:		The CRC of the message.
+ * Returns:     The CRC of the message.
  *
  *********************************************************************/
-__WEAK uint32_t
-crc32_continue(uint32_t prev_crc, const void *data, int nBytes)
+__WEAK uint32_t crc32_continue(uint32_t prev_crc, const void *data, int nBytes)
 {
     crc            remainder = REFLECT_REMAINDER(prev_crc ^ FINAL_XOR_VALUE);
     int            byte;
@@ -174,7 +179,8 @@ crc32_continue(uint32_t prev_crc, const void *data, int nBytes)
     /*
      * Perform modulo-2 division, a byte at a time.
      */
-    for (byte = 0; byte < nBytes; ++byte) {
+    for (byte = 0; byte < nBytes; ++byte)
+    {
         /*
          * Bring the next byte into the remainder.
          */
@@ -183,13 +189,17 @@ crc32_continue(uint32_t prev_crc, const void *data, int nBytes)
         /*
          * Perform modulo-2 division, a bit at a time.
          */
-        for (bit = 8; bit > 0; --bit) {
+        for (bit = 8; bit > 0; --bit)
+        {
             /*
              * Try to divide the current data bit.
              */
-            if (remainder & TOPBIT) {
+            if (remainder & TOPBIT)
+            {
                 remainder = (remainder << 1) ^ POLYNOMIAL;
-            } else {
+            }
+            else
+            {
                 remainder = (remainder << 1);
             }
         }

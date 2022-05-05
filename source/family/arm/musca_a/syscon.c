@@ -40,7 +40,8 @@ static void Sleepns(uint32_t cycles)
 {
     volatile uint32_t i = cycles;        // fudge factor to give approximate 1 ns
 
-    while (i > 0) {
+    while (i > 0)
+    {
         i--;
     }
 }
@@ -52,7 +53,7 @@ void syscon_readreg(unsigned int addr, unsigned int *din)
     volatile unsigned int loop, data;
 
     // Write the 12bit address value
-    for(loop = 0; loop < 12; loop++)
+    for (loop = 0; loop < 12; loop++)
     {
         if (addr & 0x800)
         {
@@ -154,7 +155,7 @@ void syscon_writereg(unsigned int addr, unsigned int dout)
     LPC_GPIO->SET[PIN_SCC_WNR_PORT] = PIN_SCC_WNR;
 
     // Write the 12bit address value
-    for(loop = 0; loop < 12; loop++)
+    for (loop = 0; loop < 12; loop++)
     {
         if (addr & 0x800)
         {

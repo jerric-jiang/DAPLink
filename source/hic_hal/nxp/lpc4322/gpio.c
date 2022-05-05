@@ -40,7 +40,8 @@ static void busy_wait(uint32_t cycles)
     volatile uint32_t i;
     i = cycles;
 
-    while (i > 0) {
+    while (i > 0)
+    {
         i--;
     }
 }
@@ -94,36 +95,48 @@ void gpio_init(void)
 
 void gpio_set_hid_led(gpio_led_state_t state)
 {
-    if (state) {
+    if (state)
+    {
         X_SET(LED_CONNECTED);
-    } else {
+    }
+    else
+    {
         X_CLR(LED_CONNECTED);
     }
 }
 
 void gpio_set_cdc_led(gpio_led_state_t state)
 {
-    if (state) {
+    if (state)
+    {
         X_SET(LED_CONNECTED);
-    } else {
+    }
+    else
+    {
         X_CLR(LED_CONNECTED);
     }
 }
 
 void gpio_set_msc_led(gpio_led_state_t state)
 {
-    if (state) {
+    if (state)
+    {
         X_SET(LED_CONNECTED);
-    } else {
+    }
+    else
+    {
         X_CLR(LED_CONNECTED);
     }
 }
 
 void gpio_set_isp_pin(uint8_t state)
 {
-    if (state) {
+    if (state)
+    {
         X_SET(ISPCTRL);
-    } else {
+    }
+    else
+    {
         X_CLR(ISPCTRL);
     }
 }
@@ -140,9 +153,12 @@ uint8_t gpio_get_reset_btn_fwrd(void)
 
 void gpio_set_board_power(bool powerEnabled)
 {
-    if (powerEnabled) {
+    if (powerEnabled)
+    {
         X_SET(POWER_EN);
-    } else {
+    }
+    else
+    {
         X_CLR(POWER_EN);
     }
 }

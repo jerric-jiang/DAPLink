@@ -42,13 +42,14 @@ char *board_id_kw41z = "0234";
 static void prerun_board_config(void);
 
 
-const board_info_t g_board_info = {
+const board_info_t g_board_info =
+{
     .info_version = kBoardInfoVersion,
     .board_id = "0228",
     .family_id = kNXP_RapidIot_FamilyID,
     .flags = kEnablePageErase,
     .daplink_url_name =       "PRODINFOHTM",
-    .daplink_drive_name = 		"IOT-DAPLINK",
+    .daplink_drive_name =       "IOT-DAPLINK",
     .daplink_target_url = "http://www.nxp.com/rapid-iot",
     .target_cfg = &target_device,
     .prerun_board_config = prerun_board_config,
@@ -62,7 +63,8 @@ static void prerun_board_config(void)
     uint32_t sdid;
 
     // get a hold of the target
-    if (target_set_state(HALT) == 0) {
+    if (target_set_state(HALT) == 0)
+    {
         /*
          * When the Kinetis flash is empty the reset line toggles. This causes failures
          * when trying to halt the target. Use the reset halt method in this case.
@@ -74,14 +76,18 @@ static void prerun_board_config(void)
     swd_read_memory(SDID, (uint8_t *)&sdid, 4);
 
     // Set the target flash algorithm
-    if (((sdid >> 20) & 0xF) == KW_SERIES) {
+    if (((sdid >> 20) & 0xF) == KW_SERIES)
+    {
         //mdm_id = MDM_ID_KW4;
 
-        if (((sdid >> 24) & 0x3) == KW40) {
+        if (((sdid >> 24) & 0x3) == KW40)
+        {
             // Program to the KW40 flash
             extern target_cfg_t target_device_kw40;
             target_device = target_device_kw40;
-        } else {
+        }
+        else
+        {
             // Program to the KW41 flash
             extern target_cfg_t target_device_kw41;
             target_device = target_device_kw41;

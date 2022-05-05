@@ -1,5 +1,5 @@
-/* -------------------------------------------------------------------------- 
- * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All 
+/* --------------------------------------------------------------------------
+ * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All
  * rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -52,21 +52,23 @@
 #endif
 
 // GPDMA Channel register block structure
-typedef struct {
-  __IO uint32_t  SRCADDR;       // DMA Channel Source Address Register
-  __IO uint32_t  DESTADDR;      // DMA Channel Destination Address Register
-  __IO uint32_t  LLI;           // DMA Channel Linked List Item Register
-  __IO uint32_t  CONTROL;       // DMA Channel Control Register
-  __IO uint32_t  CONFIG;        // DMA Channel Configuration Register
-  __I  uint32_t  RESERVED1[3];
+typedef struct
+{
+    __IO uint32_t  SRCADDR;       // DMA Channel Source Address Register
+    __IO uint32_t  DESTADDR;      // DMA Channel Destination Address Register
+    __IO uint32_t  LLI;           // DMA Channel Linked List Item Register
+    __IO uint32_t  CONTROL;       // DMA Channel Control Register
+    __IO uint32_t  CONFIG;        // DMA Channel Configuration Register
+    __I  uint32_t  RESERVED1[3];
 } volatile GPDMA_CHANNEL_REG;
 
-typedef struct {
-  uint32_t            SrcAddr;
-  uint32_t            DestAddr;
-  uint32_t            Size;
-  uint32_t            Cnt;
-  GPDMA_SignalEvent_t cb_event;
+typedef struct
+{
+    uint32_t            SrcAddr;
+    uint32_t            DestAddr;
+    uint32_t            Size;
+    uint32_t            Cnt;
+    GPDMA_SignalEvent_t cb_event;
 } GPDMA_Channel_Info;
 
 static uint32_t Channel_active = 0U;
@@ -80,7 +82,7 @@ static GPDMA_Channel_Info Channel_info[GPDMA_NUMBER_OF_CHANNELS] = { 0U };
 #define LOOP_MAX_CNT   (SystemCoreClock / 64U)
 
 // Interrupt Handler Prototype
-void MX_DMA_IRQHandler (void);
+void MX_DMA_IRQHandler(void);
 
 
 /**
@@ -91,29 +93,33 @@ void MX_DMA_IRQHandler (void);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-__inline static int32_t Set_Channel_active_flag (uint8_t ch) {
+__inline static int32_t Set_Channel_active_flag(uint8_t ch)
+{
 #if (defined(CORE_M0SUB) || defined(CORE_M0))
-  __disable_irq();
-  if (Channel_active & (1U << ch)) {
-    __enable_irq();
-    return -1;
-  }
-  Channel_active |= (1U << ch);
-  __enable_irq();
-
-  return 0;
-#else
-  uint32_t val;
-
-  do {
-    val = __LDREXW (&Channel_active);
-    if (val & (1U << ch)) {
-      __CLREX (); 
-      return -1;
+    __disable_irq();
+    if (Channel_active & (1U << ch))
+    {
+        __enable_irq();
+        return -1;
     }
-  } while (__STREXW (val | (1U << ch), &Channel_active));
+    Channel_active |= (1U << ch);
+    __enable_irq();
 
-  return 0;
+    return 0;
+#else
+    uint32_t val;
+
+    do
+    {
+        val = __LDREXW(&Channel_active);
+        if (val & (1U << ch))
+        {
+            __CLREX();
+            return -1;
+        }
+    } while (__STREXW(val | (1U << ch), &Channel_active));
+
+    return 0;
 #endif
 }
 
@@ -122,13 +128,14 @@ __inline static int32_t Set_Channel_active_flag (uint8_t ch) {
   \brief       Protected clear of channel active flag
   \param[in]   ch        Channel number (0..7)
 */
-__inline static void Clear_Channel_active_flag (uint8_t ch) {
+__inline static void Clear_Channel_active_flag(uint8_t ch)
+{
 #if (defined(CORE_M0SUB) || defined(CORE_M0))
-  __disable_irq();
-  Channel_active &= ~(1U << ch);
-  __enable_irq();
+    __disable_irq();
+    Channel_active &= ~(1U << ch);
+    __enable_irq();
 #else
-  while(__STREXW((__LDREXW(&Channel_active) & ~(1U << ch)), &Channel_active));
+    while (__STREXW((__LDREXW(&Channel_active) & ~(1U << ch)), &Channel_active));
 #endif
 }
 
@@ -139,45 +146,52 @@ __inline static void Clear_Channel_active_flag (uint8_t ch) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t GPDMA_Initialize (void) {
-  uint32_t ch_num, tout_cnt;
+int32_t GPDMA_Initialize(void)
+{
+    uint32_t ch_num, tout_cnt;
 
-  Init_cnt++;
+    Init_cnt++;
 
-  // Check if already initialized
-  if (Init_cnt > 1U) { return 0; }
-
-  // Enable DMA clock
-  LPC_CCU1->CLK_M4_DMA_CFG |= 1U;
-  tout_cnt = LOOP_MAX_CNT;
-  while ((LPC_CCU1->CLK_M4_DMA_STAT & 1U) == 0U) {
-    if (tout_cnt-- == 0U) {
-      __NOP();
-      return -1;
+    // Check if already initialized
+    if (Init_cnt > 1U)
+    {
+        return 0;
     }
-  }
 
-  // Reset DMA
-  LPC_RGU->RESET_CTRL0 = ((1U << 19) | (~(LPC_RGU->RESET_ACTIVE_STATUS0)));
+    // Enable DMA clock
+    LPC_CCU1->CLK_M4_DMA_CFG |= 1U;
+    tout_cnt = LOOP_MAX_CNT;
+    while ((LPC_CCU1->CLK_M4_DMA_STAT & 1U) == 0U)
+    {
+        if (tout_cnt-- == 0U)
+        {
+            __NOP();
+            return -1;
+        }
+    }
 
-  // Reset all DMA channels
-  for (ch_num = 0U; ch_num < GPDMA_NUMBER_OF_CHANNELS; ch_num++) {
-    GPDMA_CHANNEL(ch_num)->CONFIG = 0U;
-    Channel_info[ch_num].SrcAddr  = 0U;
-    Channel_info[ch_num].DestAddr = 0U;
-    Channel_info[ch_num].Size     = 0U;
-    Channel_info[ch_num].Cnt      = 0U;
-  }
+    // Reset DMA
+    LPC_RGU->RESET_CTRL0 = ((1U << 19) | (~(LPC_RGU->RESET_ACTIVE_STATUS0)));
 
-  // Clear all DMA interrupt flags
-  LPC_GPDMA->INTTCCLEAR = 0xFFU;
-  LPC_GPDMA->INTERRCLR  = 0xFFU;
+    // Reset all DMA channels
+    for (ch_num = 0U; ch_num < GPDMA_NUMBER_OF_CHANNELS; ch_num++)
+    {
+        GPDMA_CHANNEL(ch_num)->CONFIG = 0U;
+        Channel_info[ch_num].SrcAddr  = 0U;
+        Channel_info[ch_num].DestAddr = 0U;
+        Channel_info[ch_num].Size     = 0U;
+        Channel_info[ch_num].Cnt      = 0U;
+    }
 
-  // Clear and Enable DMA IRQ
-  NVIC_ClearPendingIRQ(MX_DMA_IRQn);
-  NVIC_EnableIRQ(MX_DMA_IRQn);
+    // Clear all DMA interrupt flags
+    LPC_GPDMA->INTTCCLEAR = 0xFFU;
+    LPC_GPDMA->INTERRCLR  = 0xFFU;
 
-  return 0;
+    // Clear and Enable DMA IRQ
+    NVIC_ClearPendingIRQ(MX_DMA_IRQn);
+    NVIC_EnableIRQ(MX_DMA_IRQn);
+
+    return 0;
 }
 
 /**
@@ -187,22 +201,29 @@ int32_t GPDMA_Initialize (void) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t GPDMA_Uninitialize (void) {
+int32_t GPDMA_Uninitialize(void)
+{
 
-  // Check if DMA is initialized
-  if (Init_cnt == 0U) { return -1; }
+    // Check if DMA is initialized
+    if (Init_cnt == 0U)
+    {
+        return -1;
+    }
 
-  Init_cnt--;
-  if (Init_cnt != 0U) { return 0; }
+    Init_cnt--;
+    if (Init_cnt != 0U)
+    {
+        return 0;
+    }
 
-  // Disable DMA clock
-  LPC_CCU1->CLK_M4_DMA_CFG &= ~1U;
+    // Disable DMA clock
+    LPC_CCU1->CLK_M4_DMA_CFG &= ~1U;
 
-  // Disable and Clear DMA IRQ
-  NVIC_DisableIRQ(MX_DMA_IRQn);
-  NVIC_ClearPendingIRQ(MX_DMA_IRQn);
+    // Disable and Clear DMA IRQ
+    NVIC_DisableIRQ(MX_DMA_IRQn);
+    NVIC_ClearPendingIRQ(MX_DMA_IRQn);
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -214,13 +235,17 @@ int32_t GPDMA_Uninitialize (void) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t GPDMA_PeripheralSelect (uint8_t peri, uint8_t sel) {
+int32_t GPDMA_PeripheralSelect(uint8_t peri, uint8_t sel)
+{
 
-  if ((peri > 15U) || (sel > 3U)) { return -1; }
+    if ((peri > 15U) || (sel > 3U))
+    {
+        return -1;
+    }
 
-  LPC_CREG->DMAMUX = (LPC_CREG->DMAMUX & ~(3U   << (2U * peri))) | ((uint32_t)sel  << (2U * peri));
+    LPC_CREG->DMAMUX = (LPC_CREG->DMAMUX & ~(3U   << (2U * peri))) | ((uint32_t)sel  << (2U * peri));
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -243,83 +268,96 @@ int32_t GPDMA_PeripheralSelect (uint8_t peri, uint8_t sel) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t GPDMA_ChannelConfigure (uint8_t              ch,
-                                uint32_t             src_addr,
-                                uint32_t             dest_addr,
-                                uint32_t             size,
-                                uint32_t             control,
-                                uint32_t             config,
-                                GPDMA_SignalEvent_t  cb_event) {
-  GPDMA_CHANNEL_REG * dma_ch;
-  uint32_t tout_cnt;
+int32_t GPDMA_ChannelConfigure(uint8_t              ch,
+                               uint32_t             src_addr,
+                               uint32_t             dest_addr,
+                               uint32_t             size,
+                               uint32_t             control,
+                               uint32_t             config,
+                               GPDMA_SignalEvent_t  cb_event)
+{
+    GPDMA_CHANNEL_REG * dma_ch;
+    uint32_t tout_cnt;
 
-  // Check if channel is valid
-  if (ch >= GPDMA_NUMBER_OF_CHANNELS)     { return -1; }
-
-  // Set Channel active flag
-  if (Set_Channel_active_flag (ch) == -1) { return -1; }
-
-  // Save callback pointer
-  Channel_info[ch].cb_event = cb_event;
-
-  dma_ch = GPDMA_CHANNEL(ch);
-
-  // Reset DMA Channel configuration
-  dma_ch->CONFIG  = 0U;
-  dma_ch->CONTROL = 0U;
-
-  // Clear DMA interrupts
-  LPC_GPDMA->INTTCCLEAR = (1U << ch);
-  LPC_GPDMA->INTERRCLR  = (1U << ch);
-
-  // Link list not supported
-  dma_ch->LLI = 0U;
-
-  // Enable DMA Channels, little endian
-  LPC_GPDMA->CONFIG = GPDMA_CONFIG_E;
-  tout_cnt = LOOP_MAX_CNT;
-  while ((LPC_GPDMA->CONFIG & GPDMA_CONFIG_E) == 0U) {
-    if (tout_cnt-- == 0U) {
-      __NOP();
-      return -1;
+    // Check if channel is valid
+    if (ch >= GPDMA_NUMBER_OF_CHANNELS)
+    {
+        return -1;
     }
-  }
 
-  Channel_info[ch].Size = size;
-  if (size > 0x0FFFU) {
-    // Max DMA transfer size = 4k
-    size = 0x0FFFU;
-  }
+    // Set Channel active flag
+    if (Set_Channel_active_flag(ch) == -1)
+    {
+        return -1;
+    }
 
-  control = (control & ~GPDMA_CH_CONTROL_TRANSFERSIZE_MSK) | GPDMA_CH_CONTROL_TRANSFERSIZE(size);
+    // Save callback pointer
+    Channel_info[ch].cb_event = cb_event;
 
-  // Set Source and destination address
-  dma_ch->SRCADDR  = src_addr;
-  dma_ch->DESTADDR = dest_addr;
+    dma_ch = GPDMA_CHANNEL(ch);
 
-  if (control & GPDMA_CH_CONTROL_SI) {
-    // Source address increment
-    src_addr += (size << ((control & GPDMA_CH_CONTROL_SWIDTH_MSK) >> GPDMA_CH_CONTROL_SWIDTH_POS));
-  }
-  if (control & GPDMA_CH_CONTROL_DI) {
-    // Destination address increment
-    dest_addr += (size << ((control & GPDMA_CH_CONTROL_DWIDTH_MSK) >> GPDMA_CH_CONTROL_DWIDTH_POS));
-  }
+    // Reset DMA Channel configuration
+    dma_ch->CONFIG  = 0U;
+    dma_ch->CONTROL = 0U;
 
-  // Save channel information
-  Channel_info[ch].SrcAddr  = src_addr;
-  Channel_info[ch].DestAddr = dest_addr;
-  Channel_info[ch].Cnt      = size;
+    // Clear DMA interrupts
+    LPC_GPDMA->INTTCCLEAR = (1U << ch);
+    LPC_GPDMA->INTERRCLR  = (1U << ch);
 
-  dma_ch->CONTROL = control;
-  dma_ch->CONFIG  = config;
+    // Link list not supported
+    dma_ch->LLI = 0U;
 
-  if ((config & GPDMA_CONFIG_E) == 0U) {
-    // Clear Channel active flag
-    Clear_Channel_active_flag (ch);
-  }
+    // Enable DMA Channels, little endian
+    LPC_GPDMA->CONFIG = GPDMA_CONFIG_E;
+    tout_cnt = LOOP_MAX_CNT;
+    while ((LPC_GPDMA->CONFIG & GPDMA_CONFIG_E) == 0U)
+    {
+        if (tout_cnt-- == 0U)
+        {
+            __NOP();
+            return -1;
+        }
+    }
 
-  return 0;
+    Channel_info[ch].Size = size;
+    if (size > 0x0FFFU)
+    {
+        // Max DMA transfer size = 4k
+        size = 0x0FFFU;
+    }
+
+    control = (control & ~GPDMA_CH_CONTROL_TRANSFERSIZE_MSK) | GPDMA_CH_CONTROL_TRANSFERSIZE(size);
+
+    // Set Source and destination address
+    dma_ch->SRCADDR  = src_addr;
+    dma_ch->DESTADDR = dest_addr;
+
+    if (control & GPDMA_CH_CONTROL_SI)
+    {
+        // Source address increment
+        src_addr += (size << ((control & GPDMA_CH_CONTROL_SWIDTH_MSK) >> GPDMA_CH_CONTROL_SWIDTH_POS));
+    }
+    if (control & GPDMA_CH_CONTROL_DI)
+    {
+        // Destination address increment
+        dest_addr += (size << ((control & GPDMA_CH_CONTROL_DWIDTH_MSK) >> GPDMA_CH_CONTROL_DWIDTH_POS));
+    }
+
+    // Save channel information
+    Channel_info[ch].SrcAddr  = src_addr;
+    Channel_info[ch].DestAddr = dest_addr;
+    Channel_info[ch].Cnt      = size;
+
+    dma_ch->CONTROL = control;
+    dma_ch->CONFIG  = config;
+
+    if ((config & GPDMA_CONFIG_E) == 0U)
+    {
+        // Clear Channel active flag
+        Clear_Channel_active_flag(ch);
+    }
+
+    return 0;
 }
 
 /**
@@ -330,16 +368,23 @@ int32_t GPDMA_ChannelConfigure (uint8_t              ch,
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t GPDMA_ChannelEnable (uint8_t ch) {
+int32_t GPDMA_ChannelEnable(uint8_t ch)
+{
 
-  // Check if channel is valid
-  if (ch >= GPDMA_NUMBER_OF_CHANNELS)     { return -1; }
+    // Check if channel is valid
+    if (ch >= GPDMA_NUMBER_OF_CHANNELS)
+    {
+        return -1;
+    }
 
-  // Set Channel active flag
-  if (Set_Channel_active_flag (ch) == -1) { return -1; }
+    // Set Channel active flag
+    if (Set_Channel_active_flag(ch) == -1)
+    {
+        return -1;
+    }
 
-  GPDMA_CHANNEL(ch)->CONFIG |= GPDMA_CH_CONFIG_E;
-  return 0;
+    GPDMA_CHANNEL(ch)->CONFIG |= GPDMA_CH_CONFIG_E;
+    return 0;
 }
 
 /**
@@ -350,17 +395,21 @@ int32_t GPDMA_ChannelEnable (uint8_t ch) {
    - \b  0: function succeeded
    - \b -1: function failed
 */
-int32_t GPDMA_ChannelDisable (uint8_t ch) {
+int32_t GPDMA_ChannelDisable(uint8_t ch)
+{
 
-  // Check if channel is valid
-  if (ch >= GPDMA_NUMBER_OF_CHANNELS) { return -1; }
+    // Check if channel is valid
+    if (ch >= GPDMA_NUMBER_OF_CHANNELS)
+    {
+        return -1;
+    }
 
-  // Clear Channel active flag
-  Clear_Channel_active_flag (ch);
+    // Clear Channel active flag
+    Clear_Channel_active_flag(ch);
 
-  GPDMA_CHANNEL(ch)->CONFIG &= ~GPDMA_CH_CONFIG_E;
+    GPDMA_CHANNEL(ch)->CONFIG &= ~GPDMA_CH_CONFIG_E;
 
-  return 0;
+    return 0;
 }
 
 /**
@@ -371,13 +420,23 @@ int32_t GPDMA_ChannelDisable (uint8_t ch) {
    - \b  1: channel enabled
    - \b  0: channel disabled
 */
-uint32_t GPDMA_ChannelGetStatus (uint8_t ch) {
+uint32_t GPDMA_ChannelGetStatus(uint8_t ch)
+{
 
-  // Check if channel is valid
-  if (ch >= GPDMA_NUMBER_OF_CHANNELS) { return 0U; }
+    // Check if channel is valid
+    if (ch >= GPDMA_NUMBER_OF_CHANNELS)
+    {
+        return 0U;
+    }
 
-  if (Channel_active & (1 << ch)) { return 1U; }
-  else                            { return 0U; }
+    if (Channel_active & (1 << ch))
+    {
+        return 1U;
+    }
+    else
+    {
+        return 0U;
+    }
 }
 
 /**
@@ -386,85 +445,106 @@ uint32_t GPDMA_ChannelGetStatus (uint8_t ch) {
   \param[in]   ch Channel number (0..7)
   \returns     Number of transferred data
 */
-uint32_t GPDMA_ChannelGetCount (uint8_t ch) {
-  // Check if channel is valid
-  if (ch >= GPDMA_NUMBER_OF_CHANNELS) return 0;
+uint32_t GPDMA_ChannelGetCount(uint8_t ch)
+{
+    // Check if channel is valid
+    if (ch >= GPDMA_NUMBER_OF_CHANNELS)
+    {
+        return 0;
+    }
 
-  return (Channel_info[ch].Cnt - (GPDMA_CHANNEL(ch)->CONTROL & GPDMA_CH_CONTROL_TRANSFERSIZE_MSK));
+    return (Channel_info[ch].Cnt - (GPDMA_CHANNEL(ch)->CONTROL & GPDMA_CH_CONTROL_TRANSFERSIZE_MSK));
 }
 
 /**
   \fn          void DMA_IRQHandler (void)
   \brief       DMA interrupt handler
 */
-void MX_DMA_IRQHandler (void) {
-  uint8_t  ch;
-  uint32_t size;
-  GPDMA_CHANNEL_REG * dma_ch;
+void MX_DMA_IRQHandler(void)
+{
+    uint8_t  ch;
+    uint32_t size;
+    GPDMA_CHANNEL_REG * dma_ch;
 
-  for (ch = 0; ch < GPDMA_NUMBER_OF_CHANNELS; ch++) {
-    if (LPC_GPDMA->INTSTAT & (1U << ch)) {
-      dma_ch = GPDMA_CHANNEL(ch);
+    for (ch = 0; ch < GPDMA_NUMBER_OF_CHANNELS; ch++)
+    {
+        if (LPC_GPDMA->INTSTAT & (1U << ch))
+        {
+            dma_ch = GPDMA_CHANNEL(ch);
 
-      // Terminal count request interrupt
-      if (LPC_GPDMA->INTTCSTAT & (1U << ch)) {
-        // Clear interrupt flag
-        LPC_GPDMA->INTTCCLEAR = (1U << ch);
+            // Terminal count request interrupt
+            if (LPC_GPDMA->INTTCSTAT & (1U << ch))
+            {
+                // Clear interrupt flag
+                LPC_GPDMA->INTTCCLEAR = (1U << ch);
 
-        if (Channel_info[ch].Cnt != Channel_info[ch].Size) {
-          // Data waiting to transfer
+                if (Channel_info[ch].Cnt != Channel_info[ch].Size)
+                {
+                    // Data waiting to transfer
 
-          size = Channel_info[ch].Size - Channel_info[ch].Cnt;
-          // Max DMA transfer size = 4k
-          if (size > 0x0FFFU) { size = 0x0FFFU; }
+                    size = Channel_info[ch].Size - Channel_info[ch].Cnt;
+                    // Max DMA transfer size = 4k
+                    if (size > 0x0FFFU)
+                    {
+                        size = 0x0FFFU;
+                    }
 
-          Channel_info[ch].Cnt += size;
+                    Channel_info[ch].Cnt += size;
 
-          if (dma_ch->CONTROL & GPDMA_CH_CONTROL_SI) {
-            // Source Address Increment
-            dma_ch->SRCADDR = Channel_info[ch].SrcAddr;
-            Channel_info[ch].SrcAddr += (size << ((dma_ch->CONTROL & GPDMA_CH_CONTROL_SWIDTH_MSK) >> GPDMA_CH_CONTROL_SWIDTH_POS));
-          }
-          if (dma_ch->CONTROL & GPDMA_CH_CONTROL_DI) {
-            // Destination address increment
-            dma_ch->DESTADDR = Channel_info[ch].DestAddr;
-            Channel_info[ch].DestAddr += (size << ((dma_ch->CONTROL & GPDMA_CH_CONTROL_DWIDTH_MSK) >> GPDMA_CH_CONTROL_DWIDTH_POS));
-          }
+                    if (dma_ch->CONTROL & GPDMA_CH_CONTROL_SI)
+                    {
+                        // Source Address Increment
+                        dma_ch->SRCADDR = Channel_info[ch].SrcAddr;
+                        Channel_info[ch].SrcAddr += (size << ((dma_ch->CONTROL & GPDMA_CH_CONTROL_SWIDTH_MSK) >> GPDMA_CH_CONTROL_SWIDTH_POS));
+                    }
+                    if (dma_ch->CONTROL & GPDMA_CH_CONTROL_DI)
+                    {
+                        // Destination address increment
+                        dma_ch->DESTADDR = Channel_info[ch].DestAddr;
+                        Channel_info[ch].DestAddr += (size << ((dma_ch->CONTROL & GPDMA_CH_CONTROL_DWIDTH_MSK) >> GPDMA_CH_CONTROL_DWIDTH_POS));
+                    }
 
-          // Set transfer size
-          dma_ch->CONTROL = (dma_ch->CONTROL & ~GPDMA_CH_CONTROL_TRANSFERSIZE_MSK) | GPDMA_CH_CONTROL_TRANSFERSIZE(size);
+                    // Set transfer size
+                    dma_ch->CONTROL = (dma_ch->CONTROL & ~GPDMA_CH_CONTROL_TRANSFERSIZE_MSK) | GPDMA_CH_CONTROL_TRANSFERSIZE(size);
 
-          // Enable DMA Channel
-          dma_ch->CONFIG |= GPDMA_CH_CONFIG_E;
-        } else {
-          // All Data has been transferred
+                    // Enable DMA Channel
+                    dma_ch->CONFIG |= GPDMA_CH_CONFIG_E;
+                }
+                else
+                {
+                    // All Data has been transferred
 
-          // Clear Channel active flag
-          Clear_Channel_active_flag (ch);
+                    // Clear Channel active flag
+                    Clear_Channel_active_flag(ch);
 
-          // Signal Event
-          if (Channel_info[ch].cb_event) {
-            Channel_info[ch].cb_event(GPDMA_EVENT_TERMINAL_COUNT_REQUEST);
-          }
+                    // Signal Event
+                    if (Channel_info[ch].cb_event)
+                    {
+                        Channel_info[ch].cb_event(GPDMA_EVENT_TERMINAL_COUNT_REQUEST);
+                    }
+                }
+            }
+            else
+            {
+                // DMA error interrupt
+                if (LPC_GPDMA->INTERRSTAT & (1U << ch))
+                {
+                    dma_ch->CONFIG  = 0U;
+                    dma_ch->CONTROL = 0U;
+
+                    // Clear Channel active flag
+                    Clear_Channel_active_flag(ch);
+
+                    // Clear interrupt flag
+                    LPC_GPDMA->INTERRCLR = (1U << ch);
+
+                    // Signal Event
+                    if (Channel_info[ch].cb_event)
+                    {
+                        Channel_info[ch].cb_event(GPDMA_EVENT_ERROR);
+                    }
+                }
+            }
         }
-      } else {
-        // DMA error interrupt
-        if (LPC_GPDMA->INTERRSTAT & (1U << ch)) {
-          dma_ch->CONFIG  = 0U;
-          dma_ch->CONTROL = 0U;
-
-          // Clear Channel active flag
-          Clear_Channel_active_flag (ch);
-
-          // Clear interrupt flag
-          LPC_GPDMA->INTERRCLR = (1U << ch);
-
-          // Signal Event
-          if (Channel_info[ch].cb_event) {
-            Channel_info[ch].cb_event(GPDMA_EVENT_ERROR);
-          }
-        }
-      }
     }
-  }
 }
