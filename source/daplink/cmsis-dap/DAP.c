@@ -464,7 +464,7 @@ static uint32_t DAP_SWJ_Clock(const uint8_t *request, uint8_t *response)
 {
 #if ((DAP_SWD != 0) || (DAP_JTAG != 0))
     uint32_t clock;
-    uint32_t delay;
+//    uint32_t delay;
 
     clock = (uint32_t)(*(request + 0) <<  0) |
             (uint32_t)(*(request + 1) <<  8) |

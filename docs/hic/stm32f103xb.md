@@ -38,3 +38,25 @@ Bootloader size is 48 KB
 | HID LED     |  O  | PA9     |  30 |
 | CDC LED     |  O  | PA9     |  30 |
 | MSC LED     |  O  | PA9     |  30 |
+
+
+## ZX_DAPLink default pin assignment
+
+| Signal      | I/O | Symbol  | Pin |
+|-------------|:---:|---------|:---:|
+| SWD / JTAG  |
+| SWCLK / TCK |  O  | PB6     |  42 |
+| SWDIO / TMS |  O  | PB7     |  43 |
+| SWDIO / TMS |  I  | PB9     |  46 |
+| SWO / TDO   |  I  | PA10    |  31 |
+| nRESET      |  O  | PB2     |  20 |
+| UART        |
+| UART RX     |  I  | PA2     |  12 |
+| UART TX     |  O  | PA3     |  13 |
+| Button      |
+| NF-RST But. |  I  | PC14    |  3  |
+| LEDs        |
+| Connect. LED|  O  | PC15    |  4  |
+| HID LED     |  O  | PA1     |  11 |
+| CDC LED     |  O  | PA1     |  11 |
+| MSC LED     |  O  | PA1     |  11 |
