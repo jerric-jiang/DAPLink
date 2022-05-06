@@ -43,10 +43,10 @@ COMPILER_ASSERT(DAPLINK_HIC_ID == DAPLINK_HIC_ID_STM32F103XB);
 
 //When bootloader, disable the target port(not used)
 #define POWER_EN_PIN_PORT            GPIOC  //GPIOB
-#define POWER_EN_PIN                 GPIO_PIN_14
-#define POWER_EN_Bit                 14
+#define POWER_EN_PIN                 GPIO_PIN_14    //GPIO_PIN_15
+#define POWER_EN_Bit                 14 //15
 
-// nRESET OUT Pin   //只用于作强制进入 bootloader mode的按键，并没有用于做Target Reset。
+// nRESET OUT Pin   //只用作强制进入bootloader mode的按键，并没有用来Target Reset。
 #define nRESET_PIN_PORT              GPIOC
 #define nRESET_PIN                   GPIO_PIN_13    //GPIO_PIN_0
 #define nRESET_PIN_Bit               13 //0

@@ -49,7 +49,7 @@ Bootloader size is 48 KB
 | SWDIO / TMS |  O  | PB7     |  43 |
 | SWDIO / TMS |  I  | PB9     |  46 |
 | SWO / TDO   |  I  | PA10    |  31 |
-| nRESET      |  O  | PB2     |  20 |
+| nRESET      |  O  | PC13    |  2  |
 | UART        |
 | UART RX     |  I  | PA2     |  12 |
 | UART TX     |  O  | PA3     |  13 |
