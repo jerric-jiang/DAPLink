@@ -40,8 +40,8 @@
 /*@{*/
 
 #ifdef __cplusplus
-extern "C" {
-#endif
+ extern "C" {
+#endif 
 
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 #include "stdint.h"
@@ -63,146 +63,146 @@ typedef volatile       uint32_t RwReg; /**< Read-Write 32-bit register (volatile
 /**< Interrupt Number Definition */
 typedef enum IRQn
 {
-    /******  Cortex-M3 Processor Exceptions Numbers ******************************/
-    NonMaskableInt_IRQn   = -14, /**<  2 Non Maskable Interrupt                */
-    MemoryManagement_IRQn = -12, /**<  4 Cortex-M3 Memory Management Interrupt */
-    BusFault_IRQn         = -11, /**<  5 Cortex-M3 Bus Fault Interrupt         */
-    UsageFault_IRQn       = -10, /**<  6 Cortex-M3 Usage Fault Interrupt       */
-    SVCall_IRQn           = -5,  /**< 11 Cortex-M3 SV Call Interrupt           */
-    DebugMonitor_IRQn     = -4,  /**< 12 Cortex-M3 Debug Monitor Interrupt     */
-    PendSV_IRQn           = -2,  /**< 14 Cortex-M3 Pend SV Interrupt           */
-    SysTick_IRQn          = -1,  /**< 15 Cortex-M3 System Tick Interrupt       */
-    /******  SAM3U2C specific Interrupt Numbers *********************************/
+/******  Cortex-M3 Processor Exceptions Numbers ******************************/
+  NonMaskableInt_IRQn   = -14, /**<  2 Non Maskable Interrupt                */
+  MemoryManagement_IRQn = -12, /**<  4 Cortex-M3 Memory Management Interrupt */
+  BusFault_IRQn         = -11, /**<  5 Cortex-M3 Bus Fault Interrupt         */
+  UsageFault_IRQn       = -10, /**<  6 Cortex-M3 Usage Fault Interrupt       */
+  SVCall_IRQn           = -5,  /**< 11 Cortex-M3 SV Call Interrupt           */
+  DebugMonitor_IRQn     = -4,  /**< 12 Cortex-M3 Debug Monitor Interrupt     */
+  PendSV_IRQn           = -2,  /**< 14 Cortex-M3 Pend SV Interrupt           */
+  SysTick_IRQn          = -1,  /**< 15 Cortex-M3 System Tick Interrupt       */
+/******  SAM3U2C specific Interrupt Numbers *********************************/
+  
+  SUPC_IRQn            =  0, /**<  0 SAM3U2C Supply Controller (SUPC) */
+  RSTC_IRQn            =  1, /**<  1 SAM3U2C Reset Controller (RSTC) */
+  RTC_IRQn             =  2, /**<  2 SAM3U2C Real Time Clock (RTC) */
+  RTT_IRQn             =  3, /**<  3 SAM3U2C Real Time Timer (RTT) */
+  WDT_IRQn             =  4, /**<  4 SAM3U2C Watchdog Timer (WDT) */
+  PMC_IRQn             =  5, /**<  5 SAM3U2C Power Management Controller (PMC) */
+  EFC0_IRQn            =  6, /**<  6 SAM3U2C Enhanced Embedded Flash Controller 0 (EFC0) */
+  UART_IRQn            =  8, /**<  8 SAM3U2C Universal Asynchronous Receiver Transmitter (UART) */
+  SMC_IRQn             =  9, /**<  9 SAM3U2C Static Memory Controller (SMC) */
+  PIOA_IRQn            = 10, /**< 10 SAM3U2C Parallel I/O Controller A, (PIOA) */
+  PIOB_IRQn            = 11, /**< 11 SAM3U2C Parallel I/O Controller B (PIOB) */
+  USART0_IRQn          = 13, /**< 13 SAM3U2C USART 0 (USART0) */
+  USART1_IRQn          = 14, /**< 14 SAM3U2C USART 1 (USART1) */
+  USART2_IRQn          = 15, /**< 15 SAM3U2C USART 2 (USART2) */
+  HSMCI_IRQn           = 17, /**< 17 SAM3U2C High Speed Multimedia Card Interface (HSMCI) */
+  TWI0_IRQn            = 18, /**< 18 SAM3U2C Two-Wire Interface 0 (TWI0) */
+  TWI1_IRQn            = 19, /**< 19 SAM3U2C Two-Wire Interface 1 (TWI1) */
+  SPI_IRQn             = 20, /**< 20 SAM3U2C Serial Peripheral Interface (SPI) */
+  SSC_IRQn             = 21, /**< 21 SAM3U2C Synchronous Serial Controller (SSC) */
+  TC0_IRQn             = 22, /**< 22 SAM3U2C Timer Counter 0 (TC0) */
+  TC1_IRQn             = 23, /**< 23 SAM3U2C Timer Counter 1 (TC1) */
+  TC2_IRQn             = 24, /**< 24 SAM3U2C Timer Counter 2 (TC2) */
+  PWM_IRQn             = 25, /**< 25 SAM3U2C Pulse Width Modulation Controller (PWM) */
+  ADC12B_IRQn          = 26, /**< 26 SAM3U2C 12-bit ADC Controller (ADC12B) */
+  ADC_IRQn             = 27, /**< 27 SAM3U2C 10-bit ADC Controller (ADC) */
+  DMAC_IRQn            = 28, /**< 28 SAM3U2C DMA Controller (DMAC) */
+  UDPHS_IRQn           = 29, /**< 29 SAM3U2C USB Device High Speed (UDPHS) */
 
-    SUPC_IRQn            =  0, /**<  0 SAM3U2C Supply Controller (SUPC) */
-    RSTC_IRQn            =  1, /**<  1 SAM3U2C Reset Controller (RSTC) */
-    RTC_IRQn             =  2, /**<  2 SAM3U2C Real Time Clock (RTC) */
-    RTT_IRQn             =  3, /**<  3 SAM3U2C Real Time Timer (RTT) */
-    WDT_IRQn             =  4, /**<  4 SAM3U2C Watchdog Timer (WDT) */
-    PMC_IRQn             =  5, /**<  5 SAM3U2C Power Management Controller (PMC) */
-    EFC0_IRQn            =  6, /**<  6 SAM3U2C Enhanced Embedded Flash Controller 0 (EFC0) */
-    UART_IRQn            =  8, /**<  8 SAM3U2C Universal Asynchronous Receiver Transmitter (UART) */
-    SMC_IRQn             =  9, /**<  9 SAM3U2C Static Memory Controller (SMC) */
-    PIOA_IRQn            = 10, /**< 10 SAM3U2C Parallel I/O Controller A, (PIOA) */
-    PIOB_IRQn            = 11, /**< 11 SAM3U2C Parallel I/O Controller B (PIOB) */
-    USART0_IRQn          = 13, /**< 13 SAM3U2C USART 0 (USART0) */
-    USART1_IRQn          = 14, /**< 14 SAM3U2C USART 1 (USART1) */
-    USART2_IRQn          = 15, /**< 15 SAM3U2C USART 2 (USART2) */
-    HSMCI_IRQn           = 17, /**< 17 SAM3U2C High Speed Multimedia Card Interface (HSMCI) */
-    TWI0_IRQn            = 18, /**< 18 SAM3U2C Two-Wire Interface 0 (TWI0) */
-    TWI1_IRQn            = 19, /**< 19 SAM3U2C Two-Wire Interface 1 (TWI1) */
-    SPI_IRQn             = 20, /**< 20 SAM3U2C Serial Peripheral Interface (SPI) */
-    SSC_IRQn             = 21, /**< 21 SAM3U2C Synchronous Serial Controller (SSC) */
-    TC0_IRQn             = 22, /**< 22 SAM3U2C Timer Counter 0 (TC0) */
-    TC1_IRQn             = 23, /**< 23 SAM3U2C Timer Counter 1 (TC1) */
-    TC2_IRQn             = 24, /**< 24 SAM3U2C Timer Counter 2 (TC2) */
-    PWM_IRQn             = 25, /**< 25 SAM3U2C Pulse Width Modulation Controller (PWM) */
-    ADC12B_IRQn          = 26, /**< 26 SAM3U2C 12-bit ADC Controller (ADC12B) */
-    ADC_IRQn             = 27, /**< 27 SAM3U2C 10-bit ADC Controller (ADC) */
-    DMAC_IRQn            = 28, /**< 28 SAM3U2C DMA Controller (DMAC) */
-    UDPHS_IRQn           = 29, /**< 29 SAM3U2C USB Device High Speed (UDPHS) */
-
-    PERIPH_COUNT_IRQn    = 30  /**< Number of peripheral IDs */
+  PERIPH_COUNT_IRQn    = 30  /**< Number of peripheral IDs */
 } IRQn_Type;
 
 typedef struct _DeviceVectors
 {
-    /* Stack pointer */
-    void* pvStack;
+  /* Stack pointer */
+  void* pvStack;
+  
+  /* Cortex-M handlers */
+  void* pfnReset_Handler;
+  void* pfnNMI_Handler;
+  void* pfnHardFault_Handler;
+  void* pfnMemManage_Handler;
+  void* pfnBusFault_Handler;
+  void* pfnUsageFault_Handler;
+  void* pfnReserved1_Handler;
+  void* pfnReserved2_Handler;
+  void* pfnReserved3_Handler;
+  void* pfnReserved4_Handler;
+  void* pfnSVC_Handler;
+  void* pfnDebugMon_Handler;
+  void* pfnReserved5_Handler;
+  void* pfnPendSV_Handler;
+  void* pfnSysTick_Handler;
 
-    /* Cortex-M handlers */
-    void* pfnReset_Handler;
-    void* pfnNMI_Handler;
-    void* pfnHardFault_Handler;
-    void* pfnMemManage_Handler;
-    void* pfnBusFault_Handler;
-    void* pfnUsageFault_Handler;
-    void* pfnReserved1_Handler;
-    void* pfnReserved2_Handler;
-    void* pfnReserved3_Handler;
-    void* pfnReserved4_Handler;
-    void* pfnSVC_Handler;
-    void* pfnDebugMon_Handler;
-    void* pfnReserved5_Handler;
-    void* pfnPendSV_Handler;
-    void* pfnSysTick_Handler;
-
-    /* Peripheral handlers */
-    void* pfnSUPC_Handler;   /*  0 Supply Controller */
-    void* pfnRSTC_Handler;   /*  1 Reset Controller */
-    void* pfnRTC_Handler;    /*  2 Real Time Clock */
-    void* pfnRTT_Handler;    /*  3 Real Time Timer */
-    void* pfnWDT_Handler;    /*  4 Watchdog Timer */
-    void* pfnPMC_Handler;    /*  5 Power Management Controller */
-    void* pfnEFC0_Handler;   /*  6 Enhanced Embedded Flash Controller 0 */
-    void* pvReserved7;
-    void* pfnUART_Handler;   /*  8 Universal Asynchronous Receiver Transmitter */
-    void* pfnSMC_Handler;    /*  9 Static Memory Controller */
-    void* pfnPIOA_Handler;   /* 10 Parallel I/O Controller A, */
-    void* pfnPIOB_Handler;   /* 11 Parallel I/O Controller B */
-    void* pvReserved12;
-    void* pfnUSART0_Handler; /* 13 USART 0 */
-    void* pfnUSART1_Handler; /* 14 USART 1 */
-    void* pfnUSART2_Handler; /* 15 USART 2 */
-    void* pvReserved16;
-    void* pfnHSMCI_Handler;  /* 17 High Speed Multimedia Card Interface */
-    void* pfnTWI0_Handler;   /* 18 Two-Wire Interface 0 */
-    void* pfnTWI1_Handler;   /* 19 Two-Wire Interface 1 */
-    void* pfnSPI_Handler;    /* 20 Serial Peripheral Interface */
-    void* pfnSSC_Handler;    /* 21 Synchronous Serial Controller */
-    void* pfnTC0_Handler;    /* 22 Timer Counter 0 */
-    void* pfnTC1_Handler;    /* 23 Timer Counter 1 */
-    void* pfnTC2_Handler;    /* 24 Timer Counter 2 */
-    void* pfnPWM_Handler;    /* 25 Pulse Width Modulation Controller */
-    void* pfnADC12B_Handler; /* 26 12-bit ADC Controller */
-    void* pfnADC_Handler;    /* 27 10-bit ADC Controller */
-    void* pfnDMAC_Handler;   /* 28 DMA Controller */
-    void* pfnUDPHS_Handler;  /* 29 USB Device High Speed */
+  /* Peripheral handlers */
+  void* pfnSUPC_Handler;   /*  0 Supply Controller */
+  void* pfnRSTC_Handler;   /*  1 Reset Controller */
+  void* pfnRTC_Handler;    /*  2 Real Time Clock */
+  void* pfnRTT_Handler;    /*  3 Real Time Timer */
+  void* pfnWDT_Handler;    /*  4 Watchdog Timer */
+  void* pfnPMC_Handler;    /*  5 Power Management Controller */
+  void* pfnEFC0_Handler;   /*  6 Enhanced Embedded Flash Controller 0 */
+  void* pvReserved7;
+  void* pfnUART_Handler;   /*  8 Universal Asynchronous Receiver Transmitter */
+  void* pfnSMC_Handler;    /*  9 Static Memory Controller */
+  void* pfnPIOA_Handler;   /* 10 Parallel I/O Controller A, */
+  void* pfnPIOB_Handler;   /* 11 Parallel I/O Controller B */
+  void* pvReserved12;
+  void* pfnUSART0_Handler; /* 13 USART 0 */
+  void* pfnUSART1_Handler; /* 14 USART 1 */
+  void* pfnUSART2_Handler; /* 15 USART 2 */
+  void* pvReserved16;
+  void* pfnHSMCI_Handler;  /* 17 High Speed Multimedia Card Interface */
+  void* pfnTWI0_Handler;   /* 18 Two-Wire Interface 0 */
+  void* pfnTWI1_Handler;   /* 19 Two-Wire Interface 1 */
+  void* pfnSPI_Handler;    /* 20 Serial Peripheral Interface */
+  void* pfnSSC_Handler;    /* 21 Synchronous Serial Controller */
+  void* pfnTC0_Handler;    /* 22 Timer Counter 0 */
+  void* pfnTC1_Handler;    /* 23 Timer Counter 1 */
+  void* pfnTC2_Handler;    /* 24 Timer Counter 2 */
+  void* pfnPWM_Handler;    /* 25 Pulse Width Modulation Controller */
+  void* pfnADC12B_Handler; /* 26 12-bit ADC Controller */
+  void* pfnADC_Handler;    /* 27 10-bit ADC Controller */
+  void* pfnDMAC_Handler;   /* 28 DMA Controller */
+  void* pfnUDPHS_Handler;  /* 29 USB Device High Speed */
 } DeviceVectors;
 
 /* Cortex-M3 core handlers */
-void Reset_Handler(void);
-void NMI_Handler(void);
-void HardFault_Handler(void);
-void MemManage_Handler(void);
-void BusFault_Handler(void);
-void UsageFault_Handler(void);
-void SVC_Handler(void);
-void DebugMon_Handler(void);
-void PendSV_Handler(void);
-void SysTick_Handler(void);
+void Reset_Handler      ( void );
+void NMI_Handler        ( void );
+void HardFault_Handler  ( void );
+void MemManage_Handler  ( void );
+void BusFault_Handler   ( void );
+void UsageFault_Handler ( void );
+void SVC_Handler        ( void );
+void DebugMon_Handler   ( void );
+void PendSV_Handler     ( void );
+void SysTick_Handler    ( void );
 
 /* Peripherals handlers */
-void ADC_Handler(void);
-void ADC12B_Handler(void);
-void DMAC_Handler(void);
-void EFC0_Handler(void);
-void HSMCI_Handler(void);
-void PIOA_Handler(void);
-void PIOB_Handler(void);
-void PMC_Handler(void);
-void PWM_Handler(void);
-void RSTC_Handler(void);
-void RTC_Handler(void);
-void RTT_Handler(void);
-void SMC_Handler(void);
-void SPI_Handler(void);
-void SSC_Handler(void);
-void SUPC_Handler(void);
-void TC0_Handler(void);
-void TC1_Handler(void);
-void TC2_Handler(void);
-void TWI0_Handler(void);
-void TWI1_Handler(void);
-void UART_Handler(void);
-void UDPHS_Handler(void);
-void USART0_Handler(void);
-void USART1_Handler(void);
-void USART2_Handler(void);
-void WDT_Handler(void);
+void ADC_Handler        ( void );
+void ADC12B_Handler     ( void );
+void DMAC_Handler       ( void );
+void EFC0_Handler       ( void );
+void HSMCI_Handler      ( void );
+void PIOA_Handler       ( void );
+void PIOB_Handler       ( void );
+void PMC_Handler        ( void );
+void PWM_Handler        ( void );
+void RSTC_Handler       ( void );
+void RTC_Handler        ( void );
+void RTT_Handler        ( void );
+void SMC_Handler        ( void );
+void SPI_Handler        ( void );
+void SSC_Handler        ( void );
+void SUPC_Handler       ( void );
+void TC0_Handler        ( void );
+void TC1_Handler        ( void );
+void TC2_Handler        ( void );
+void TWI0_Handler       ( void );
+void TWI1_Handler       ( void );
+void UART_Handler       ( void );
+void UDPHS_Handler      ( void );
+void USART0_Handler     ( void );
+void USART1_Handler     ( void );
+void USART2_Handler     ( void );
+void WDT_Handler        ( void );
 
 /**
- * \brief Configuration of the Cortex-M3 Processor and Core Peripherals
+ * \brief Configuration of the Cortex-M3 Processor and Core Peripherals 
  */
 
 #define __CM3_REV              0x0200 /**< SAM3U2C core revision number ([15:8] revision number, [7:0] patch number) */

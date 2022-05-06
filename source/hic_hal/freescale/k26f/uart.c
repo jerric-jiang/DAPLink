@@ -120,29 +120,24 @@ int32_t uart_set_configuration(UART_Configuration *config)
     clear_buffers();
 
     // set data bits, stop bits, parity
-    if ((config->DataBits < 8) || (config->DataBits > 9))
-    {
+    if ((config->DataBits < 8) || (config->DataBits > 9)) {
         data_bits = 8;
     }
 
     data_bits -= 8;
 
-    if (config->Parity == 1)
-    {
+    if (config->Parity == 1) {
         parity_enable = 1;
         parity_type = 1;
         data_bits++;
-    }
-    else if (config->Parity == 2)
-    {
+    } else if (config->Parity == 2) {
         parity_enable = 1;
         parity_type = 0;
         data_bits++;
     }
 
     // does not support 10 bit data comm
-    if (data_bits == 2)
-    {
+    if (data_bits == 2) {
         data_bits = 0;
         parity_enable = 0;
         parity_type = 0;
@@ -150,8 +145,8 @@ int32_t uart_set_configuration(UART_Configuration *config)
 
     // data bits, parity and parity mode
     UART_INSTANCE->C1 = data_bits << UART_C1_M_SHIFT
-                        | parity_enable << UART_C1_PE_SHIFT
-                        | parity_type << UART_C1_PT_SHIFT;
+                | parity_enable << UART_C1_PE_SHIFT
+                | parity_type << UART_C1_PT_SHIFT;
     dll =  SystemCoreClock / (16 * config->Baudrate);
     // set baudrate
     UART_INSTANCE->BDH = (UART_INSTANCE->BDH & ~(UART_BDH_SBR_MASK)) | ((dll >> 8) & UART_BDH_SBR_MASK);
@@ -188,8 +183,7 @@ int32_t uart_write_data(uint8_t *data, uint16_t size)
 
     // Atomically enable TX
     state = cortex_int_get_and_disable();
-    if (circ_buf_count_used(&write_buffer))
-    {
+    if (circ_buf_count_used(&write_buffer)) {
         UART_INSTANCE->C2 |= UART_C2_TIE_MASK;
     }
     cortex_int_restore(state);
@@ -209,55 +203,42 @@ void UART0_RX_TX_IRQHandler(void)
     // read interrupt status
     s1 = UART_INSTANCE->S1;
     // mask off interrupts that are not enabled
-    if (!(UART_INSTANCE->C2 & UART_C2_RIE_MASK))
-    {
+    if (!(UART_INSTANCE->C2 & UART_C2_RIE_MASK)) {
         s1 &= ~UART_S1_RDRF_MASK;
     }
-    if (!(UART_INSTANCE->C2 & UART_C2_TIE_MASK))
-    {
+    if (!(UART_INSTANCE->C2 & UART_C2_TIE_MASK)) {
         s1 &= ~UART_S1_TDRE_MASK;
     }
 
     // handle character to transmit
-    if (s1 & UART_S1_TDRE_MASK)
-    {
+    if (s1 & UART_S1_TDRE_MASK) {
         // Assert that there is data in the buffer
         util_assert(circ_buf_count_used(&write_buffer) > 0);
 
         // Send out data
         UART_INSTANCE->D = circ_buf_pop(&write_buffer);
         // Turn off the transmitter if that was the last byte
-        if (circ_buf_count_used(&write_buffer) == 0)
-        {
+        if (circ_buf_count_used(&write_buffer) == 0) {
             // disable TIE interrupt
             UART_INSTANCE->C2 &= ~(UART_C2_TIE_MASK);
         }
     }
 
     // handle received character
-    if (s1 & UART_S1_RDRF_MASK)
-    {
-        if ((s1 & UART_S1_NF_MASK) || (s1 & UART_S1_FE_MASK))
-        {
+    if (s1 & UART_S1_RDRF_MASK) {
+        if ((s1 & UART_S1_NF_MASK) || (s1 & UART_S1_FE_MASK)) {
             errorData = UART_INSTANCE->D;
-        }
-        else
-        {
+        } else {
             uint32_t free;
             uint8_t data;
 
             data = UART_INSTANCE->D;
             free = circ_buf_count_free(&read_buffer);
-            if (free > RX_OVRF_MSG_SIZE)
-            {
+            if (free > RX_OVRF_MSG_SIZE) {
                 circ_buf_push(&read_buffer, data);
-            }
-            else if ((RX_OVRF_MSG_SIZE == free) && config_get_overflow_detect())
-            {
+            } else if ((RX_OVRF_MSG_SIZE == free) && config_get_overflow_detect()) {
                 circ_buf_write(&read_buffer, (uint8_t*)RX_OVRF_MSG, RX_OVRF_MSG_SIZE);
-            }
-            else
-            {
+            } else {
                 // Drop character
             }
         }

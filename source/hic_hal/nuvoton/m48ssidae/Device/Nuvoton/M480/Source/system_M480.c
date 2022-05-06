@@ -15,7 +15,7 @@
  *   3. Neither the name of Nuvoton Technology Corp. nor the names of its contributors
  *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -55,13 +55,10 @@ void SystemCoreClockUpdate(void)             /* Get Core Clock Frequency      */
     PllClock = CLK_GetPLLClockFreq();
     u32ClkSrc = CLK->CLKSEL0 & CLK_CLKSEL0_HCLKSEL_Msk;
 
-    if (u32ClkSrc == CLK_CLKSEL0_HCLKSEL_PLL)
-    {
+    if (u32ClkSrc == CLK_CLKSEL0_HCLKSEL_PLL) {
         /* Use PLL clock */
         u32Freq = PllClock;
-    }
-    else
-    {
+    } else {
         /* Use the clock sources directly */
         u32Freq = gau32ClkSrcTbl[u32ClkSrc];
     }

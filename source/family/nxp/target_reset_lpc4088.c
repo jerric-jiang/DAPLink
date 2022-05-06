@@ -26,16 +26,12 @@
 #define PIN_ISPCTRL1      (1<<12)
 #define PIN_ISPCTRL2      (1<<15)
 
-static void gpio_set_isp_pin(uint8_t state)
-{
-    if (state)
-    {
+static void gpio_set_isp_pin(uint8_t state) {
+    if (state) {
         // High => Both pins are inputs
         LPC_GPIO->DIR[0] &= ~(PIN_ISPCTRL1);
         LPC_GPIO->DIR[1] &= ~(PIN_ISPCTRL2);
-    }
-    else
-    {
+    } else {
         // Low => Both pins are outputs with 0
         LPC_GPIO->CLR[0] = (PIN_ISPCTRL1);
         LPC_GPIO->CLR[1] = (PIN_ISPCTRL2);
@@ -72,8 +68,7 @@ static uint8_t lpc4088_target_set_state(target_state_t state)
     return res;
 }
 
-const target_family_descriptor_t g_nxp_lpc4088 =
-{
+const target_family_descriptor_t g_nxp_lpc4088 = {
     .family_id = CREATE_FAMILY_ID(kNXP_VendorID, 0), //ID not maching the predefined family ids
     .prerun_target_config = prerun_target_config,
     .target_set_state = lpc4088_target_set_state,

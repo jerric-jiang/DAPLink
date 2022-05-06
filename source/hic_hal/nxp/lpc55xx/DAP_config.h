@@ -241,7 +241,7 @@ __STATIC_INLINE void PORT_OFF(void)
 {
     // Disable driving of SWDIO and nRESET.
     GPIO->CLR[PIN_PIO_PORT] = PIN_TMS_SWDIO_TXEN_MASK
-                              | PIN_RESET_TXEN_MASK;
+                                | PIN_RESET_TXEN_MASK;
 
     // Disable SWCLK and TDI (set to inputs).
     GPIO->DIRCLR[PIN_PIO_PORT] = PIN_TCK_SWCLK_MASK | PIN_TDI_MASK;
@@ -412,8 +412,7 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 {
     // Only drive RESET low, otherwise let the target pull it high.
-    if (bit)
-    {
+    if (bit) {
         // Change pin to input.
         GPIO->DIRCLR[PIN_PIO_PORT] = PIN_RESET_MASK;
         // Disable level translator output.
@@ -421,8 +420,7 @@ __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
         // Set RESET to high. (Probably not be necessary)
         GPIO->B[PIN_PIO_PORT][PIN_RESET] = 1;
     }
-    else
-    {
+    else {
         // Set RESET low.
         GPIO->B[PIN_PIO_PORT][PIN_RESET] = 0;
         // Enable level translator output to drive.
@@ -486,9 +484,8 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
-{
-    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
+  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}
@@ -514,76 +511,65 @@ Status LEDs. In detail the operation of Hardware I/O and LED pins are enabled an
 __STATIC_INLINE void DAP_SETUP(void)
 {
     // Configure pins.
-    static const iocon_group_t kPinConfigs[] =
-    {
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_TCK_SWCLK,       .modefunc = IOCON_FUNC0
-            | IOCON_DIGITAL_EN
-            | IOCON_SLEW_FAST
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_TMS_SWDIO,       .modefunc = IOCON_FUNC0
-            | IOCON_DIGITAL_EN
-            | IOCON_SLEW_FAST
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_TMS_SWDIO_TXEN,  .modefunc = IOCON_FUNC0
-            | IOCON_DIGITAL_EN
-            | IOCON_SLEW_FAST
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_TDI,             .modefunc = IOCON_FUNC0
-            | IOCON_DIGITAL_EN
-            | IOCON_SLEW_FAST
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_TDO_SWO,         .modefunc = IOCON_FUNC0
-            | IOCON_DIGITAL_EN
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_RESET,           .modefunc = IOCON_FUNC0
-            | IOCON_DIGITAL_EN
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_RESET_TXEN,      .modefunc = IOCON_FUNC0
-            | IOCON_GPIO_MODE
-            | IOCON_DIGITAL_EN
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_DETECT,          .modefunc = IOCON_FUNC0
-            | IOCON_MODE_PULLUP
-            | IOCON_DIGITAL_EN
-            | IOCON_OPENDRAIN_EN
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_HW_VERS_6,       .modefunc = IOCON_FUNC0
-            | IOCON_MODE_PULLUP
-            | IOCON_DIGITAL_EN
-            | IOCON_OPENDRAIN_EN
-        },
-        {
-            .port = PIN_PIO_PORT,   .pin = PIN_HW_VERS_7,       .modefunc = IOCON_FUNC0
-            | IOCON_MODE_PULLUP
-            | IOCON_DIGITAL_EN
-            | IOCON_OPENDRAIN_EN
-        },
+    static const iocon_group_t kPinConfigs[] = {
+        {   .port = PIN_PIO_PORT,   .pin = PIN_TCK_SWCLK,       .modefunc = IOCON_FUNC0
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_SLEW_FAST
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_TMS_SWDIO,       .modefunc = IOCON_FUNC0
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_SLEW_FAST
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_TMS_SWDIO_TXEN,  .modefunc = IOCON_FUNC0
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_SLEW_FAST
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_TDI,             .modefunc = IOCON_FUNC0
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_SLEW_FAST
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_TDO_SWO,         .modefunc = IOCON_FUNC0
+                                                                            | IOCON_DIGITAL_EN
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_RESET,           .modefunc = IOCON_FUNC0
+                                                                            | IOCON_DIGITAL_EN
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_RESET_TXEN,      .modefunc = IOCON_FUNC0
+                                                                            | IOCON_GPIO_MODE
+                                                                            | IOCON_DIGITAL_EN
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_DETECT,          .modefunc = IOCON_FUNC0
+                                                                            | IOCON_MODE_PULLUP
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_OPENDRAIN_EN
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_HW_VERS_6,       .modefunc = IOCON_FUNC0
+                                                                            | IOCON_MODE_PULLUP
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_OPENDRAIN_EN
+                                                                            },
+        {   .port = PIN_PIO_PORT,   .pin = PIN_HW_VERS_7,       .modefunc = IOCON_FUNC0
+                                                                            | IOCON_MODE_PULLUP
+                                                                            | IOCON_DIGITAL_EN
+                                                                            | IOCON_OPENDRAIN_EN
+                                                                            },
     };
 
     IOCON_SetPinMuxing(IOCON, kPinConfigs, ARRAY_SIZE(kPinConfigs));
 
     // Configure GPIO outputs.
     GPIO->CLR[PIN_PIO_PORT] = PIN_TMS_SWDIO_TXEN_MASK   // Disable TMS/SWDIO drive.
-                              | PIN_RESET_TXEN_MASK;  // Disable RESET drive.
+                                | PIN_RESET_TXEN_MASK;  // Disable RESET drive.
 
     // Set GPIO directions.
     GPIO->DIRSET[PIN_PIO_PORT] = PIN_TMS_SWDIO_TXEN_MASK
-                                 | PIN_RESET_TXEN_MASK
-                                 | PIN_DETECT_MASK;
+                                    | PIN_RESET_TXEN_MASK
+                                    | PIN_DETECT_MASK;
     GPIO->DIRCLR[PIN_PIO_PORT] = PIN_TCK_SWCLK_MASK
-                                 | PIN_TMS_SWDIO_MASK
-                                 | PIN_TDO_SWO_MASK
-                                 | PIN_TDI_MASK
-                                 | PIN_RESET_MASK;
+                                    | PIN_TMS_SWDIO_MASK
+                                    | PIN_TDO_SWO_MASK
+                                    | PIN_TDI_MASK
+                                    | PIN_RESET_MASK;
 }
 
 /** Reset Target Device with custom specific I/O pin or command sequence.

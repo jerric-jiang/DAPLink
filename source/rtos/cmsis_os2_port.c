@@ -1,6 +1,6 @@
 /**
  * @file    cmsis_os2_port.c
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2019, ARM Limited, All Rights Reserved
@@ -31,7 +31,7 @@ static uint64_t stk_main_task [MAIN_TASK_STACK / sizeof(uint64_t)];
 #define TIMER_TASK_STACK        (136)
 static uint64_t stk_timer_task[TIMER_TASK_STACK / sizeof(uint64_t)];
 
-static uint32_t taskCount = 0;
+static uint32_t taskCount = 0; 
 static osTimerFunc_t onlyTimerFunction = NULL;
 static uint32_t timerTick = 0;
 
@@ -47,13 +47,11 @@ osThreadId_t osThreadNew(osThreadFunc_t func, void *argument, const osThreadAttr
 {
     OS_TID tid = 0;
     //first task will init the rtx
-    if (taskCount == 0)
-    {
+    if (taskCount == 0) {
         os_sys_init_user((void (*)(void))func, MAIN_TASK_PRIORITY, stk_main_task, MAIN_TASK_STACK);
     }
-    else
-    {
-        tid = os_tsk_create((void (*)(void))func, MAIN_TASK_PRIORITY + 1);
+    else {
+        tid = os_tsk_create((void (*)(void))func, MAIN_TASK_PRIORITY+1);
     }
     taskCount++;
     return (osThreadId_t) tid;
@@ -61,12 +59,9 @@ osThreadId_t osThreadNew(osThreadFunc_t func, void *argument, const osThreadAttr
 
 uint32_t osThreadFlagsSet(osThreadId_t thread_id, uint32_t flags)
 {
-    if (cortex_in_isr())
-    {
+    if (cortex_in_isr()){
         isr_evt_set(flags, (OS_TID)thread_id);
-    }
-    else
-    {
+    }else {
         os_evt_set(flags, (OS_TID)thread_id);
     }
     return flags;
@@ -82,11 +77,9 @@ osStatus_t osKernelStart(void)
 static void rt_timer_task(void)
 {
     os_itv_set(timerTick);
-    while (1)
-    {
+    while (1) {
         os_itv_wait();
-        if (onlyTimerFunction)
-        {
+        if (onlyTimerFunction) {
             onlyTimerFunction(NULL);
         }
     }

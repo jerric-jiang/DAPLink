@@ -44,8 +44,7 @@ void circ_buf_push(circ_buf_t *circ_buf, uint8_t data)
 
     circ_buf->buf[circ_buf->tail] = data;
     circ_buf->tail += 1;
-    if (circ_buf->tail >= circ_buf->size)
-    {
+    if (circ_buf->tail >= circ_buf->size) {
         util_assert(circ_buf->tail == circ_buf->size);
         circ_buf->tail = 0;
     }
@@ -68,8 +67,7 @@ uint8_t circ_buf_pop(circ_buf_t *circ_buf)
 
     data = circ_buf->buf[circ_buf->head];
     circ_buf->head += 1;
-    if (circ_buf->head >= circ_buf->size)
-    {
+    if (circ_buf->head >= circ_buf->size) {
         util_assert(circ_buf->head == circ_buf->size);
         circ_buf->head = 0;
     }
@@ -86,12 +84,9 @@ uint32_t circ_buf_count_used(circ_buf_t *circ_buf)
 
     state = cortex_int_get_and_disable();
 
-    if (circ_buf->tail >= circ_buf->head)
-    {
+    if (circ_buf->tail >= circ_buf->head) {
         cnt = circ_buf->tail - circ_buf->head;
-    }
-    else
-    {
+    } else {
         cnt = circ_buf->tail + circ_buf->size - circ_buf->head;
     }
 
@@ -119,8 +114,7 @@ uint32_t circ_buf_read(circ_buf_t *circ_buf, uint8_t *data, uint32_t size)
 
     cnt = circ_buf_count_used(circ_buf);
     cnt = MIN(size, cnt);
-    for (i = 0; i < cnt; i++)
-    {
+    for (i = 0; i < cnt; i++) {
         data[i] = circ_buf_pop(circ_buf);
     }
 
@@ -134,8 +128,7 @@ uint32_t circ_buf_write(circ_buf_t *circ_buf, const uint8_t *data, uint32_t size
 
     cnt = circ_buf_count_free(circ_buf);
     cnt = MIN(size, cnt);
-    for (i = 0; i < cnt; i++)
-    {
+    for (i = 0; i < cnt; i++) {
         circ_buf_push(circ_buf, data[i]);
     }
 
@@ -150,12 +143,9 @@ const uint8_t* circ_buf_peek(circ_buf_t *circ_buf, uint32_t* size)
 
     state = cortex_int_get_and_disable();
 
-    if (circ_buf->tail >= circ_buf->head)
-    {
+    if (circ_buf->tail >= circ_buf->head) {
         cnt = circ_buf->tail - circ_buf->head;
-    }
-    else
-    {
+    } else {
         // We can't peek all the bytes in the circular buffer in this case.
         cnt = circ_buf->size - circ_buf->head;
     }
@@ -163,8 +153,7 @@ const uint8_t* circ_buf_peek(circ_buf_t *circ_buf, uint32_t* size)
 
     cortex_int_restore(state);
 
-    if (size)
-    {
+    if (size) {
         *size = cnt;
     }
     return ret;
@@ -176,17 +165,13 @@ void circ_buf_pop_n(circ_buf_t *circ_buf, uint32_t n)
 
     state = cortex_int_get_and_disable();
 
-    if (circ_buf->tail >= circ_buf->head)
-    {
+    if (circ_buf->tail >= circ_buf->head) {
         util_assert(circ_buf->tail - circ_buf->head >= n);
         circ_buf->head += n;
-    }
-    else
-    {
+    } else {
         util_assert(circ_buf->tail + circ_buf->size - circ_buf->head >= n);
         circ_buf->head += n;
-        if (circ_buf->head >= circ_buf->size)
-        {
+        if (circ_buf->head >= circ_buf->size) {
             circ_buf->head -= circ_buf->size;
         }
     }

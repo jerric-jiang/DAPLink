@@ -136,15 +136,13 @@ void BOARD_BootClockPLL150M(void)
     CLOCK_AttachClk(kEXT_CLK_to_PLL0);  /*!< Switch PLL0CLKSEL to EXT_CLK */
     POWER_DisablePD(kPDRUNCFG_PD_PLL0); /* Ensure PLL is on  */
     POWER_DisablePD(kPDRUNCFG_PD_PLL0_SSCG);
-    const pll_setup_t pll0Setup =
-    {
+    const pll_setup_t pll0Setup = {
         .pllctrl = SYSCON_PLL0CTRL_CLKEN_MASK | SYSCON_PLL0CTRL_SELI(53U) | SYSCON_PLL0CTRL_SELP(31U),
         .pllndec = SYSCON_PLL0NDEC_NDIV(8U),
         .pllpdec = SYSCON_PLL0PDEC_PDIV(1U),
         .pllsscg = {0x0U, (SYSCON_PLL0SSCG1_MDIV_EXT(150U) | SYSCON_PLL0SSCG1_SEL_EXT_MASK)},
         .pllRate = 150000000U,
-        .flags   = PLL_SETUPFLAG_WAITLOCK
-    };
+        .flags   = PLL_SETUPFLAG_WAITLOCK};
     CLOCK_SetPLL0Freq(&pll0Setup); /*!< Configure PLL0 to the desired values */
 
     /*!< Set up dividers */
@@ -217,8 +215,7 @@ void hic_power_target(void)
     // Keep powered off in bootloader mode
     // to prevent the target from effecting the state
     // of the reset line / reset button
-    if (!daplink_is_bootloader())
-    {
+    if (!daplink_is_bootloader()) {
         // Nothing to do for MCU-Link schematic.
     }
 }
@@ -230,8 +227,7 @@ bool flash_is_readable(uint32_t addr, uint32_t length)
     util_assert(SystemCoreClock < 100000000);
 
     // Return true if the address is within internal flash and the flash sector is not erased.
-    if (!(addr >= DAPLINK_ROM_START && addr < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE)))
-    {
+    if (!(addr >= DAPLINK_ROM_START && addr < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE))) {
         return false;
     }
 
@@ -246,13 +242,12 @@ bool flash_is_readable(uint32_t addr, uint32_t length)
     FLASH->CMD = FLASH_CMD_BLANK_CHECK;
 
     // Wait until command is complete.
-    while (((FLASH->INT_STATUS) & FLASH_INT_STATUS_DONE_MASK) == 0)
-    {
+    while (((FLASH->INT_STATUS) & FLASH_INT_STATUS_DONE_MASK) == 0) {
     }
 
     // Return true (is readable) if the blank check failed, meaning the page is programmed.
     // Return false (not readable) for erased page or failure.
     return ((FLASH->INT_STATUS & (FLASH_INT_STATUS_FAIL_MASK
-                                  | FLASH_INT_STATUS_ERR_MASK
-                                  | FLASH_INT_STATUS_ECC_ERR_MASK)) == FLASH_INT_STATUS_FAIL_MASK);
+                                | FLASH_INT_STATUS_ERR_MASK
+                                | FLASH_INT_STATUS_ECC_ERR_MASK)) == FLASH_INT_STATUS_FAIL_MASK);
 }

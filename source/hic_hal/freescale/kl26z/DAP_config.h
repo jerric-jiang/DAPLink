@@ -283,12 +283,9 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 */
 __STATIC_FORCEINLINE void     PIN_SWDIO_OUT(uint32_t bit)
 {
-    if (bit & 0x1)
-    {
+    if (bit & 0x1) {
         PIN_SWDIO_GPIO->PSOR = PIN_SWDIO;
-    }
-    else
-    {
+    } else {
         PIN_SWDIO_GPIO->PCOR = PIN_SWDIO;
     }
 }
@@ -379,12 +376,9 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 */
 __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 {
-    if (bit & 0x1)
-    {
+    if (bit & 0x1) {
         PIN_nRESET_GPIO->PSOR = PIN_nRESET;
-    }
-    else
-    {
+    } else {
         PIN_nRESET_GPIO->PCOR = PIN_nRESET;
     }
 }
@@ -443,9 +437,8 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
-{
-    return 0;
+__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
+  return 0;
 }
 
 ///@}

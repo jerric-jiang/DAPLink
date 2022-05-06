@@ -23,18 +23,15 @@
 #include "target_board.h"
 #include "target_family.h"
 
-static void nina_swd_set_target_reset(uint8_t asserted)
-{
-    if (!asserted)
-    {
+static void nina_swd_set_target_reset(uint8_t asserted){
+    if(!asserted) {
         PIOA->PIO_MDER = PIN_SWDIO | PIN_SWCLK | PIN_nRESET;
     }
 }
 
 extern target_cfg_t target_device_nrf52_64;
 
-const board_info_t g_board_info =
-{
+const board_info_t g_board_info = {
     .info_version = kBoardInfoVersion,
     .board_id = "1237",
     .family_id = kNordic_Nrf52_FamilyID,

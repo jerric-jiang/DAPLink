@@ -95,8 +95,7 @@ static void prerun_board_config(void)
     flash_manager_set_page_erase(true);
 }
 
-const board_info_t g_board_info =
-{
+const board_info_t g_board_info = {
     .board_id = "5007",
     .daplink_drive_name =     "MBED       ",
     .target_cfg = &target_device,

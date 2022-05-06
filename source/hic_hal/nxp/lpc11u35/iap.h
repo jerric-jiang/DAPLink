@@ -1,6 +1,6 @@
 /**
  * @file    iap.h
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2017-2017, ARM Limited, All Rights Reserved
@@ -27,8 +27,7 @@
 
 #define CMD_SUCCESS 0
 
-typedef struct
-{
+typedef struct {
     uint32_t cmd;
     uint32_t par[4];
     uint32_t stat;

@@ -49,8 +49,7 @@ static uint32_t g_savedPrimask;
  * Only need to do like this when code is in flash, if code is in rom or ram,
  * this is not necessary.
  */
-static uint16_t s_stopRamFuncArray[] =
-{
+static uint16_t s_stopRamFuncArray[] = {
     0x2000,         /* MOVS R0, #0 */
     0x2808,         /* CMP R0, #8 */
     0xD202,         /* BCS.N */
@@ -249,7 +248,7 @@ status_t SMC_SetPowerModeVlpr(SMC_Type *base
                               ,
                               bool wakeupMode
 #endif
-                             )
+                              )
 {
     uint8_t reg;
 
@@ -341,7 +340,7 @@ status_t SMC_SetPowerModeLls(SMC_Type *base
                              ,
                              const smc_power_mode_lls_config_t *config
 #endif
-                            )
+                             )
 {
     uint8_t reg;
 
@@ -351,7 +350,7 @@ status_t SMC_SetPowerModeLls(SMC_Type *base
     reg |= (kSMC_StopLls << SMC_PMCTRL_STOPM_SHIFT);
     base->PMCTRL = reg;
 
-    /* configure LLS sub-mode*/
+/* configure LLS sub-mode*/
 #if (defined(FSL_FEATURE_SMC_HAS_LLS_SUBMODE) && FSL_FEATURE_SMC_HAS_LLS_SUBMODE)
     reg = base->STOPCTRL;
     reg &= ~SMC_STOPCTRL_LLSM_MASK;
@@ -460,7 +459,7 @@ status_t SMC_SetPowerModeVlls(SMC_Type *base, const smc_power_mode_vlls_config_t
     reg |= (kSMC_StopVlls << SMC_PMCTRL_STOPM_SHIFT);
     base->PMCTRL = reg;
 
-    /* configure the VLLS sub-mode */
+/* configure the VLLS sub-mode */
 #if (defined(FSL_FEATURE_SMC_USE_VLLSCTRL_REG) && FSL_FEATURE_SMC_USE_VLLSCTRL_REG)
     reg = base->VLLSCTRL;
     reg &= ~SMC_VLLSCTRL_VLLSM_MASK;

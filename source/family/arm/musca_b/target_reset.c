@@ -108,7 +108,7 @@ static void musca_b_target_before_init_debug(void)
 
 static uint8_t musca_b_target_set_state(target_state_t state)
 {
-    if (state == RESET_RUN)
+    if(state == RESET_RUN)
     {
         // go through controlled reset
         power_off_sequence();
@@ -122,7 +122,7 @@ static uint8_t musca_b_target_set_state(target_state_t state)
 
         return 1;
     }
-    if (state == SHUTDOWN)
+    if(state == SHUTDOWN)
     {
         // go through controlled shutdown
         power_off_sequence();
@@ -137,7 +137,7 @@ static uint8_t musca_b_target_set_state(target_state_t state)
 
         return 1;
     }
-    if (state == POWER_ON)
+    if(state == POWER_ON)
     {
         // Turn ON power
         i2cio_power_on();
@@ -158,8 +158,7 @@ static uint8_t musca_b_target_set_state(target_state_t state)
     return swd_set_target_state_sw(state);
 }
 
-const target_family_descriptor_t g_target_family_musca_b =
-{
+const target_family_descriptor_t g_target_family_musca_b = {
     .target_before_init_debug = musca_b_target_before_init_debug,
     .target_set_state = musca_b_target_set_state,
     .apsel = 0x01000000,

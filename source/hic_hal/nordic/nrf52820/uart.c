@@ -46,8 +46,7 @@ uint16_t cur_line_state;
 uint32_t cur_control;
 uint32_t cur_baud;
 
-struct
-{
+struct {
     // Number of bytes pending to be transferred. This is 0 if there is no
     // ongoing transfer and the uart_handler processed the last transfer.
     volatile uint32_t tx_size;
@@ -104,8 +103,7 @@ int32_t uart_set_configuration(UART_Configuration *config)
 {
     uint32_t control = ARM_USART_MODE_ASYNCHRONOUS;
 
-    switch (config->DataBits)
-    {
+    switch (config->DataBits) {
         case UART_DATA_BITS_5:
             control |= ARM_USART_DATA_BITS_5;
             break;
@@ -124,8 +122,7 @@ int32_t uart_set_configuration(UART_Configuration *config)
             break;
     }
 
-    switch (config->Parity)
-    {
+    switch (config->Parity) {
         case UART_PARITY_EVEN:
             control |= ARM_USART_PARITY_EVEN;
             break;
@@ -140,8 +137,7 @@ int32_t uart_set_configuration(UART_Configuration *config)
             break;
     }
 
-    switch (config->StopBits)
-    {
+    switch (config->StopBits) {
         case UART_STOP_BITS_1: /* fallthrough */
         default:
             control |= ARM_USART_STOP_BITS_1;
@@ -156,8 +152,7 @@ int32_t uart_set_configuration(UART_Configuration *config)
             break;
     }
 
-    switch (config->FlowControl)
-    {
+    switch (config->FlowControl) {
         case UART_FLOW_CONTROL_NONE: /* fallthrough */
         default:
             control |= ARM_USART_FLOW_CONTROL_NONE;
@@ -168,8 +163,7 @@ int32_t uart_set_configuration(UART_Configuration *config)
             break;
     }
 
-    if ((control == cur_control) && (config->Baudrate == cur_baud))
-    {
+    if ((control == cur_control) && (config->Baudrate == cur_baud)) {
         return 1;
     }
     cur_control = control;
@@ -183,8 +177,7 @@ int32_t uart_set_configuration(UART_Configuration *config)
     USART_INSTANCE.Control(ARM_USART_ABORT_RECEIVE, 0U);
 
     uint32_t r = USART_INSTANCE.Control(control, config->Baudrate);
-    if (r != ARM_DRIVER_OK)
-    {
+    if (r != ARM_DRIVER_OK) {
         return 0;
     }
     USART_INSTANCE.Control(ARM_USART_CONTROL_TX, 1);
@@ -206,8 +199,7 @@ int32_t uart_get_configuration(UART_Configuration *config)
 
 void uart_set_control_line_state(uint16_t ctrl_bmp)
 {
-    if (ctrl_bmp != cur_line_state)
-    {
+    if (ctrl_bmp != cur_line_state) {
         uart_reset();
         cur_line_state = ctrl_bmp;
     }
@@ -220,8 +212,7 @@ int32_t uart_write_free(void)
 
 int32_t uart_write_data(uint8_t *data, uint16_t size)
 {
-    if (size == 0)
-    {
+    if (size == 0) {
         return 0;
     }
 
@@ -229,8 +220,7 @@ int32_t uart_write_data(uint8_t *data, uint16_t size)
     // circular buffer at the same time.
     NVIC_DisableIRQ(USART_IRQ);
     uint32_t cnt = circ_buf_write(&write_buffer, data, size);
-    if (cb_buf.tx_size == 0 && circ_buf_count_used(&write_buffer) > 0)
-    {
+    if (cb_buf.tx_size == 0 && circ_buf_count_used(&write_buffer) > 0) {
         // There's no pending transfer, so we need to start the process.
         cb_buf.tx = circ_buf_pop(&write_buffer);
         USART_INSTANCE.Send(&(cb_buf.tx), 1);
@@ -246,35 +236,24 @@ int32_t uart_read_data(uint8_t *data, uint16_t size)
     return circ_buf_read(&read_buffer, data, size);
 }
 
-void uart_handler(uint32_t event)
-{
-    if (event & ARM_USART_EVENT_RECEIVE_COMPLETE)
-    {
+void uart_handler(uint32_t event) {
+   if (event & ARM_USART_EVENT_RECEIVE_COMPLETE) {
         uint32_t free = circ_buf_count_free(&read_buffer);
-        if (free > RX_OVRF_MSG_SIZE)
-        {
+        if (free > RX_OVRF_MSG_SIZE) {
             circ_buf_push(&read_buffer, cb_buf.rx);
-        }
-        else if ((RX_OVRF_MSG_SIZE == free) && config_get_overflow_detect())
-        {
+        } else if ((RX_OVRF_MSG_SIZE == free) && config_get_overflow_detect()) {
             circ_buf_write(&read_buffer, (uint8_t*)RX_OVRF_MSG, RX_OVRF_MSG_SIZE);
-        }
-        else
-        {
+        } else {
             // Drop character
         }
         USART_INSTANCE.Receive(&(cb_buf.rx), 1);
     }
 
-    if (event & ARM_USART_EVENT_SEND_COMPLETE)
-    {
-        if (circ_buf_count_used(&write_buffer) > 0)
-        {
+    if (event & ARM_USART_EVENT_SEND_COMPLETE) {
+        if (circ_buf_count_used(&write_buffer) > 0) {
             cb_buf.tx = circ_buf_pop(&write_buffer);
             USART_INSTANCE.Send(&(cb_buf.tx), 1);
-        }
-        else
-        {
+        } else {
             // Signals that next call to uart_write_data() should start a
             // transfer.
             cb_buf.tx_size = 0;

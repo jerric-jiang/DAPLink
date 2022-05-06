@@ -302,17 +302,17 @@ extern int DbgConsole_Printf(const char *fmt_s, ...);
 /* disable misra 19.13 */
 _Pragma("diag_suppress=Pm120")
 #define USB_ALIGN_PRAGMA(x) _Pragma(#x)
-_Pragma("diag_default=Pm120")
+    _Pragma("diag_default=Pm120")
 
 #define USB_RAM_ADDRESS_ALIGNMENT(n) USB_ALIGN_PRAGMA(data_alignment = n)
-_Pragma("diag_suppress=Pm120")
+        _Pragma("diag_suppress=Pm120")
 #define USB_LINK_SECTION_PART(str) _Pragma(#str)
 #define USB_LINK_DMA_INIT_DATA(sec) USB_LINK_SECTION_PART(location = #sec)
 #define USB_LINK_USB_GLOBAL _Pragma("location = \"m_usb_global\"")
 #define USB_LINK_USB_BDT _Pragma("location = \"m_usb_bdt\"")
 #define USB_LINK_USB_GLOBAL_BSS
 #define USB_LINK_USB_BDT_BSS
-_Pragma("diag_default=Pm120")
+            _Pragma("diag_default=Pm120")
 #define USB_LINK_DMA_NONINIT_DATA _Pragma("location = \"m_usb_dma_noninit_data\"")
 #define USB_LINK_NONCACHE_NONINIT_DATA _Pragma("location = \"NonCacheable\"")
 #elif defined(__CC_ARM) || (defined(__ARMCC_VERSION))

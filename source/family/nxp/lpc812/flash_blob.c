@@ -21,8 +21,7 @@
 
 #include "flash_blob.h"
 
-static const uint32_t LPC812_FLM[] =
-{
+static const uint32_t LPC812_FLM[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
 
     // flash algo begins here
@@ -45,20 +44,18 @@ static const uint32_t LPC812_FLM[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x00000000, 0x1000},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x10000025, // init
     0x10000049, // uninit
     0x1000004d, // erase_chip
     0x1000008d, // erase_sector
     0x100000d1, // program_page
     0x0,        // Verify
-
+    
     {0x10000001, 0x10000300, 0x10001000}, // {breakpoint, RSB, RSP}
 
     0x10000400, // program_buffer

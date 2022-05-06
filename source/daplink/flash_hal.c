@@ -48,5 +48,5 @@ __WEAK bool flash_is_readable(uint32_t addr, uint32_t length)
 {
     uint32_t end_addr = addr + length - 1;
     return (addr >= DAPLINK_ROM_START && addr < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE))
-           && (end_addr >= DAPLINK_ROM_START && end_addr < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE));
+        && (end_addr >= DAPLINK_ROM_START && end_addr < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE));
 }

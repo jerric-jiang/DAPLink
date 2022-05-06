@@ -38,7 +38,7 @@ This information includes:
 */
 
 #include <stdio.h>
-#include "max32620.h"   // Debug Unit Cortex-M Processor Header File
+#include "max32620.h"	// Debug Unit Cortex-M Processor Header File
 #include "clkman_regs.h"
 #include "gpio_regs.h"
 #include "IO_Config.h"
@@ -183,43 +183,41 @@ Configures the DAP Hardware I/O pins for JTAG mode:
  - TCK, TMS, TDI, nTRST, nRESET to output mode and set to high level.
  - TDO to input mode.
 */
-__STATIC_INLINE void PORT_JTAG_SETUP(void)
-{
+__STATIC_INLINE void PORT_JTAG_SETUP (void) {
 
-    uint32_t out_mode;
+  uint32_t out_mode;
 
-    /* Ensure that the GPIO clock is enabled */
-    if (MXC_CLKMAN->sys_clk_ctrl_6_gpio == MXC_V_CLKMAN_CLK_SCALE_DISABLED)
-    {
-        MXC_CLKMAN->sys_clk_ctrl_6_gpio = MXC_V_CLKMAN_CLK_SCALE_DIV_1;
-    }
+  /* Ensure that the GPIO clock is enabled */
+  if (MXC_CLKMAN->sys_clk_ctrl_6_gpio == MXC_V_CLKMAN_CLK_SCALE_DISABLED) {
+      MXC_CLKMAN->sys_clk_ctrl_6_gpio = MXC_V_CLKMAN_CLK_SCALE_DIV_1;
+  }
 
-    // Setup the JTAG/SWD pins
-    MXC_GPIO->out_val[TRGT_PORT] = 0xFF;  // set all pins high
+  // Setup the JTAG/SWD pins
+  MXC_GPIO->out_val[TRGT_PORT] = 0xFF;  // set all pins high
 
-    out_mode = MXC_GPIO->out_mode[TRGT_PORT];
-    out_mode &= ~(0xF << (4 * SRST_PIN));
-    out_mode &= ~(0xF << (4 * RSTN_PIN));
-    out_mode &= ~(0xF << (4 * TDI_PIN));
-    out_mode &= ~(0xF << (4 * TCK_PIN));
-    out_mode &= ~(0xF << (4 * TMS_PIN));
-    out_mode &= ~(0xF << (4 * TDO_PIN));
+  out_mode = MXC_GPIO->out_mode[TRGT_PORT];
+  out_mode &= ~(0xF << (4 * SRST_PIN));
+  out_mode &= ~(0xF << (4 * RSTN_PIN));
+  out_mode &= ~(0xF << (4 * TDI_PIN));
+  out_mode &= ~(0xF << (4 * TCK_PIN));
+  out_mode &= ~(0xF << (4 * TMS_PIN));
+  out_mode &= ~(0xF << (4 * TDO_PIN));
 
-    out_mode |= (MXC_E_GPIO_OUT_MODE_OPEN_DRAIN_W_PULLUP << (4 * RSTN_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_OPEN_DRAIN_W_PULLUP << (4 * SRST_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * TCK_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * TMS_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * TDI_PIN));
-    MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
+  out_mode |= (MXC_E_GPIO_OUT_MODE_OPEN_DRAIN_W_PULLUP << (4 * RSTN_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_OPEN_DRAIN_W_PULLUP << (4 * SRST_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * TCK_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * TMS_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * TDI_PIN));
+  MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
 
-    // Setup the BUFFEN pin
-    MXC_GPIO->out_val[BUFFEN_PORT] = 0xFF;  // set all pins high
+  // Setup the BUFFEN pin
+  MXC_GPIO->out_val[BUFFEN_PORT] = 0xFF;  // set all pins high
 
-    out_mode = MXC_GPIO->out_mode[BUFFEN_PORT];
-    out_mode &= ~(0xF << (4 * BUFFEN_PIN));
+  out_mode = MXC_GPIO->out_mode[BUFFEN_PORT];
+  out_mode &= ~(0xF << (4 * BUFFEN_PIN));
 
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * BUFFEN_PIN));
-    MXC_GPIO->out_mode[BUFFEN_PIN] = out_mode;
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * BUFFEN_PIN));
+  MXC_GPIO->out_mode[BUFFEN_PIN] = out_mode;
 
 }
 
@@ -228,64 +226,61 @@ Configures the DAP Hardware I/O pins for Serial Wire Debug (SWD) mode:
  - SWCLK, SWDIO, nRESET to output mode and set to default high level.
  - TDI, TMS, nTRST to HighZ mode (pins are unused in SWD mode).
 */
-__STATIC_INLINE void PORT_SWD_SETUP(void)
-{
+__STATIC_INLINE void PORT_SWD_SETUP (void) {
 
-    uint32_t out_mode;
+  uint32_t out_mode;
 
-    /* Ensure that the GPIO clock is enabled */
-    if (MXC_CLKMAN->sys_clk_ctrl_6_gpio == MXC_V_CLKMAN_CLK_SCALE_DISABLED)
-    {
-        MXC_CLKMAN->sys_clk_ctrl_6_gpio = MXC_V_CLKMAN_CLK_SCALE_DIV_1;
-    }
+  /* Ensure that the GPIO clock is enabled */
+  if (MXC_CLKMAN->sys_clk_ctrl_6_gpio == MXC_V_CLKMAN_CLK_SCALE_DISABLED) {
+      MXC_CLKMAN->sys_clk_ctrl_6_gpio = MXC_V_CLKMAN_CLK_SCALE_DIV_1;
+  }
 
-    // Setup the JTAG/SWD pins
-    MXC_GPIO->out_val[TRGT_PORT] = 0xFF;  // set all pins high
+  // Setup the JTAG/SWD pins
+  MXC_GPIO->out_val[TRGT_PORT] = 0xFF;  // set all pins high
 
-    out_mode = MXC_GPIO->out_mode[TRGT_PORT];
-    out_mode &= ~(0xF << (4 * SRST_PIN));
-    out_mode &= ~(0xF << (4 * SWCLK_PIN));
-    out_mode &= ~(0xF << (4 * SWDIO_PIN));
+  out_mode = MXC_GPIO->out_mode[TRGT_PORT];
+  out_mode &= ~(0xF << (4 * SRST_PIN));
+  out_mode &= ~(0xF << (4 * SWCLK_PIN));
+  out_mode &= ~(0xF << (4 * SWDIO_PIN));
 
-    out_mode |= (MXC_E_GPIO_OUT_MODE_OPEN_DRAIN_W_PULLUP << (4 * SRST_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * SWCLK_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * SWDIO_PIN));
-    MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
+  out_mode |= (MXC_E_GPIO_OUT_MODE_OPEN_DRAIN_W_PULLUP << (4 * SRST_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * SWCLK_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * SWDIO_PIN));
+  MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
 
-    // Setup the BUFFEN pin
-    MXC_GPIO->out_val[BUFFEN_PORT] = 0xFF;  // set all pins high
+  // Setup the BUFFEN pin
+  MXC_GPIO->out_val[BUFFEN_PORT] = 0xFF;  // set all pins high
 
-    out_mode = MXC_GPIO->out_mode[BUFFEN_PORT];
-    out_mode &= ~(0xF << (4 * BUFFEN_PIN));
+  out_mode = MXC_GPIO->out_mode[BUFFEN_PORT];
+  out_mode &= ~(0xF << (4 * BUFFEN_PIN));
 
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * BUFFEN_PIN));
-    MXC_GPIO->out_mode[BUFFEN_PORT] = out_mode;
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * BUFFEN_PIN));
+  MXC_GPIO->out_mode[BUFFEN_PORT] = out_mode;
 }
 
 /** Disable JTAG/SWD I/O Pins.
 Disables the DAP Hardware I/O pins which configures:
  - TCK/SWCLK, TMS/SWDIO, TDI, TDO, nTRST, nRESET to High-Z mode.
 */
-__STATIC_INLINE void PORT_OFF(void)
-{
+__STATIC_INLINE void PORT_OFF (void) {
 
-    uint32_t out_mode;
-    out_mode = MXC_GPIO->out_mode[TRGT_PORT];
-    out_mode &= ~(0xF << (4 * SRST_PIN));
-    out_mode &= ~(0xF << (4 * RSTN_PIN));
-    out_mode &= ~(0xF << (4 * TDI_PIN));
-    out_mode &= ~(0xF << (4 * TCK_PIN));
-    out_mode &= ~(0xF << (4 * TMS_PIN));
-    out_mode &= ~(0xF << (4 * TDO_PIN));
+  uint32_t out_mode;
+  out_mode = MXC_GPIO->out_mode[TRGT_PORT];
+  out_mode &= ~(0xF << (4 * SRST_PIN));
+  out_mode &= ~(0xF << (4 * RSTN_PIN));
+  out_mode &= ~(0xF << (4 * TDI_PIN));
+  out_mode &= ~(0xF << (4 * TCK_PIN));
+  out_mode &= ~(0xF << (4 * TMS_PIN));
+  out_mode &= ~(0xF << (4 * TDO_PIN));
 
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * SRST_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * RSTN_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDI_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TCK_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TMS_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDO_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * SRST_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * RSTN_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDI_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TCK_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TMS_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDO_PIN));
 
-    MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
+  MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
 }
 
 
@@ -294,25 +289,22 @@ __STATIC_INLINE void PORT_OFF(void)
 /** SWCLK/TCK I/O pin: Get Input.
 \return Current status of the SWCLK/TCK DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN(void)
-{
+__STATIC_FORCEINLINE uint32_t PIN_SWCLK_TCK_IN  (void) {
     return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], TCK_PIN);
 }
 
 /** SWCLK/TCK I/O pin: Set Output to High.
 Set the SWCLK/TCK DAP hardware I/O pin to high level.
 */
-__STATIC_FORCEINLINE void     PIN_SWCLK_TCK_SET(void)
-{
-    MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], TCK_PIN);
+__STATIC_FORCEINLINE void     PIN_SWCLK_TCK_SET (void) {
+  MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], TCK_PIN);
 }
 
 /** SWCLK/TCK I/O pin: Set Output to Low.
 Set the SWCLK/TCK DAP hardware I/O pin to low level.
 */
-__STATIC_FORCEINLINE void     PIN_SWCLK_TCK_CLR(void)
-{
-    MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], TCK_PIN);
+__STATIC_FORCEINLINE void     PIN_SWCLK_TCK_CLR (void) {
+  MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], TCK_PIN);
 }
 
 
@@ -321,77 +313,67 @@ __STATIC_FORCEINLINE void     PIN_SWCLK_TCK_CLR(void)
 /** SWDIO/TMS I/O pin: Get Input.
 \return Current status of the SWDIO/TMS DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN(void)
-{
-    return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], TMS_PIN);
+__STATIC_FORCEINLINE uint32_t PIN_SWDIO_TMS_IN  (void) {
+  return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], TMS_PIN);
 }
 
 /** SWDIO/TMS I/O pin: Set Output to High.
 Set the SWDIO/TMS DAP hardware I/O pin to high level.
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_TMS_SET(void)
-{
-    MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], TMS_PIN);
+__STATIC_FORCEINLINE void     PIN_SWDIO_TMS_SET (void) {
+  MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], TMS_PIN);
 }
 
 /** SWDIO/TMS I/O pin: Set Output to Low.
 Set the SWDIO/TMS DAP hardware I/O pin to low level.
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_TMS_CLR(void)
-{
-    MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], TMS_PIN);
+__STATIC_FORCEINLINE void     PIN_SWDIO_TMS_CLR (void) {
+  MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], TMS_PIN);
 }
 
 /** SWDIO I/O pin: Get Input (used in SWD mode only).
 \return Current status of the SWDIO DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
-{
-    return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], SWDIO_PIN);
+__STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN      (void) {
+ return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], SWDIO_PIN);
 }
 
 /** SWDIO I/O pin: Set Output (used in SWD mode only).
 \param bit Output value for the SWDIO DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_OUT(uint32_t bit)
-{
-    if (bit & 1)
-    {
-        MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], SWDIO_PIN);
-    }
-    else
-    {
-        MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], SWDIO_PIN);
-    }
+__STATIC_FORCEINLINE void     PIN_SWDIO_OUT     (uint32_t bit){
+  if (bit & 1) {
+    MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], SWDIO_PIN);
+  } else {
+    MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], SWDIO_PIN);
+  }
 }
 
 /** SWDIO I/O pin: Switch to Output mode (used in SWD mode only).
 Configure the SWDIO DAP hardware I/O pin to output mode. This function is
 called prior \ref PIN_SWDIO_OUT function calls.
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_OUT_ENABLE(void)
-{
-    uint32_t out_mode;
+__STATIC_FORCEINLINE void     PIN_SWDIO_OUT_ENABLE  (void) {
+  uint32_t out_mode;
 
-    out_mode = MXC_GPIO->out_mode[TRGT_PORT];
-    out_mode &= ~(0xF << (4 * SWDIO_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * SWDIO_PIN));
+  out_mode = MXC_GPIO->out_mode[TRGT_PORT];
+  out_mode &= ~(0xF << (4 * SWDIO_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_NORMAL << (4 * SWDIO_PIN));
 
-    MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
+  MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
 }
 
 /** SWDIO I/O pin: Switch to Input mode (used in SWD mode only).
 Configure the SWDIO DAP hardware I/O pin to input mode. This function is
 called prior \ref PIN_SWDIO_IN function calls.
 */
-__STATIC_FORCEINLINE void     PIN_SWDIO_OUT_DISABLE(void)
-{
-    uint32_t out_mode;
+__STATIC_FORCEINLINE void     PIN_SWDIO_OUT_DISABLE (void) {
+  uint32_t out_mode;
 
-    out_mode = MXC_GPIO->out_mode[TRGT_PORT];
-    out_mode &= ~(0xF << (4 * SWDIO_PIN));
+  out_mode = MXC_GPIO->out_mode[TRGT_PORT];
+  out_mode &= ~(0xF << (4 * SWDIO_PIN));
 
-    MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
+  MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
 }
 
 
@@ -400,24 +382,19 @@ __STATIC_FORCEINLINE void     PIN_SWDIO_OUT_DISABLE(void)
 /** TDI I/O pin: Get Input.
 \return Current status of the TDI DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_TDI_IN(void)
-{
+__STATIC_FORCEINLINE uint32_t PIN_TDI_IN  (void) {
     return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], TDI_PIN);
 }
 
 /** TDI I/O pin: Set Output.
 \param bit Output value for the TDI DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE void     PIN_TDI_OUT(uint32_t bit)
-{
-    if (bit & 1)
-    {
-        MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], TDI_PIN);
-    }
-    else
-    {
-        MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], TDI_PIN);
-    }
+__STATIC_FORCEINLINE void     PIN_TDI_OUT (uint32_t bit) {
+  if (bit & 1) {
+    MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], TDI_PIN);
+  } else {
+    MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], TDI_PIN);
+  }
 }
 
 
@@ -426,8 +403,7 @@ __STATIC_FORCEINLINE void     PIN_TDI_OUT(uint32_t bit)
 /** TDO I/O pin: Get Input.
 \return Current status of the TDO DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_TDO_IN(void)
-{
+__STATIC_FORCEINLINE uint32_t PIN_TDO_IN  (void) {
     return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], TDO_PIN);
 }
 
@@ -437,8 +413,7 @@ __STATIC_FORCEINLINE uint32_t PIN_TDO_IN(void)
 /** nTRST I/O pin: Get Input.
 \return Current status of the nTRST DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_nTRST_IN(void)
-{
+__STATIC_FORCEINLINE uint32_t PIN_nTRST_IN   (void) {
     return 0;
 }
 
@@ -447,8 +422,7 @@ __STATIC_FORCEINLINE uint32_t PIN_nTRST_IN(void)
            - 0: issue a JTAG TRST Test Reset.
            - 1: release JTAG TRST Test Reset.
 */
-__STATIC_FORCEINLINE void     PIN_nTRST_OUT(uint32_t bit)
-{
+__STATIC_FORCEINLINE void     PIN_nTRST_OUT  (uint32_t bit) {
 }
 
 // nRESET Pin I/O------------------------------------------
@@ -456,8 +430,7 @@ __STATIC_FORCEINLINE void     PIN_nTRST_OUT(uint32_t bit)
 /** nRESET I/O pin: Get Input.
 \return Current status of the nRESET DAP hardware I/O pin.
 */
-__STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
-{
+__STATIC_FORCEINLINE uint32_t PIN_nRESET_IN  (void) {
     return MXC_GETBIT(&MXC_GPIO->in_val[TRGT_PORT], SRST_PIN);
 }
 
@@ -466,16 +439,12 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
            - 0: issue a device hardware reset.
            - 1: release device hardware reset.
 */
-__STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
-{
-    if (bit)
-    {
-        MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], SRST_PIN);
-    }
-    else
-    {
-        MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], SRST_PIN);
-    }
+__STATIC_FORCEINLINE void     PIN_nRESET_OUT (uint32_t bit) {
+  if (bit) {
+    MXC_SETBIT(&MXC_GPIO->out_val[TRGT_PORT], SRST_PIN);
+  } else {
+    MXC_CLRBIT(&MXC_GPIO->out_val[TRGT_PORT], SRST_PIN);
+  }
 }
 
 ///@}
@@ -499,8 +468,7 @@ It is recommended to provide the following LEDs for status indication:
            - 1: Connect LED ON: debugger is connected to CMSIS-DAP Debug Unit.
            - 0: Connect LED OFF: debugger is not connected to CMSIS-DAP Debug Unit.
 */
-__STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit)
-{
+__STATIC_INLINE void LED_CONNECTED_OUT (uint32_t bit) {
 }
 
 /** Debug Unit: Set status Target Running LED.
@@ -508,8 +476,7 @@ __STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit)
            - 1: Target Running LED ON: program execution in target started.
            - 0: Target Running LED OFF: program execution in target stopped.
 */
-__STATIC_INLINE void LED_RUNNING_OUT(uint32_t bit)
-{
+__STATIC_INLINE void LED_RUNNING_OUT (uint32_t bit) {
 }
 
 ///@}
@@ -530,9 +497,8 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
-{
-    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
+  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}
@@ -555,25 +521,24 @@ Status LEDs. In detail the operation of Hardware I/O and LED pins are enabled an
  - for nTRST, nRESET a weak pull-up (if available) is enabled.
  - LED output pins are enabled and LEDs are turned off.
 */
-__STATIC_INLINE void DAP_SETUP(void)
-{
-    uint32_t out_mode;
-    out_mode = MXC_GPIO->out_mode[TRGT_PORT];
-    out_mode &= ~(0xF << (4 * SRST_PIN));
-    out_mode &= ~(0xF << (4 * RSTN_PIN));
-    out_mode &= ~(0xF << (4 * TDI_PIN));
-    out_mode &= ~(0xF << (4 * TCK_PIN));
-    out_mode &= ~(0xF << (4 * TMS_PIN));
-    out_mode &= ~(0xF << (4 * TDO_PIN));
+__STATIC_INLINE void DAP_SETUP (void) {
+  uint32_t out_mode;
+  out_mode = MXC_GPIO->out_mode[TRGT_PORT];
+  out_mode &= ~(0xF << (4 * SRST_PIN));
+  out_mode &= ~(0xF << (4 * RSTN_PIN));
+  out_mode &= ~(0xF << (4 * TDI_PIN));
+  out_mode &= ~(0xF << (4 * TCK_PIN));
+  out_mode &= ~(0xF << (4 * TMS_PIN));
+  out_mode &= ~(0xF << (4 * TDO_PIN));
 
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * SRST_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * RSTN_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDI_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TCK_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TMS_PIN));
-    out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDO_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * SRST_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * RSTN_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDI_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TCK_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TMS_PIN));
+  out_mode |= (MXC_E_GPIO_OUT_MODE_TRISTATE << (4 * TDO_PIN));
 
-    MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
+  MXC_GPIO->out_mode[TRGT_PORT] = out_mode;
 }
 
 /** Reset Target Device with custom specific I/O pin or command sequence.
@@ -583,9 +548,8 @@ when a device needs a time-critical unlock sequence that enables the debug port.
 \return 0 = no device specific reset sequence is implemented.\n
         1 = a device specific reset sequence is implemented.
 */
-__STATIC_INLINE uint32_t RESET_TARGET(void)
-{
-    return (0);              // change to '1' when a device reset sequence is implemented
+__STATIC_INLINE uint32_t RESET_TARGET (void) {
+  return (0);              // change to '1' when a device reset sequence is implemented
 }
 
 ///@}

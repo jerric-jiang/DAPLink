@@ -1,6 +1,6 @@
 /**
  * @file    rt_Robin.h
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -23,8 +23,8 @@
 extern struct OS_ROBIN os_robin;
 
 /* Functions */
-extern void rt_init_robin(void);
-extern void rt_chk_robin(void);
+extern void rt_init_robin (void);
+extern void rt_chk_robin  (void);
 
 /*----------------------------------------------------------------------------
  * end of file

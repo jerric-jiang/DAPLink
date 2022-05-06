@@ -45,8 +45,7 @@ extern target_cfg_t target_device_nrf51822_32;
 extern target_cfg_t target_device_nrf52_64;
 extern target_cfg_t target_device_nrf52840;
 
-target_cfg_t target_device =   // invalid by default
-{
+target_cfg_t target_device = { // invalid by default
     .version        = kTargetConfigVersion,
     .rt_family_id   = kStub_HWReset_FamilyID,
     .rt_board_id    = "0000",
@@ -108,8 +107,7 @@ static void nrf_prerun_board_config(void)
      */
 
     // if board is supported, set board name
-    switch (gpio_id)
-    {
+    switch (gpio_id) {
         case 0x01: // nRF-51 DK
             strcpy(board_name, board_name_nrf51_dk);
             board_supported = 1;
@@ -131,9 +129,7 @@ static void nrf_prerun_board_config(void)
 
     // if board is unsupported, we are done.
     if (!board_supported)
-    {
         return;
-    }
 
     // External target detection:
     // supports nRF51-DK, nRF52-DK, nRF52840-DK
@@ -171,8 +167,7 @@ static void nrf_prerun_board_config(void)
     PIOB->PIO_PUDR = (1 << 23); // pull-up disable
 
     // if external/shield target is detected, re-route SWD signals
-    if (target_ext)
-    {
+    if (target_ext) {
         pin_nreset_port = PIN_EXT_nRESET_PORT;
         pin_nreset_bit  = PIN_EXT_nRESET_BIT;
         pin_nreset      = PIN_EXT_nRESET;
@@ -188,9 +183,7 @@ static void nrf_prerun_board_config(void)
         // append suffix to board name
         strcpy(board_name + strlen(board_name), suffix_ext_str);
 
-    }
-    else if (target_shield)
-    {
+    } else if (target_shield) {
         pin_nreset_port = PIN_SH_nRESET_PORT;
         pin_nreset_bit  = PIN_SH_nRESET_BIT;
         pin_nreset      = PIN_SH_nRESET;
@@ -206,11 +199,8 @@ static void nrf_prerun_board_config(void)
         // append suffix to board name
         strcpy(board_name + strlen(board_name), suffix_shield_str);
 
-    }
-    else     // OB target
-    {
-        switch (gpio_id)
-        {
+    } else { // OB target
+        switch (gpio_id) {
             case 0x01: // nRF-51 DK
                 target_device = target_device_nrf51822_32;
                 target_device.rt_family_id = kNordic_Nrf51_FamilyID;
@@ -239,13 +229,9 @@ static void nrf_prerun_board_config(void)
     PIOA->PIO_OER  = (1 << 28); // output
     PIOA->PIO_PER  = (1 << 28); // GPIO control
     if (target_ext || target_shield)
-    {
-        PIOA->PIO_CODR = (1 << 28);    // set low
-    }
+        PIOA->PIO_CODR = (1 << 28); // set low
     else
-    {
-        PIOA->PIO_SODR = (1 << 28);    // set high
-    }
+        PIOA->PIO_SODR = (1 << 28); // set high
 }
 
 // Overrides flash_algo_valid() in source/target/target_board.c .
@@ -255,16 +241,13 @@ uint8_t flash_algo_valid(void)
     return (board_supported && !target_ext && !target_shield);
 }
 
-static void nrf_swd_set_target_reset(uint8_t asserted)
-{
-    if (!asserted)
-    {
+static void nrf_swd_set_target_reset(uint8_t asserted){
+    if(!asserted) {
         PIOA->PIO_MDER = PIN_SWDIO | PIN_SWCLK | PIN_nRESET;
     }
 }
 
-const board_info_t g_board_info =
-{
+const board_info_t g_board_info = {
     .info_version = kBoardInfoVersion,
     .flags = kEnablePageErase,
     .prerun_board_config = nrf_prerun_board_config,

@@ -21,8 +21,7 @@
 
 #include "flash_blob.h"
 
-static const uint32_t KL27Z_FLM[] =
-{
+static const uint32_t KL27Z_FLM[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x492bb510, 0x60082000, 0x4448482a, 0xf88af000, 0xd0002800, 0xbd102001, 0x47702000, 0xb5104825,
     0xf0004448, 0x0004f871, 0x4822d105, 0x44482100, 0xf908f000, 0xf0004604, 0x4620f834, 0xb570bd10,
@@ -69,20 +68,18 @@ static const uint32_t KL27Z_FLM[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0, 1024},
-};
+ };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000021, // Init
     0x20000039, // UnInit
     0x2000003D, // EraseChip
     0x2000005F, // EraseSector
     0x2000008B, // ProgramPage
     0x0,        // Verify
-
+    
     // breakpoint = RAM start + 1
     // RSB : base address is address of Execution Region PrgData in map file
     //       to access global/static data

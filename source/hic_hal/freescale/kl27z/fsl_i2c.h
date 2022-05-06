@@ -182,7 +182,7 @@ typedef struct _i2c_slave_config
     uint16_t slaveAddress;  /*!< A slave address configuration. */
     uint16_t upperAddress;  /*!< A maximum boundary slave address used in a range matching mode. */
     i2c_slave_address_mode_t
-    addressingMode;          /*!< An addressing mode configuration of i2c_slave_address_mode_config_t. */
+        addressingMode;          /*!< An addressing mode configuration of i2c_slave_address_mode_config_t. */
     uint32_t sclStopHoldTime_ns; /*!< the delay from the rising edge of SCL (I2C clock) to the rising edge of SDA (I2C
                                     data) while SCL is high (stop condition), SDA hold time and SCL start hold time
                                     are also configured according to the SCL stop hold time. */
@@ -193,9 +193,9 @@ typedef struct _i2c_master_handle i2c_master_handle_t;
 
 /*! @brief I2C master transfer callback typedef. */
 typedef void (*i2c_master_transfer_callback_t)(I2C_Type *base,
-        i2c_master_handle_t *handle,
-        status_t status,
-        void *userData);
+                                               i2c_master_handle_t *handle,
+                                               status_t status,
+                                               void *userData);
 
 /*! @brief I2C slave handle typedef. */
 typedef struct _i2c_slave_handle i2c_slave_handle_t;
@@ -425,7 +425,7 @@ static inline uint32_t I2C_SlaveGetStatusFlags(I2C_Type *base)
  */
 static inline void I2C_MasterClearStatusFlags(I2C_Type *base, uint32_t statusMask)
 {
-    /* Must clear the STARTF / STOPF bits prior to clearing IICIF */
+/* Must clear the STARTF / STOPF bits prior to clearing IICIF */
 #if defined(FSL_FEATURE_I2C_HAS_START_STOP_DETECT) && FSL_FEATURE_I2C_HAS_START_STOP_DETECT
     if ((uint32_t)kI2C_StartDetectFlag == (statusMask & (uint32_t)kI2C_StartDetectFlag))
     {

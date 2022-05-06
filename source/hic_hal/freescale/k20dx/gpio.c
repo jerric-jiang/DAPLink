@@ -29,8 +29,7 @@ static void busy_wait(uint32_t cycles)
     volatile uint32_t i;
     i = cycles;
 
-    while (i > 0)
-    {
+    while (i > 0) {
         i--;
     }
 }
@@ -74,13 +73,11 @@ void gpio_init(void)
 
 void gpio_set_board_power(bool powerEnabled)
 {
-    if (powerEnabled)
-    {
+    if (powerEnabled) {
         // enable power switch
         PIN_POWER_EN_GPIO->PSOR = PIN_POWER_EN;
     }
-    else
-    {
+    else {
         // disable power switch
         PIN_POWER_EN_GPIO->PCOR = PIN_POWER_EN;
     }
@@ -88,12 +85,9 @@ void gpio_set_board_power(bool powerEnabled)
 
 void gpio_set_hid_led(gpio_led_state_t state)
 {
-    if (state)
-    {
+    if (state) {
         LED_CONNECTED_GPIO->PCOR = 1UL << LED_CONNECTED_BIT; // LED on
-    }
-    else
-    {
+    } else {
         LED_CONNECTED_GPIO->PSOR = 1UL << LED_CONNECTED_BIT; // LED off
     }
 }

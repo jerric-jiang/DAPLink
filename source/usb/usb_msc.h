@@ -54,8 +54,7 @@
 
 
 /* Bulk-only Command Block Wrapper */
-typedef __PACKED_STRUCT _MSC_CBW
-{
+typedef __PACKED_STRUCT _MSC_CBW {
     U32 dSignature;
     U32 dTag;
     U32 dDataLength;
@@ -66,8 +65,7 @@ typedef __PACKED_STRUCT _MSC_CBW
 } MSC_CBW;
 
 /* Bulk-only Command Status Wrapper */
-typedef __PACKED_STRUCT _MSC_CSW
-{
+typedef __PACKED_STRUCT _MSC_CSW {
     U32 dSignature;
     U32 dTag;
     U32 dDataResidue;

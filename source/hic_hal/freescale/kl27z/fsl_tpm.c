@@ -169,7 +169,7 @@ status_t TPM_SetupPwm(TPM_Type *base,
     assert(numOfChnls);
     assert(srcClock_Hz);
 #if defined(FSL_FEATURE_TPM_HAS_COMBINE) && FSL_FEATURE_TPM_HAS_COMBINE
-    if (mode == kTPM_CombinedPwm)
+    if(mode == kTPM_CombinedPwm)
     {
         assert(FSL_FEATURE_TPM_COMBINE_HAS_EFFECTn(base));
     }
@@ -182,7 +182,7 @@ status_t TPM_SetupPwm(TPM_Type *base,
 
 #if defined(FSL_FEATURE_TPM_HAS_QDCTRL) && FSL_FEATURE_TPM_HAS_QDCTRL
     /* The TPM's QDCTRL register required to be effective */
-    if (FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base))
+    if( FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base) )
     {
         /* Clear quadrature Decoder mode because in quadrature Decoder mode PWM doesn't operate*/
         base->QDCTRL &= ~TPM_QDCTRL_QUADEN_MASK;
@@ -368,7 +368,7 @@ void TPM_UpdatePwmDutycycle(TPM_Type *base,
 {
     assert(chnlNumber < FSL_FEATURE_TPM_CHANNEL_COUNTn(base));
 #if defined(FSL_FEATURE_TPM_HAS_COMBINE) && FSL_FEATURE_TPM_HAS_COMBINE
-    if (currentPwmMode == kTPM_CombinedPwm)
+    if(currentPwmMode == kTPM_CombinedPwm)
     {
         assert(FSL_FEATURE_TPM_COMBINE_HAS_EFFECTn(base));
     }
@@ -447,7 +447,7 @@ void TPM_SetupInputCapture(TPM_Type *base, tpm_chnl_t chnlNumber, tpm_input_capt
 
 #if defined(FSL_FEATURE_TPM_HAS_QDCTRL) && FSL_FEATURE_TPM_HAS_QDCTRL
     /* The TPM's QDCTRL register required to be effective */
-    if (FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base))
+    if( FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base) )
     {
         /* Clear quadrature Decoder mode for channel 0 or 1*/
         if ((chnlNumber == 0) || (chnlNumber == 1))
@@ -458,8 +458,8 @@ void TPM_SetupInputCapture(TPM_Type *base, tpm_chnl_t chnlNumber, tpm_input_capt
 #endif
 
 #if defined(FSL_FEATURE_TPM_HAS_COMBINE) && FSL_FEATURE_TPM_HAS_COMBINE
-    /* The TPM's COMBINE register required to be effective */
-    if (FSL_FEATURE_TPM_COMBINE_HAS_EFFECTn(base))
+        /* The TPM's COMBINE register required to be effective */
+    if( FSL_FEATURE_TPM_COMBINE_HAS_EFFECTn(base) )
     {
         /* Clear the combine bit for chnlNumber */
         base->COMBINE &= ~(1U << TPM_COMBINE_SHIFT * (chnlNumber / 2));
@@ -495,7 +495,7 @@ void TPM_SetupOutputCompare(TPM_Type *base,
 
 #if defined(FSL_FEATURE_TPM_HAS_QDCTRL) && FSL_FEATURE_TPM_HAS_QDCTRL
     /* The TPM's QDCTRL register required to be effective */
-    if (FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base))
+    if( FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base) )
     {
         /* Clear quadrature Decoder mode for channel 0 or 1 */
         if ((chnlNumber == 0) || (chnlNumber == 1))
@@ -542,7 +542,7 @@ void TPM_SetupDualEdgeCapture(TPM_Type *base,
 
 #if defined(FSL_FEATURE_TPM_HAS_QDCTRL) && FSL_FEATURE_TPM_HAS_QDCTRL
     /* The TPM's QDCTRL register required to be effective */
-    if (FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base))
+    if( FSL_FEATURE_TPM_QDCTRL_HAS_EFFECTn(base) )
     {
         /* Clear quadrature Decoder mode for channel 0 or 1*/
         if (chnlPairNumber == 0)

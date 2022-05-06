@@ -46,8 +46,7 @@ extern "C" {
     @struct FlashSector
     @brief  A structure to describe the size and start address of a flash sector
  */
-struct FlashSector
-{
+struct FlashSector {
     uint32_t szSector;      /*!< Sector Size in Bytes */
     uint32_t adrSector;     /*!< Address of Sector */
 };
@@ -57,8 +56,7 @@ struct FlashSector
     @brief  A structure to describe particulars of a flash memory sub-system
         and requirements of the driver
  */
-struct FlashDevice
-{
+struct FlashDevice {
     uint16_t vers;          /*!< Version Number and Architecture */
     char devName[NAME_MAX]; /*!< Device Name and Description */
     uint16_t devType;       /*!< Device Type: ONCHIP, EXT8BIT, EXT16BIT, ... */

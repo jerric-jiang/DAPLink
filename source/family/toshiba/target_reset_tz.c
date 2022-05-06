@@ -23,8 +23,7 @@
 #include "swd_host.h"
 #include "target_family.h"
 
-static void target_before_init_debug_tz(void)
-{
+static void target_before_init_debug_tz(void) {
     swd_set_target_reset(1);
     osDelay(2);
     swd_set_target_reset(0);
@@ -33,8 +32,7 @@ static void target_before_init_debug_tz(void)
 }
 
 
-const target_family_descriptor_t g_toshiba_tz_family =
-{
+const target_family_descriptor_t g_toshiba_tz_family = {
     .family_id = kToshiba_Tz_FamilyID,
     .default_reset_type = kSoftwareReset,
     .soft_reset_type = SYSRESETREQ,

@@ -64,8 +64,7 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
+typedef struct {
     __IO uint32_t ctrl;                                 /*  0x0000          Timer Control Register                                                       */
     __IO uint32_t count32;                              /*  0x0004          Timer [32 bit] Current Count Value                                           */
     __IO uint32_t term_cnt32;                           /*  0x0008          Timer [32 bit] Terminal Count Setting                                        */

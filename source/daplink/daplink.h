@@ -81,8 +81,7 @@ COMPILER_ASSERT(DAPLINK_RAM_SHARED_START + DAPLINK_RAM_SHARED_SIZE == DAPLINK_RA
 #error "Neither DAPLINK_BL nor DAPLINK_IF are defined!"
 #endif
 
-typedef struct
-{
+typedef struct {
     uint32_t build_key;
     uint32_t hic_id;
     uint32_t version;

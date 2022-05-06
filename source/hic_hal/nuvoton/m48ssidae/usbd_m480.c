@@ -131,24 +131,19 @@ void USBD_Init(void)
     HSUSBD_ENABLE_PHY();
 
     /* wait PHY clock ready */
-    while (1)
-    {
+    while (1) {
         HSUSBD->EP[EPA].EPMPS = 0x20UL;
 
-        if (HSUSBD->EP[EPA].EPMPS == 0x20UL)
-        {
+        if (HSUSBD->EP[EPA].EPMPS == 0x20UL) {
             break;
         }
     }
 
     for (i = 0; i < 0x10000; i++);
 
-    if (HSUSBD->OPER & HSUSBD_OPER_CURSPD_Msk)
-    {
+    if (HSUSBD->OPER & HSUSBD_OPER_CURSPD_Msk) {
         USBD_HighSpeed = __TRUE;
-    }
-    else
-    {
+    } else {
         USBD_HighSpeed = __FALSE;
     }
 
@@ -175,12 +170,9 @@ void USBD_Init(void)
 
 void USBD_Connect(BOOL con)
 {
-    if (con)
-    {
+    if (con) {
         HSUSBD_CLR_SE0();
-    }
-    else
-    {
+    } else {
         HSUSBD_SET_SE0();
     }
 }
@@ -196,17 +188,13 @@ void USBD_Reset(void)
 {
     uint32_t i;
 
-    for (i = 0; i < HSUSBD_MAX_EP; i++)
-    {
+    for (i = 0; i < HSUSBD_MAX_EP; i++) {
         HSUSBD->EP[EPA + i].EPRSPCTL = HSUSBD_EPRSPCTL_FLUSH_Msk;
     }
 
-    if (HSUSBD->OPER & HSUSBD_OPER_CURSPD_Msk)
-    {
+    if (HSUSBD->OPER & HSUSBD_OPER_CURSPD_Msk) {
         USBD_HighSpeed = __TRUE;
-    }
-    else
-    {
+    } else {
         USBD_HighSpeed = __FALSE;
     }
 
@@ -269,8 +257,7 @@ void USBD_WakeUpCfg(BOOL cfg)
 
 void USBD_SetAddress(U32 adr, U32 setup)
 {
-    if (setup)
-    {
+    if (setup) {
         return;
     }
 
@@ -286,8 +273,7 @@ void USBD_SetAddress(U32 adr, U32 setup)
 
 void USBD_Configure(BOOL cfg)
 {
-    if (cfg == __FALSE)
-    {
+    if (cfg == __FALSE) {
         g_u32FreeBufAddr = CEP_BUF_BASE + CEP_BUF_LEN;
     }
 }
@@ -306,8 +292,7 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
     u32Ep = USBD_NUM_TO_EP(u32Num);
     u32Size = pEPD->wMaxPacketSize;
 
-    switch (pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK)
-    {
+    switch (pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK) {
         case USB_ENDPOINT_TYPE_ISOCHRONOUS:
             u32Type = HSUSBD_EP_CFG_TYPE_ISO;
             break;
@@ -321,12 +306,9 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
             break;
     }
 
-    if (pEPD->bEndpointAddress & USB_ENDPOINT_DIRECTION_MASK)
-    {
+    if (pEPD->bEndpointAddress & USB_ENDPOINT_DIRECTION_MASK) {
         u32Dir = HSUSBD_EP_CFG_DIR_IN;
-    }
-    else
-    {
+    } else {
         u32Dir = HSUSBD_EP_CFG_DIR_OUT;
     }
 
@@ -365,12 +347,9 @@ void USBD_EnableEP(U32 EPNum)
     u32Ep = USBD_NUM_TO_EP(u32Num);
     HSUSBD->GINTEN |= (0x1UL << (HSUSBD_GINTEN_EPAIEN_Pos + (u32Num - USBD_EP_TO_NUM(EPA))));
 
-    if (EPNum & 0x80)
-    {
+    if (EPNum & 0x80) {
         u32Intr = HSUSBD_EPINTEN_TXPKIEN_Msk;
-    }
-    else
-    {
+    } else {
         u32Intr = HSUSBD_EPINTEN_RXPKIEN_Msk | HSUSBD_EPINTEN_SHORTRXIEN_Msk | HSUSBD_EPINTEN_BUFFULLIEN_Msk;
     }
 
@@ -427,12 +406,9 @@ void USBD_SetStallEP(U32 EPNum)
     u32Num = EPNum & 0x0F;
     u32Ep = USBD_NUM_TO_EP(u32Num);
 
-    if (u32Ep == CEP)
-    {
+    if (u32Ep == CEP) {
         HSUSBD_SET_CEP_STATE(HSUSBD_CEPCTL_STALL);
-    }
-    else
-    {
+    } else {
         HSUSBD->EP[u32Ep].EPRSPCTL = (HSUSBD->EP[u32Ep].EPRSPCTL & 0xF7UL) | HSUSBD_EP_RSPCTL_HALT;
     }
 }
@@ -452,12 +428,9 @@ void USBD_ClrStallEP(U32 EPNum)
     u32Num = EPNum & 0x0F;
     u32Ep = USBD_NUM_TO_EP(u32Num);
 
-    if (u32Ep == CEP)
-    {
+    if (u32Ep == CEP) {
         HSUSBD_SET_CEP_STATE(HSUSBD_CEPCTL_NAKCLR_Msk);
-    }
-    else
-    {
+    } else {
         HSUSBD->EP[u32Ep].EPRSPCTL = (HSUSBD->EP[u32Ep].EPRSPCTL & HSUSBD_EP_RSPCTL_MODE_MASK) | HSUSBD_EP_RSPCTL_TOGGLE;
     }
 }
@@ -491,44 +464,34 @@ U32 USBD_ReadEP(U32 EPNum, U8 *pData, U32 bufsz)
     u32Num = EPNum & 0x0F;
     u32Ep = USBD_NUM_TO_EP(u32Num);
 
-    if (u32Num == 0)
-    {
-        if (pData == (uint8_t *)&USBD_SetupPacket)
-        {
+    if (u32Num == 0) {
+        if (pData == (uint8_t *)&USBD_SetupPacket) {
             *((uint16_t *)(pData + 0)) = (uint16_t)(HSUSBD->SETUP1_0 & 0xFFFFUL);
             *((uint16_t *)(pData + 2)) = (uint16_t)(HSUSBD->SETUP3_2 & 0xFFFFUL);
             *((uint16_t *)(pData + 4)) = (uint16_t)(HSUSBD->SETUP5_4 & 0xFFFFUL);
             *((uint16_t *)(pData + 6)) = (uint16_t)(HSUSBD->SETUP7_6 & 0xFFFFUL);
             return 8;
-        }
-        else
-        {
+        } else {
             u32Len = HSUSBD->CEPDATCNT & 0xFFFFUL;
 
-            if (u32Len > bufsz)
-            {
+            if (u32Len > bufsz) {
                 u32Len = bufsz;
             }
 
-            for (i = 0; i < bufsz; i++)
-            {
+            for (i = 0; i < bufsz; i++) {
                 pData[i] = inpb(&HSUSBD->CEPDAT);
             }
 
             return u32Len;
         }
-    }
-    else
-    {
+    } else {
         u32Len = HSUSBD->EP[u32Ep].EPDATCNT & 0xFFFFUL;
 
-        if (u32Len > bufsz)
-        {
+        if (u32Len > bufsz) {
             u32Len = bufsz;
         }
 
-        for (i = 0; i < u32Len; i++)
-        {
+        for (i = 0; i < u32Len; i++) {
             pData[i] = HSUSBD->EP[u32Ep].EPDAT_BYTE;
         }
 
@@ -553,46 +516,32 @@ U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
     u32Num = EPNum & 0x0F;
     u32Ep = USBD_NUM_TO_EP(u32Num);
 
-    if (u32Num == 0)
-    {
-        if (pData != NULL)
-        {
-            if (cnt > 0)
-            {
-                for (i = 0; i < cnt; i++)
-                {
+    if (u32Num == 0) {
+        if (pData != NULL) {
+            if (cnt > 0) {
+                for (i = 0; i < cnt; i++) {
                     HSUSBD->CEPDAT_BYTE = pData[i];
                 }
 
                 HSUSBD_START_CEP_IN(cnt);
-            }
-            else
-            {
+            } else {
                 HSUSBD_SET_CEP_STATE(HSUSBD_CEPCTL_ZEROLEN);
             }
-        }
-        else if (cnt == 0)
-        {
+        } else if (cnt == 0) {
             g_u8StatusIn = 1;
             HSUSBD_CLR_CEP_INT_FLAG(HSUSBD_CEPINTSTS_STSDONEIF_Msk);
             HSUSBD_SET_CEP_STATE(HSUSBD_CEPCTL_NAKCLR);
         }
 
         return cnt;
-    }
-    else
-    {
-        if (cnt > 0)
-        {
-            for (i = 0; i < cnt; i++)
-            {
+    } else {
+        if (cnt > 0) {
+            for (i = 0; i < cnt; i++) {
                 HSUSBD->EP[u32Ep].EPDAT_BYTE = pData[i];
             }
 
             HSUSBD->EP[u32Ep].EPRSPCTL = (HSUSBD->EP[u32Ep].EPRSPCTL & HSUSBD_EP_RSPCTL_HALT) | HSUSBD_EP_RSPCTL_SHORTTXEN;
-        }
-        else
-        {
+        } else {
             HSUSBD->EP[u32Ep].EPRSPCTL = (HSUSBD->EP[u32Ep].EPRSPCTL & HSUSBD_EP_RSPCTL_HALT) | HSUSBD_EP_RSPCTL_ZEROLEN;
         }
 
@@ -645,28 +594,23 @@ void USBD_Handler_Main()
     uint32_t u32Ep, u32Num, i;
     IrqStL = HSUSBD->GINTSTS & HSUSBD->GINTEN;
 
-    if (!IrqStL)
-    {
+    if (!IrqStL) {
         return;
     }
 
-    if (IrqStL & HSUSBD_GINTSTS_USBIF_Msk)
-    {
+    if (IrqStL & HSUSBD_GINTSTS_USBIF_Msk) {
         IrqSt = HSUSBD->BUSINTSTS & HSUSBD->BUSINTEN;
 
-        if (IrqSt & HSUSBD_BUSINTSTS_SOFIF_Msk)
-        {
+        if (IrqSt & HSUSBD_BUSINTSTS_SOFIF_Msk) {
 #ifdef __RTX
 
-            if (USBD_RTX_DevTask)
-            {
+            if (USBD_RTX_DevTask) {
                 isr_evt_set(USBD_EVT_SOF, USBD_RTX_DevTask);
             }
 
 #else
 
-            if (USBD_P_SOF_Event)
-            {
+            if (USBD_P_SOF_Event) {
                 USBD_P_SOF_Event();
             }
 
@@ -674,21 +618,18 @@ void USBD_Handler_Main()
             HSUSBD_CLR_BUS_INT_FLAG(HSUSBD_BUSINTSTS_SOFIF_Msk);
         }
 
-        if (IrqSt & HSUSBD_BUSINTSTS_RSTIF_Msk)
-        {
+        if (IrqSt & HSUSBD_BUSINTSTS_RSTIF_Msk) {
             USBD_Reset();
             usbd_reset_core();
 #ifdef __RTX
 
-            if (USBD_RTX_DevTask)
-            {
+            if (USBD_RTX_DevTask) {
                 isr_evt_set(USBD_EVT_RESET, USBD_RTX_DevTask);
             }
 
 #else
 
-            if (USBD_P_Reset_Event)
-            {
+            if (USBD_P_Reset_Event) {
                 USBD_P_Reset_Event();
             }
 
@@ -698,20 +639,17 @@ void USBD_Handler_Main()
             HSUSBD_CLR_CEP_INT_FLAG(0x1FFC);
         }
 
-        if (IrqSt & HSUSBD_BUSINTSTS_RESUMEIF_Msk)
-        {
+        if (IrqSt & HSUSBD_BUSINTSTS_RESUMEIF_Msk) {
             USBD_WakeUp();
 #ifdef __RTX
 
-            if (USBD_RTX_DevTask)
-            {
+            if (USBD_RTX_DevTask) {
                 isr_evt_set(USBD_EVT_RESUME,  USBD_RTX_DevTask);
             }
 
 #else
 
-            if (USBD_P_Resume_Event)
-            {
+            if (USBD_P_Resume_Event) {
                 USBD_P_Resume_Event();
             }
 
@@ -720,20 +658,17 @@ void USBD_Handler_Main()
             HSUSBD_CLR_BUS_INT_FLAG(HSUSBD_BUSINTSTS_RESUMEIF_Msk);
         }
 
-        if (IrqSt & HSUSBD_BUSINTSTS_SUSPENDIF_Msk)
-        {
+        if (IrqSt & HSUSBD_BUSINTSTS_SUSPENDIF_Msk) {
             USBD_Suspend();
 #ifdef __RTX
 
-            if (USBD_RTX_DevTask)
-            {
+            if (USBD_RTX_DevTask) {
                 isr_evt_set(USBD_EVT_SUSPEND, USBD_RTX_DevTask);
             }
 
 #else
 
-            if (USBD_P_Suspend_Event)
-            {
+            if (USBD_P_Suspend_Event) {
                 USBD_P_Suspend_Event();
             }
 
@@ -742,14 +677,10 @@ void USBD_Handler_Main()
             HSUSBD_CLR_BUS_INT_FLAG(HSUSBD_BUSINTSTS_SUSPENDIF_Msk);
         }
 
-        if (IrqSt & HSUSBD_BUSINTSTS_VBUSDETIF_Msk)
-        {
-            if (HSUSBD_IS_ATTACHED())
-            {
+        if (IrqSt & HSUSBD_BUSINTSTS_VBUSDETIF_Msk) {
+            if (HSUSBD_IS_ATTACHED()) {
                 HSUSBD_ENABLE_USB();
-            }
-            else
-            {
+            } else {
                 HSUSBD_DISABLE_USB();
             }
 
@@ -757,23 +688,19 @@ void USBD_Handler_Main()
         }
     }
 
-    if (IrqStL & HSUSBD_GINTSTS_CEPIF_Msk)
-    {
+    if (IrqStL & HSUSBD_GINTSTS_CEPIF_Msk) {
         IrqSt = HSUSBD->CEPINTSTS & HSUSBD->CEPINTEN;
 
-        if (IrqSt & HSUSBD_CEPINTSTS_SETUPPKIF_Msk)
-        {
+        if (IrqSt & HSUSBD_CEPINTSTS_SETUPPKIF_Msk) {
 #ifdef __RTX
 
-            if (USBD_RTX_EPTask[0])
-            {
+            if (USBD_RTX_EPTask[0]) {
                 isr_evt_set(USBD_EVT_SETUP, USBD_RTX_EPTask[0]);
             }
 
 #else
 
-            if (USBD_P_EP[0])
-            {
+            if (USBD_P_EP[0]) {
                 USBD_P_EP[0](USBD_EVT_SETUP);
             }
 
@@ -782,21 +709,18 @@ void USBD_Handler_Main()
             return;
         }
 
-        if (IrqSt & HSUSBD_CEPINTSTS_TXPKIF_Msk)
-        {
+        if (IrqSt & HSUSBD_CEPINTSTS_TXPKIF_Msk) {
             HSUSBD_CLR_CEP_INT_FLAG(HSUSBD_CEPINTSTS_STSDONEIF_Msk);
             HSUSBD_SET_CEP_STATE(HSUSBD_CEPCTL_NAKCLR);
 #ifdef __RTX
 
-            if (USBD_RTX_EPTask[0])
-            {
+            if (USBD_RTX_EPTask[0]) {
                 isr_evt_set(USBD_EVT_IN, USBD_RTX_EPTask[0]);
             }
 
 #else
 
-            if (USBD_P_EP[0])
-            {
+            if (USBD_P_EP[0]) {
                 USBD_P_EP[0](USBD_EVT_IN);
             }
 
@@ -805,19 +729,16 @@ void USBD_Handler_Main()
             return;
         }
 
-        if (IrqSt & HSUSBD_CEPINTSTS_RXPKIF_Msk)
-        {
+        if (IrqSt & HSUSBD_CEPINTSTS_RXPKIF_Msk) {
 #ifdef __RTX
 
-            if (USBD_RTX_EPTask[0])
-            {
+            if (USBD_RTX_EPTask[0]) {
                 isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[0]);
             }
 
 #else
 
-            if (USBD_P_EP[0])
-            {
+            if (USBD_P_EP[0]) {
                 USBD_P_EP[0](USBD_EVT_OUT);
             }
 
@@ -826,39 +747,31 @@ void USBD_Handler_Main()
             return;
         }
 
-        if (IrqSt & HSUSBD_CEPINTSTS_STSDONEIF_Msk)
-        {
-            if (g_u8StatusIn == 0)
-            {
+        if (IrqSt & HSUSBD_CEPINTSTS_STSDONEIF_Msk) {
+            if (g_u8StatusIn == 0) {
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[0])
-                {
+                if (USBD_RTX_EPTask[0]) {
                     isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[0]);
                 }
 
 #else
 
-                if (USBD_P_EP[0])
-                {
+                if (USBD_P_EP[0]) {
                     USBD_P_EP[0](USBD_EVT_OUT);
                 }
 
 #endif
-            }
-            else
-            {
+            } else {
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[0])
-                {
+                if (USBD_RTX_EPTask[0]) {
                     isr_evt_set(USBD_EVT_IN, USBD_RTX_EPTask[0]);
                 }
 
 #else
 
-                if (USBD_P_EP[0])
-                {
+                if (USBD_P_EP[0]) {
                     USBD_P_EP[0](USBD_EVT_IN);
                 }
 
@@ -871,47 +784,39 @@ void USBD_Handler_Main()
         }
     }
 
-    for (i = 0; i < HSUSBD_MAX_EP; i++)
-    {
+    for (i = 0; i < HSUSBD_MAX_EP; i++) {
         u32Ep = EPA + i;
         u32Num = USBD_EP_TO_NUM(u32Ep);
 
-        if (IrqStL & (0x1UL << (HSUSBD_GINTSTS_EPAIF_Pos + i)))
-        {
+        if (IrqStL & (0x1UL << (HSUSBD_GINTSTS_EPAIF_Pos + i))) {
             IrqSt = HSUSBD->EP[u32Ep].EPINTSTS & HSUSBD->EP[u32Ep].EPINTEN;
 
-            if (IrqSt & HSUSBD_EPINTSTS_TXPKIF_Msk)
-            {
+            if (IrqSt & HSUSBD_EPINTSTS_TXPKIF_Msk) {
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[u32Num])
-                {
+                if (USBD_RTX_EPTask[u32Num]) {
                     isr_evt_set(USBD_EVT_IN, USBD_RTX_EPTask[u32Num]);
                 }
 
 #else
 
-                if (USBD_P_EP[u32Num])
-                {
+                if (USBD_P_EP[u32Num]) {
                     USBD_P_EP[u32Num](USBD_EVT_IN);
                 }
 
 #endif
             }
 
-            if (IrqSt & (HSUSBD_EPINTSTS_RXPKIF_Msk | HSUSBD_EPINTSTS_SHORTRXIF_Msk | HSUSBD_EPINTEN_BUFFULLIEN_Msk))
-            {
+            if (IrqSt & (HSUSBD_EPINTSTS_RXPKIF_Msk | HSUSBD_EPINTSTS_SHORTRXIF_Msk | HSUSBD_EPINTEN_BUFFULLIEN_Msk)) {
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[u32Num])
-                {
+                if (USBD_RTX_EPTask[u32Num]) {
                     isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[u32Num]);
                 }
 
 #else
 
-                if (USBD_P_EP[u32Num])
-                {
+                if (USBD_P_EP[u32Num]) {
                     USBD_P_EP[u32Num](USBD_EVT_OUT);
                 }
 

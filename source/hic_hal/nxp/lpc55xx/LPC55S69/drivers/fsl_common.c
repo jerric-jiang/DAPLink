@@ -24,7 +24,7 @@ typedef struct _mem_align_control_block
 #if defined(ENABLE_RAM_VECTOR_TABLE)
 uint32_t InstallIRQHandler(IRQn_Type irq, uint32_t irqHandler)
 {
-    /* Addresses for VECTOR_TABLE and VECTOR_RAM come from the linker file */
+/* Addresses for VECTOR_TABLE and VECTOR_RAM come from the linker file */
 #if defined(__CC_ARM) || defined(__ARMCC_VERSION)
     extern uint32_t Image$$VECTOR_ROM$$Base[];
     extern uint32_t Image$$VECTOR_RAM$$Base[];
@@ -201,7 +201,7 @@ uint32_t getCpuCycleCount(void)
 /* clang-format off */
 __ASM static void DelayLoop(uint32_t count)
 {
-    loop
+loop
     SUBS R0, R0, #1
     CMP  R0, #0
     BNE  loop

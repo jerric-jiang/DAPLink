@@ -29,8 +29,7 @@
 extern "C" {
 #endif
 
-typedef struct
-{
+typedef struct {
     uint32_t head;
     uint32_t tail;
     uint32_t size;

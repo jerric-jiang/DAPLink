@@ -1,6 +1,6 @@
 /**
  * @file    Systick_Handler.h
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2019, ARM Limited, All Rights Reserved

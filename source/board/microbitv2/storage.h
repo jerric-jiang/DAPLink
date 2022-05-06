@@ -55,8 +55,7 @@ extern "C" {
 #define STORAGE_CFG_FILEVISIBLE     false
 #define STORAGE_CFG_FILESIZE        (STORAGE_SIZE - STORAGE_SECTOR_SIZE)
 
-typedef enum
-{
+typedef enum {
     STORAGE_SUCCESS = 0,
     STORAGE_ERROR
 } storage_status_t;

@@ -94,11 +94,11 @@ static twis_control_block_t m_cb[NRFX_TWIS_ENABLED_COUNT];
  * Mask for all interrupts used by this library
  */
 static const uint32_t m_used_ints_mask = NRF_TWIS_INT_STOPPED_MASK   |
-        NRF_TWIS_INT_ERROR_MASK     |
-        NRF_TWIS_INT_RXSTARTED_MASK |
-        NRF_TWIS_INT_TXSTARTED_MASK |
-        NRF_TWIS_INT_WRITE_MASK     |
-        NRF_TWIS_INT_READ_MASK;
+                                         NRF_TWIS_INT_ERROR_MASK     |
+                                         NRF_TWIS_INT_RXSTARTED_MASK |
+                                         NRF_TWIS_INT_TXSTARTED_MASK |
+                                         NRF_TWIS_INT_WRITE_MASK     |
+                                         NRF_TWIS_INT_READ_MASK;
 
 /**
  * @brief Clear all  events
@@ -170,7 +170,7 @@ static inline void nrfx_twis_config_pin(uint32_t pin, nrf_gpio_pin_pull_t pull)
  * @sa nrfx_event_to_bitpos
  */
 static inline uint32_t nrfx_twis_event_bit_get(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t ev)
+                                               nrf_twis_event_t ev)
 {
     return (uint32_t)nrf_twis_event_get_and_clear(p_reg, ev) << nrfx_event_to_bitpos(ev);
 }
@@ -204,7 +204,7 @@ static inline bool nrfx_twis_check_bit(uint32_t         flags,
  * @return Value @em flags with cleared event bit that matches given @em ev
  */
 static inline uint32_t nrfx_twis_clear_bit(uint32_t         flags,
-        nrf_twis_event_t ev)
+                                           nrf_twis_event_t ev)
 {
     return flags & ~(1U << nrfx_event_to_bitpos(ev));
 }
@@ -232,8 +232,8 @@ static void call_event_handler(twis_control_block_t const * p_cb,
  * @param error  Error flags
  */
 static inline void nrfx_twis_process_error(twis_control_block_t * p_cb,
-        nrfx_twis_evt_type_t   evt,
-        uint32_t               error)
+                                           nrfx_twis_evt_type_t   evt,
+                                           uint32_t               error)
 {
     if (0 == error)
     {
@@ -281,148 +281,148 @@ static void nrfx_twis_state_machine(NRF_TWIS_Type *        p_reg,
     {
         switch (substate)
         {
-            case NRFX_TWIS_SUBSTATE_IDLE:
-                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
-                {
-                    /* Stopped event is always allowed in IDLE state - just ignore */
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_STOPPED);
-                }
-                else if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ))
-                {
-                    evdata.type = NRFX_TWIS_EVT_READ_REQ;
-                    if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_TXSTARTED))
-                    {
-                        substate = NRFX_TWIS_SUBSTATE_READ_PENDING;
-                        evdata.data.buf_req = false;
-                    }
-                    else
-                    {
-                        substate = NRFX_TWIS_SUBSTATE_READ_WAITING;
-                        evdata.data.buf_req = true;
-                    }
-                    call_event_handler(p_cb, &evdata);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_READ);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_TXSTARTED);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_WRITE);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_RXSTARTED);
-                }
-                else if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE))
-                {
-                    evdata.type = NRFX_TWIS_EVT_WRITE_REQ;
-                    if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_RXSTARTED))
-                    {
-                        substate = NRFX_TWIS_SUBSTATE_WRITE_PENDING;
-                        evdata.data.buf_req = false;
-                    }
-                    else
-                    {
-                        substate = NRFX_TWIS_SUBSTATE_WRITE_WAITING;
-                        evdata.data.buf_req = true;
-                    }
-                    call_event_handler(p_cb, &evdata);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_READ);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_TXSTARTED);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_WRITE);
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_RXSTARTED);
-                }
-                else
-                {
-                    nrfx_twis_process_error(p_cb,
-                                            NRFX_TWIS_EVT_GENERAL_ERROR,
-                                            nrf_twis_error_source_get_and_clear(p_reg));
-                    ev = 0;
-                }
-                break;
-            case NRFX_TWIS_SUBSTATE_READ_WAITING:
-                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_TXSTARTED) ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE)     ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)      ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+        case NRFX_TWIS_SUBSTATE_IDLE:
+            if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+            {
+                /* Stopped event is always allowed in IDLE state - just ignore */
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_STOPPED);
+            }
+            else if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ))
+            {
+                evdata.type = NRFX_TWIS_EVT_READ_REQ;
+                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_TXSTARTED))
                 {
                     substate = NRFX_TWIS_SUBSTATE_READ_PENDING;
-                    /* Any other bits requires further processing in PENDING substate */
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_TXSTARTED);
+                    evdata.data.buf_req = false;
                 }
                 else
                 {
-                    nrfx_twis_process_error(p_cb,
-                                            NRFX_TWIS_EVT_READ_ERROR,
-                                            nrf_twis_error_source_get_and_clear(p_reg));
-                    substate = NRFX_TWIS_SUBSTATE_IDLE;
-                    ev = 0;
+                    substate = NRFX_TWIS_SUBSTATE_READ_WAITING;
+                    evdata.data.buf_req = true;
                 }
-                break;
-            case NRFX_TWIS_SUBSTATE_READ_PENDING:
-                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE) ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)  ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
-                {
-                    evdata.type = NRFX_TWIS_EVT_READ_DONE;
-                    evdata.data.tx_amount = nrf_twis_tx_amount_get(p_reg);
-                    NRFX_LOG_INFO("Transfer tx_len:%d", evdata.data.tx_amount);
-                    NRFX_LOG_DEBUG("Tx data:");
-                    NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_reg->TXD.PTR,
-                                           evdata.data.tx_amount * sizeof(uint8_t));
-                    call_event_handler(p_cb, &evdata);
-                    /* Go to idle and repeat the state machine if READ or WRITE events detected.
-                     * This time READ or WRITE would be started */
-                    substate = NRFX_TWIS_SUBSTATE_IDLE;
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_STOPPED);
-                }
-                else
-                {
-                    nrfx_twis_process_error(p_cb,
-                                            NRFX_TWIS_EVT_READ_ERROR,
-                                            nrf_twis_error_source_get_and_clear(p_reg));
-                    substate = NRFX_TWIS_SUBSTATE_IDLE;
-                    ev = 0;
-                }
-                break;
-            case NRFX_TWIS_SUBSTATE_WRITE_WAITING:
-                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_RXSTARTED) ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE)     ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)      ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+                call_event_handler(p_cb, &evdata);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_READ);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_TXSTARTED);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_WRITE);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_RXSTARTED);
+            }
+            else if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE))
+            {
+                evdata.type = NRFX_TWIS_EVT_WRITE_REQ;
+                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_RXSTARTED))
                 {
                     substate = NRFX_TWIS_SUBSTATE_WRITE_PENDING;
-                    /* Any other bits requires further processing in PENDING substate */
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_RXSTARTED);
+                    evdata.data.buf_req = false;
                 }
                 else
                 {
-                    nrfx_twis_process_error(p_cb,
-                                            NRFX_TWIS_EVT_WRITE_ERROR,
-                                            nrf_twis_error_source_get_and_clear(p_reg));
-                    substate = NRFX_TWIS_SUBSTATE_IDLE;
-                    ev = 0;
+                    substate = NRFX_TWIS_SUBSTATE_WRITE_WAITING;
+                    evdata.data.buf_req = true;
                 }
-                break;
-            case NRFX_TWIS_SUBSTATE_WRITE_PENDING:
-                if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE) ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)  ||
-                    nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
-                {
-                    evdata.type = NRFX_TWIS_EVT_WRITE_DONE;
-                    evdata.data.rx_amount = nrf_twis_rx_amount_get(p_reg);
-                    call_event_handler(p_cb, &evdata);
-                    /* Go to idle and repeat the state machine if READ or WRITE events detected.
-                     * This time READ or WRITE would be started */
-                    substate = NRFX_TWIS_SUBSTATE_IDLE;
-                    ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_STOPPED);
-                }
-                else
-                {
-                    nrfx_twis_process_error(p_cb,
-                                            NRFX_TWIS_EVT_WRITE_ERROR,
-                                            nrf_twis_error_source_get_and_clear(p_reg));
-                    substate = NRFX_TWIS_SUBSTATE_IDLE;
-                    ev = 0;
-                }
-                break;
-            default:
+                call_event_handler(p_cb, &evdata);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_READ);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_TXSTARTED);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_WRITE);
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_RXSTARTED);
+            }
+            else
+            {
+                nrfx_twis_process_error(p_cb,
+                                        NRFX_TWIS_EVT_GENERAL_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
+                ev = 0;
+            }
+            break;
+        case NRFX_TWIS_SUBSTATE_READ_WAITING:
+            if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_TXSTARTED) ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE)     ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)      ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+            {
+                substate = NRFX_TWIS_SUBSTATE_READ_PENDING;
+                /* Any other bits requires further processing in PENDING substate */
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_TXSTARTED);
+            }
+            else
+            {
+                nrfx_twis_process_error(p_cb,
+                                        NRFX_TWIS_EVT_READ_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
                 substate = NRFX_TWIS_SUBSTATE_IDLE;
-                /* Do not clear any events and repeat the machine */
-                break;
+                ev = 0;
+            }
+            break;
+        case NRFX_TWIS_SUBSTATE_READ_PENDING:
+            if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE) ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)  ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+            {
+                evdata.type = NRFX_TWIS_EVT_READ_DONE;
+                evdata.data.tx_amount = nrf_twis_tx_amount_get(p_reg);
+                NRFX_LOG_INFO("Transfer tx_len:%d", evdata.data.tx_amount);
+                NRFX_LOG_DEBUG("Tx data:");
+                NRFX_LOG_HEXDUMP_DEBUG((uint8_t const *)p_reg->TXD.PTR,
+                                       evdata.data.tx_amount * sizeof(uint8_t));
+                call_event_handler(p_cb, &evdata);
+                /* Go to idle and repeat the state machine if READ or WRITE events detected.
+                 * This time READ or WRITE would be started */
+                substate = NRFX_TWIS_SUBSTATE_IDLE;
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_STOPPED);
+            }
+            else
+            {
+                nrfx_twis_process_error(p_cb,
+                                        NRFX_TWIS_EVT_READ_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
+                substate = NRFX_TWIS_SUBSTATE_IDLE;
+                ev = 0;
+            }
+            break;
+        case NRFX_TWIS_SUBSTATE_WRITE_WAITING:
+            if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_RXSTARTED) ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE)     ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)      ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+            {
+                substate = NRFX_TWIS_SUBSTATE_WRITE_PENDING;
+                /* Any other bits requires further processing in PENDING substate */
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_RXSTARTED);
+            }
+            else
+            {
+                nrfx_twis_process_error(p_cb,
+                                        NRFX_TWIS_EVT_WRITE_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
+                substate = NRFX_TWIS_SUBSTATE_IDLE;
+                ev = 0;
+            }
+            break;
+        case NRFX_TWIS_SUBSTATE_WRITE_PENDING:
+            if (nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_WRITE) ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_READ)  ||
+                nrfx_twis_check_bit(ev, NRF_TWIS_EVENT_STOPPED))
+            {
+                evdata.type = NRFX_TWIS_EVT_WRITE_DONE;
+                evdata.data.rx_amount = nrf_twis_rx_amount_get(p_reg);
+                call_event_handler(p_cb, &evdata);
+                /* Go to idle and repeat the state machine if READ or WRITE events detected.
+                 * This time READ or WRITE would be started */
+                substate = NRFX_TWIS_SUBSTATE_IDLE;
+                ev = nrfx_twis_clear_bit(ev, NRF_TWIS_EVENT_STOPPED);
+            }
+            else
+            {
+                nrfx_twis_process_error(p_cb,
+                                        NRFX_TWIS_EVT_WRITE_ERROR,
+                                        nrf_twis_error_source_get_and_clear(p_reg));
+                substate = NRFX_TWIS_SUBSTATE_IDLE;
+                ev = 0;
+            }
+            break;
+        default:
+            substate = NRFX_TWIS_SUBSTATE_IDLE;
+            /* Do not clear any events and repeat the machine */
+            break;
         }
     }
 
@@ -475,23 +475,22 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
     }
 
 #if NRFX_CHECK(NRFX_PRS_ENABLED)
-    static nrfx_irq_handler_t const irq_handlers[NRFX_TWIS_ENABLED_COUNT] =
-    {
-#if NRFX_CHECK(NRFX_TWIS0_ENABLED)
+    static nrfx_irq_handler_t const irq_handlers[NRFX_TWIS_ENABLED_COUNT] = {
+        #if NRFX_CHECK(NRFX_TWIS0_ENABLED)
         nrfx_twis_0_irq_handler,
-#endif
-#if NRFX_CHECK(NRFX_TWIS1_ENABLED)
+        #endif
+        #if NRFX_CHECK(NRFX_TWIS1_ENABLED)
         nrfx_twis_1_irq_handler,
-#endif
-#if NRFX_CHECK(NRFX_TWIS2_ENABLED)
+        #endif
+        #if NRFX_CHECK(NRFX_TWIS2_ENABLED)
         nrfx_twis_2_irq_handler,
-#endif
-#if NRFX_CHECK(NRFX_TWIS3_ENABLED)
+        #endif
+        #if NRFX_CHECK(NRFX_TWIS3_ENABLED)
         nrfx_twis_3_irq_handler,
-#endif
+        #endif
     };
     if (nrfx_prs_acquire(p_reg,
-                         irq_handlers[p_instance->drv_inst_idx]) != NRFX_SUCCESS)
+            irq_handlers[p_instance->drv_inst_idx]) != NRFX_SUCCESS)
     {
         err_code = NRFX_ERROR_BUSY;
         NRFX_LOG_WARNING("Function: %s, error code: %s.",
@@ -534,9 +533,9 @@ nrfx_err_t nrfx_twis_init(nrfx_twis_t const *        p_instance,
     NRFX_IRQ_ENABLE(nrfx_get_irq_number(p_reg));
 
     /* Configure */
-    nrf_twis_pins_set(p_reg, p_config->scl, p_config->sda);
-    nrf_twis_address_set(p_reg, 0, p_config->addr[0]);
-    nrf_twis_address_set(p_reg, 1, p_config->addr[1]);
+    nrf_twis_pins_set          (p_reg, p_config->scl, p_config->sda);
+    nrf_twis_address_set       (p_reg, 0, p_config->addr[0]);
+    nrf_twis_address_set       (p_reg, 1, p_config->addr[1]);
     nrf_twis_config_address_set(p_reg, (nrf_twis_config_addr_mask_t)addr_mask);
 
     /* Clear semaphore */
@@ -624,7 +623,7 @@ static __ASM uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile *
 {
     mov   r3, r0
     mov   r1, #0
-    nrfx_twis_error_get_and_clear_internal_try
+nrfx_twis_error_get_and_clear_internal_try
     ldrex r0, [r3]
     strex r2, r1, [r3]
     cmp   r2, r1                                     /* did this succeed?       */
@@ -643,10 +642,10 @@ static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perro
         "   strex %[temp], %[zero], [%[perror]]              \n"
         "   cmp   %[temp], %[zero]                           \n"
         "   bne   nrfx_twis_error_get_and_clear_internal_try \n"
-        : /* Output */
+    : /* Output */
         [ret]"=&l"(ret),
         [temp]"=&l"(temp)
-        : /* Input */
+    : /* Input */
         [zero]"l"(0),
         [perror]"l"(perror)
     );
@@ -664,10 +663,10 @@ static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perro
         "   strex %[temp], %[zero], [%[perror]]                 \n"
         "   cmp   %[temp], %[zero]                              \n"
         "   bne.n 1b \n"
-        : /* Output */
+    : /* Output */
         [ret]"=&l"(ret),
         [temp]"=&l"(temp)
-        : /* Input */
+    : /* Input */
         [zero]"l"(0),
         [perror]"l"(perror)
     );
@@ -675,7 +674,7 @@ static uint32_t nrfx_twis_error_get_and_clear_internal(uint32_t volatile * perro
     return ret;
 }
 #else
-#error Unknown compiler
+    #error Unknown compiler
 #endif
 
 uint32_t nrfx_twis_error_get_and_clear(nrfx_twis_t const * p_instance)

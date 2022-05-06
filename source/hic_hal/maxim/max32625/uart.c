@@ -53,20 +53,17 @@ static void set_bitrate(uint32_t target_baud)
 
     // Setup system clock divider for given bit rate
     clk_scale = 0;
-    do
-    {
+    do {
         min_baud = (SystemCoreClock >> clk_scale++) / (16 * (MXC_F_UART_BAUD_BAUD_DIVISOR >> MXC_F_UART_BAUD_BAUD_DIVISOR_POS));
     } while ((target_baud < min_baud) && (clk_scale < MXC_V_CLKMAN_CLK_SCALE_DIV_256));
 
     // Check if the bit rate can be reached
-    if (target_baud < min_baud)
-    {
+    if (target_baud < min_baud) {
         // Fail silently
         return;
     }
 
-    if (MXC_CLKMAN->sys_clk_ctrl_8_uart != clk_scale)
-    {
+    if (MXC_CLKMAN->sys_clk_ctrl_8_uart != clk_scale) {
         MXC_CLKMAN->sys_clk_ctrl_8_uart = clk_scale;
     }
 
@@ -76,17 +73,14 @@ static void set_bitrate(uint32_t target_baud)
     baud_div = uart_clk / (target_baud * 4);
 
     // Bitrate too high
-    if (baud_div == 0)
-    {
+    if (baud_div == 0) {
         // Fail silently
         return;
     }
 
     // Decrease the divisor if baud_div is overflowing
-    while (baud_div > 0x00FF)
-    {
-        if (baud_shift == 0)
-        {
+    while (baud_div > 0x00FF) {
+        if (baud_shift == 0) {
             // Fail silently
             return;
         }
@@ -95,13 +89,11 @@ static void set_bitrate(uint32_t target_baud)
     }
 
     // Adjust baud_div to avoid overflow in the calculations below
-    if (baud_div == 0x00FF)
-    {
+    if (baud_div == 0x00FF) {
         baud_div = 0x00FE;
     }
 
-    if (baud_div == 0x0000)
-    {
+    if (baud_div == 0x0000) {
         baud_div = 0x0001;
     }
 
@@ -109,30 +101,21 @@ static void set_bitrate(uint32_t target_baud)
     baud = uart_clk / (baud_div * (16 >> baud_shift));
     baud_1 = uart_clk / ((baud_div + 1) * (16 >> baud_shift));
 
-    if (target_baud > baud)
-    {
+    if (target_baud > baud) {
         diff_baud = target_baud - baud;
-    }
-    else
-    {
+    } else {
         diff_baud = baud - target_baud;
     }
 
-    if (target_baud > baud_1)
-    {
+    if (target_baud > baud_1) {
         diff_baud_1 = target_baud - baud_1;
-    }
-    else
-    {
+    } else {
         diff_baud_1 = baud_1 - target_baud;
     }
 
-    if (diff_baud < diff_baud_1)
-    {
+    if (diff_baud < diff_baud_1) {
         CdcAcmUart->baud = (baud_div & MXC_F_UART_BAUD_BAUD_DIVISOR) | (baud_shift << MXC_F_UART_BAUD_BAUD_MODE_POS);
-    }
-    else
-    {
+    } else {
         CdcAcmUart->baud = ((baud_div + 1) & MXC_F_UART_BAUD_BAUD_DIVISOR) | (baud_shift << MXC_F_UART_BAUD_BAUD_MODE_POS);
     }
 
@@ -142,20 +125,15 @@ static void set_bitrate(uint32_t target_baud)
 /******************************************************************************/
 int32_t uart_set_instance(uint32_t inst)
 {
-    if (inst == 0)
-    {
+    if (inst == 0) {
         CdcAcmUart = MXC_UART0;
         CdcAcmUartFifo = MXC_UART0_FIFO;
         CdcAcmUartIrqNumber = UART0_IRQn;
-    }
-    else if (inst == 2)
-    {
+    } else if (inst == 2) {
         CdcAcmUart = MXC_UART2;
         CdcAcmUartFifo = MXC_UART2_FIFO;
         CdcAcmUartIrqNumber = UART2_IRQn;
-    }
-    else
-    {
+    } else {
         return 0;
     }
     return 1;
@@ -169,25 +147,20 @@ int32_t uart_initialize(void)
     /* Do not enable UART Common Clock here, must happen inside uart_set_configuration()
        to ensure correct clock scale for a given baud rate */
 
-    if (CdcAcmUart == MXC_UART0)
-    {
+    if (CdcAcmUart == MXC_UART0) {
         MXC_CLKMAN->clk_gate_ctrl1 |= MXC_F_CLKMAN_CLK_GATE_CTRL1_UART0_CLK_GATER;
 
         // Configure GPIO for UART
         MXC_IOMAN->uart0_req = ((MXC_V_IOMAN_MAP_A << MXC_F_IOMAN_UART0_REQ_IO_MAP_POS) | MXC_F_IOMAN_UART0_REQ_IO_REQ);
         while (MXC_IOMAN->uart0_ack != ((MXC_V_IOMAN_MAP_A << MXC_F_IOMAN_UART0_REQ_IO_MAP_POS) | MXC_F_IOMAN_UART0_REQ_IO_REQ));
 
-    }
-    else if (CdcAcmUart == MXC_UART2)
-    {
+    } else if (CdcAcmUart == MXC_UART2) {
         MXC_CLKMAN->clk_gate_ctrl1 |= MXC_F_CLKMAN_CLK_GATE_CTRL1_UART2_CLK_GATER;
 
         // Configure GPIO for UART
         MXC_IOMAN->uart2_req = ((MXC_V_IOMAN_MAP_A << MXC_F_IOMAN_UART2_REQ_IO_MAP_POS) | MXC_F_IOMAN_UART2_REQ_IO_REQ);
         while (MXC_IOMAN->uart2_ack != ((MXC_V_IOMAN_MAP_A << MXC_F_IOMAN_UART2_REQ_IO_MAP_POS) | MXC_F_IOMAN_UART2_REQ_IO_REQ));
-    }
-    else
-    {
+    } else {
         return 0;
     }
 
@@ -269,60 +242,36 @@ int32_t uart_set_configuration(UART_Configuration *config)
     // Disable UART, clear FIFOs and configuration
     CdcAcmUart->ctrl = 0;
 
-    switch (config->Parity)
-    {
+    switch (config->Parity) {
         default:
-        case UART_PARITY_NONE:
-            break;
-        case UART_PARITY_ODD:
-            ctrl |= MXC_S_UART_CTRL_PARITY_ODD;
-        case UART_PARITY_EVEN:
-            ctrl |= MXC_S_UART_CTRL_PARITY_EVEN;
-        case UART_PARITY_MARK:
-            return 0;
-        case UART_PARITY_SPACE:
-            return 0;
+        case UART_PARITY_NONE: break;
+        case UART_PARITY_ODD: ctrl |= MXC_S_UART_CTRL_PARITY_ODD;
+        case UART_PARITY_EVEN: ctrl |= MXC_S_UART_CTRL_PARITY_EVEN;
+        case UART_PARITY_MARK: return 0;
+        case UART_PARITY_SPACE: return 0;
     }
 
-    switch (config->DataBits)
-    {
-        case UART_DATA_BITS_5:
-            ctrl |= MXC_S_UART_CTRL_DATA_SIZE_5_BITS;
-            break;
-        case UART_DATA_BITS_6:
-            ctrl |= MXC_S_UART_CTRL_DATA_SIZE_6_BITS;
-            break;
-        case UART_DATA_BITS_7:
-            ctrl |= MXC_S_UART_CTRL_DATA_SIZE_7_BITS;
-            break;
+    switch (config->DataBits) {
+        case UART_DATA_BITS_5:  ctrl |= MXC_S_UART_CTRL_DATA_SIZE_5_BITS; break;
+        case UART_DATA_BITS_6:  ctrl |= MXC_S_UART_CTRL_DATA_SIZE_6_BITS; break;
+        case UART_DATA_BITS_7:  ctrl |= MXC_S_UART_CTRL_DATA_SIZE_7_BITS; break;
         default:
-        case UART_DATA_BITS_8:
-            ctrl |= MXC_S_UART_CTRL_DATA_SIZE_8_BITS;
-            break;
-        case UART_DATA_BITS_16:
-            return 0;
+        case UART_DATA_BITS_8:  ctrl |= MXC_S_UART_CTRL_DATA_SIZE_8_BITS; break;
+        case UART_DATA_BITS_16: return 0;
     }
 
-    switch (config->StopBits)
-    {
+    switch (config->StopBits) {
         default:
-        case UART_STOP_BITS_1:
-            break;
+        case UART_STOP_BITS_1:    break;
         case UART_STOP_BITS_1_5:
-        case UART_STOP_BITS_2:
-            ctrl |= MXC_F_UART_CTRL_EXTRA_STOP;
-            break;
+        case UART_STOP_BITS_2:    ctrl |= MXC_F_UART_CTRL_EXTRA_STOP; break;
     }
 
-    switch (config->FlowControl)
-    {
+    switch (config->FlowControl) {
         default:
-        case UART_FLOW_CONTROL_NONE:
-            break;
-        case UART_FLOW_CONTROL_RTS_CTS:
-            return 0;
-        case UART_FLOW_CONTROL_XON_XOFF:
-            return 0;
+        case UART_FLOW_CONTROL_NONE:      break;
+        case UART_FLOW_CONTROL_RTS_CTS:   return 0;
+        case UART_FLOW_CONTROL_XON_XOFF:  return 0;
     }
 
     set_bitrate(config->Baudrate);
@@ -342,51 +291,31 @@ int32_t uart_get_configuration(UART_Configuration *config)
     // Capture current configuration
     ctrl = CdcAcmUart->ctrl;
 
-    if (!(ctrl & MXC_S_UART_CTRL_PARITY_DISABLE))
-    {
+    if (!(ctrl & MXC_S_UART_CTRL_PARITY_DISABLE)) {
         config->Parity = UART_PARITY_NONE;
-    }
-    else if (ctrl & MXC_S_UART_CTRL_PARITY_ODD)
-    {
+    } else if (ctrl & MXC_S_UART_CTRL_PARITY_ODD) {
         config->Parity = UART_PARITY_ODD;
-    }
-    else
-    {
+    } else {
         // Note both EVEN and MARK parity are captured here
         config->Parity = UART_PARITY_EVEN;
     }
 
-    switch (ctrl & MXC_F_UART_CTRL_DATA_SIZE)
-    {
-        case MXC_S_UART_CTRL_DATA_SIZE_5_BITS:
-            config->DataBits = UART_DATA_BITS_5;
-            break;
-        case MXC_S_UART_CTRL_DATA_SIZE_6_BITS:
-            config->DataBits = UART_DATA_BITS_6;
-            break;
-        case MXC_S_UART_CTRL_DATA_SIZE_7_BITS:
-            config->DataBits = UART_DATA_BITS_7;
-            break;
-        case MXC_S_UART_CTRL_DATA_SIZE_8_BITS:
-            config->DataBits = UART_DATA_BITS_8;
-            break;
+    switch (ctrl & MXC_F_UART_CTRL_DATA_SIZE) {
+        case MXC_S_UART_CTRL_DATA_SIZE_5_BITS: config->DataBits = UART_DATA_BITS_5; break;
+        case MXC_S_UART_CTRL_DATA_SIZE_6_BITS: config->DataBits = UART_DATA_BITS_6; break;
+        case MXC_S_UART_CTRL_DATA_SIZE_7_BITS: config->DataBits = UART_DATA_BITS_7; break;
+        case MXC_S_UART_CTRL_DATA_SIZE_8_BITS: config->DataBits = UART_DATA_BITS_8; break;
     }
 
-    if (!(ctrl & MXC_F_UART_CTRL_EXTRA_STOP))
-    {
+    if (!(ctrl & MXC_F_UART_CTRL_EXTRA_STOP)) {
         config->StopBits = UART_STOP_BITS_1;
-    }
-    else
-    {
+    } else {
         config->StopBits = UART_STOP_BITS_2;
     }
 
-    if ((ctrl & (MXC_F_UART_CTRL_CTS_EN | MXC_F_UART_CTRL_RTS_EN)) == (MXC_F_UART_CTRL_CTS_EN | MXC_F_UART_CTRL_RTS_EN))
-    {
+    if ((ctrl & (MXC_F_UART_CTRL_CTS_EN | MXC_F_UART_CTRL_RTS_EN)) == (MXC_F_UART_CTRL_CTS_EN | MXC_F_UART_CTRL_RTS_EN)) {
         config->FlowControl = UART_FLOW_CONTROL_RTS_CTS;
-    }
-    else
-    {
+    } else {
         // Not true if only one of ...CST_EN and ...RTS_EN are asserted
         config->FlowControl = UART_FLOW_CONTROL_NONE;
     }
@@ -408,11 +337,9 @@ int32_t uart_write_data(uint8_t *data, uint16_t size)
     uint16_t xfer_count = size;
 
     // Prioritize writes to TX FIFO, then to write_buffer
-    if (circ_buf_count_used(&write_buffer) == 0)
-    {
+    if (circ_buf_count_used(&write_buffer) == 0) {
         while ((((CdcAcmUart->tx_fifo_ctrl & MXC_F_UART_TX_FIFO_CTRL_FIFO_ENTRY) >> MXC_F_UART_TX_FIFO_CTRL_FIFO_ENTRY_POS) < MXC_UART_FIFO_DEPTH) &&
-               (xfer_count > 0))
-        {
+                (xfer_count > 0)) {
             NVIC_DisableIRQ(CdcAcmUartIrqNumber);
             CdcAcmUart->intfl = MXC_F_UART_INTFL_TX_FIFO_AE;
             CdcAcmUartFifo->tx = *data++;
@@ -440,33 +367,28 @@ void UART_IRQHandler(void)
     // Clear interrupts that will be serviced
     CdcAcmUart->intfl = intfl;
 
-    if (intfl & MXC_F_UART_INTFL_RX_FIFO_OVERFLOW)
-    {
+    if (intfl & MXC_F_UART_INTFL_RX_FIFO_OVERFLOW) {
         // Flush RX FIFO, prepare for new characters
         CdcAcmUart->ctrl &= ~MXC_F_UART_CTRL_RX_FIFO_EN;
         CdcAcmUart->ctrl |= MXC_F_UART_CTRL_RX_FIFO_EN;
     }
 
-    if (intfl & MXC_F_UART_INTFL_RX_FIFO_NOT_EMPTY)
-    {
+    if (intfl & MXC_F_UART_INTFL_RX_FIFO_NOT_EMPTY) {
         while ((CdcAcmUart->rx_fifo_ctrl & MXC_F_UART_RX_FIFO_CTRL_FIFO_ENTRY) &&
-               circ_buf_count_free(&read_buffer))
-        {
+                circ_buf_count_free(&read_buffer)) {
             circ_buf_push(&read_buffer, CdcAcmUartFifo->rx);
             CdcAcmUart->intfl = MXC_F_UART_INTFL_RX_FIFO_NOT_EMPTY;
         }
     }
 
-    if (intfl & MXC_F_UART_INTFL_TX_FIFO_AE)
-    {
+    if (intfl & MXC_F_UART_INTFL_TX_FIFO_AE) {
         /*
-            Transfer data from write buffer to transmit FIFO if
-            a) write buffer contains data and
-            b) transmit FIFO is not full
+        	Transfer data from write buffer to transmit FIFO if
+        	a) write buffer contains data and
+        	b) transmit FIFO is not full
         */
         while (circ_buf_count_used(&write_buffer) &&
-               (((CdcAcmUart->tx_fifo_ctrl & MXC_F_UART_TX_FIFO_CTRL_FIFO_ENTRY) >> MXC_F_UART_TX_FIFO_CTRL_FIFO_ENTRY_POS) < MXC_UART_FIFO_DEPTH))
-        {
+                (((CdcAcmUart->tx_fifo_ctrl & MXC_F_UART_TX_FIFO_CTRL_FIFO_ENTRY) >> MXC_F_UART_TX_FIFO_CTRL_FIFO_ENTRY_POS) < MXC_UART_FIFO_DEPTH)) {
             CdcAcmUartFifo->tx = circ_buf_pop(&write_buffer);
         }
     }

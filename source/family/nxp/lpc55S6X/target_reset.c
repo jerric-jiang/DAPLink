@@ -40,20 +40,15 @@ static uint8_t lpc55s6x_target_set_state(target_state_t state)
     uint32_t val;
     int8_t ap_retries = 2;
 
-    if (state == RESET_PROGRAM)
-    {
-        if (!swd_init_debug())
-        {
+    if (state == RESET_PROGRAM) {
+        if (!swd_init_debug()) {
             return 0;
         }
 
         // Enable debug
-        while (swd_write_word(DBG_HCSR, DBGKEY | C_DEBUGEN) == 0)
-        {
-            if (--ap_retries <= 0)
-            {
+        while(swd_write_word(DBG_HCSR, DBGKEY | C_DEBUGEN) == 0) {
+            if( --ap_retries <=0 )
                 return 0;
-            }
             // Target is in invalid state?
             swd_set_target_reset(1);
             osDelay(2);
@@ -62,67 +57,55 @@ static uint8_t lpc55s6x_target_set_state(target_state_t state)
         }
 
         // Set Trace Enable bit
-        if (!swd_read_word(DBG_EMCR, &val))
-        {
+        if (!swd_read_word(DBG_EMCR, &val)) {
             return 0;
         }
 
-        if (!swd_write_word(DBG_EMCR, val | TRCENA))
-        {
+        if (!swd_write_word(DBG_EMCR, val | TRCENA)) {
             return 0;
         }
 
         // Clear the comparator function register
-        if (!swd_write_word(DWT_FUNCTION0, 0x0))
-        {
+        if (!swd_write_word(DWT_FUNCTION0, 0x0)) {
             return 0;
         }
 
         // Set the address
-        if (!swd_write_word(DWT_COMP0, 0x50000040))
-        {
+        if (!swd_write_word(DWT_COMP0, 0x50000040)) {
             return 0;
         }
 
         // Update the comparator function register
-        if (!swd_write_word(DWT_FUNCTION0, (DWT_FUNCTION_MATCH | DWT_FUNCTION_ACTION | DWT_FUNCTION_DATAVSIZE)))
-        {
+        if (!swd_write_word(DWT_FUNCTION0, (DWT_FUNCTION_MATCH | DWT_FUNCTION_ACTION | DWT_FUNCTION_DATAVSIZE))) {
             return 0;
         }
 
         // Reset using the debug mailbox
-        if (!swd_write_ap(DEBUGMB_CSW, 0x20))
-        {
+        if (!swd_write_ap(DEBUGMB_CSW, 0x20)) {
             return 0;
         }
 
         osDelay(5);
 
-        do
-        {
-            if (!swd_read_word(DBG_HCSR, &val))
-            {
+        do {
+            if (!swd_read_word(DBG_HCSR, &val)) {
                 return 0;
             }
         } while ((val & S_HALT) == 0);
 
         // Disable halt on reset
-        if (!swd_write_word(DBG_EMCR, 0))
-        {
+        if (!swd_write_word(DBG_EMCR, 0)) {
             return 0;
         }
 
         return 1;
 
-    }
-    else
-    {
+    } else {
         return swd_set_target_state_sw(state);
     }
 }
 
-const target_family_descriptor_t g_target_family_lpc55S6X =
-{
+const target_family_descriptor_t g_target_family_lpc55S6X = {
     .family_id = kNXP_LPC55xx_FamilyID, //ID not maching the predefined family ids
     .target_set_state = lpc55s6x_target_set_state,
 };

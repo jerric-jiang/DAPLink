@@ -22,8 +22,7 @@
 #include "flash_blob.h"
 
 
-static const uint32_t mkw40z4_flash_prog_blob[] =
-{
+static const uint32_t mkw40z4_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x09032200, 0xd373428b, 0x428b0a03, 0x0b03d358, 0xd33c428b, 0x428b0c03, 0xe012d321, 0x430b4603,
     0x2200d47f, 0x428b0843, 0x0903d374, 0xd35f428b, 0x428b0a03, 0x0b03d344, 0xd328428b, 0x428b0c03,
@@ -84,20 +83,18 @@ static const uint32_t mkw40z4_flash_prog_blob[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info_kw40[] =
-{
+static const sector_info_t sectors_info_kw40[] = {
     {0, 1024},
-};
+ };
 
-static const program_target_t flash_kw40 =
-{
+static const program_target_t flash_kw40 = {
     0x2000027D, // Init
     0x200002E5, // UnInit
     0x20000209, // EraseChip
     0x2000023D, // EraseSector
     0x2000029D, // ProgramPage
     0x0,        // Verify
-
+    
     // breakpoint = RAM start + 1
     // RSB : base address is address of Execution Region PrgData in map file
     //       to access global/static data

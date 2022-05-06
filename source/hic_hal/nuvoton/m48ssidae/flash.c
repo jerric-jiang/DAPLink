@@ -53,8 +53,7 @@ uint32_t EraseSector(uint32_t adr)
 {
     uint32_t ret = 0;
 
-    if (FMC_Erase(adr) != 0)
-    {
+    if (FMC_Erase(adr) != 0) {
         ret = 1;
     }
 
@@ -66,12 +65,10 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     uint32_t i;
     uint32_t ret = 0;
 
-    for (i = 0; i < sz; i += 4)
-    {
+    for (i = 0; i < sz; i += 4) {
         FMC_Write(adr + i, buf[i / 4]);
 
-        if (FMC_GET_FAIL_FLAG())
-        {
+        if (FMC_GET_FAIL_FLAG()) {
             FMC_CLR_FAIL_FLAG();
             ret = 1;
             break;

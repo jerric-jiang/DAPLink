@@ -15,7 +15,7 @@
  *   3. Neither the name of Nuvoton Technology Corp. nor the names of its contributors
  *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -61,10 +61,8 @@ void GPIO_SetMode(GPIO_T *port, uint32_t u32PinMask, uint32_t u32Mode)
 {
     uint32_t i;
 
-    for (i = 0ul; i < GPIO_PIN_MAX; i++)
-    {
-        if ((u32PinMask & (1ul << i)) == (1ul << i))
-        {
+    for (i = 0ul; i < GPIO_PIN_MAX; i++) {
+        if ((u32PinMask & (1ul << i)) == (1ul << i)) {
             port->MODE = (port->MODE & ~(0x3ul << (i << 1))) | (u32Mode << (i << 1));
         }
     }
@@ -128,10 +126,8 @@ void GPIO_SetSlewCtl(GPIO_T *port, uint32_t u32PinMask, uint32_t u32Mode)
 {
     uint32_t i;
 
-    for (i = 0ul; i < GPIO_PIN_MAX; i++)
-    {
-        if (u32PinMask & (1ul << i))
-        {
+    for (i = 0ul; i < GPIO_PIN_MAX; i++) {
+        if (u32PinMask & (1ul << i)) {
             port->SLEWCTL = (port->SLEWCTL & ~(0x3ul << (i << 1))) | (u32Mode << (i << 1));
         }
     }
@@ -155,10 +151,8 @@ void GPIO_SetPullCtl(GPIO_T *port, uint32_t u32PinMask, uint32_t u32Mode)
 {
     uint32_t i;
 
-    for (i = 0ul; i < GPIO_PIN_MAX; i++)
-    {
-        if (u32PinMask & (1ul << i))
-        {
+    for (i = 0ul; i < GPIO_PIN_MAX; i++) {
+        if (u32PinMask & (1ul << i)) {
             port->PUSEL = (port->PUSEL & ~(0x3ul << (i << 1))) | (u32Mode << (i << 1));
         }
     }

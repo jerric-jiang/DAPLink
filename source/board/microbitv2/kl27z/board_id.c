@@ -36,8 +36,7 @@
 // Depends on gpio_init() to have been executed already
 mb_version_t board_id_detect()
 {
-    gpio_pin_config_t pin_config =
-    {
+    gpio_pin_config_t pin_config = {
         .pinDirection = kGPIO_DigitalOutput,
         .outputLogic = 0U
     };
@@ -45,7 +44,7 @@ mb_version_t board_id_detect()
     uint32_t board_rev_id_mv = 0;
 
     // Set Board Rev ID pin as output but pin disabled
-    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT, PIN_BOARD_REV_ID_BIT,  kPORT_PinDisabledOrAnalog);
+    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT , PIN_BOARD_REV_ID_BIT,  kPORT_PinDisabledOrAnalog);
     PORT_SetPinDriveStrength(PIN_BOARD_REV_ID_PORT, PIN_BOARD_REV_ID_BIT, kPORT_HighDriveStrength);
     GPIO_PinInit(PIN_BOARD_REV_ID_GPIO, PIN_BOARD_REV_ID_BIT, &pin_config);
 
@@ -57,7 +56,7 @@ mb_version_t board_id_detect()
     timer_wait_set_period(3000);
     /* Drive BRD_REV_ID pin to low */
     GPIO_PortClear(PIN_BOARD_REV_ID_GPIO, PIN_BOARD_REV_ID);
-    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT, PIN_BOARD_REV_ID_BIT,  kPORT_MuxAsGpio);
+    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT , PIN_BOARD_REV_ID_BIT,  kPORT_MuxAsGpio);
     /* Wait 3ms to allow the 100nF Cap to discharge at least 5*RC with 4700R */
     timer_wait();
 
@@ -69,7 +68,7 @@ mb_version_t board_id_detect()
     /* Wait for ~100us */
     timer_wait();
     /* Change pin to ADC (High-Z). Capacitor will stop charging */
-    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT, PIN_BOARD_REV_ID_BIT,  kPORT_PinDisabledOrAnalog);
+    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT , PIN_BOARD_REV_ID_BIT,  kPORT_PinDisabledOrAnalog);
 
     // 3. Take ADC measurement
     board_rev_id_adc = adc_read_channel(0, PIN_BOARD_REV_ID_ADC_CH, PIN_BOARD_REV_ID_ADC_MUX);
@@ -80,18 +79,15 @@ mb_version_t board_id_detect()
     timer_wait_set_period(3000);
     /* Drive BRD_REV_ID pin to low */
     GPIO_PortClear(PIN_BOARD_REV_ID_GPIO, PIN_BOARD_REV_ID);
-    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT, PIN_BOARD_REV_ID_BIT,  kPORT_MuxAsGpio);
+    PORT_SetPinMux(PIN_BOARD_REV_ID_PORT , PIN_BOARD_REV_ID_BIT,  kPORT_MuxAsGpio);
     /* Wait 3ms to allow the 100nF Cap to discharge at least 5*RC with 4700R */
     timer_wait();
 
     // 5. Identify board ID depending on voltage
     mb_version_t board_version;
-    if (board_rev_id_mv > BRD_ID_1_LOWER_THR_V && board_rev_id_mv < BRD_ID_1_UPPER_THR_V)
-    {
+    if (board_rev_id_mv > BRD_ID_1_LOWER_THR_V && board_rev_id_mv < BRD_ID_1_UPPER_THR_V) {
         board_version = BOARD_VERSION_2_0;
-    }
-    else
-    {
+    } else {
         board_version = BOARD_VERSION_2_DEF;
     }
 

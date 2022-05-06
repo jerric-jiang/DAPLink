@@ -32,8 +32,7 @@
 //!
 //! These enums are passed to target_set_state() and indicate the desired state into which
 //! the target should be reset.
-typedef enum _target_state
-{
+typedef enum _target_state {
     RESET_HOLD,              //!< Hold target in reset
     RESET_PROGRAM,           //!< Reset target and setup for flash programming
     RESET_RUN,               //!< Reset target and run normally
@@ -47,8 +46,7 @@ typedef enum _target_state
 } target_state_t;
 
 //! @brief Options for reset.
-typedef enum _reset_type
-{
+typedef enum _reset_type {
     kHardwareReset = 1,
     kSoftwareReset,
 } reset_type_t;
@@ -59,8 +57,7 @@ typedef enum _reset_type
 //! format from CMSIS-Packs. See the [DeviceVendorEnum
 //! documentation](https://arm-software.github.io/CMSIS_5/Pack/html/pdsc_family_pg.html#DeviceVendorEnum)
 //! for the list of ID values.
-enum _vendor_ids
-{
+enum _vendor_ids {
     kStub_VendorID = 0,
     kNXP_VendorID = 11,
     kTI_VendorID = 16,
@@ -90,8 +87,7 @@ enum _vendor_ids
 //! add the vendor ID to that enum (see its documentation for the source of vendor ID values).
 //! Then pick a unique family index by adding 1 to the highest existing family index within that
 //! vendor. For a family with a new vendor, the family index should be 1.
-typedef enum _family_id
-{
+typedef enum _family_id {
     kStub_HWReset_FamilyID = CREATE_FAMILY_ID(kStub_VendorID, 1),
     kStub_SWVectReset_FamilyID = CREATE_FAMILY_ID(kStub_VendorID, 2),
     kStub_SWSysReset_FamilyID = CREATE_FAMILY_ID(kStub_VendorID, 3),
@@ -113,8 +109,7 @@ typedef enum _family_id
 } family_id_t;
 
 //! @brief Defines all characteristics of a device family.
-typedef struct target_family_descriptor
-{
+typedef struct target_family_descriptor {
     uint16_t family_id;                         /*!< Use to select or identify target family from defined target family or custom ones */
     reset_type_t default_reset_type;            /*!< Target family can select predefined reset from  kHardwareReset and kSoftwareReset */
     uint32_t soft_reset_type;                   /*!< Families can override software reset type to VECTRESET or SYSRESETREQ */

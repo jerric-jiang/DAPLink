@@ -118,25 +118,18 @@ int32_t USBD_CDC_ACM_SendBreak(uint16_t dur)
 #ifdef DRAG_N_DROP_SUPPORT
     if (!flash_intf_target->flash_busy())
 #endif
-    {
-        //added checking if flashing on target is in progress
+    { //added checking if flashing on target is in progress
         // reset and send the unique id over CDC
-        if (dur != 0)
-        {
+        if (dur != 0) {
             start_break_time = osKernelGetSysTimerCount();
             target_set_state(RESET_HOLD);
-        }
-        else
-        {
+        } else {
             end_break_time = osKernelGetSysTimerCount();
 
             // long reset -> send uID over serial (300 -> break > 3s)
-            if ((end_break_time - start_break_time) >= (300))
-            {
+            if ((end_break_time - start_break_time) >= (300)) {
                 main_reset_target(1);
-            }
-            else
-            {
+            } else {
                 main_reset_target(0);
             }
         }
@@ -167,40 +160,32 @@ void cdc_process_event()
 
     len_data = USBD_CDC_ACM_DataFree();
 
-    if (len_data > sizeof(data))
-    {
+    if (len_data > sizeof(data)) {
         len_data = sizeof(data);
     }
 
-    if (len_data)
-    {
+    if (len_data) {
         len_data = uart_read_data(data, len_data);
     }
 
-    if (len_data)
-    {
-        if (USBD_CDC_ACM_DataSend(data, len_data))
-        {
+    if (len_data) {
+        if (USBD_CDC_ACM_DataSend(data , len_data)) {
             main_blink_cdc_led(MAIN_LED_FLASH);
         }
     }
 
     len_data = uart_write_free();
 
-    if (len_data > sizeof(data))
-    {
+    if (len_data > sizeof(data)) {
         len_data = sizeof(data);
     }
 
-    if (len_data)
-    {
+    if (len_data) {
         len_data = USBD_CDC_ACM_DataRead(data, len_data);
     }
 
-    if (len_data)
-    {
-        if (uart_write_data(data, len_data))
-        {
+    if (len_data) {
+        if (uart_write_data(data, len_data)) {
             main_blink_cdc_led(MAIN_LED_FLASH);
         }
     }

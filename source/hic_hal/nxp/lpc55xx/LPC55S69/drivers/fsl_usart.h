@@ -700,9 +700,9 @@ status_t USART_TransferGetSendCount(USART_Type *base, usart_handle_t *handle, ui
  * @retval kStatus_InvalidArgument Invalid argument.
  */
 status_t USART_TransferReceiveNonBlocking(USART_Type *base,
-        usart_handle_t *handle,
-        usart_transfer_t *xfer,
-        size_t *receivedBytes);
+                                          usart_handle_t *handle,
+                                          usart_transfer_t *xfer,
+                                          size_t *receivedBytes);
 
 /*!
  * @brief Aborts the interrupt-driven data receiving.

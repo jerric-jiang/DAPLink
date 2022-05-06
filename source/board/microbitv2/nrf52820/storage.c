@@ -27,11 +27,9 @@ storage_status_t storage_program_flash(uint32_t adr, uint32_t sz, uint8_t *buf)
 {
     uint32_t *buf_32 = (uint32_t *)buf;
     nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_WRITE);
-    for (uint32_t i = 0; i < sz / 4; i++)
-    {
+    for (uint32_t i = 0; i < sz / 4; i++) {
         ((volatile uint32_t *)adr)[i] = buf_32[i];
-        while (!nrf_nvmc_ready_check(NRF_NVMC))
-        {
+        while (!nrf_nvmc_ready_check(NRF_NVMC)) {
             // Wait for controller to be ready
         }
     }
@@ -45,8 +43,7 @@ storage_status_t storage_erase_flash_page(uint32_t adr)
     // This operation can take up to 87.5ms
     nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_ERASE);
     nrf_nvmc_page_erase_start(NRF_NVMC, adr);
-    while (!nrf_nvmc_ready_check(NRF_NVMC))
-    {
+    while (!nrf_nvmc_ready_check(NRF_NVMC)) {
         // Wait for controller to be ready
     }
     nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_READONLY);

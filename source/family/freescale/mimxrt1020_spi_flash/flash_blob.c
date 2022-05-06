@@ -21,8 +21,7 @@
 // Originating from 'NXP.MIMXRT1021_DFP.13.1.1.pack'
 // digest = 19f93d076c7c4a284ea0129485399d12b09ccb6b68e4e47b53b43b535eb0cac9, file size = 2477896
 // algo version = 0x101, algo size = 15268 (0x3ba4)
-static const uint32_t MIMXRT1021_QuadSPI_4KB_SEC_flash_prog_blob[] =
-{
+static const uint32_t MIMXRT1021_QuadSPI_4KB_SEC_flash_prog_blob[] = {
     0xe7fdbe00,
     0x4605b570, 0x4616460c, 0xcc0fe002, 0x3e10c50f, 0xd2fa2e10, 0xd3022e08, 0xc503cc03, 0x2e043e08,
     0xcc01d307, 0x1f36c501, 0x7821e003, 0x1c647029, 0x1e761c6d, 0xbd70d2f9, 0x4770ba40, 0x4770ba40,
@@ -515,13 +514,11 @@ static const uint32_t flash_size = 0x00800000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x60000000, 0x00001000},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000075, // Init
     0x200000e1, // UnInit
     0x200000e5, // EraseChip

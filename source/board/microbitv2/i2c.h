@@ -33,8 +33,7 @@ typedef void (*i2cCallback_t)
     uint8_t     size
 );
 
-typedef enum
-{
+typedef enum {
     I2C_STATUS_SUCCESS = 0,
     I2C_STATUS_FAIL
 } i2c_status_t;

@@ -30,8 +30,7 @@
 // 'scfg' in hex - key valid
 #define STORAGE_CFG_KEY             0x73636667
 
-typedef __PACKED_STRUCT storage_cfg_tag
-{
+typedef __PACKED_STRUCT storage_cfg_tag {
     uint32_t        key;            // Magic key to indicate a valid record
     char            fileName[STORAGE_CFG_FILENAME_SIZE];
     uint8_t         fileVisible;
@@ -41,8 +40,7 @@ typedef __PACKED_STRUCT storage_cfg_tag
 } storage_cfg_t;
 
 
-static storage_cfg_t __ALIGNED(4) s_storage_cfg =
-{
+static storage_cfg_t __ALIGNED(4) s_storage_cfg = {
     .key = STORAGE_CFG_KEY,
     .fileName = STORAGE_CFG_FILENAME,
     .fileVisible = STORAGE_CFG_FILEVISIBLE,
@@ -63,16 +61,12 @@ void storate_reset_config()
     s_storage_cfg.fileEncWindowEnd = 0;
 }
 
-void storage_init()
-{
+void storage_init() {
     // Load Config from Flash if present
     storage_cfg_t *pflashConfigROM = (storage_cfg_t *)STORAGE_CONFIG_ADDRESS;
-    if (STORAGE_CFG_KEY == pflashConfigROM->key)
-    {
+    if (STORAGE_CFG_KEY == pflashConfigROM->key) {
         memcpy(&s_storage_cfg, pflashConfigROM, sizeof(storage_cfg_t));
-    }
-    else
-    {
+    } else {
         storate_reset_config();
     }
 }
@@ -83,11 +77,9 @@ storage_status_t storage_cfg_write()
 
     // Check first is config is already present in flash
     // If differences are found, erase and write new config
-    if (0 != memcmp(&s_storage_cfg, (void *)STORAGE_CONFIG_ADDRESS, sizeof(storage_cfg_t)))
-    {
+    if (0 != memcmp(&s_storage_cfg, (void *)STORAGE_CONFIG_ADDRESS, sizeof(storage_cfg_t))) {
         status = storage_erase_flash_page(STORAGE_CONFIG_ADDRESS);
-        if (status == STORAGE_SUCCESS)
-        {
+        if (status == STORAGE_SUCCESS) {
             status = storage_program_flash(STORAGE_CONFIG_ADDRESS, sizeof(storage_cfg_t), (uint8_t *) &s_storage_cfg);
         }
     }
@@ -100,8 +92,7 @@ storage_status_t storage_cfg_erase()
 
     // Erase flash sector containing flash config
     status = storage_erase_flash_page(STORAGE_CONFIG_ADDRESS);
-    if (status == STORAGE_SUCCESS)
-    {
+    if (status == STORAGE_SUCCESS) {
         storate_reset_config();
     }
     return status;
@@ -109,8 +100,7 @@ storage_status_t storage_cfg_erase()
 
 bool storage_file_extension_allowed(const vfs_filename_t filename)
 {
-    const char *valid_extensions[] =
-    {
+    const char *valid_extensions[] = {
         "BIN",
         "TXT",
         "CSV",
@@ -120,10 +110,8 @@ bool storage_file_extension_allowed(const vfs_filename_t filename)
     const uint32_t valid_extensions_len = sizeof(valid_extensions) / sizeof(valid_extensions[0]);
 
     // Check for invalid starting characters
-    for (uint32_t i = 0; i < valid_extensions_len; i++)
-    {
-        if (0 == memcmp(&filename[8], valid_extensions[i], 3))
-        {
+    for (uint32_t i = 0; i < valid_extensions_len; i++) {
+        if (0 == memcmp(&filename[8], valid_extensions[i], 3)) {
             return true;
         }
     }
@@ -137,22 +125,16 @@ storage_status_t storage_cfg_set_filename(const char * const filename)
     uint32_t status = STORAGE_SUCCESS;
 
     // Validate 8.3 filename
-    if (filename_valid(filename))
-    {
+    if (filename_valid(filename)) {
         // Check allowed extensions (.bin, .txt, .csv, .htm, .wav)
-        if (storage_file_extension_allowed(filename))
-        {
+        if (storage_file_extension_allowed(filename)) {
             memcpy(s_storage_cfg.fileName, filename, 11);
-        }
-        else
-        {
+        } else {
             // If disallowed extension is requested, .bin will be used
             memcpy(s_storage_cfg.fileName, filename, 8);
             memcpy(&s_storage_cfg.fileName[8], "BIN", 3);
         }
-    }
-    else
-    {
+    } else {
         status = STORAGE_ERROR;
     }
     return status;
@@ -161,12 +143,9 @@ storage_status_t storage_cfg_set_filename(const char * const filename)
 storage_status_t storage_cfg_set_file_size(const uint32_t file_size)
 {
     uint32_t status = STORAGE_SUCCESS;
-    if (file_size <= STORAGE_SIZE)
-    {
+    if (file_size <= STORAGE_SIZE) {
         s_storage_cfg.fileSize = file_size;
-    }
-    else
-    {
+    } else {
         status = STORAGE_ERROR;
     }
     return status;
@@ -213,8 +192,7 @@ uint32_t storage_cfg_get_encoding_end()
 uint8_t* storage_get_data_pointer(uint32_t adr)
 {
     adr += STORAGE_ADDRESS_START;
-    if (adr >= STORAGE_ADDRESS_END)
-    {
+    if (adr >= STORAGE_ADDRESS_END) {
         return NULL;
     }
     return (uint8_t *)adr;
@@ -226,8 +204,7 @@ storage_status_t storage_write(uint32_t adr, uint32_t sz, uint8_t *buf)
     if (
         adr < STORAGE_ADDRESS_START ||
         adr + sz > STORAGE_ADDRESS_END
-    )
-    {
+    ) {
         return STORAGE_ERROR;
     }
     return storage_program_flash(adr, sz, buf);
@@ -239,8 +216,7 @@ storage_status_t storage_erase_sector(uint32_t adr)
     if (
         adr < STORAGE_ADDRESS_START ||
         adr > (STORAGE_ADDRESS_END - STORAGE_SECTOR_SIZE)
-    )
-    {
+    ) {
         return STORAGE_ERROR;
     }
     return storage_erase_flash_page(adr);
@@ -258,18 +234,14 @@ storage_status_t storage_erase_range(uint32_t star_adr, uint32_t end_adr)
         star_adr <= end_adr &&
         star_adr >= STORAGE_ADDRESS_START &&
         end_adr < STORAGE_ADDRESS_END
-       )
-    {
+    ) {
         for (uint32_t addr = star_adr;
              addr <= end_adr && status == STORAGE_SUCCESS;
              addr += STORAGE_SECTOR_SIZE
-            )
-        {
+        ) {
             status = storage_erase_flash_page(addr);
         }
-    }
-    else
-    {
+    } else {
         status = STORAGE_ERROR;
     }
 
@@ -279,8 +251,7 @@ storage_status_t storage_erase_range(uint32_t star_adr, uint32_t end_adr)
 storage_status_t storage_erase_all()
 {
     storage_status_t status = storage_cfg_erase();
-    if (STORAGE_SUCCESS == status)
-    {
+    if (STORAGE_SUCCESS == status) {
         status = storage_erase_range(0, STORAGE_SIZE - STORAGE_SECTOR_SIZE);
     }
     return status;

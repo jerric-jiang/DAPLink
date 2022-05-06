@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t M487_AP_SP_flash_prog_blob[] =
-{
+static const uint32_t M487_AP_SP_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xbf00b501, 0x1e419800, 0x28009100, 0xbd08d1fa, 0x41f0e92d, 0x460f4606, 0x25644690, 0x49fb2059,
     0x20166008, 0xf8c10589, 0x20880100, 0x0100f8c1, 0xf8d006c0, 0xf0000100, 0xb9100001, 0xe8bd2001,
@@ -62,8 +61,7 @@ static const uint32_t M487_AP_SP_flash_prog_blob[] =
     0x00000000
 };
 
-static const uint32_t M487_LD_flash_prog_blob[] =
-{
+static const uint32_t M487_LD_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xbf00b501, 0x1e419800, 0x28009100, 0xbd08d1fa, 0x41f0e92d, 0x460f4606, 0x25644690, 0x49f82059,
     0x20166008, 0xf8c10589, 0x20880100, 0x0100f8c1, 0xf8d006c0, 0xf0000100, 0xb9100001, 0xe8bd2001,
@@ -117,15 +115,13 @@ static const uint32_t M487_LD_flash_prog_blob[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     { 0x00000000, 0x00001000 },
     { 0x00100000, 0x00001000 },
     { 0x00200000, 0x00001000 },
 };
 
-static const program_target_t M487_AP_SP_flash =
-{
+static const program_target_t M487_AP_SP_flash = {
     0x20000031, // Init
     0x200000f7, // UnInit
     0x0,        // EraseChip
@@ -149,8 +145,7 @@ static const program_target_t M487_AP_SP_flash =
     0x00001000       // ram_to_flash_bytes_to_be_written
 };
 
-static const program_target_t M487_LD_flash =
-{
+static const program_target_t M487_LD_flash = {
     0x20000031, // Init
     0x20000105, // UnInit
     0x0,        // EraseChip

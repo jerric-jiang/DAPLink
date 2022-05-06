@@ -36,10 +36,8 @@ __WEAK BOOL USBD_EndPoint0_Setup_WinUSB_ReqToDevice(void)
     U32 len;
 
     BOOL success = (__FALSE);
-    if (USBD_SetupPacket.bRequest == usbd_winusb_vendor_code)           /* vendor code correct? */
-    {
-        switch (USBD_SetupPacket.wIndex)
-        {
+    if (USBD_SetupPacket.bRequest == usbd_winusb_vendor_code) {			/* vendor code correct? */
+        switch (USBD_SetupPacket.wIndex) {
             case WINUSB_REQUEST_GET_DESCRIPTOR_SET:
                 pD = (U8 *)USBD_WinUSBDescriptorSetDescriptor;
                 USBD_EP0Data.pData = pD;
@@ -52,18 +50,13 @@ __WEAK BOOL USBD_EndPoint0_Setup_WinUSB_ReqToDevice(void)
         }
     }
 
-    if (success)
-    {
-        if (len < USBD_SetupPacket.wLength)
-        {
+    if (success) {
+        if (len < USBD_SetupPacket.wLength) {
             USBD_EP0Data.Count = len;
-            if (!(len & (usbd_max_packet0 - 1)))
-            {
+            if (!(len & (usbd_max_packet0 - 1))) {
                 USBD_ZLP = 1;
             }
-        }
-        else
-        {
+        } else {
             USBD_EP0Data.Count = USBD_SetupPacket.wLength;
         }
 

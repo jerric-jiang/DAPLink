@@ -1,6 +1,6 @@
 /**
  * @file    rt_Mutex.h
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -20,9 +20,9 @@
  */
 
 /* Functions */
-extern void      rt_mut_init(OS_ID mutex);
-extern OS_RESULT rt_mut_release(OS_ID mutex);
-extern OS_RESULT rt_mut_wait(OS_ID mutex, U16 timeout);
+extern void      rt_mut_init    (OS_ID mutex);
+extern OS_RESULT rt_mut_release (OS_ID mutex);
+extern OS_RESULT rt_mut_wait    (OS_ID mutex, U16 timeout);
 
 /*----------------------------------------------------------------------------
  * end of file

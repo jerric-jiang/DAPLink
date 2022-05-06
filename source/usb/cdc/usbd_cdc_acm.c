@@ -249,8 +249,7 @@ __WEAK int32_t USBD_CDC_ACM_SetLineCoding(void)
 
 __WEAK int32_t USBD_CDC_ACM_GetLineCoding(void)
 {
-    if (USBD_CDC_ACM_PortGetLineCoding(&line_coding))
-    {
+    if (USBD_CDC_ACM_PortGetLineCoding(&line_coding)) {
         USBD_EP0Buf[0] = (line_coding.dwDTERate >>  0) & 0xFF;
         USBD_EP0Buf[1] = (line_coding.dwDTERate >>  8) & 0xFF;
         USBD_EP0Buf[2] = (line_coding.dwDTERate >> 16) & 0xFF;
@@ -312,8 +311,7 @@ int32_t USBD_CDC_ACM_DataSend(const uint8_t *buf, int32_t len)
     len_available = ((int32_t)usbd_cdc_acm_sendbuf_sz) - len_data;  /* Num of
                                            bytes of space available           */
 
-    if (len_available <= 0)               /* If no space for data to send       */
-    {
+    if (len_available <= 0) {             /* If no space for data to send       */
         return (0);
     }
 
@@ -326,8 +324,7 @@ int32_t USBD_CDC_ACM_DataSend(const uint8_t *buf, int32_t len)
     len_before_wrap = 0;                  /* Circular buffer size before wrap   */
 
     if ((ptr_data_to_send >= ptr_data_sent) && /* If wrap is possible to happen */
-        ((ptr_data_to_send + len) >= (USBD_CDC_ACM_SendBuf + usbd_cdc_acm_sendbuf_sz)))
-    {
+            ((ptr_data_to_send + len) >= (USBD_CDC_ACM_SendBuf + usbd_cdc_acm_sendbuf_sz))) {
         /* If data wraps around end of buffer */
         len_before_wrap   = USBD_CDC_ACM_SendBuf + usbd_cdc_acm_sendbuf_sz - ptr_data_to_send;
         memcpy(ptr_data_to_send, buf_loc, len_before_wrap); /* Copy data till end */
@@ -338,8 +335,7 @@ int32_t USBD_CDC_ACM_DataSend(const uint8_t *buf, int32_t len)
                                                        the send buffer        */
     }
 
-    if (len)                              /* If there are bytes to send         */
-    {
+    if (len) {                            /* If there are bytes to send         */
         memcpy(ptr_data_to_send, buf_loc, len);   /* Copy data to send buffer     */
         ptr_data_to_send += len;            /* Correct position of write pointer  */
     }
@@ -363,8 +359,7 @@ int32_t USBD_CDC_ACM_DataSend(const uint8_t *buf, int32_t len)
 
 int32_t USBD_CDC_ACM_PutChar(const uint8_t ch)
 {
-    if ((USBD_CDC_ACM_DataSend(&ch, 1)) == 1)
-    {
+    if ((USBD_CDC_ACM_DataSend(&ch, 1)) == 1) {
         return ((uint32_t) ch);
     }
 
@@ -386,20 +381,16 @@ int32_t USBD_CDC_ACM_DataRead(uint8_t *buf, int32_t len)
 {
     int32_t len_data;
 
-    if (ptr_data_received > ptr_data_read)   /*If there is already received data   */
-    {
+    if (ptr_data_received > ptr_data_read) { /*If there is already received data   */
         len_data = ptr_data_received - ptr_data_read; /* Available bytes of data  */
 
-        if (len > len_data)                 /* If more requested then available   */
-        {
+        if (len > len_data) {               /* If more requested then available   */
             len = len_data;    /* correct to return maximum available*/
         }
 
         memcpy(buf, ptr_data_read, len);    /* Copy received data to provided buf */
         ptr_data_read      += len;          /* Correct position of read pointer   */
-    }
-    else
-    {
+    } else {
         len = 0;                            /* No data received                   */
     }
 
@@ -420,8 +411,7 @@ int32_t USBD_CDC_ACM_GetChar(void)
 {
     uint8_t ch;
 
-    if ((USBD_CDC_ACM_DataRead(&ch, 1)) == 1)
-    {
+    if ((USBD_CDC_ACM_DataRead(&ch, 1)) == 1) {
         return ((int32_t) ch);
     }
 
@@ -462,8 +452,7 @@ int32_t USBD_CDC_ACM_DataAvailable(void)
 
 int32_t USBD_CDC_ACM_Notify(uint16_t stat)
 {
-    if (USBD_Configuration)
-    {
+    if (USBD_Configuration) {
         USBD_CDC_ACM_NotifyBuf[0] = 0xA1;   /* bmRequestType                      */
         USBD_CDC_ACM_NotifyBuf[1] = CDC_NOTIFICATION_SERIAL_STATE;/* bNotification
                                           (SERIAL_STATE)                      */
@@ -509,18 +498,16 @@ void USBD_CDC_ACM_Reset_Event(void)
 
 void USBD_CDC_ACM_SOF_Event(void)
 {
-    if (!USBD_Configuration)
-    {
+    if (!USBD_Configuration) {
         // Don't process events until CDC is
         // configured and the endpoints enabled
         return;
     }
     if ((!data_read_access)         &&    /* If not read active                 */
-        (ptr_data_received == ptr_data_read) &&     /* If received and read
+            (ptr_data_received == ptr_data_read) &&     /* If received and read
                                                      pointers point to same
                                                      the location             */
-        (ptr_data_received != USBD_CDC_ACM_ReceiveBuf))
-    {
+            (ptr_data_received != USBD_CDC_ACM_ReceiveBuf)) {
         /* and if receive
                                                        pointer does not already
                                                        point to the start of
@@ -538,15 +525,13 @@ void USBD_CDC_ACM_SOF_Event(void)
     }
 
     if (data_received_pending_pckts &&    /* If packets are pending             */
-        (!data_read_access)          &&    /* and if not read active             */
-        (!data_no_space_for_receive))      /* and if there is space to receive   */
-    {
+            (!data_read_access)          &&    /* and if not read active             */
+            (!data_no_space_for_receive)) {    /* and if there is space to receive   */
         data_read_access = 1;               /* Disable access to read data        */
         USBD_CDC_ACM_EP_BULKOUT_HandleData(); /* Handle received data             */
         data_read_access = 0;               /* Enable access to read data         */
 
-        if (ptr_data_received != ptr_data_read)
-        {
+        if (ptr_data_received != ptr_data_read) {
             USBD_CDC_ACM_DataReceived(ptr_data_received - ptr_data_read);
         }  /* Call
 
@@ -554,11 +539,10 @@ void USBD_CDC_ACM_SOF_Event(void)
     }
 
     if ((!data_send_access)         &&    /* If send data is not being accessed */
-        (!data_send_active)         &&    /* and send is not active             */
-        (data_to_send_wr - data_to_send_rd) /* and if there is data to be sent    */
+            (!data_send_active)         &&    /* and send is not active             */
+            (data_to_send_wr - data_to_send_rd) /* and if there is data to be sent    */
 //&& ((control_line_state & 3) == 3)    /* and if DTR and RTS is 1            */
-       )
-    {
+       ) {
         data_send_access = 1;               /* Block access to send data          */
         data_send_active = 1;               /* Start data sending                 */
         USBD_CDC_ACM_EP_BULKIN_HandleData();/* Handle data to send                */
@@ -593,8 +577,7 @@ static void USBD_CDC_ACM_EP_BULKOUT_HandleData()
     uint32_t len_free_to_recv;
     int32_t len_received;
 
-    if ((usbd_cdc_acm_receivebuf_sz - (ptr_data_received - USBD_CDC_ACM_ReceiveBuf)) >= usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed])
-    {
+    if ((usbd_cdc_acm_receivebuf_sz - (ptr_data_received - USBD_CDC_ACM_ReceiveBuf)) >= usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed]) {
         /* If there is space for 1 max packet */
         /* Read received packet to receive buf*/
         len_free_to_recv = usbd_cdc_acm_receivebuf_sz - (ptr_data_received - USBD_CDC_ACM_ReceiveBuf);
@@ -602,18 +585,14 @@ static void USBD_CDC_ACM_EP_BULKOUT_HandleData()
         ptr_data_received += len_received;  /* Correct pointer to received data   */
 
         if (data_received_pending_pckts &&  /* If packet was pending              */
-            !data_receive_int_access)        /* and not interrupt access           */
-        {
+                !data_receive_int_access) {      /* and not interrupt access           */
             data_received_pending_pckts--;    /* Decrement pending packets number   */
         }
-    }
-    else
-    {
+    } else {
         data_no_space_for_receive = 1;      /* There is no space in receive buffer
                                            for the newly received data        */
 
-        if (data_receive_int_access)
-        {
+        if (data_receive_int_access) {
             /* If this access is from interrupt
                                                    function                           */
             data_received_pending_pckts++;    /* then this is new unhandled packet  */
@@ -634,8 +613,7 @@ static void USBD_CDC_ACM_EP_BULKIN_HandleData(void)
 {
     int32_t len_to_send, len_sent;
 
-    if (!data_send_active)                /* If sending is not active           */
-    {
+    if (!data_send_active) {              /* If sending is not active           */
         return;
     }
 
@@ -643,20 +621,17 @@ static void USBD_CDC_ACM_EP_BULKIN_HandleData(void)
 
     /* Check if sending is finished                                             */
     if (!len_to_send    &&                /* If all data was sent               */
-        !data_send_zlp)                   /* and ZLP was sent if necessary also */
-    {
+            !data_send_zlp)  {                /* and ZLP was sent if necessary also */
         data_send_active = 0;               /* Sending not active any more        */
         return;
     }
 
     /* Check if data needs to be sent                                           */
-    if (len_to_send)
-    {
+    if (len_to_send) {
         /* If there is data available do be
                                                  sent                               */
         if ((ptr_data_sent >= ptr_data_to_send) && /* If data before end of buf avail*/
-            ((ptr_data_sent + len_to_send) >= (USBD_CDC_ACM_SendBuf + usbd_cdc_acm_sendbuf_sz)))
-        {
+                ((ptr_data_sent + len_to_send) >= (USBD_CDC_ACM_SendBuf + usbd_cdc_acm_sendbuf_sz))) {
             /* and if available data wraps around
                the end of the send buffer         */
             /* Correct bytes to send to data
@@ -664,17 +639,14 @@ static void USBD_CDC_ACM_EP_BULKIN_HandleData(void)
             len_to_send = USBD_CDC_ACM_SendBuf + usbd_cdc_acm_sendbuf_sz - ptr_data_sent;
         }
 
-        if (len_to_send > usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed])
-        {
+        if (len_to_send > usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed]) {
             /* If
                                                    there is more data to be sent then
                                                    can be sent in a single packet     */
             /* Correct to send maximum pckt size  */
             len_to_send = usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed];
         }
-    }
-    else if (data_send_zlp)               /* or if ZLP should be sent           */
-    {
+    } else if (data_send_zlp) {           /* or if ZLP should be sent           */
         len_to_send = 0;
     }
 
@@ -694,14 +666,11 @@ static void USBD_CDC_ACM_EP_BULKIN_HandleData(void)
 
     if ((data_to_send_wr == data_to_send_rd) &&   /* If there are no more
                                            bytes available to be sent         */
-        (len_sent == usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed]))
-    {
+            (len_sent == usbd_cdc_acm_maxpacketsize1[USBD_HighSpeed])) {
         /* If last packet size was same as
            maximum packet size                */
         data_send_zlp = 1;                  /* ZLP packet should be sent          */
-    }
-    else
-    {
+    } else {
         data_send_zlp = 0;                  /* No ZLP packet should be sent       */
     }
 }
@@ -719,8 +688,7 @@ static void USBD_CDC_ACM_EP_BULKIN_HandleData(void)
 
 void USBD_CDC_ACM_EP_BULKOUT_Event(uint32_t event)
 {
-    if (data_read_access)
-    {
+    if (data_read_access) {
         /* If data is being accessed from
                                                  read function                      */
         data_received_pending_pckts++;      /* 1 more packet received and not
@@ -734,8 +702,7 @@ void USBD_CDC_ACM_EP_BULKOUT_Event(uint32_t event)
     data_receive_int_access = 0;          /* Read access from interrupt func end*/
     data_read_access = 0;                 /* Allow access to read data          */
 
-    if (ptr_data_received != ptr_data_read)
-    {
+    if (ptr_data_received != ptr_data_read) {
         USBD_CDC_ACM_DataReceived(ptr_data_received - ptr_data_read);
     }    /* Call
 
@@ -756,8 +723,7 @@ void USBD_CDC_ACM_EP_BULKIN_Event(uint32_t event)
 {
     if (data_send_access                  /* If send data is being accessed     */
 // ||((control_line_state & 3) != 3)    /* or if DTR or RTS is 0              */
-       )
-    {
+       ) {
         return;
     }
 
@@ -780,13 +746,11 @@ void USBD_CDC_ACM_EP_BULKIN_Event(uint32_t event)
 
 void USBD_CDC_ACM_EP_BULK_Event(uint32_t event)
 {
-    if (event & USBD_EVT_OUT)
-    {
+    if (event & USBD_EVT_OUT) {
         USBD_CDC_ACM_EP_BULKOUT_Event(event);
     }
 
-    if (event & USBD_EVT_IN)
-    {
+    if (event & USBD_EVT_IN) {
         USBD_CDC_ACM_EP_BULKIN_Event(event);
     }
 }
@@ -802,8 +766,7 @@ void USBD_CDC_ACM_EP_BULK_Event(uint32_t event)
 
 void USBD_RTX_CDC_ACM_EP_INTIN_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
         USBD_CDC_ACM_EP_INTIN_Event(usbd_os_evt_get());
     }
@@ -818,12 +781,10 @@ void USBD_RTX_CDC_ACM_EP_INTIN_Event(void)
 
 void USBD_RTX_CDC_ACM_EP_BULKIN_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
 
-        if (usbd_os_evt_get() & USBD_EVT_IN)
-        {
+        if (usbd_os_evt_get() & USBD_EVT_IN) {
             USBD_CDC_ACM_EP_BULKIN_Event(0);
         }
     }
@@ -838,12 +799,10 @@ void USBD_RTX_CDC_ACM_EP_BULKIN_Event(void)
 
 void USBD_RTX_CDC_ACM_EP_BULKOUT_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
 
-        if (usbd_os_evt_get() & USBD_EVT_OUT)
-        {
+        if (usbd_os_evt_get() & USBD_EVT_OUT) {
             USBD_CDC_ACM_EP_BULKOUT_Event(0);
         }
     }
@@ -858,8 +817,7 @@ void USBD_RTX_CDC_ACM_EP_BULKOUT_Event(void)
 
 void USBD_RTX_CDC_ACM_EP_BULK_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
         USBD_CDC_ACM_EP_BULK_Event(usbd_os_evt_get());
     }

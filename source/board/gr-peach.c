@@ -22,8 +22,7 @@
 #include "target_family.h"
 #include "target_board.h"
 
-const board_info_t g_board_info =
-{
+const board_info_t g_board_info = {
     .info_version = kBoardInfoVersion,
     .board_id = "5500",
     .family_id = kRenesas_FamilyID,

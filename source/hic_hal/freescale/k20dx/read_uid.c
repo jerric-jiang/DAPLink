@@ -1,6 +1,6 @@
 /**
  * @file    read_uid.c
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -18,7 +18,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 #include "MK20D5.h"
 #include "read_uid.h"
 

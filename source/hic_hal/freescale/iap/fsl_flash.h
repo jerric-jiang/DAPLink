@@ -137,7 +137,7 @@ enum _flash_status
     kStatus_FLASH_AccessError =
         MAKE_STATUS(kStatusGroupFlashDriver, 3), /*!< Invalid instruction codes and out-of bounds addresses */
     kStatus_FLASH_ProtectionViolation = MAKE_STATUS(
-                                            kStatusGroupFlashDriver, 4), /*!< The program/erase operation is requested to execute on protected areas */
+        kStatusGroupFlashDriver, 4), /*!< The program/erase operation is requested to execute on protected areas */
     kStatus_FLASH_CommandFailure =
         MAKE_STATUS(kStatusGroupFlashDriver, 5), /*!< Run-time error during command execution. */
     kStatus_FLASH_UnknownProperty = MAKE_STATUS(kStatusGroupFlashDriver, 6),   /*!< Unknown property.*/

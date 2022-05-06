@@ -1,6 +1,6 @@
 /**
  * @file    usbd_ATSAM3U2C.c
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -37,36 +37,21 @@ uint32_t eptsta_copy[USBD_EP_NUM + 1];
 
 static int USBD_CalcSizeEP(uint32_t size)
 {
-    if (size <=    8)
-    {
+    if (size <=    8) {
         return (0);
-    }
-    else if (size <=   16)
-    {
+    } else if (size <=   16) {
         return (1);
-    }
-    else if (size <=   32)
-    {
+    } else if (size <=   32) {
         return (2);
-    }
-    else if (size <=   64)
-    {
+    } else if (size <=   64) {
         return (3);
-    }
-    else if (size <=  128)
-    {
+    } else if (size <=  128) {
         return (4);
-    }
-    else if (size <=  256)
-    {
+    } else if (size <=  256) {
         return (5);
-    }
-    else if (size <=  512)
-    {
+    } else if (size <=  512)  {
         return (6);
-    }
-    else if (size <= 1024)
-    {
+    } else if (size <= 1024) {
         return (7);
     }
 
@@ -82,8 +67,7 @@ static int USBD_CalcSizeEP(uint32_t size)
 
 static int USBD_GetSizeEP(uint32_t EPNum)
 {
-    switch (EPNum & 0x0F)
-    {
+    switch (EPNum & 0x0F) {
         case 0:
             return (64);                      /* Maximum size is 64 bytes           */
 
@@ -145,8 +129,7 @@ void USBD_Init(void)
 #endif
 
     /* Disable DMA for UDPHS                                                    */
-    for (n = 1; n < (UDPHSDMA_NUMBER); n++)
-    {
+    for (n = 1; n < (UDPHSDMA_NUMBER); n++) {
         /* RESET endpoint canal DMA:                                              */
         UDPHS->UDPHS_DMA[n].UDPHS_DMACONTROL = 0;     /* STOP command             */
         /* Disable endpoint                                                       */
@@ -184,13 +167,10 @@ void USBD_Init(void)
 
 void USBD_Connect(BOOL con)
 {
-    if (con)
-    {
+    if (con) {
         UDPHS->UDPHS_CTRL &= ~UDPHS_CTRL_DETACH;          /* Pull Up on DP        */
         UDPHS->UDPHS_CTRL |=  UDPHS_CTRL_PULLD_DIS;       /* Disable Pull Down    */
-    }
-    else
-    {
+    } else {
         UDPHS->UDPHS_CTRL |=  UDPHS_CTRL_DETACH;          /* Detach               */
         UDPHS->UDPHS_CTRL &= ~UDPHS_CTRL_PULLD_DIS;       /* Enable Pull Down     */
     }
@@ -209,8 +189,7 @@ void USBD_Reset(void)
     EPMask = ((1 << (USBD_EP_NUM + 1)) - 1);
 
     /* Reset & Disable USB Endpoints                                            */
-    for (ep = 0; ep <= USBD_EP_NUM; ep++)
-    {
+    for (ep = 0; ep <= USBD_EP_NUM; ep++) {
         UDPHS->UDPHS_EPT[ep].UDPHS_EPTCFG    =  0;
         UDPHS->UDPHS_EPT[ep].UDPHS_EPTCTLDIS = (0x1 <<  0);     /* Disable EP     */
         eptsta_copy[ep] = 0;
@@ -245,20 +224,18 @@ void USBD_Reset(void)
                                            UDPHS_EPTCTLENB_STALL_SNT           |
                                            UDPHS_EPTCTLENB_NYET_DIS            |
                                            UDPHS_EPTCTLENB_EPT_ENABL;
-
-
+                                           
+    
 #if (USBD_HS_ENABLE == 1)
     U8 * config_desc = USBD_ConfigDescriptor_HS;
 #else
     U8 * config_desc = USBD_ConfigDescriptor;
 #endif
 
-    while (((USB_ENDPOINT_DESCRIPTOR *)config_desc)->bLength > 0)
-    {
-        if (((USB_ENDPOINT_DESCRIPTOR *)config_desc)->bDescriptorType == USB_ENDPOINT_DESCRIPTOR_TYPE)
-        {
+    while (((USB_ENDPOINT_DESCRIPTOR *)config_desc)->bLength > 0) {
+        if (((USB_ENDPOINT_DESCRIPTOR *)config_desc)->bDescriptorType == USB_ENDPOINT_DESCRIPTOR_TYPE) {
             uint32_t num, type, dir, size, banks, interval;
-            USB_ENDPOINT_DESCRIPTOR *pEPD = (USB_ENDPOINT_DESCRIPTOR *)config_desc;
+            USB_ENDPOINT_DESCRIPTOR *pEPD =  (USB_ENDPOINT_DESCRIPTOR *)config_desc;
             num      = pEPD->bEndpointAddress & 0x0F;
             type     = pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK;
             dir      = pEPD->bEndpointAddress >> 7;
@@ -323,12 +300,9 @@ void USBD_WakeUp(void)
 
 void USBD_WakeUpCfg(BOOL cfg)
 {
-    if (cfg)
-    {
+    if (cfg) {
         /* Enable wakeup mechanism */
-    }
-    else
-    {
+    } else {
         UDPHS->UDPHS_CTRL &= ~UDPHS_CTRL_REWAKEUP;
         UDPHS->UDPHS_IEN  &= ~UDPHS_IEN_UPSTR_RES;
     }
@@ -344,17 +318,13 @@ void USBD_WakeUpCfg(BOOL cfg)
 
 void USBD_SetAddress(uint32_t adr, uint32_t setup)
 {
-    if (setup)
-    {
+    if (setup) {
         return;
     }
 
-    if (adr)
-    {
+    if (adr) {
         UDPHS->UDPHS_CTRL |= (UDPHS_CTRL_FADDR_EN | adr);
-    }
-    else
-    {
+    } else {
         UDPHS->UDPHS_CTRL &= ~(UDPHS_CTRL_FADDR_EN | UDPHS_CTRL_DEV_ADDR_Msk);
     }
 }
@@ -389,8 +359,7 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
     banks    = 1;
     */
     /* Check if MaxPacketSize fits for EndPoint                                 */
-    if (pEPD->wMaxPacketSize <= USBD_GetSizeEP(num))
-    {
+    if (pEPD->wMaxPacketSize <= USBD_GetSizeEP(num)) {
         /*UDPHS->UDPHS_EPT[num].UDPHS_EPTCFG    = (interval << 8) |
                                                 (banks    << 6) |
                                                 (type     << 4) |
@@ -518,21 +487,18 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
     cnt     = (eptsta >> 20) & 0x07FF;  /* Get by */
     copy_sz = cnt > size ? size : cnt;
 
-    for (n = 0; n < copy_sz; n++)
-    {
+    for (n = 0; n < copy_sz; n++) {
         *pData++ = *pEPFIFO++;
     }
 
     util_assert(cnt == copy_sz);
 
-    if ((cnt == copy_sz) && (eptsta & (0x1 << 9)))
-    {
+    if ((cnt == copy_sz) && (eptsta & (0x1 << 9))) {
         UDPHS->UDPHS_EPT[EPNum].UDPHS_EPTCLRSTA = (0x1 << 9);   /* Rece OUT Clear   */
     }
 
     /* RX_Setup must be cleared after Setup packet is read                      */
-    if (eptsta & (0x1 << 12))
-    {
+    if (eptsta & (0x1 << 12)) {
         UDPHS->UDPHS_EPT[EPNum].UDPHS_EPTCLRSTA = (0x1 << 12);  /* Rece SETUP Clear */
     }
     UDPHS->UDPHS_IEN |= (1 << (EPNum + 8));     /* Enable EP int after data read*/
@@ -560,8 +526,7 @@ uint32_t USBD_WriteEP(uint32_t EPNum, uint8_t *pData, uint32_t cnt)
 
     // Cached value should match the real value
     util_assert((UDPHS->UDPHS_EPT[EPNum].UDPHS_EPTSTA & (0x1 << 5)) == (eptsta & (0x1 << 5)));
-    if (eptsta & (0x1 << 5))    /* If EP is stall */
-    {
+    if (eptsta & (0x1 << 5)) {  /* If EP is stall */
         return (cnt);
     }
 
@@ -571,8 +536,7 @@ uint32_t USBD_WriteEP(uint32_t EPNum, uint8_t *pData, uint32_t cnt)
 
     pEPFIFO = (uint8_t *)((uint32_t *)UDPHS_EPTFIFO_BASE + (16384 * EPNum));
 
-    for (n = 0; n < cnt; n++)
-    {
+    for (n = 0; n < cnt; n++) {
         *pEPFIFO++ = *pData++;              /* Write data to FIFO                 */
     }
 
@@ -591,19 +555,13 @@ uint32_t USBD_GetFrame(void)
 {
     uint32_t val;
 
-    if ((UDPHS->UDPHS_FNUM & (1UL << 31)) == 0)
-    {
-        if (USBD_HighSpeed)
-        {
+    if ((UDPHS->UDPHS_FNUM & (1UL << 31)) == 0) {
+        if (USBD_HighSpeed) {
             val = UDPHS->UDPHS_FNUM & 0x7FFFFFFF;
-        }
-        else
-        {
+        } else {
             val = (UDPHS->UDPHS_FNUM & UDPHS_FNUM_FRAME_NUMBER_Msk) >> 3;
         }
-    }
-    else
-    {
+    } else {
         val = 0xFFFFFFFF;
     }
 
@@ -647,8 +605,7 @@ void USBD_Handler(void)
     intsta = UDPHS->UDPHS_INTSTA & UDPHS->UDPHS_IEN;
 
     /* End of Bus Reset Interrupt                                               */
-    if (intsta & UDPHS_INTSTA_ENDRESET)
-    {
+    if (intsta & UDPHS_INTSTA_ENDRESET) {
         /* Get used speed (HighSpeed or FullSpeed)                                */
         USBD_HighSpeed = (UDPHS->UDPHS_INTSTA & UDPHS_INTSTA_SPEED) ? 1 : 0;
         USBD_Reset();
@@ -656,15 +613,13 @@ void USBD_Handler(void)
 #ifdef __RTX
         UDPHS->UDPHS_CLRINT = UDPHS_CLRINT_ENDRESET;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_RESET, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Reset_Event)
-        {
+        if (USBD_P_Reset_Event) {
             USBD_P_Reset_Event();
         }
 
@@ -673,21 +628,18 @@ void USBD_Handler(void)
     }
 
     /* USB Suspend Interrupt                                                    */
-    if (intsta & UDPHS_INTSTA_DET_SUSPD)
-    {
+    if (intsta & UDPHS_INTSTA_DET_SUSPD) {
         USBD_Suspend();
 #ifdef __RTX
         UDPHS->UDPHS_CLRINT = UDPHS_CLRINT_DET_SUSPD;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_SUSPEND, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Suspend_Event)
-        {
+        if (USBD_P_Suspend_Event) {
             USBD_P_Suspend_Event();
         }
 
@@ -696,21 +648,18 @@ void USBD_Handler(void)
     }
 
     /* USB Resume Interrupt                                                     */
-    if (intsta & UDPHS_INTSTA_WAKE_UP)
-    {
+    if (intsta & UDPHS_INTSTA_WAKE_UP) {
         USBD_Resume();
 #ifdef __RTX
         UDPHS->UDPHS_CLRINT = UDPHS_INTSTA_WAKE_UP;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_RESUME,  USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Resume_Event)
-        {
+        if (USBD_P_Resume_Event) {
             USBD_P_Resume_Event();
         }
 
@@ -719,14 +668,12 @@ void USBD_Handler(void)
     }
 
     /* USB Remote Wakeup Interrupt                                              */
-    if (intsta & UDPHS_INTSTA_UPSTR_RES)
-    {
+    if (intsta & UDPHS_INTSTA_UPSTR_RES) {
         UDPHS->UDPHS_CLRINT = UDPHS_INTSTA_UPSTR_RES;
     }
 
     /* Start of Frame Interrupt                                                 */
-    if (intsta & UDPHS_INTSTA_INT_SOF)
-    {
+    if (intsta & UDPHS_INTSTA_INT_SOF) {
         /* Process the SOF interrupt even in high speed mode.
         The SOF and MICRO_SOF interrupt are never generated at the same
         time. Instead, when in high speed mode there is 1 SOF
@@ -735,15 +682,13 @@ void USBD_Handler(void)
 #ifdef __RTX
         UDPHS->UDPHS_CLRINT = UDPHS_CLRINT_INT_SOF;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_SOF, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_SOF_Event)
-        {
+        if (USBD_P_SOF_Event) {
             USBD_P_SOF_Event();
         }
 
@@ -752,58 +697,47 @@ void USBD_Handler(void)
     }
 
     /* Micro Frame Interrupt                                                    */
-    if (intsta & UDPHS_INTSTA_MICRO_SOF)
-    {
-        if (USBD_HighSpeed == 1)
-        {
+    if (intsta & UDPHS_INTSTA_MICRO_SOF) {
+        if (USBD_HighSpeed == 1) {
 #ifdef __RTX
             UDPHS->UDPHS_CLRINT = UDPHS_CLRINT_MICRO_SOF;
 
-            if (USBD_RTX_DevTask)
-            {
+            if (USBD_RTX_DevTask) {
                 isr_evt_set(USBD_EVT_SOF, USBD_RTX_DevTask);
             }
 
 #else
 
-            if (USBD_P_SOF_Event)
-            {
+            if (USBD_P_SOF_Event) {
                 USBD_P_SOF_Event();
             }
 
             UDPHS->UDPHS_CLRINT = UDPHS_CLRINT_MICRO_SOF;
 #endif
 
-        }
-        else
-        {
+        } else {
             UDPHS->UDPHS_CLRINT = UDPHS_CLRINT_MICRO_SOF;
         }
     }
 
     /* Endpoint Interrupts                                                      */
-    for (n = 0; n <= USBD_EP_NUM; n++)
-    {
-        if (intsta & (1 << (n + 8)))
-        {
+    for (n = 0; n <= USBD_EP_NUM; n++) {
+        if (intsta & (1 << (n + 8))) {
             eptsta = UDPHS->UDPHS_EPT[n].UDPHS_EPTSTA;  /* Read EP status           */
             eptsta_copy[n] = eptsta;
 
             /* Data Packet Sent Interrupt                                           */
-            if (eptsta & (1 << 10))           /* Transmitted IN Data Complete Int   */
-            {
+            if (eptsta & (1 << 10)) {         /* Transmitted IN Data Complete Int   */
                 UDPHS->UDPHS_EPT[n].UDPHS_EPTCLRSTA = (1 << 10);    /* Tx IN Clear    */
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[n])         /* IN Packet                          */
-                {
+                if (USBD_RTX_EPTask[n]) {       /* IN Packet                          */
                     isr_evt_set(USBD_EVT_IN,  USBD_RTX_EPTask[n]);
                 }
 
 #else
 
-                if (USBD_P_EP[n])
-                {
+                if (USBD_P_EP[n]) {
                     USBD_P_EP[n](USBD_EVT_IN);
                 }
 
@@ -811,20 +745,17 @@ void USBD_Handler(void)
             }
 
             /* Data Packet Received Interrupt                                       */
-            if (eptsta & (1 << 9))            /* Received OUT Data Interrupt        */
-            {
+            if (eptsta & (1 << 9)) {          /* Received OUT Data Interrupt        */
                 UDPHS->UDPHS_IEN &= ~(1 << (n + 8));      /* Disable EP int until read*/
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[n])         /* OUT Packet                         */
-                {
+                if (USBD_RTX_EPTask[n]) {       /* OUT Packet                         */
                     isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[n]);
                 }
 
 #else
 
-                if (USBD_P_EP[n])
-                {
+                if (USBD_P_EP[n]) {
                     USBD_P_EP[n](USBD_EVT_OUT);
                 }
 
@@ -832,21 +763,17 @@ void USBD_Handler(void)
             }
 
             /* STALL Packet Sent Interrupt                                          */
-            if (eptsta & (0x1 << 13))         /* Stall Sent                         */
-            {
-                if ((UDPHS->UDPHS_EPT[n].UDPHS_EPTCFG & UDPHS_EPTCFG_EPT_TYPE_Msk) == UDPHS_EPTCFG_EPT_TYPE_CTRL8)
-                {
+            if (eptsta & (0x1 << 13)) {       /* Stall Sent                         */
+                if ((UDPHS->UDPHS_EPT[n].UDPHS_EPTCFG & UDPHS_EPTCFG_EPT_TYPE_Msk) == UDPHS_EPTCFG_EPT_TYPE_CTRL8) {
 #ifdef __RTX
 
-                    if (USBD_RTX_EPTask[n])
-                    {
+                    if (USBD_RTX_EPTask[n]) {
                         isr_evt_set(USBD_EVT_IN_STALL, USBD_RTX_EPTask[n]);
                     }
 
 #else
 
-                    if (USBD_P_EP[n])
-                    {
+                    if (USBD_P_EP[n]) {
                         USBD_P_EP[n](USBD_EVT_IN_STALL);
                     }
 
@@ -857,20 +784,17 @@ void USBD_Handler(void)
             }
 
             /* Setup Packet Received Interrupt                                      */
-            if (eptsta & (0x1 << 12))         /* Received SETUP Interrupt           */
-            {
+            if (eptsta & (0x1 << 12)) {       /* Received SETUP Interrupt           */
                 UDPHS->UDPHS_IEN &= ~(1 << (n + 8));      /* Disable EP int until read*/
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[n])         /* SETUP Packet                       */
-                {
+                if (USBD_RTX_EPTask[n]) {       /* SETUP Packet                       */
                     isr_evt_set(USBD_EVT_SETUP, USBD_RTX_EPTask[n]);
                 }
 
 #else
 
-                if (USBD_P_EP[n])
-                {
+                if (USBD_P_EP[n]) {
                     USBD_P_EP[n](USBD_EVT_SETUP);
                 }
 

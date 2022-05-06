@@ -33,26 +33,20 @@
 
 __WEAK BOOL USBD_ReqGetDescriptor_HID(U8 **pD, U32 *len)
 {
-    switch (USBD_SetupPacket.wValueH)
-    {
+    switch (USBD_SetupPacket.wValueH) {
         case HID_HID_DESCRIPTOR_TYPE:
             if (USBD_SetupPacket.wIndexL != usbd_hid_if_num &&
-                USBD_SetupPacket.wIndexL != usbd_webusb_if_num)
-            {
+                USBD_SetupPacket.wIndexL != usbd_webusb_if_num) {
                 return (__FALSE);
             }
 
-            if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE))
-            {
+            if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE)) {
                 return (__FALSE);  /* High speed request but high-speed not enabled */
             }
 
-            if (USBD_HighSpeed == __FALSE)
-            {
+            if (USBD_HighSpeed == __FALSE) {
                 *pD = (U8 *)USBD_ConfigDescriptor;
-            }
-            else
-            {
+            } else {
                 *pD = (U8 *)USBD_ConfigDescriptor_HS;
             }
 
@@ -62,8 +56,7 @@ __WEAK BOOL USBD_ReqGetDescriptor_HID(U8 **pD, U32 *len)
 
         case HID_REPORT_DESCRIPTOR_TYPE:
             if (USBD_SetupPacket.wIndexL != usbd_hid_if_num &&
-                USBD_SetupPacket.wIndexL != usbd_webusb_if_num)
-            {
+                USBD_SetupPacket.wIndexL != usbd_webusb_if_num) {
                 return (__FALSE);
             }
 
@@ -91,19 +84,13 @@ __WEAK BOOL USBD_ReqGetDescriptor_HID(U8 **pD, U32 *len)
 __WEAK BOOL USBD_EndPoint0_Setup_HID_ReqToIF(void)
 {
     if (USBD_SetupPacket.wIndexL == usbd_hid_if_num ||
-        USBD_SetupPacket.wIndexL == usbd_webusb_if_num)
-    {
-        switch (USBD_SetupPacket.bRequest)
-        {
+        USBD_SetupPacket.wIndexL == usbd_webusb_if_num) {
+        switch (USBD_SetupPacket.bRequest) {
             case HID_REQUEST_GET_REPORT:
-                if (USBD_HID_GetReport())
-                {
-                    if (USBD_SetupPacket.wValueH == HID_REPORT_INPUT)
-                    {
+                if (USBD_HID_GetReport()) {
+                    if (USBD_SetupPacket.wValueH == HID_REPORT_INPUT) {
                         USBD_EP0Data.pData = &USBD_HID_InReport[1];      /* point to data to be sent (skip ReportID) */
-                    }
-                    else if (USBD_SetupPacket.wValueH == HID_REPORT_FEATURE)
-                    {
+                    } else if (USBD_SetupPacket.wValueH == HID_REPORT_FEATURE) {
                         USBD_EP0Data.pData = &USBD_HID_FeatReport[1];    /* point to data to be sent (skip ReportID) */
                     }
 
@@ -114,20 +101,16 @@ __WEAK BOOL USBD_EndPoint0_Setup_HID_ReqToIF(void)
                 break;
 
             case HID_REQUEST_SET_REPORT:
-                if (USBD_SetupPacket.wValueH == HID_REPORT_OUTPUT)
-                {
+                if (USBD_SetupPacket.wValueH == HID_REPORT_OUTPUT) {
                     USBD_EP0Data.pData = &USBD_HID_OutReport[1];       /* out data to be received (skip ReportID) */
-                }
-                else if (USBD_SetupPacket.wValueH == HID_REPORT_FEATURE)
-                {
+                } else if (USBD_SetupPacket.wValueH == HID_REPORT_FEATURE) {
                     USBD_EP0Data.pData = &USBD_HID_FeatReport[1];      /* out data to be received (skip ReportID) */
                 }
 
                 return (__TRUE);
 
             case HID_REQUEST_GET_IDLE:
-                if (USBD_HID_GetIdle())
-                {
+                if (USBD_HID_GetIdle()) {
                     USBD_EP0Data.pData = USBD_EP0Buf;                  /* point to data to be sent */
                     USBD_DataInStage();                                /* send requested data */
                     return (__TRUE);
@@ -136,8 +119,7 @@ __WEAK BOOL USBD_EndPoint0_Setup_HID_ReqToIF(void)
                 break;
 
             case HID_REQUEST_SET_IDLE:
-                if (USBD_HID_SetIdle())
-                {
+                if (USBD_HID_SetIdle()) {
                     USBD_StatusInStage();                              /* send Acknowledge */
                     return (__TRUE);
                 }
@@ -145,8 +127,7 @@ __WEAK BOOL USBD_EndPoint0_Setup_HID_ReqToIF(void)
                 break;
 
             case HID_REQUEST_GET_PROTOCOL:
-                if (USBD_HID_GetProtocol())
-                {
+                if (USBD_HID_GetProtocol()) {
                     USBD_EP0Data.pData = USBD_EP0Buf;                  /* point to data to be sent */
                     USBD_DataInStage();                                /* send requested data */
                     return (__TRUE);
@@ -155,8 +136,7 @@ __WEAK BOOL USBD_EndPoint0_Setup_HID_ReqToIF(void)
                 break;
 
             case HID_REQUEST_SET_PROTOCOL:
-                if (USBD_HID_SetProtocol())
-                {
+                if (USBD_HID_SetProtocol()) {
                     USBD_StatusInStage();                              /* send Acknowledge */
                     return (__TRUE);
                 }
@@ -178,13 +158,10 @@ __WEAK BOOL USBD_EndPoint0_Setup_HID_ReqToIF(void)
 __WEAK BOOL USBD_EndPoint0_Out_HID_ReqToIF(void)
 {
     if (USBD_SetupPacket.wIndexL == usbd_hid_if_num ||
-        USBD_SetupPacket.wIndexL == usbd_webusb_if_num)
-    {
-        switch (USBD_SetupPacket.bRequest)
-        {
+        USBD_SetupPacket.wIndexL == usbd_webusb_if_num) {
+        switch (USBD_SetupPacket.bRequest) {
             case HID_REQUEST_SET_REPORT:
-                if (USBD_HID_SetReport())
-                {
+                if (USBD_HID_SetReport()) {
                     USBD_StatusInStage();                        /* send Acknowledge */
                     return (__TRUE);
                 }

@@ -64,8 +64,7 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
+typedef struct {
     __IO uint32_t reg0;                                 /*  0x0000          Power Sequencer Control Register 0                                           */
     __IO uint32_t reg1;                                 /*  0x0004          Power Sequencer Control Register 1                                           */
     __IO uint32_t reg2;                                 /*  0x0008          Power Sequencer Control Register 2                                           */

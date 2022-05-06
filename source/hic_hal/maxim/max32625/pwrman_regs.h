@@ -60,8 +60,7 @@ extern "C" {
 /**
  * @brief Defines PAD Modes for Wake Up Detection.
  */
-typedef enum
-{
+typedef enum {
     /** WUD Mode for Selected PAD = Clear/Activate */
     MXC_E_PWRMAN_PAD_MODE_CLEAR_SET,
     /** WUD Mode for Selected PAD = Set WUD Act Hi/Set WUD Act Lo */
@@ -79,8 +78,7 @@ typedef enum
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
+typedef struct {
     __IO uint32_t pwr_rst_ctrl;                         /*  0x0000          Power Reset Control and Status                                               */
     __IO uint32_t intfl;                                /*  0x0004          Interrupt Flags                                                              */
     __IO uint32_t inten;                                /*  0x0008          Interrupt Enable/Disable Controls                                            */

@@ -38,7 +38,7 @@ extern "C" {
 //! @retval true The hook handled the change notification, the caller should do nothing else.
 //! @retval false The hook did nothing, continue with normal behaviour.
 bool vfs_user_file_change_handler_hook(const vfs_filename_t filename,
-                                       vfs_file_change_t change, vfs_file_t file, vfs_file_t new_file_data);
+        vfs_file_change_t change, vfs_file_t file, vfs_file_t new_file_data);
 
 //! @brief Hook for magic files.
 //!

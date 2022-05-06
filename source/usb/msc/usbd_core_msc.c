@@ -45,16 +45,12 @@ __WEAK void USBD_ReqClrFeature_MSC(U32 EPNum)
 
 __WEAK BOOL USBD_EndPoint0_Setup_MSC_ReqToIF(void)
 {
-    if (USBD_SetupPacket.wIndexL == usbd_msc_if_num)           /* IF number correct? */
-    {
-        switch (USBD_SetupPacket.bRequest)
-        {
+    if (USBD_SetupPacket.wIndexL == usbd_msc_if_num) {         /* IF number correct? */
+        switch (USBD_SetupPacket.bRequest) {
             case MSC_REQUEST_RESET:
                 if ((USBD_SetupPacket.wValue   == 0) &&              /* RESET with invalid parameters -> STALL */
-                    (USBD_SetupPacket.wLength  == 0))
-                {
-                    if (USBD_MSC_Reset())
-                    {
+                        (USBD_SetupPacket.wLength  == 0)) {
+                    if (USBD_MSC_Reset()) {
                         USBD_StatusInStage();
                         return (__TRUE);
                     }
@@ -64,10 +60,8 @@ __WEAK BOOL USBD_EndPoint0_Setup_MSC_ReqToIF(void)
 
             case MSC_REQUEST_GET_MAX_LUN:
                 if ((USBD_SetupPacket.wValue   == 0) &&              /* GET_MAX_LUN with invalid parameters -> STALL */
-                    (USBD_SetupPacket.wLength  == 1))
-                {
-                    if (USBD_MSC_GetMaxLUN())
-                    {
+                        (USBD_SetupPacket.wLength  == 1)) {
+                    if (USBD_MSC_GetMaxLUN()) {
                         USBD_EP0Data.pData = USBD_EP0Buf;
                         USBD_DataInStage();
                         return (__TRUE);

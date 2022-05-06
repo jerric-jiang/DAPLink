@@ -54,7 +54,7 @@ void iap_reinvoke(void)
     LPC_SYSCON->SYSAHBCLKDIV = 1;
     /* Send Reinvoke ISP command to ISP entry point*/
     iap_op.cmd = 57;
-    init_msdstate();                     /* Initialize Storage state machine */
+    init_msdstate();					 /* Initialize Storage state machine */
     /* Set stack pointer to ROM value (reset default) This must be the last
      * piece of code executed before calling ISP, because most C expressions
      * and function returns will fail after the stack pointer is changed.
@@ -79,8 +79,7 @@ void iap_lock()
 {
     cortex_int_state_t local_state;
     local_state = cortex_int_get_and_disable();
-    if (lock_count == 0)
-    {
+    if (lock_count == 0) {
         state = local_state;
     }
     lock_count++;
@@ -89,9 +88,8 @@ void iap_lock()
 void iap_unlock()
 {
     lock_count--;
-    if (lock_count == 0)
-    {
+    if (lock_count == 0) {
         cortex_int_restore(state);
     }
-
+    
 }

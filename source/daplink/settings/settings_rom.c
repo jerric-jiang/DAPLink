@@ -36,8 +36,7 @@
 // -Only add new members to end end of this structure
 // -Do not change the order of members in this structure
 // -Structure must remain packed so no padding bytes are added
-typedef struct __attribute__((__packed__)) cfg_setting
-{
+typedef struct __attribute__((__packed__)) cfg_setting {
     uint32_t key;               // Magic key to indicate a valid record
     uint16_t size;              // Size of cfg_setting_t
 
@@ -64,7 +63,7 @@ COMPILER_ASSERT(SECTOR_BUFFER_SIZE % 8 == 0);
 
 // Configuration ROM
 #if defined(__CC_ARM)
-static volatile cfg_setting_t config_rom __attribute__((section("cfgrom"), zero_init));
+static volatile cfg_setting_t config_rom __attribute__((section("cfgrom"),zero_init));
 #else
 static volatile cfg_setting_t config_rom __attribute__((section("cfgrom")));
 #endif
@@ -72,8 +71,7 @@ static volatile cfg_setting_t config_rom __attribute__((section("cfgrom")));
 static cfg_setting_t config_rom_copy;
 
 // Configuration defaults in flash
-static const cfg_setting_t config_default =
-{
+static const cfg_setting_t config_default = {
     .auto_rst = 1,
     .automation_allowed = 1,
     .overflow_detect = 1,
@@ -84,21 +82,18 @@ static const cfg_setting_t config_default =
 static bool config_needs_update()
 {
     // Update if cfgrom cannot be read (needs to be programmed).
-    if (!flash_is_readable((uint32_t)&config_rom, sizeof(config_rom)))
-    {
+    if (!flash_is_readable((uint32_t)&config_rom, sizeof(config_rom))) {
         return true;
     }
 
     // Update if the key is invalid
-    if (CFG_KEY != config_rom.key)
-    {
+    if (CFG_KEY != config_rom.key) {
         return true;
     }
 
     // Update if the config key is valid but
     // has a smaller size.
-    if (config_rom.size < sizeof(config_rom))
-    {
+    if (config_rom.size < sizeof(config_rom)) {
         return true;
     }
 
@@ -115,8 +110,7 @@ static void program_cfg(cfg_setting_t *new_cfg)
 
     addr = (uint32_t)&config_rom;
     status = flash_erase_sector(addr);
-    if (status != 0)
-    {
+    if (status != 0) {
         return;
     }
 
@@ -126,8 +120,7 @@ static void program_cfg(cfg_setting_t *new_cfg)
     memset(write_buffer, 0xFF, sizeof(write_buffer));
     memcpy(write_buffer, new_cfg, sizeof(cfg_setting_t));
     status = flash_program_page(addr, sizeof(write_buffer), write_buffer);
-    if (status != 0)
-    {
+    if (status != 0) {
         return;
     }
 }
@@ -139,11 +132,9 @@ void config_rom_init()
     // Fill in the ram copy with the defaults
     memcpy(&config_rom_copy, &config_default, sizeof(config_rom_copy));
 
-    if (flash_is_readable((uint32_t)&config_rom, sizeof(config_rom)))
-    {
+    if (flash_is_readable((uint32_t)&config_rom, sizeof(config_rom))) {
         // Read settings from flash if the key is valid
-        if (CFG_KEY == config_rom.key)
-        {
+        if (CFG_KEY == config_rom.key) {
             uint32_t size = MIN(config_rom.size, sizeof(config_rom));
             memcpy(&config_rom_copy, (void *)&config_rom, size);
         }
@@ -155,8 +146,7 @@ void config_rom_init()
 
     // Write settings back to flash if they are out of date
     // Note - program_cfg only programs data in bootloader mode
-    if (config_needs_update())
-    {
+    if (config_needs_update()) {
         // Program with defaults if none are set
         program_cfg(&config_rom_copy);
     }

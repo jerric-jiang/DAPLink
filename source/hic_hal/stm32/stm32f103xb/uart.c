@@ -60,8 +60,7 @@ uint8_t write_buffer_data[BUFFER_SIZE];
 circ_buf_t read_buffer;
 uint8_t read_buffer_data[BUFFER_SIZE];
 
-static UART_Configuration configuration =
-{
+static UART_Configuration configuration = {
     .Baudrate = 9600,
     .DataBits = UART_DATA_BITS_8,
     .Parity = UART_PARITY_NONE,
@@ -144,67 +143,50 @@ int32_t uart_set_configuration(UART_Configuration *config)
 
     // parity
     configuration.Parity = config->Parity;
-    if (config->Parity == UART_PARITY_ODD)
-    {
+    if(config->Parity == UART_PARITY_ODD) {
         uart_handle.Init.Parity = HAL_UART_PARITY_ODD;
-    }
-    else if (config->Parity == UART_PARITY_EVEN)
-    {
+    } else if(config->Parity == UART_PARITY_EVEN) {
         uart_handle.Init.Parity = HAL_UART_PARITY_EVEN;
-    }
-    else if (config->Parity == UART_PARITY_NONE)
-    {
+    } else if(config->Parity == UART_PARITY_NONE) {
         uart_handle.Init.Parity = HAL_UART_PARITY_NONE;
-    }
-    else       //Other not support
-    {
+    } else {   //Other not support
         uart_handle.Init.Parity = HAL_UART_PARITY_NONE;
         configuration.Parity = UART_PARITY_NONE;
     }
 
     // stop bits
     configuration.StopBits = config->StopBits;
-    if (config->StopBits == UART_STOP_BITS_2)
-    {
+    if(config->StopBits == UART_STOP_BITS_2) {
         uart_handle.Init.StopBits = UART_STOPBITS_2;
-    }
-    else if (config->StopBits == UART_STOP_BITS_1_5)
-    {
+    } else if(config->StopBits == UART_STOP_BITS_1_5) {
         uart_handle.Init.StopBits = UART_STOPBITS_2;
         configuration.StopBits = UART_STOP_BITS_2;
-    }
-    else if (config->StopBits == UART_STOP_BITS_1)
-    {
+    } else if(config->StopBits == UART_STOP_BITS_1) {
         uart_handle.Init.StopBits = UART_STOPBITS_1;
-    }
-    else
-    {
+    } else {
         uart_handle.Init.StopBits = UART_STOPBITS_1;
         configuration.StopBits = UART_STOP_BITS_1;
     }
 
     //Only 8 bit support
     configuration.DataBits = UART_DATA_BITS_8;
-    if (uart_handle.Init.Parity == HAL_UART_PARITY_ODD || uart_handle.Init.Parity == HAL_UART_PARITY_EVEN)
-    {
+    if (uart_handle.Init.Parity == HAL_UART_PARITY_ODD || uart_handle.Init.Parity == HAL_UART_PARITY_EVEN) {
         uart_handle.Init.WordLength = UART_WORDLENGTH_9B;
-    }
-    else
-    {
+    } else {
         uart_handle.Init.WordLength = UART_WORDLENGTH_8B;
     }
 
     // No flow control
     configuration.FlowControl = UART_FLOW_CONTROL_NONE;
     uart_handle.Init.HwFlowCtl  = UART_HWCONTROL_NONE;
-
+    
     // Specified baudrate
     configuration.Baudrate = config->Baudrate;
     uart_handle.Init.BaudRate = config->Baudrate;
 
     // TX and RX
     uart_handle.Init.Mode = UART_MODE_TX_RX;
-
+    
     // Disable uart and tx/rx interrupt
     CDC_UART->CR1 &= ~(USART_IT_TXE | USART_IT_RXNE);
 
@@ -258,32 +240,22 @@ void CDC_UART_IRQn_Handler(void)
 {
     const uint32_t sr = CDC_UART->SR;
 
-    if (sr & USART_SR_RXNE)
-    {
+    if (sr & USART_SR_RXNE) {
         uint8_t dat = CDC_UART->DR;
         uint32_t free = circ_buf_count_free(&read_buffer);
-        if (free > RX_OVRF_MSG_SIZE)
-        {
+        if (free > RX_OVRF_MSG_SIZE) {
             circ_buf_push(&read_buffer, dat);
-        }
-        else if (RX_OVRF_MSG_SIZE == free)
-        {
+        } else if (RX_OVRF_MSG_SIZE == free) {
             circ_buf_write(&read_buffer, (uint8_t*)RX_OVRF_MSG, RX_OVRF_MSG_SIZE);
-        }
-        else
-        {
+        } else {
             // Drop character
         }
     }
 
-    if (sr & USART_SR_TXE)
-    {
-        if (circ_buf_count_used(&write_buffer) > 0)
-        {
+    if (sr & USART_SR_TXE) {
+        if (circ_buf_count_used(&write_buffer) > 0) {
             CDC_UART->DR = circ_buf_pop(&write_buffer);
-        }
-        else
-        {
+        } else {
             CDC_UART->CR1 &= ~USART_IT_TXE;
         }
     }

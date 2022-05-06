@@ -1,5 +1,5 @@
-/* --------------------------------------------------------------------------
- * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All
+/* -------------------------------------------------------------------------- 
+ * Copyright (c) 2013-2019 Arm Limited (or its affiliates). All 
  * rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -112,7 +112,7 @@
   \param[in]   event  GPDMA Event mask
   \return      none
 */
-typedef void (*GPDMA_SignalEvent_t)(uint32_t event);
+typedef void (*GPDMA_SignalEvent_t) (uint32_t event);
 
 /**
   \fn          int32_t GPDMA_Initialize (void)
@@ -121,7 +121,7 @@ typedef void (*GPDMA_SignalEvent_t)(uint32_t event);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t GPDMA_Initialize(void);
+extern int32_t GPDMA_Initialize (void);
 
 /**
   \fn          int32_t GPDMA_Uninitialize (void)
@@ -130,7 +130,7 @@ extern int32_t GPDMA_Initialize(void);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t GPDMA_Uninitialize(void);
+extern int32_t GPDMA_Uninitialize (void);
 
 /**
   \fn          int32_t GPDMA_PeripheralSelect (uint8_t peri, uint8_t sel)
@@ -141,7 +141,7 @@ extern int32_t GPDMA_Uninitialize(void);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t GPDMA_PeripheralSelect(uint8_t peri, uint8_t sel);
+extern int32_t GPDMA_PeripheralSelect (uint8_t peri, uint8_t sel);
 
 /**
   \fn          int32_t GPDMA_ChannelConfigure (uint8_t              ch,
@@ -163,13 +163,13 @@ extern int32_t GPDMA_PeripheralSelect(uint8_t peri, uint8_t sel);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t GPDMA_ChannelConfigure(uint8_t              ch,
-                                      uint32_t             src_addr,
-                                      uint32_t             dest_addr,
-                                      uint32_t             size,
-                                      uint32_t             control,
-                                      uint32_t             config,
-                                      GPDMA_SignalEvent_t  cb_event);
+extern int32_t GPDMA_ChannelConfigure (uint8_t              ch,
+                                       uint32_t             src_addr,
+                                       uint32_t             dest_addr,
+                                       uint32_t             size,
+                                       uint32_t             control,
+                                       uint32_t             config,
+                                       GPDMA_SignalEvent_t  cb_event);
 
 /**
   \fn          int32_t GPDMA_ChannelEnable (uint8_t ch)
@@ -179,7 +179,7 @@ extern int32_t GPDMA_ChannelConfigure(uint8_t              ch,
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t GPDMA_ChannelEnable(uint8_t ch);
+extern int32_t GPDMA_ChannelEnable (uint8_t ch);
 
 /**
   \fn          int32_t GPDMA_ChannelDisable (uint8_t ch)
@@ -189,7 +189,7 @@ extern int32_t GPDMA_ChannelEnable(uint8_t ch);
    - \b  0: function succeeded
    - \b -1: function failed
 */
-extern int32_t GPDMA_ChannelDisable(uint8_t ch);
+extern int32_t GPDMA_ChannelDisable (uint8_t ch);
 
 /**
   \fn          uint32_t GPDMA_ChannelGetStatus (uint8_t ch)
@@ -199,7 +199,7 @@ extern int32_t GPDMA_ChannelDisable(uint8_t ch);
    - \b  1: channel enabled
    - \b  0: channel disabled
 */
-extern uint32_t GPDMA_ChannelGetStatus(uint8_t ch);
+extern uint32_t GPDMA_ChannelGetStatus (uint8_t ch);
 
 /**
   \fn          uint32_t GPDMA_ChannelGetCount (uint8_t ch)
@@ -207,6 +207,6 @@ extern uint32_t GPDMA_ChannelGetStatus(uint8_t ch);
   \param[in]   ch Channel number (0..7)
   \returns     Number of transferred data
 */
-extern uint32_t GPDMA_ChannelGetCount(uint8_t ch);
+extern uint32_t GPDMA_ChannelGetCount (uint8_t ch);
 
 #endif /* __GPDMA_LPC43XX_H */

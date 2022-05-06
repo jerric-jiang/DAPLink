@@ -272,7 +272,7 @@ void LLWU_SetPinFilterMode(LLWU_Type *base, uint32_t filterIndex, llwu_external_
                  ((LLWU_FILT_FILTSEL1(filterMode.pinIndex) | LLWU_FILT_FILTE1(filterMode.filterMode))
                   << ((filterIndex - 1U) * 8U)) |
                  LLWU_FILT_FILTF1_MASK /* W1C to clear the FILTF flag bit. */
-                 ;
+        ;
 #else
     volatile uint8_t *regBase;
 
@@ -306,7 +306,7 @@ void LLWU_SetPinFilterMode(LLWU_Type *base, uint32_t filterIndex, llwu_external_
         *regBase = (uint8_t)((*regBase & ~(LLWU_FILT1_FILTSEL_MASK | LLWU_FILT1_FILTE_MASK)) |
                              LLWU_FILT1_FILTSEL(filterMode.pinIndex) | LLWU_FILT1_FILTE(filterMode.filterMode) |
                              LLWU_FILT1_FILTF_MASK) /* W1C to clear the FILTF flag bit. */
-                   ;
+            ;
     }
 #endif /* FSL_FEATURE_LLWU_REG_BITWIDTH */
 }

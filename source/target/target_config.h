@@ -31,8 +31,7 @@
 //! @brief Current target configuration version.
 //!
 //! - Version 1: Initial version.
-enum _target_config_version
-{
+enum _target_config_version {
     kTargetConfigVersion = 1, //!< The current board info version.
 };
 
@@ -43,8 +42,7 @@ enum _target_config_version
 #define MAX_REGIONS (10)
 
 //! @brief Option flags for memory regions.
-enum _region_flags
-{
+enum _region_flags {
     kRegionIsDefault = (1 << 0), /*!< Out of bounds regions will use the same flash algo if this is set */
     kRegionIsSecure  = (1 << 1), /*!< The region can only be accessed from the secure world. Only applies for TrustZone-enabled targets. */
 };
@@ -52,8 +50,7 @@ enum _region_flags
 /*!
  * @brief Details of a target flash or RAM memory region.
  */
-typedef struct __attribute__((__packed__)) region_info
-{
+typedef struct __attribute__((__packed__)) region_info {
     uint32_t start;                 /*!< Region start address. */
     uint32_t end;                   /*!< Region end address. */
     uint32_t flags;                 /*!< Flags for this region from the #_region_flags enumeration. */
@@ -64,8 +61,7 @@ typedef struct __attribute__((__packed__)) region_info
 /*!
  * @brief Information required to program target flash.
  */
-typedef struct __attribute__((__packed__)) target_cfg
-{
+typedef struct __attribute__((__packed__)) target_cfg {
     uint32_t version;                           /*!< Target configuration version */
     const sector_info_t* sectors_info;          /*!< Sector start and length list */
     uint32_t sector_info_length;                /*!< Number of entries in the sectors_info array */

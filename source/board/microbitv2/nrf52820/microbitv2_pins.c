@@ -38,17 +38,14 @@ uint32_t pin_vbus_absent;
 void microbitv2_pins_init()
 {
 #ifdef NRF528XX_DYNAMIC_PIN
-    if (NRF_FICR->INFO.PART == 0x52833)
-    {
+    if (NRF_FICR->INFO.PART == 0x52833) {
         // nRF52833
         pin_run_vbat_sense  = NRF52833_PIN_RUN_VBAT_SENSE;
         pin_vbat_sense      = NRF52833_PIN_VBAT_SENSE;
         pin_vbat_sense_comp = NRF52833_PIN_VBAT_SENSE_COMP;
         pin_vin_comp        = NRF52833_PIN_VIN_COMP;
         pin_vbus_absent     = NRF52833_PIN_VBUS_ABSENT;
-    }
-    else
-    {
+    } else {
         // nRF52820
         pin_run_vbat_sense  = NRF52820_PIN_RUN_VBAT_SENSE;
         pin_vbat_sense      = NRF52820_PIN_VBAT_SENSE;

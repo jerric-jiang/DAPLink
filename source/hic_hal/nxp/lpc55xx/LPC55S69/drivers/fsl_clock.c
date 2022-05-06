@@ -714,11 +714,11 @@ uint32_t CLOCK_GetOsc32KFreq(void)
 {
     return ((0UL == (PMC->PDRUNCFG0 & PMC_PDRUNCFG0_PDEN_FRO32K_MASK)) &&
             (0UL == (PMC->RTCOSC32K & PMC_RTCOSC32K_SEL_MASK))) ?
-           CLK_RTC_32K_CLK :
-           ((0UL == (PMC->PDRUNCFG0 & PMC_PDRUNCFG0_PDEN_XTAL32K_MASK)) &&
-            (0UL != (PMC->RTCOSC32K & PMC_RTCOSC32K_SEL_MASK))) ?
-           CLK_RTC_32K_CLK :
-           0U;
+               CLK_RTC_32K_CLK :
+               ((0UL == (PMC->PDRUNCFG0 & PMC_PDRUNCFG0_PDEN_XTAL32K_MASK)) &&
+                (0UL != (PMC->RTCOSC32K & PMC_RTCOSC32K_SEL_MASK))) ?
+               CLK_RTC_32K_CLK :
+               0U;
 }
 
 /* Get MAIN Clk */
@@ -1829,7 +1829,7 @@ void CLOCK_SetupPLL0Mult(uint32_t multiply_by, uint32_t input_freq)
     if (pdec > 1U)
     {
         pdec = pdec / 2U; /* Account for minus 1 encoding */
-        /* Translate P value */
+                          /* Translate P value */
     }
 
     mdec = (uint32_t)PLL_SSCG1_MDEC_VAL_SET(multiply_by);
@@ -1887,15 +1887,13 @@ bool CLOCK_EnableUsbfs0DeviceClock(clock_usbfs_src_t src, uint32_t freq)
         /*!< Set up PLL1 */
         POWER_DisablePD(kPDRUNCFG_PD_PLL1);
         CLOCK_AttachClk(kEXT_CLK_to_PLL1); /*!< Switch PLL1CLKSEL to EXT_CLK */
-        const pll_setup_t pll1Setup =
-        {
+        const pll_setup_t pll1Setup = {
             .pllctrl = SYSCON_PLL1CTRL_CLKEN_MASK | SYSCON_PLL1CTRL_SELI(19U) | SYSCON_PLL1CTRL_SELP(9U),
             .pllndec = SYSCON_PLL1NDEC_NDIV(1U),
             .pllpdec = SYSCON_PLL1PDEC_PDIV(5U),
             .pllmdec = SYSCON_PLL1MDEC_MDIV(30U),
             .pllRate = 48000000U,
-            .flags   = PLL_SETUPFLAG_WAITLOCK
-        };
+            .flags   = PLL_SETUPFLAG_WAITLOCK};
         (void)CLOCK_SetPLL1Freq(&pll1Setup);
 
         CLOCK_SetClkDiv(kCLOCK_DivUsb0Clk, 1U, false);
@@ -1952,15 +1950,13 @@ bool CLOCK_EnableUsbfs0HostClock(clock_usbfs_src_t src, uint32_t freq)
         /*!< Set up PLL1 */
         POWER_DisablePD(kPDRUNCFG_PD_PLL1);
         CLOCK_AttachClk(kEXT_CLK_to_PLL1); /*!< Switch PLL1CLKSEL to EXT_CLK */
-        const pll_setup_t pll1Setup =
-        {
+        const pll_setup_t pll1Setup = {
             .pllctrl = SYSCON_PLL1CTRL_CLKEN_MASK | SYSCON_PLL1CTRL_SELI(19U) | SYSCON_PLL1CTRL_SELP(9U),
             .pllndec = SYSCON_PLL1NDEC_NDIV(1U),
             .pllpdec = SYSCON_PLL1PDEC_PDIV(5U),
             .pllmdec = SYSCON_PLL1MDEC_MDIV(30U),
             .pllRate = 48000000U,
-            .flags   = PLL_SETUPFLAG_WAITLOCK
-        };
+            .flags   = PLL_SETUPFLAG_WAITLOCK};
         (void)CLOCK_SetPLL1Freq(&pll1Setup);
 
         CLOCK_SetClkDiv(kCLOCK_DivUsb0Clk, 1U, false);

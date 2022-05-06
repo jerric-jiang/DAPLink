@@ -148,7 +148,7 @@ void BOD_IRQHandler(void)
     // go into controlled shutdown
     power_off_sequence();
 
-    while (1)
+    while(1)
     {
         delay(100);
         gpio_set_hid_led(GPIO_LED_ON);

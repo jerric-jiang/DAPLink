@@ -225,48 +225,48 @@
 
 /* Embedded Flash Controllers Configuration ----------------------------------*/
 #if (CHECK_RSVD((EEFC0_FMR_Val),  ~0x01000F01))
-#error "EEFC0_FMR: Invalid values of reserved bits!"
+   #error "EEFC0_FMR: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((EEFC1_FMR_Val),  ~0x01000F01))
-#error "EEFC1_FMR: Invalid values of reserved bits!"
+   #error "EEFC1_FMR: Invalid values of reserved bits!"
 #endif
 
 /* Power Management Controller Configuration ---------------------------------*/
 #if (CHECK_RSVD((PMC_SCER_Val),   ~0x00000700))
-#error "PMC_SCER: Invalid values of reserved bits!"
+   #error "PMC_SCER: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((PMC_PCER_Val),   ~0xFFFFFFFC))
-#error "PMC_PCER: Invalid values of reserved bits!"
+   #error "PMC_PCER: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((CKGR_UCKR_Val),  ~0x10F10000))
-#error "CKGR_UCKR: Invalid values of reserved bits!"
+   #error "CKGR_UCKR: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((CKGR_MOR_Val),   ~0x03FFFF7F))
-#error "CKGR_MOR: Invalid values of reserved bits!"
+   #error "CKGR_MOR: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((CKGR_PLLAR_Val), ~0x27FFFFFF))
-#error "CKGR_PLLAR: Invalid values of reserved bits!"
+   #error "CKGR_PLLAR: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((PMC_MCKR_Val),   ~0x00000073))
-#error "PMC_MCKR: Invalid values of reserved bits!"
+   #error "PMC_MCKR: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((PMC_PCK0_Val),   ~0x00000077))
-#error "PMC_PCK0: Invalid values of reserved bits!"
+   #error "PMC_PCK0: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((PMC_PCK1_Val),   ~0x00000077))
-#error "PMC_PCK1: Invalid values of reserved bits!"
+   #error "PMC_PCK1: Invalid values of reserved bits!"
 #endif
 
 #if (CHECK_RSVD((PMC_PCK2_Val),   ~0x00000077))
-#error "PMC_PCK2: Invalid values of reserved bits!"
+   #error "PMC_PCK2: Invalid values of reserved bits!"
 #endif
 
 
@@ -287,73 +287,73 @@
 
 
 #if (PMC_SETUP)
-/* Determine clock frequency according to clock register values             */
-#if  ((PMC_MCKR_Val & 3) == 0)         /* Slow Clock is selected             */
-#if (1 /* PMC_SR & (1 << 7) */)   /* MUST be checked with correct register */
-#define __CORE_CLK_PRE     (OSC32_CLK)
-#else
-#define __CORE_CLK_PRE     (ERC_OSC)
-#endif
-#elif ((PMC_MCKR_Val & 3) == 1)        /* Main Clock is selected             */
-#if (CKGR_MOR_Val & (1 << 24))
-#if ((CKGR_MOR_Val & (1<< 0)) == 0)
-#error "CKGR_MOR: Main Crystal Oscillator selected but not enabled!"
-#endif
-#define __CORE_CLK_PRE     (OSC_CLK)
-#else
-#if ((CKGR_MOR_Val & (1<< 3)) == 0)
-#error "CKGR_MOR: Main On-Chip RC Oscillator selected but not enabled!"
-#endif
-#if   (((CKGR_MOR_Val >> 4) & 3) == 0)
-#define __CORE_CLK_PRE     (EFRC_OSC)
-#elif (((CKGR_MOR_Val >> 4) & 3) == 1)
-#define __CORE_CLK_PRE     (EFRC_OSC * 2)
-#elif (((CKGR_MOR_Val >> 4) & 3) == 2)
-#define __CORE_CLK_PRE     (EFRC_OSC * 3)
-#else
-#define __CORE_CLK_PRE     (EFRC_OSC)
-#endif
-#endif
-#elif ((PMC_MCKR_Val & 3) == 2)        /* PLLA Clock is selected             */
-#if (CKGR_MOR_Val & (1 << 24))
-#if ((CKGR_MOR_Val & (1<< 0)) == 0)
-#error "CKGR_MOR: Main Crystal Oscillator selected but not enabled!"
-#endif
-#define __PLLA_CLK       (OSC_CLK)
-#else
-#if ((CKGR_MOR_Val & (1<< 3)) == 0)
-#error "CKGR_MOR: Main On-Chip RC Oscillator selected but not enabled!"
-#endif
-#if   (((CKGR_MOR_Val >> 4) & 3) == 0)
-#define __PLLA_CLK      (EFRC_OSC)
-#elif (((CKGR_MOR_Val >> 4) & 3) == 1)
-#define __PLLA_CLK      (EFRC_OSC * 2)
-#elif (((CKGR_MOR_Val >> 4) & 3) == 2)
-#define __PLLA_CLK      (EFRC_OSC * 3)
-#else
-#define __PLLA_CLK      (EFRC_OSC)
-#endif
-#endif
+  /* Determine clock frequency according to clock register values             */
+  #if  ((PMC_MCKR_Val & 3) == 0)         /* Slow Clock is selected             */
+      #if (1 /* PMC_SR & (1 << 7) */)   /* MUST be checked with correct register */
+        #define __CORE_CLK_PRE     (OSC32_CLK)
+      #else
+        #define __CORE_CLK_PRE     (ERC_OSC)
+      #endif
+  #elif ((PMC_MCKR_Val & 3) == 1)        /* Main Clock is selected             */
+      #if (CKGR_MOR_Val & (1 << 24))
+        #if ((CKGR_MOR_Val & (1<< 0)) == 0)
+          #error "CKGR_MOR: Main Crystal Oscillator selected but not enabled!"
+        #endif
+        #define __CORE_CLK_PRE     (OSC_CLK)
+      #else
+        #if ((CKGR_MOR_Val & (1<< 3)) == 0)
+          #error "CKGR_MOR: Main On-Chip RC Oscillator selected but not enabled!"
+        #endif
+        #if   (((CKGR_MOR_Val >> 4) & 3) == 0)
+          #define __CORE_CLK_PRE     (EFRC_OSC)
+        #elif (((CKGR_MOR_Val >> 4) & 3) == 1)
+          #define __CORE_CLK_PRE     (EFRC_OSC * 2)
+        #elif (((CKGR_MOR_Val >> 4) & 3) == 2)
+          #define __CORE_CLK_PRE     (EFRC_OSC * 3)
+        #else
+          #define __CORE_CLK_PRE     (EFRC_OSC)
+        #endif
+      #endif
+  #elif ((PMC_MCKR_Val & 3) == 2)        /* PLLA Clock is selected             */
+      #if (CKGR_MOR_Val & (1 << 24))
+        #if ((CKGR_MOR_Val & (1<< 0)) == 0)
+          #error "CKGR_MOR: Main Crystal Oscillator selected but not enabled!"
+        #endif
+        #define __PLLA_CLK       (OSC_CLK)
+      #else
+        #if ((CKGR_MOR_Val & (1<< 3)) == 0)
+          #error "CKGR_MOR: Main On-Chip RC Oscillator selected but not enabled!"
+        #endif
+        #if   (((CKGR_MOR_Val >> 4) & 3) == 0)
+          #define __PLLA_CLK      (EFRC_OSC)
+        #elif (((CKGR_MOR_Val >> 4) & 3) == 1)
+          #define __PLLA_CLK      (EFRC_OSC * 2)
+        #elif (((CKGR_MOR_Val >> 4) & 3) == 2)
+          #define __PLLA_CLK      (EFRC_OSC * 3)
+        #else
+          #define __PLLA_CLK      (EFRC_OSC)
+        #endif
+      #endif
 
-#define __PLLA_MUL       ((((CKGR_PLLAR_Val) >> 16) & 0x7FF) + 1)
-#define __PLLA_DIV       ((((CKGR_PLLAR_Val) >>  0) & 0x0FF))
-#define __CORE_CLK_PRE  (__PLLA_CLK * __PLLA_MUL / __PLLA_DIV)
-#else                                  /* UPLL Clock is selected             */
-#define __CORE_CLK_PRE  (OSC_CLK * 40)
-#endif
+      #define __PLLA_MUL       ((((CKGR_PLLAR_Val) >> 16) & 0x7FF) + 1)
+      #define __PLLA_DIV       ((((CKGR_PLLAR_Val) >>  0) & 0x0FF))
+      #define __CORE_CLK_PRE  (__PLLA_CLK * __PLLA_MUL / __PLLA_DIV)
+  #else                                  /* UPLL Clock is selected             */
+      #define __CORE_CLK_PRE  (OSC_CLK * 40)
+  #endif
 
-#if (((PMC_MCKR_Val >> 4) & 7) == 7)
-#define __CORE_CLK   (__CORE_CLK_PRE / 6)
-#else
-#define __CORE_CLK    (__CORE_CLK_PRE >> ((PMC_MCKR_Val >> 4) & 7))
-#endif
+  #if (((PMC_MCKR_Val >> 4) & 7) == 7)
+    #define __CORE_CLK   (__CORE_CLK_PRE / 6)
+  #else
+    #define __CORE_CLK    (__CORE_CLK_PRE >> ((PMC_MCKR_Val >> 4) & 7))
+  #endif
 
 #else
-#define __CORE_CLK   (EFRC_OSC)
+    #define __CORE_CLK   (EFRC_OSC)
 #endif
 
 #if (__CORE_CLK > 96000000UL)
-#error "Core Clock > 96MHz!"
+  #error "Core Clock > 96MHz!"
 #endif
 
 /*----------------------------------------------------------------------------
@@ -365,82 +365,65 @@ uint32_t SystemCoreClock = __CORE_CLK;/*!< System Clock Frequency (Core Clock)*/
 /*----------------------------------------------------------------------------
   Clock functions
  *----------------------------------------------------------------------------*/
-void SystemCoreClockUpdate(void)             /* Get Core Clock Frequency      */
+void SystemCoreClockUpdate (void)            /* Get Core Clock Frequency      */
 {
-    /* Determine clock frequency according to clock register values             */
-    switch (PMC->PMC_MCKR & 3)
-    {
-        case 0:                             /* Slow clock                         */
-            if (SUPC->SUPC_SR & (1 << 7))
-            {
-                SystemCoreClock = OSC32_CLK;
-            }
-            else
-            {
-                SystemCoreClock = ERC_OSC;
-            }
+  /* Determine clock frequency according to clock register values             */
+  switch (PMC->PMC_MCKR & 3) {
+    case 0:                             /* Slow clock                         */
+      if (SUPC->SUPC_SR & (1 << 7))
+        SystemCoreClock = OSC32_CLK;
+      else
+        SystemCoreClock = ERC_OSC;
+      break;
+    case 1:                             /* Main clock                         */
+      if (PMC->CKGR_MOR & (1 << 24))
+        SystemCoreClock = OSC_CLK;
+      else {
+        SystemCoreClock = EFRC_OSC;
+        switch ((PMC->CKGR_MOR >> 4) & 3) {
+          case 0:
             break;
-        case 1:                             /* Main clock                         */
-            if (PMC->CKGR_MOR & (1 << 24))
-            {
-                SystemCoreClock = OSC_CLK;
-            }
-            else
-            {
-                SystemCoreClock = EFRC_OSC;
-                switch ((PMC->CKGR_MOR >> 4) & 3)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        SystemCoreClock *= 2;
-                        break;
-                    case 2:
-                        SystemCoreClock *= 3;
-                        break;
-                    case 3:
-                        break;
-                }
-            }
+          case 1:
+            SystemCoreClock *= 2;
             break;
-        case 2:                             /* PLLA clock                         */
-            if (PMC->CKGR_MOR & (1 << 24))
-            {
-                SystemCoreClock = OSC_CLK;
-            }
-            else
-            {
-                SystemCoreClock = EFRC_OSC;
-                switch ((PMC->CKGR_MOR >> 4) & 3)
-                {
-                    case 0:
-                        break;
-                    case 1:
-                        SystemCoreClock *= 2;
-                        break;
-                    case 2:
-                        SystemCoreClock *= 3;
-                        break;
-                    case 3:
-                        break;
-                }
-            }
-            SystemCoreClock *= ((((PMC->CKGR_PLLAR) >> 16) & 0x7FF) + 1);
-            SystemCoreClock /= ((((PMC->CKGR_PLLAR) >>  0) & 0x0FF));
+          case 2:
+            SystemCoreClock *= 3;
             break;
-        case 3:                             /* UPLL clock                         */
-            SystemCoreClock = OSC_CLK * 40;
+          case 3:
             break;
-    }
+        }
+      }
+      break;
+    case 2:                             /* PLLA clock                         */
+      if (PMC->CKGR_MOR & (1 << 24))
+        SystemCoreClock = OSC_CLK;
+      else {
+        SystemCoreClock = EFRC_OSC;
+        switch ((PMC->CKGR_MOR >> 4) & 3) {
+          case 0:
+            break;
+          case 1:
+            SystemCoreClock *= 2;
+            break;
+          case 2:
+            SystemCoreClock *= 3;
+            break;
+          case 3:
+            break;
+        }
+      }
+      SystemCoreClock *= ((((PMC->CKGR_PLLAR) >> 16) & 0x7FF) + 1);
+      SystemCoreClock /= ((((PMC->CKGR_PLLAR) >>  0) & 0x0FF));
+      break;
+    case 3:                             /* UPLL clock                         */
+      SystemCoreClock = OSC_CLK * 40;
+      break;
+  }
 
-    if (((PMC->PMC_MCKR >> 4) & 7) == 7)
-    {
-        SystemCoreClock /= 6;
-    }
-    else
-    {
-        SystemCoreClock >>= ((PMC->PMC_MCKR >> 4) & 7);
-    }
+  if (((PMC->PMC_MCKR >> 4) & 7) == 7)
+    SystemCoreClock /= 6;
+  else
+    SystemCoreClock >>= ((PMC->PMC_MCKR >> 4) & 7);
 
 }
 
@@ -453,80 +436,77 @@ void SystemCoreClockUpdate(void)             /* Get Core Clock Frequency      */
  * @brief  Setup the microcontroller system.
  *         Initialize the System and update the SystemFrequency variable.
  */
-void SystemInit(void)
+void SystemInit (void)
 {
 #if (EEFC0_SETUP == 1)                  /* Embedded Flash Controller 0 Setup  */
-    EFC0->EEFC_FMR = EEFC0_FMR_Val;
+  EFC0->EEFC_FMR = EEFC0_FMR_Val;
 #endif
 
 #if (EEFC1_SETUP == 1)                  /* Embedded Flash Controller 1 Setup  */
-#ifdef EFC1                           /* some SAM3U devices do not have EFC1*/
-    EFC1->EEFC_FMR = EEFC1_FMR_Val;
-#endif
+  #ifdef EFC1                           /* some SAM3U devices do not have EFC1*/
+  EFC1->EEFC_FMR = EEFC1_FMR_Val;
+  #endif
 #endif
 
 #if (PMC_SETUP == 1)                    /* Power Management Controller Setup  */
 
-    PMC->PMC_WPMR = 0x504D4300;             /* Disable write protect              */
+PMC->PMC_WPMR = 0x504D4300;             /* Disable write protect              */
 
 #if (CKGR_UCKR_Val & (1 << 16))         /* If UPLL Enabled                    */
-    PMC->CKGR_UCKR = CKGR_UCKR_Val;
-    while (!(PMC->PMC_SR & (1 << 6)));    /* Wait for LOCKU                     */
+  PMC->CKGR_UCKR = CKGR_UCKR_Val;
+  while (!(PMC->PMC_SR & (1 << 6)));    /* Wait for LOCKU                     */
 #endif
 
 #if (CKGR_MOR_Val & ((1<<3)|(1<<0)))    /* If MOSCRCEN or MOSCXTEN set        */
-    PMC->CKGR_MOR  = (PMC->CKGR_MOR & (1 << 24)) | /* Keep the current MOSCSEL  */
-                     (CKGR_MOR_Val  & ~(1 << 24)) | /* Set value except MOSCSEL  */
-                     ((1 << 3) | (1 << 0));       /* and enable bothe OSC      */
+  PMC->CKGR_MOR  =  (PMC->CKGR_MOR &  (1<<24)) | /* Keep the current MOSCSEL  */
+                    (CKGR_MOR_Val  & ~(1<<24)) | /* Set value except MOSCSEL  */
+                    ((1<<3)|(1<<0));             /* and enable bothe OSC      */
 #if (CKGR_MOR_Val & ((1 << 3)))
-    while (!(PMC->PMC_SR & (1 << 17)));   /* Wait for MOSCRCS                   */
+  while (!(PMC->PMC_SR & (1 << 17)));   /* Wait for MOSCRCS                   */
 #endif
 #if (CKGR_MOR_Val & ((1 << 0)))
-    while (!(PMC->PMC_SR & (1 << 0)));    /* Wait for MOSCXTS                   */
+  while (!(PMC->PMC_SR & (1 << 0)));    /* Wait for MOSCXTS                   */
 #endif
-    PMC->CKGR_MOR  =  CKGR_MOR_Val;       /* set the desired selection          */
-    while (!(PMC->PMC_SR & (1 << 16)));   /* Wait for MOSCSELS                  */
+  PMC->CKGR_MOR  =  CKGR_MOR_Val;       /* set the desired selection          */
+  while (!(PMC->PMC_SR & (1 << 16)));   /* Wait for MOSCSELS                  */
 #endif
 
 #if (CKGR_PLLAR_Val & ((0x7FF<<16)))    /* If MULA != 0                       */
-    PMC->CKGR_PLLAR = CKGR_PLLAR_Val;
-    while (!(PMC->PMC_SR & (1 << 1)));    /* Wait for LOCKA                     */
+  PMC->CKGR_PLLAR = CKGR_PLLAR_Val;
+  while (!(PMC->PMC_SR & (1 << 1)));    /* Wait for LOCKA                     */
 #endif
 
-    if ((PMC_MCKR_Val & 0x03) >= 2)
-    {
-        /* Write PRES field only                                                  */
-        PMC->PMC_MCKR = (PMC->PMC_MCKR & ~0x70) | (PMC_MCKR_Val & 0x70);
-    }
-    else
-    {
-        /* Write CSS field only                                                   */
-        PMC->PMC_MCKR = (PMC->PMC_MCKR & ~0x03) | (PMC_MCKR_Val & 0x03);
-    }
-    while (!(PMC->PMC_SR & (1 << 3)));    /* Wait for MCKRDY                    */
-    PMC->PMC_MCKR   =  PMC_MCKR_Val;      /* Write all MCKR                     */
-    while (!(PMC->PMC_SR & (1 << 3)));    /* Wait for MCKRDY                    */
+  if ((PMC_MCKR_Val & 0x03) >= 2) {
+    /* Write PRES field only                                                  */
+    PMC->PMC_MCKR = (PMC->PMC_MCKR & ~0x70) | (PMC_MCKR_Val & 0x70);
+  } else {
+    /* Write CSS field only                                                   */
+    PMC->PMC_MCKR = (PMC->PMC_MCKR & ~0x03) | (PMC_MCKR_Val & 0x03);
+  }
+  while (!(PMC->PMC_SR & (1 << 3)));    /* Wait for MCKRDY                    */
+  PMC->PMC_MCKR   =  PMC_MCKR_Val;      /* Write all MCKR                     */
+  while (!(PMC->PMC_SR & (1 << 3)));    /* Wait for MCKRDY                    */
 
 #if (PMC_PCK0_Val)
-    PMC->PMC_PCKR[0] = PMC_PCK0_Val;      /* Write PCK0                         */
-    while (!(PMC->PMC_SR & (1 << 8)));    /* Wait for PCKRDY0                   */
+  PMC->PMC_PCKR[0] = PMC_PCK0_Val;      /* Write PCK0                         */
+  while (!(PMC->PMC_SR & (1 << 8)));    /* Wait for PCKRDY0                   */
 #endif
 #if (PMC_PCK1_Val)
-    PMC->PMC_PCKR[1] = PMC_PCK1_Val;      /* Write PCK1                         */
-    while (!(PMC->PMC_SR & (1 << 9)));    /* Wait for PCKRDY1                   */
+  PMC->PMC_PCKR[1] = PMC_PCK1_Val;      /* Write PCK1                         */
+  while (!(PMC->PMC_SR & (1 << 9)));    /* Wait for PCKRDY1                   */
 #endif
 #if (PMC_PCK2_Val)
-    PMC->PMC_PCKR[2] = PMC_PCK2_Val;      /* Write PCK2                         */
-    while (!(PMC->PMC_SR & (1 << 10)));   /* Wait for PCKRDY2                   */
+  PMC->PMC_PCKR[2] = PMC_PCK2_Val;      /* Write PCK2                         */
+  while (!(PMC->PMC_SR & (1 << 10)));   /* Wait for PCKRDY2                   */
 #endif
 
-    PMC->PMC_SCER  = PMC_SCER_Val;
-    PMC->PMC_PCER0 = PMC_PCER_Val;
+  PMC->PMC_SCER  = PMC_SCER_Val;
+  PMC->PMC_PCER0 = PMC_PCER_Val;
 
-    PMC->PMC_WPMR = 0x504D4301;             /* Enable write protect               */
+PMC->PMC_WPMR = 0x504D4301;             /* Enable write protect               */
 #endif
 
 #if (WDT_SETUP == 1)                    /* Watchdog Setup                     */
-    WDT->WDT_MR = WDT_MR_WDDIS;
+  WDT->WDT_MR = WDT_MR_WDDIS;
 #endif
 }

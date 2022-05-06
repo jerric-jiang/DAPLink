@@ -25,8 +25,7 @@
 #include "compiler.h"
 
 #if !DAPLINK_NO_ERROR_MESSAGES
-static const char *const error_message[] =
-{
+static const char *const error_message[] = {
 
     /* Shared errors */
 
@@ -132,8 +131,7 @@ COMPILER_ASSERT(ERROR_COUNT == ARRAY_SIZE(error_message));
 
 #endif // DAPLINK_NO_ERROR_MESSAGES
 
-static error_type_t error_type[] =
-{
+static error_type_t error_type[] = {
 
     /* These should always stay the same for each error type. */
 
@@ -241,13 +239,11 @@ const char *error_get_string(error_t error)
 #if !DAPLINK_NO_ERROR_MESSAGES
     const char *msg = NULL;
 
-    if (error < ERROR_COUNT)
-    {
+    if (error < ERROR_COUNT) {
         msg = error_message[error];
     }
 
-    if (0 == msg)
-    {
+    if (0 == msg) {
         util_assert(0);
         msg = "";
     }
@@ -257,10 +253,10 @@ const char *error_get_string(error_t error)
     static char error_num_str[10] = "Error 00";
 #define ERROR_NUM_CHAR_INDEX (6) // offset of first '0' in error_num_str[]
 
-    error_num_str[ERROR_NUM_CHAR_INDEX + 0] = '0' + ((int)error / 1000) % 10;
-    error_num_str[ERROR_NUM_CHAR_INDEX + 1] = '0' + ((int)error / 100) % 10;
+    error_num_str[ERROR_NUM_CHAR_INDEX+0] = '0' + ((int)error / 1000) % 10;
+    error_num_str[ERROR_NUM_CHAR_INDEX+1] = '0' + ((int)error / 100) % 10;
     COMPILER_ASSERT(ERROR_COUNT < 100); // if this assert is hit, add a digit here
-    error_num_str[ERROR_NUM_CHAR_INDEX + 2] = 0;
+    error_num_str[ERROR_NUM_CHAR_INDEX+2] = 0;
 #endif  // DAPLINK_NO_ERROR_MESSAGES
 }
 
@@ -268,8 +264,7 @@ error_type_t error_get_type(error_t error)
 {
     error_type_t type = ERROR_TYPE_INTERNAL;
 
-    if (error < ERROR_COUNT)
-    {
+    if (error < ERROR_COUNT) {
         type = error_type[error];
     }
 

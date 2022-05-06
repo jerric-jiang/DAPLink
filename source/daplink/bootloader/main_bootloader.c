@@ -43,7 +43,7 @@
 __asm("  .global __ARM_use_no_argv\n");
 #elif defined(__GNUC__)
 /* Disables part of C/C++ runtime startup/teardown */
-void __libc_init_array(void) {}
+void __libc_init_array (void) {}
 #endif
 
 #if defined(__CC_ARM)
@@ -56,14 +56,14 @@ __asm void modify_stack_pointer_and_start_app(uint32_t r0_sp, uint32_t r1_pc)
 void modify_stack_pointer_and_start_app(uint32_t r0_sp, uint32_t r1_pc)
 {
     uint32_t z = 0;
-    __ASM volatile("msr    control, %[z]   \n\t"
-                   "isb                    \n\t"
-                   "mov    sp, %[r0_sp]    \n\t"
-                   "bx     %[r1_pc]"
-                   :
-                   :   [z] "l"(z),
-                   [r0_sp] "l"(r0_sp),
-                   [r1_pc] "l"(r1_pc)
+    __ASM volatile (  "msr    control, %[z]   \n\t"
+                      "isb                    \n\t"
+                      "mov    sp, %[r0_sp]    \n\t"
+                      "bx     %[r1_pc]"
+                      :
+                      :   [z] "l" (z),
+                          [r0_sp] "l" (r0_sp),
+                          [r1_pc] "l" (r1_pc)
                   );
 }
 #else
@@ -115,8 +115,7 @@ void timer_task_30mS(void * arg)
 {
     static uint32_t i = 0;
     osThreadFlagsSet(main_task_id, FLAGS_MAIN_30MS);
-    if (!(i++ % 3))
-    {
+    if (!(i++ % 3)) {
         osThreadFlagsSet(main_task_id, FLAGS_MAIN_90MS);
     }
 }
@@ -143,8 +142,7 @@ void main_task(void * arg)
     // USB
     uint32_t usb_state_count;
 
-    if (config_ram_get_initial_hold_in_bl())
-    {
+    if (config_ram_get_initial_hold_in_bl()) {
         // Delay for 1 second for VMs
         osDelay(100);
     }
@@ -169,30 +167,25 @@ void main_task(void * arg)
     osTimerId_t tmr_id = osTimerNew(timer_task_30mS, osTimerPeriodic, NULL, NULL);
     osTimerStart(tmr_id, 3);
 
-    while (1)
-    {
+    while (1) {
         // need to create a new event for programming failure
         flags = osThreadFlagsWait(FLAGS_MAIN_90MS     // 90mS tick
-                                  | FLAGS_MAIN_30MS            // 30mS tick
-                                  | FLAGS_MAIN_PROC_USB       // process usb events
-                                  , osFlagsWaitAny,
-                                  osWaitForever);
+                        | FLAGS_MAIN_30MS            // 30mS tick
+                        | FLAGS_MAIN_PROC_USB       // process usb events
+                        , osFlagsWaitAny,
+                        osWaitForever);
 
-        if (flags & FLAGS_MAIN_PROC_USB)
-        {
+        if (flags & FLAGS_MAIN_PROC_USB) {
             USBD_Handler();
         }
 
-        if (flags & FLAGS_MAIN_90MS)
-        {
+        if (flags & FLAGS_MAIN_90MS) {
             vfs_mngr_periodic(90); // FLAGS_MAIN_90MS
 
             // Update USB busy status
-            switch (usb_busy)
-            {
+            switch (usb_busy) {
                 case MAIN_USB_ACTIVE:
-                    if (DECZERO(usb_busy_count) == 0)
-                    {
+                    if (DECZERO(usb_busy_count) == 0) {
                         usb_busy = MAIN_USB_IDLE;
                     }
 
@@ -204,13 +197,11 @@ void main_task(void * arg)
             }
 
             // Update USB connect status
-            switch (usb_state)
-            {
+            switch (usb_state) {
                 case MAIN_USB_DISCONNECTING:
 
                     // Wait until USB is idle before disconnecting
-                    if (usb_busy == MAIN_USB_IDLE && (DECZERO(usb_state_count) == 0))
-                    {
+                    if (usb_busy == MAIN_USB_IDLE && (DECZERO(usb_state_count) == 0)) {
                         usbd_connect(0);
                         usb_state = MAIN_USB_DISCONNECTED;
                     }
@@ -220,8 +211,7 @@ void main_task(void * arg)
                 case MAIN_USB_CONNECTING:
 
                     // Wait before connecting
-                    if (DECZERO(usb_state_count) == 0)
-                    {
+                    if (DECZERO(usb_state_count) == 0) {
                         usbd_connect(1);
                         usb_state = MAIN_USB_CHECK_CONNECTED;
                     }
@@ -229,8 +219,7 @@ void main_task(void * arg)
                     break;
 
                 case MAIN_USB_CHECK_CONNECTED:
-                    if (usbd_configured())
-                    {
+                    if (usbd_configured()) {
                         usb_state = MAIN_USB_CONNECTED;
                     }
 
@@ -247,25 +236,19 @@ void main_task(void * arg)
         }
 
         // 30mS tick used for flashing LED when USB is busy
-        if (flags & FLAGS_MAIN_30MS)
-        {
-            if (msc_led_usb_activity)
-            {
+        if (flags & FLAGS_MAIN_30MS) {
+            if (msc_led_usb_activity) {
 
-                if ((msc_led_state == MAIN_LED_FLASH) || (msc_led_state == MAIN_LED_FLASH_PERMANENT))
-                {
+                if ((msc_led_state == MAIN_LED_FLASH) || (msc_led_state == MAIN_LED_FLASH_PERMANENT)) {
                     // Toggle LED value
                     msc_led_value = (GPIO_LED_ON == msc_led_value) ? GPIO_LED_OFF : GPIO_LED_ON;
                     // If in flash mode stop after one cycle but in bootloader LED stays on
-                    if ((MSC_LED_DEF == msc_led_value) && (MAIN_LED_FLASH == msc_led_state))
-                    {
+                    if ((MSC_LED_DEF == msc_led_value) && (MAIN_LED_FLASH == msc_led_state)) {
                         msc_led_usb_activity = 0;
                         msc_led_state = MAIN_LED_DEF;
                     }
 
-                }
-                else
-                {
+                }else{
                     //LED next state is MAIN_LED_DEF
                     msc_led_value = MSC_LED_DEF;
                     msc_led_usb_activity = 0;
@@ -292,15 +275,14 @@ int main(void)
     // check for invalid app image or rst button press. Should be checksum or CRC but NVIC validation is better than nothing.
     // If the interface has set the hold in bootloader setting don't jump to app
     if (!reset_button_pressed()
-        && g_board_info.target_cfg
-        && validate_bin_nvic((uint8_t *)g_board_info.target_cfg->flash_regions[0].start)
-        && !config_ram_get_initial_hold_in_bl())
-    {
+            && g_board_info.target_cfg
+            && validate_bin_nvic((uint8_t *)g_board_info.target_cfg->flash_regions[0].start)
+            && !config_ram_get_initial_hold_in_bl()) {
         // change to the new vector table
         SCB->VTOR = g_board_info.target_cfg->flash_regions[0].start; //bootloaders should only have one flash region for interface
         // modify stack pointer and start app
         modify_stack_pointer_and_start_app((*(uint32_t *)(g_board_info.target_cfg->flash_regions[0].start)),
-                                           (*(uint32_t *)(g_board_info.target_cfg->flash_regions[0].start + 4)));
+                (*(uint32_t *)(g_board_info.target_cfg->flash_regions[0].start + 4)));
     }
 
     // config the usb interface descriptor and web auth token before USB connects

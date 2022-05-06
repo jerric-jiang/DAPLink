@@ -32,12 +32,9 @@
 NO_OPTIMIZE_PRE
 __WEAK const char * NO_OPTIMIZE_INLINE get_board_id(void)
 {
-    if (g_board_info.target_cfg && g_board_info.target_cfg->rt_board_id)
-    {
+    if (g_board_info.target_cfg && g_board_info.target_cfg->rt_board_id) {
         return g_board_info.target_cfg->rt_board_id; //flexible board id
-    }
-    else
-    {
+    } else {
         return g_board_info.board_id;
     }
 }
@@ -46,12 +43,9 @@ NO_OPTIMIZE_POST
 NO_OPTIMIZE_PRE
 __WEAK uint16_t NO_OPTIMIZE_INLINE get_family_id(void)
 {
-    if (g_board_info.target_cfg && g_board_info.target_cfg->rt_family_id)
-    {
+    if (g_board_info.target_cfg && g_board_info.target_cfg->rt_family_id) {
         return g_board_info.target_cfg->rt_family_id; //flexible family id
-    }
-    else
-    {
+    } else {
         return g_board_info.family_id;
     }
 }

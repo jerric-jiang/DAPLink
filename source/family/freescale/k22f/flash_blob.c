@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t MK_P512_flash_prog_blob[] =
-{
+static const uint32_t MK_P512_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xb5104938, 0x60084449, 0xf24c4837, 0x81c15120, 0x1128f64d, 0x880181c1, 0x0101f021, 0x48348001,
     0x44484932, 0x2200f44f, 0x21006001, 0x1201e9c0, 0x52a0f04f, 0xf44f6142, 0x61825280, 0x1020f880,
@@ -65,13 +64,11 @@ static const uint32_t flash_size = 0x00080000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     { 0x00000000, 0x00000800 },
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000021, // Init
     0x20000071, // UnInit
     0x20000095, // EraseChip

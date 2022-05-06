@@ -29,7 +29,7 @@ typedef enum _microbit_power_mode_t
     MB_POWER_DOWN = 0x08,   // KL27 VLLS0
 } microbit_if_power_mode_t;
 
-/**
+/** 
  * Initialises the required resources to switch between different power modes.
  */
 void power_init(void);
@@ -38,7 +38,7 @@ void power_init(void);
  * Lowest power mode available in the Interface MCU.
  * Wakes up via reset button press or falling edge of VBUS_ABSENT (previously
  * named WAKE_ON_EDGE).
- *
+ * 
  */
 void power_down(void);
 

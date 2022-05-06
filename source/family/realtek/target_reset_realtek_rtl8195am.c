@@ -20,8 +20,7 @@
 
 static void swd_set_target_reset_realtek(uint8_t asserted)
 {
-    if (asserted)
-    {
+    if (asserted) {
         swd_write_word(0xE000ED0C, 0x05FA0004);
     }
 }
@@ -29,14 +28,12 @@ static void swd_set_target_reset_realtek(uint8_t asserted)
 static uint8_t validate_bin_nvic_realtek(const uint8_t *buf)
 {
     const char header[] = {0x99, 0x99, 0x96, 0x96, 0x3F, 0xCC, 0x66, 0xFC,
-                           0xC0, 0x33, 0xCC, 0x03, 0xE5, 0xDC, 0x31, 0x62
-                          };
+                           0xC0, 0x33, 0xCC, 0x03, 0xE5, 0xDC, 0x31, 0x62};
 
     return !memcmp(header, buf, sizeof(header));
 }
 
-const target_family_descriptor_t g_realtek_rtl8195am =
-{
+const target_family_descriptor_t g_realtek_rtl8195am = {
     .family_id = kRealtek_Rtl8195am_FamilyID,
     .default_reset_type = kHardwareReset,
     .swd_set_target_reset = swd_set_target_reset_realtek,

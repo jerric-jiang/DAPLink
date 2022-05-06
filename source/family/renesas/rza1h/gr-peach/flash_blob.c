@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t rza1xx_flash_prog_blob[] =
-{
+static const uint32_t rza1xx_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x41f0e92d, 0x4efa4604, 0xf0106830, 0xd07d0f01, 0x4ff76961, 0xf44f220e, 0x3f184380, 0xf0004638,
     0x4df3fafb, 0x087ff44f, 0x3d246960, 0xf894b160, 0x22101046, 0x46284643, 0xfaeef000, 0x06bb6821,
@@ -87,13 +86,11 @@ static const uint32_t flash_size = 0x00800000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0, KB(4)},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x200202c1, // Init
     0x200203cf, // UnInit
     0x20020449, // EraseChip

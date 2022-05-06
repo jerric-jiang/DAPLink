@@ -26,8 +26,7 @@ void delay(uint32_t cycles)
     volatile uint32_t i;
     i = cycles * 4000;        // fudge factor to give approximate 1 ms
 
-    while (i > 0)
-    {
+    while (i > 0) {
         i--;
     }
 }

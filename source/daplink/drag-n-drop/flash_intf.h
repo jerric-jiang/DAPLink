@@ -30,8 +30,7 @@
 extern "C" {
 #endif
 
-typedef enum
-{
+typedef enum {
     FLASH_FUNC_NOP,
     FLASH_FUNC_ERASE,
     FLASH_FUNC_PROGRAM,
@@ -48,8 +47,7 @@ typedef uint32_t (*flash_erase_sector_size_cb_t)(uint32_t addr);
 typedef uint8_t (*flash_busy_cb_t)(void);
 typedef error_t (*flash_algo_set_cb_t)(uint32_t addr);
 
-typedef struct
-{
+typedef struct {
     flash_intf_init_cb_t init;
     flash_intf_uninit_cb_t uninit;
     flash_intf_program_page_cb_t program_page;

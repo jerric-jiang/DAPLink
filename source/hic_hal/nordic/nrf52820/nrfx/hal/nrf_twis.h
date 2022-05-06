@@ -130,7 +130,7 @@ NRF_STATIC_INLINE void nrf_twis_task_trigger(NRF_TWIS_Type * p_reg, nrf_twis_tas
  * @return Task address.
  */
 NRF_STATIC_INLINE uint32_t nrf_twis_task_address_get(NRF_TWIS_Type const * p_reg,
-        nrf_twis_task_t       task);
+                                                     nrf_twis_task_t       task);
 
 /**
  * @brief Function for clearing the specified event.
@@ -139,7 +139,7 @@ NRF_STATIC_INLINE uint32_t nrf_twis_task_address_get(NRF_TWIS_Type const * p_reg
  * @param[in] event The specified event.
  */
 NRF_STATIC_INLINE void nrf_twis_event_clear(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t event);
+                                            nrf_twis_event_t event);
 
 /**
  * @brief Function for retrieving the state of the TWIS event.
@@ -151,7 +151,7 @@ NRF_STATIC_INLINE void nrf_twis_event_clear(NRF_TWIS_Type *  p_reg,
  * @retval false The event has not been generated.
  */
 NRF_STATIC_INLINE bool nrf_twis_event_check(NRF_TWIS_Type const * p_reg,
-        nrf_twis_event_t      event);
+                                            nrf_twis_event_t      event);
 
 /**
  * @brief Function for getting and clearing the state of the specified event.
@@ -165,7 +165,7 @@ NRF_STATIC_INLINE bool nrf_twis_event_check(NRF_TWIS_Type const * p_reg,
  * @retval false The event was not set.
  */
 NRF_STATIC_INLINE bool nrf_twis_event_get_and_clear(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t event);
+                                                    nrf_twis_event_t event);
 
 /**
  * @brief Function for returning the address of the specified TWIS event register.
@@ -176,7 +176,7 @@ NRF_STATIC_INLINE bool nrf_twis_event_get_and_clear(NRF_TWIS_Type *  p_reg,
  * @return Address.
  */
 NRF_STATIC_INLINE uint32_t nrf_twis_event_address_get(NRF_TWIS_Type const * p_reg,
-        nrf_twis_event_t      event);
+                                                      nrf_twis_event_t      event);
 
 /**
  * @brief Function for setting a shortcut.
@@ -241,8 +241,8 @@ NRF_STATIC_INLINE void nrf_twis_int_disable(NRF_TWIS_Type * p_reg, uint32_t mask
  * @param[in] channel Channel through which to subscribe events.
  */
 NRF_STATIC_INLINE void nrf_twis_subscribe_set(NRF_TWIS_Type * p_reg,
-        nrf_twis_task_t task,
-        uint8_t         channel);
+                                              nrf_twis_task_t task,
+                                              uint8_t         channel);
 
 /**
  * @brief Function for clearing the subscribe configuration for a given
@@ -252,7 +252,7 @@ NRF_STATIC_INLINE void nrf_twis_subscribe_set(NRF_TWIS_Type * p_reg,
  * @param[in] task  Task for which to clear the configuration.
  */
 NRF_STATIC_INLINE void nrf_twis_subscribe_clear(NRF_TWIS_Type * p_reg,
-        nrf_twis_task_t task);
+                                                nrf_twis_task_t task);
 
 /**
  * @brief Function for setting the publish configuration for a given
@@ -263,8 +263,8 @@ NRF_STATIC_INLINE void nrf_twis_subscribe_clear(NRF_TWIS_Type * p_reg,
  * @param[in] channel Channel through which to publish the event.
  */
 NRF_STATIC_INLINE void nrf_twis_publish_set(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t event,
-        uint8_t         channel);
+                                            nrf_twis_event_t event,
+                                            uint8_t         channel);
 
 /**
  * @brief Function for clearing the publish configuration for a given
@@ -274,7 +274,7 @@ NRF_STATIC_INLINE void nrf_twis_publish_set(NRF_TWIS_Type *  p_reg,
  * @param[in] event Event for which to clear the configuration.
  */
 NRF_STATIC_INLINE void nrf_twis_publish_clear(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t event);
+                                              nrf_twis_event_t event);
 #endif // defined(DPPI_PRESENT) || defined(__NRFX_DOXYGEN__)
 
 /**
@@ -349,8 +349,8 @@ NRF_STATIC_INLINE uint32_t nrf_twis_sda_pin_get(NRF_TWIS_Type const * p_reg);
  * @param[in] length Maximum number of data bytes to receive.
  */
 NRF_STATIC_INLINE void nrf_twis_rx_buffer_set(NRF_TWIS_Type * p_reg,
-        uint8_t       * p_buf,
-        size_t          length);
+                                              uint8_t       * p_buf,
+                                              size_t          length);
 
 /**
  * @brief Function that prepares TWIS for receiving
@@ -362,8 +362,8 @@ NRF_STATIC_INLINE void nrf_twis_rx_buffer_set(NRF_TWIS_Type * p_reg,
  * @param[in] length Maximum number of data bytes to receive.
  */
 NRF_STATIC_INLINE void nrf_twis_rx_prepare(NRF_TWIS_Type * p_reg,
-        uint8_t       * p_buf,
-        size_t          length);
+                                           uint8_t       * p_buf,
+                                           size_t          length);
 
 /**
  * @brief Function for getting number of bytes received in the last transaction.
@@ -382,8 +382,8 @@ NRF_STATIC_INLINE size_t nrf_twis_rx_amount_get(NRF_TWIS_Type const * p_reg);
  * @param[in] length Maximum number of data bytes to transmit.
  */
 NRF_STATIC_INLINE void nrf_twis_tx_buffer_set(NRF_TWIS_Type * p_reg,
-        uint8_t const * p_buf,
-        size_t          length);
+                                              uint8_t const * p_buf,
+                                              size_t          length);
 
 /**
  * @brief Function for preparing TWIS for transmitting.
@@ -395,8 +395,8 @@ NRF_STATIC_INLINE void nrf_twis_tx_buffer_set(NRF_TWIS_Type * p_reg,
  * @param[in] length Maximum number of data bytes to transmit.
  */
 NRF_STATIC_INLINE void nrf_twis_tx_prepare(NRF_TWIS_Type * p_reg,
-        uint8_t const * p_buf,
-        size_t          length);
+                                           uint8_t const * p_buf,
+                                           size_t          length);
 
 /**
  * @brief Function for getting the number of bytes transmitted in the last transaction.
@@ -420,8 +420,8 @@ NRF_STATIC_INLINE size_t nrf_twis_tx_amount_get(NRF_TWIS_Type const * p_reg);
  * @sa nrf_twis_config_address_get
  */
 NRF_STATIC_INLINE void nrf_twis_address_set(NRF_TWIS_Type *    p_reg,
-        uint_fast8_t       n,
-        nrf_twis_address_t addr);
+                                            uint_fast8_t       n,
+                                            nrf_twis_address_t addr);
 
 /**
  * @brief Function for retrieving configured slave address.
@@ -434,7 +434,7 @@ NRF_STATIC_INLINE void nrf_twis_address_set(NRF_TWIS_Type *    p_reg,
  * @return Configured slave address.
  */
 NRF_STATIC_INLINE nrf_twis_address_t nrf_twis_address_get(NRF_TWIS_Type const * p_reg,
-        uint_fast8_t          n);
+                                                          uint_fast8_t          n);
 
 /**
  * @brief Function for setting the device address configuration.
@@ -445,7 +445,7 @@ NRF_STATIC_INLINE nrf_twis_address_t nrf_twis_address_get(NRF_TWIS_Type const * 
  * @sa nrf_twis_address_set
  */
 NRF_STATIC_INLINE void nrf_twis_config_address_set(NRF_TWIS_Type *             p_reg,
-        nrf_twis_config_addr_mask_t addr_mask);
+                                                   nrf_twis_config_addr_mask_t addr_mask);
 
 /**
  * @brief Function for retrieving the device address configuration.
@@ -455,7 +455,7 @@ NRF_STATIC_INLINE void nrf_twis_config_address_set(NRF_TWIS_Type *             p
  * @return Mask of address indexes of what device should answer to.
  */
 NRF_STATIC_INLINE nrf_twis_config_addr_mask_t nrf_twis_config_address_get(
-    NRF_TWIS_Type const * p_reg);
+        NRF_TWIS_Type const * p_reg);
 
 /**
  * @brief Function for setting the over-read character.
@@ -542,7 +542,7 @@ NRF_STATIC_INLINE volatile uint32_t* nrf_twis_getRegPtr(NRF_TWIS_Type * p_reg, u
  * @return Pointer to the register.
  */
 NRF_STATIC_INLINE volatile const uint32_t* nrf_twis_getRegPtr_c(NRF_TWIS_Type const * p_reg,
-        uint32_t              offset)
+                                                                uint32_t              offset)
 {
     return (volatile const uint32_t*)((uint8_t *)p_reg + (uint32_t)offset);
 }
@@ -559,7 +559,7 @@ NRF_STATIC_INLINE void nrf_twis_task_trigger(NRF_TWIS_Type * p_reg, nrf_twis_tas
 }
 
 NRF_STATIC_INLINE uint32_t nrf_twis_task_address_get(NRF_TWIS_Type const * p_reg,
-        nrf_twis_task_t       task)
+                                                     nrf_twis_task_t       task)
 {
     return (uint32_t)nrf_twis_getRegPtr_c(p_reg, (uint32_t)task);
 }
@@ -572,7 +572,7 @@ NRF_STATIC_INLINE void nrf_twis_event_clear(NRF_TWIS_Type * p_reg, nrf_twis_even
 
 NRF_STATIC_INLINE bool nrf_twis_event_check(NRF_TWIS_Type const * p_reg, nrf_twis_event_t event)
 {
-    return (bool) * nrf_twis_getRegPtr_c(p_reg, (uint32_t)event);
+    return (bool)*nrf_twis_getRegPtr_c(p_reg, (uint32_t)event);
 }
 
 NRF_STATIC_INLINE bool nrf_twis_event_get_and_clear(NRF_TWIS_Type * p_reg, nrf_twis_event_t event)
@@ -586,7 +586,7 @@ NRF_STATIC_INLINE bool nrf_twis_event_get_and_clear(NRF_TWIS_Type * p_reg, nrf_t
 }
 
 NRF_STATIC_INLINE uint32_t nrf_twis_event_address_get(NRF_TWIS_Type const * p_reg,
-        nrf_twis_event_t      event)
+                                                      nrf_twis_event_t      event)
 {
     return (uint32_t)nrf_twis_getRegPtr_c(p_reg, (uint32_t)event);
 }
@@ -631,31 +631,31 @@ NRF_STATIC_INLINE void nrf_twis_int_disable(NRF_TWIS_Type * p_reg, uint32_t mask
 
 #if defined(DPPI_PRESENT)
 NRF_STATIC_INLINE void nrf_twis_subscribe_set(NRF_TWIS_Type * p_reg,
-        nrf_twis_task_t task,
-        uint8_t         channel)
+                                              nrf_twis_task_t task,
+                                              uint8_t         channel)
 {
-    *((volatile uint32_t *)((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
-        ((uint32_t)channel | TWIS_SUBSCRIBE_STOP_EN_Msk);
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) =
+            ((uint32_t)channel | TWIS_SUBSCRIBE_STOP_EN_Msk);
 }
 
 NRF_STATIC_INLINE void nrf_twis_subscribe_clear(NRF_TWIS_Type * p_reg,
-        nrf_twis_task_t task)
+                                                nrf_twis_task_t task)
 {
-    *((volatile uint32_t *)((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) task + 0x80uL)) = 0;
 }
 
 NRF_STATIC_INLINE void nrf_twis_publish_set(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t event,
-        uint8_t          channel)
+                                            nrf_twis_event_t event,
+                                            uint8_t          channel)
 {
-    *((volatile uint32_t *)((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
-        ((uint32_t)channel | TWIS_PUBLISH_STOPPED_EN_Msk);
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) =
+            ((uint32_t)channel | TWIS_PUBLISH_STOPPED_EN_Msk);
 }
 
 NRF_STATIC_INLINE void nrf_twis_publish_clear(NRF_TWIS_Type *  p_reg,
-        nrf_twis_event_t event)
+                                              nrf_twis_event_t event)
 {
-    *((volatile uint32_t *)((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
+    *((volatile uint32_t *) ((uint8_t *) p_reg + (uint32_t) event + 0x80uL)) = 0;
 }
 #endif // defined(DPPI_PRESENT)
 
@@ -698,16 +698,16 @@ NRF_STATIC_INLINE uint32_t nrf_twis_sda_pin_get(NRF_TWIS_Type const * p_reg)
 }
 
 NRF_STATIC_INLINE void nrf_twis_rx_buffer_set(NRF_TWIS_Type * p_reg,
-        uint8_t *       p_buf,
-        size_t          length)
+                                              uint8_t *       p_buf,
+                                              size_t          length)
 {
     p_reg->RXD.PTR    = (uint32_t)p_buf;
     p_reg->RXD.MAXCNT = length;
 }
 
 NRF_STATIC_INLINE void nrf_twis_rx_prepare(NRF_TWIS_Type *   p_reg,
-        uint8_t *         p_buf,
-        size_t length)
+                                           uint8_t *         p_buf,
+                                           size_t length)
 {
     nrf_twis_rx_buffer_set(p_reg, p_buf, length);
     nrf_twis_task_trigger(p_reg, NRF_TWIS_TASK_PREPARERX);
@@ -719,16 +719,16 @@ NRF_STATIC_INLINE size_t nrf_twis_rx_amount_get(NRF_TWIS_Type const * p_reg)
 }
 
 NRF_STATIC_INLINE void nrf_twis_tx_buffer_set(NRF_TWIS_Type * p_reg,
-        uint8_t const * p_buf,
-        size_t          length)
+                                              uint8_t const * p_buf,
+                                              size_t          length)
 {
     p_reg->TXD.PTR    = (uint32_t)p_buf;
     p_reg->TXD.MAXCNT = length;
 }
 
 NRF_STATIC_INLINE void nrf_twis_tx_prepare(NRF_TWIS_Type * p_reg,
-        uint8_t const * p_buf,
-        size_t          length)
+                                           uint8_t const * p_buf,
+                                           size_t          length)
 {
     nrf_twis_tx_buffer_set(p_reg, p_buf, length);
     nrf_twis_task_trigger(p_reg, NRF_TWIS_TASK_PREPARETX);
@@ -740,26 +740,26 @@ NRF_STATIC_INLINE size_t nrf_twis_tx_amount_get(NRF_TWIS_Type const * p_reg)
 }
 
 NRF_STATIC_INLINE void nrf_twis_address_set(NRF_TWIS_Type *    p_reg,
-        uint_fast8_t       n,
-        nrf_twis_address_t addr)
+                                            uint_fast8_t       n,
+                                            nrf_twis_address_t addr)
 {
     p_reg->ADDRESS[n] = addr;
 }
 
 NRF_STATIC_INLINE nrf_twis_address_t nrf_twis_address_get(NRF_TWIS_Type const * p_reg,
-        uint_fast8_t          n)
+                                                          uint_fast8_t          n)
 {
     return (nrf_twis_address_t)p_reg->ADDRESS[n];
 }
 NRF_STATIC_INLINE void nrf_twis_config_address_set(NRF_TWIS_Type *             p_reg,
-        nrf_twis_config_addr_mask_t addr_mask)
+                                                   nrf_twis_config_addr_mask_t addr_mask)
 {
     /* This is the only configuration in TWIS - just write it without masking */
     p_reg->CONFIG = addr_mask;
 }
 
 NRF_STATIC_INLINE nrf_twis_config_addr_mask_t nrf_twis_config_address_get(
-    NRF_TWIS_Type const * p_reg)
+        NRF_TWIS_Type const * p_reg)
 {
     return (nrf_twis_config_addr_mask_t)(p_reg->CONFIG & TWIS_ADDRESS_ADDRESS_Msk);
 }

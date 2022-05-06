@@ -42,8 +42,7 @@
 
 
 /* HID Descriptor */
-typedef __PACKED_STRUCT _HID_DESCRIPTOR
-{
+typedef __PACKED_STRUCT _HID_DESCRIPTOR {
     U8  bLength;
     U8  bDescriptorType;
     U16 bcdHID;

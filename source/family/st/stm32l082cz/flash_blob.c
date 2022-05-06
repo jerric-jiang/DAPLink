@@ -13,11 +13,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+ 
 #include "flash_blob.h"
 
-static const uint32_t stm32l0xx_192_flash_prog_blob[] =
-{
+static const uint32_t stm32l0xx_192_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4603b510, 0x69804851, 0x0224240f, 0x4c4f4320, 0x484f61a0, 0x484f60e0, 0x484f60e0, 0x484f6120,
     0x46206120, 0x240169c0, 0x40200524, 0xd1062800, 0x4c4c484b, 0x20066020, 0x484b6060, 0x200060a0,
@@ -45,20 +44,18 @@ static const uint32_t flash_size = 0x00030000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x08000000, 0x00000080},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000021, // Init
     0x20000063, // UnInit
     0x00000000, // EraseChip - NOT SUPPORTED
     0x20000081, // EraseSector
     0x200000d9, // ProgramPage
     0x0,        // Verify
-
+    
     // BKPT : start of blob + 1
     // RSB  : blob start + header + rw data offset
     // RSP  : stack pointer

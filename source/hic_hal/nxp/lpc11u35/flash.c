@@ -55,8 +55,7 @@ uint32_t EraseSector(uint32_t adr)
     iap_op.par[0] = num;    // Start Sector
     iap_op.par[1] = num;    // End Sector
     iap_call(&iap_op);
-    if (iap_op.stat != CMD_SUCCESS)
-    {
+    if (iap_op.stat != CMD_SUCCESS) {
         iap_unlock();
         return (1);
     }
@@ -66,8 +65,7 @@ uint32_t EraseSector(uint32_t adr)
     iap_op.par[1] = num;                    // End Sector
     iap_op.par[2] = SystemCoreClock / 1000; // Core Clock in kHz
     iap_call(&iap_op);
-    if (iap_op.stat != CMD_SUCCESS)
-    {
+    if (iap_op.stat != CMD_SUCCESS) {
         iap_unlock();
         return (1);
     }
@@ -87,14 +85,12 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     iap_op.par[0] = num;    // Start Sector
     iap_op.par[1] = num;    // End Sector
     iap_call(&iap_op);
-    if (iap_op.stat != CMD_SUCCESS)
-    {
+    if (iap_op.stat != CMD_SUCCESS) {
         iap_unlock();
         return (1);
     }
 
-    while (sz > 0)
-    {
+    while (sz > 0) {
         uint32_t copy_size = MIN(sz, sizeof(page_buf));
         memset(page_buf, 0xFF, sizeof(page_buf));
         memcpy(page_buf, buf, copy_size);
@@ -104,8 +100,7 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
         iap_op.par[2] = 256;                    // Write size
         iap_op.par[3] = SystemCoreClock / 1000; // Core Clock in kHz
         iap_call(&iap_op);
-        if (iap_op.stat != CMD_SUCCESS)
-        {
+        if (iap_op.stat != CMD_SUCCESS) {
             iap_unlock();
             return (1);
         }

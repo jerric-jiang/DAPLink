@@ -134,7 +134,7 @@
 #define FTFx_ERASE_ALL_EXECUTE_ONLY_SEGMENT 0x4BU  /*!< ERSXA*/
 #define FTFx_PROGRAM_PARTITION 0x80U               /*!< PGMPART)*/
 #define FTFx_SET_FLEXRAM_FUNCTION 0x81U            /*!< SETRAM*/
-/*@}*/
+                                                   /*@}*/
 
 /*!
  * @name Common flash register info defines
@@ -232,7 +232,7 @@ enum _flash_config_area_range
 #define FTFx_REG_ACCESS_TYPE volatile uint8_t *
 #define FTFx_REG32_ACCESS_TYPE volatile uint32_t *
 #endif /* FLASH_DRIVER_IS_FLASH_RESIDENT */
-/*@}*/
+       /*@}*/
 
 /*******************************************************************************
  * Prototypes
@@ -251,8 +251,8 @@ static status_t flash_check_range(flash_config_t *config,
                                   uint32_t alignmentBaseline);
 /*! @brief Gets the right address, sector and block size of current flash type which is indicated by address.*/
 static status_t flash_get_matched_operation_info(flash_config_t *config,
-        uint32_t address,
-        flash_operation_config_t *info);
+                                                 uint32_t address,
+                                                 flash_operation_config_t *info);
 /*! @brief Validates the given user key for flash erase APIs.*/
 static status_t flash_check_user_key(uint32_t key);
 
@@ -300,8 +300,7 @@ volatile uint32_t *const kFPROT = (volatile uint32_t *)&FTFL->FPROT3;
  *      flashDensity = ((uint32_t)kPFlashDensities[pfsize]) << 10;
  *  @endcode
  */
-const uint16_t kPFlashDensities[] =
-{
+const uint16_t kPFlashDensities[] = {
     8,    /* 0x0 - 8192, 8KB */
     16,   /* 0x1 - 16384, 16KB */
     24,   /* 0x2 - 24576, 24KB */
@@ -805,10 +804,10 @@ void flash_cache_clear_command(FTFx_REG32_ACCESS_TYPE ftfx_reg)
     *ftfx_reg |= MSCM_OCMDR_OCMC1(2);
     *ftfx_reg |= MSCM_OCMDR_OCMC1(1);
 #else
-    /*    #error "Unknown flash cache controller"  */
+/*    #error "Unknown flash cache controller"  */
 #endif /* FSL_FEATURE_FTFx_MCM_FLASH_CACHE_CONTROLS */
-    /* Memory barriers for good measure.
-     * All Cache, Branch predictor and TLB maintenance operations before this instruction complete */
+       /* Memory barriers for good measure.
+        * All Cache, Branch predictor and TLB maintenance operations before this instruction complete */
     __ISB();
     __DSB();
 }
@@ -838,9 +837,9 @@ void __attribute__((optimize("O0"))) flash_cache_clear(flash_config_t *config)
 {
 #if FLASH_DRIVER_IS_FLASH_RESIDENT
 
-    /* We pass the ftfx register address as a parameter to flash_cache_clear_comamnd() instead of using
-     * pre-processed MACROs or a global variable in flash_cache_clear_comamnd()
-     * to make sure that flash_cache_clear_command() will be compiled into position-independent code (PIC). */
+/* We pass the ftfx register address as a parameter to flash_cache_clear_comamnd() instead of using
+ * pre-processed MACROs or a global variable in flash_cache_clear_comamnd()
+ * to make sure that flash_cache_clear_command() will be compiled into position-independent code (PIC). */
 #if defined(FSL_FEATURE_FLASH_HAS_MCM_FLASH_CACHE_CONTROLS) && FSL_FEATURE_FLASH_HAS_MCM_FLASH_CACHE_CONTROLS
 #if defined(MCM)
     flash_cache_clear_command((FTFx_REG32_ACCESS_TYPE)&MCM->PLACR);
@@ -887,7 +886,7 @@ void __attribute__((optimize("O0"))) flash_cache_clear(flash_config_t *config)
     MSCM->OCMDR[0] |= MSCM_OCMDR_OCMC1(2);
     MSCM->OCMDR[0] |= MSCM_OCMDR_OCMC1(1);
 #else
-    /*    #error "Unknown flash cache controller" */
+/*    #error "Unknown flash cache controller" */
 #endif /* FSL_FEATURE_FTFx_MCM_FLASH_CACHE_CONTROLS */
 #endif /* FLASH_DRIVER_IS_FLASH_RESIDENT */
 }
@@ -915,7 +914,7 @@ static status_t flash_check_range(flash_config_t *config,
         return kStatus_FLASH_AlignmentError;
     }
 
-    /* check for valid range of the target addresses */
+/* check for valid range of the target addresses */
 #if !FLASH_SSD_IS_FLEXNVM_ENABLED
     if ((startAddress < config->PFlashBlockBase) ||
         ((startAddress + lengthInBytes) > (config->PFlashBlockBase + config->PFlashTotalSize)))
@@ -934,8 +933,8 @@ static status_t flash_check_range(flash_config_t *config,
 
 /*! @brief Gets the right address, sector and block size of current flash type which is indicated by address.*/
 static status_t flash_get_matched_operation_info(flash_config_t *config,
-        uint32_t address,
-        flash_operation_config_t *info)
+                                                 uint32_t address,
+                                                 flash_operation_config_t *info)
 {
     if (config == NULL)
     {

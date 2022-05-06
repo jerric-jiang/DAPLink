@@ -1,6 +1,6 @@
 /**
  * @file    flash_hal_SAM3U.c
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2019, ARM Limited, All Rights Reserved
@@ -44,8 +44,7 @@
 #define FMR_FAM               (1 << 24)
 #define GPNVMB_BMS            (1)
 
-typedef struct
-{
+typedef struct {
     volatile uint32_t MC_FMR;
     volatile uint32_t MC_FCR;
     volatile uint32_t MC_FSR;
@@ -58,8 +57,7 @@ static void _FeedWDT(void)
     //
     // Feed watchdog if enabled
     //
-    if ((WDT_MR & (1 << 15)) == 0)        // Is watchdog enabled ?
-    {
+    if ((WDT_MR & (1 << 15)) == 0) {      // Is watchdog enabled ?
         WDT_CR = 0xA5000001;                // Feed it!
     }
 }
@@ -94,18 +92,13 @@ static void _WritePage(uint32_t Addr, volatile uint32_t *pSrc, int PerformErase)
     iPage = ((Addr - 0x80000) >> 8);
     NumItemsInPageLeft = (1 << 8) >> 2;
 
-    if (PerformErase)
-    {
-        do
-        {
+    if (PerformErase) {
+        do {
             *pDest++ = 0xFFFFFFFF;
         } while (--NumItemsInPageLeft);
 
-    }
-    else
-    {
-        do
-        {
+    } else {
+        do {
             *pDest++ = *pSrc++;
         } while (--NumItemsInPageLeft);
     }
@@ -115,8 +108,7 @@ static void _WritePage(uint32_t Addr, volatile uint32_t *pSrc, int PerformErase)
     //
     pSFRs->MC_FCR = (KEY_VALUE << 24) | (FCMD_EWP << 0) | (iPage << 8);  // Erase page and write with blank data
 
-    do
-    {
+    do {
         _FeedWDT();
         Status = pSFRs->MC_FSR;
     } while ((Status & 1) == 0);
@@ -149,8 +141,7 @@ uint32_t UnInit(uint32_t fnc)
 RAM_FUNCTION
 uint32_t EraseChip(void)
 {
-    if (g_board_info.target_cfg)
-    {
+    if (g_board_info.target_cfg) {
         uint32_t Addr;
         //
         // Return value 0 == O.K.
@@ -159,17 +150,14 @@ uint32_t EraseChip(void)
         Addr = g_board_info.target_cfg->flash_regions[0].start; //bootloader, interface flashing only concerns 1 flash region
 
         cortex_int_state_t state = cortex_int_get_and_disable();
-        do
-        {
+        do {
             _WritePage(Addr, (volatile uint32_t *)0, 1);
             Addr += (1 << 8);
         } while (Addr < g_board_info.target_cfg->flash_regions[0].end);
         cortex_int_restore(state);
 
         return (0);  // O.K.
-    }
-    else
-    {
+    }else {
         return (1);  //No flash algo
     }
 }
@@ -187,8 +175,7 @@ uint32_t EraseSector(uint32_t adr)
     NumPagesLeft = 0x400 >> 8;                                         // SAM3U has 256 byte pages, DAPLink BTL/FW assumes 1 KB sectors
 
     cortex_int_state_t state = cortex_int_get_and_disable();
-    do
-    {
+    do {
         _WritePage(adr, (volatile uint32_t *)0, 1);
         adr += (1 << 8);
     } while (--NumPagesLeft);
@@ -213,14 +200,12 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     sz = ROUND_UP(sz, 256);    // Round up to page size
     NumPagesLeft = sz >> 8;    // SAM3U has 256 byte pages, DAPLink BTL/FW assumes 1 KB pages
 
-    if (0 == NumPagesLeft)
-    {
+    if (0 == NumPagesLeft) {
         return 1;
     }
 
     cortex_int_state_t state = cortex_int_get_and_disable();
-    do
-    {
+    do {
         _WritePage(adr, (volatile uint32_t *)temp_buf, 0);
         adr += (1 << 8);
         temp_buf += (1 << 8);

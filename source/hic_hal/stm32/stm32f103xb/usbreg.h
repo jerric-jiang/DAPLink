@@ -127,8 +127,7 @@
 
 
 /* Endpoint Buffer Descriptor */
-typedef struct _EP_BUF_DSCR
-{
+typedef struct _EP_BUF_DSCR {
     U32 ADDR_TX;
     U32 COUNT_TX;
     U32 ADDR_RX;

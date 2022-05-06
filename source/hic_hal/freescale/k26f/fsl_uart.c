@@ -898,7 +898,7 @@ void UART_TransferStopRingBuffer(UART_Type *base, uart_handle_t *handle)
     if (handle->rxState == kUART_RxIdle)
     {
         UART_DisableInterrupts(base, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable |
-                               kUART_FramingErrorInterruptEnable);
+                                         kUART_FramingErrorInterruptEnable);
         /* Disable parity error interrupt when parity mode is enable*/
         if (UART_C1_PE_MASK & base->C1)
         {
@@ -1035,9 +1035,9 @@ status_t UART_TransferGetSendCount(UART_Type *base, uart_handle_t *handle, uint3
  * retval kStatus_InvalidArgument Invalid argument.
  */
 status_t UART_TransferReceiveNonBlocking(UART_Type *base,
-        uart_handle_t *handle,
-        uart_transfer_t *xfer,
-        size_t *receivedBytes)
+                                         uart_handle_t *handle,
+                                         uart_transfer_t *xfer,
+                                         size_t *receivedBytes)
 {
     assert(handle);
     assert(xfer);
@@ -1136,7 +1136,7 @@ status_t UART_TransferReceiveNonBlocking(UART_Type *base,
 
             /* Enable RX/Rx overrun/framing error/idle line interrupt. */
             UART_EnableInterrupts(base, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable |
-                                  kUART_FramingErrorInterruptEnable | kUART_IdleLineInterruptEnable);
+                                            kUART_FramingErrorInterruptEnable | kUART_IdleLineInterruptEnable);
             /* Enable parity error interrupt when parity mode is enable*/
             if (UART_C1_PE_MASK & base->C1)
             {
@@ -1174,7 +1174,7 @@ void UART_TransferAbortReceive(UART_Type *base, uart_handle_t *handle)
     {
         /* Disable RX interrupt. */
         UART_DisableInterrupts(base, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable |
-                               kUART_FramingErrorInterruptEnable | kUART_IdleLineInterruptEnable);
+                                         kUART_FramingErrorInterruptEnable | kUART_IdleLineInterruptEnable);
         /* Disable parity error interrupt when parity mode is enable*/
         if (UART_C1_PE_MASK & base->C1)
         {
@@ -1321,7 +1321,7 @@ void UART_TransferHandleIRQ(UART_Type *base, uart_handle_t *handle)
 
                 /* Disable RX interrupt/overrun interrupt/fram error/idle line detected interrupt */
                 UART_DisableInterrupts(base, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable |
-                                       kUART_FramingErrorInterruptEnable);
+                                                 kUART_FramingErrorInterruptEnable);
 
                 /* Disable parity error interrupt when parity mode is enable*/
                 if (UART_C1_PE_MASK & base->C1)
@@ -1359,7 +1359,7 @@ void UART_TransferHandleIRQ(UART_Type *base, uart_handle_t *handle)
     /* Receive data register full */
     if ((kUART_RxDataRegFullFlag & status) && (UART_C2_RIE_MASK & base->C2))
     {
-        /* Get the size that can be stored into buffer for this interrupt. */
+/* Get the size that can be stored into buffer for this interrupt. */
 #if defined(FSL_FEATURE_UART_HAS_FIFO) && FSL_FEATURE_UART_HAS_FIFO
         count = base->RCFIFO;
 #else
@@ -1440,7 +1440,7 @@ void UART_TransferHandleIRQ(UART_Type *base, uart_handle_t *handle)
         {
             /* Disable RX interrupt/overrun interrupt/fram error/idle line detected interrupt */
             UART_DisableInterrupts(base, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable |
-                                   kUART_FramingErrorInterruptEnable);
+                                             kUART_FramingErrorInterruptEnable);
 
             /* Disable parity error interrupt when parity mode is enable*/
             if (UART_C1_PE_MASK & base->C1)
@@ -1458,7 +1458,7 @@ void UART_TransferHandleIRQ(UART_Type *base, uart_handle_t *handle)
         (!handle->rxRingBuffer))
     {
         UART_DisableInterrupts(base, kUART_RxDataRegFullInterruptEnable | kUART_RxOverrunInterruptEnable |
-                               kUART_FramingErrorInterruptEnable | kUART_IdleLineInterruptEnable);
+                                         kUART_FramingErrorInterruptEnable | kUART_IdleLineInterruptEnable);
 
         /* Disable parity error interrupt when parity mode is enable*/
         if (UART_C1_PE_MASK & base->C1)
@@ -1470,7 +1470,7 @@ void UART_TransferHandleIRQ(UART_Type *base, uart_handle_t *handle)
     /* Send data register empty and the interrupt is enabled. */
     if ((kUART_TxDataRegEmptyFlag & status) && (base->C2 & UART_C2_TIE_MASK))
     {
-        /* Get the bytes that available at this moment. */
+/* Get the bytes that available at this moment. */
 #if defined(FSL_FEATURE_UART_HAS_FIFO) && FSL_FEATURE_UART_HAS_FIFO
         count = FSL_FEATURE_UART_FIFO_SIZEn(base) - base->TCFIFO;
 #else
@@ -1528,8 +1528,8 @@ void UART_TransferHandleErrorIRQ(UART_Type *base, uart_handle_t *handle)
 void UART0_DriverIRQHandler(void)
 {
     s_uartIsr(UART0, s_uartHandle[0]);
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1538,8 +1538,8 @@ void UART0_DriverIRQHandler(void)
 void UART0_RX_TX_DriverIRQHandler(void)
 {
     UART0_DriverIRQHandler();
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1551,8 +1551,8 @@ void UART0_RX_TX_DriverIRQHandler(void)
 void UART1_DriverIRQHandler(void)
 {
     s_uartIsr(UART1, s_uartHandle[1]);
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1561,8 +1561,8 @@ void UART1_DriverIRQHandler(void)
 void UART1_RX_TX_DriverIRQHandler(void)
 {
     UART1_DriverIRQHandler();
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1573,8 +1573,8 @@ void UART1_RX_TX_DriverIRQHandler(void)
 void UART2_DriverIRQHandler(void)
 {
     s_uartIsr(UART2, s_uartHandle[2]);
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1583,8 +1583,8 @@ void UART2_DriverIRQHandler(void)
 void UART2_RX_TX_DriverIRQHandler(void)
 {
     UART2_DriverIRQHandler();
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1595,8 +1595,8 @@ void UART2_RX_TX_DriverIRQHandler(void)
 void UART3_DriverIRQHandler(void)
 {
     s_uartIsr(UART3, s_uartHandle[3]);
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1605,8 +1605,8 @@ void UART3_DriverIRQHandler(void)
 void UART3_RX_TX_DriverIRQHandler(void)
 {
     UART3_DriverIRQHandler();
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1617,8 +1617,8 @@ void UART3_RX_TX_DriverIRQHandler(void)
 void UART4_DriverIRQHandler(void)
 {
     s_uartIsr(UART4, s_uartHandle[4]);
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1627,8 +1627,8 @@ void UART4_DriverIRQHandler(void)
 void UART4_RX_TX_DriverIRQHandler(void)
 {
     UART4_DriverIRQHandler();
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1639,8 +1639,8 @@ void UART4_RX_TX_DriverIRQHandler(void)
 void UART5_DriverIRQHandler(void)
 {
     s_uartIsr(UART5, s_uartHandle[5]);
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif
@@ -1649,8 +1649,8 @@ void UART5_DriverIRQHandler(void)
 void UART5_RX_TX_DriverIRQHandler(void)
 {
     UART5_DriverIRQHandler();
-    /* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
-      exception return operation might vector to incorrect interrupt */
+/* Add for ARM errata 838869, affects Cortex-M4, Cortex-M4F Store immediate overlapping
+  exception return operation might vector to incorrect interrupt */
 #if defined __CORTEX_M && (__CORTEX_M == 4U)
     __DSB();
 #endif

@@ -43,10 +43,9 @@
 /**
 \brief Driver Version
 */
-typedef struct _ARM_DRIVER_VERSION
-{
-    uint16_t api;                         ///< API version
-    uint16_t drv;                         ///< Driver version
+typedef struct _ARM_DRIVER_VERSION {
+  uint16_t api;                         ///< API version
+  uint16_t drv;                         ///< Driver version
 } ARM_DRIVER_VERSION;
 
 /* General return codes */
@@ -60,12 +59,11 @@ typedef struct _ARM_DRIVER_VERSION
 
 /**
 \brief General power states
-*/
-typedef enum _ARM_POWER_STATE
-{
-    ARM_POWER_OFF,                        ///< Power off: no operation possible
-    ARM_POWER_LOW,                        ///< Low Power mode: retain state, detect and signal wake-up events
-    ARM_POWER_FULL                        ///< Power on: full operation at maximum performance
+*/ 
+typedef enum _ARM_POWER_STATE {
+  ARM_POWER_OFF,                        ///< Power off: no operation possible
+  ARM_POWER_LOW,                        ///< Low Power mode: retain state, detect and signal wake-up events
+  ARM_POWER_FULL                        ///< Power on: full operation at maximum performance
 } ARM_POWER_STATE;
 
 #endif /* DRIVER_COMMON_H_ */

@@ -38,32 +38,30 @@
 
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief TcChannel hardware registers */
-typedef struct
-{
-    RwReg      TC_CCR;        /**< \brief (TcChannel Offset: 0x0) Channel Control Register */
-    RwReg      TC_CMR;        /**< \brief (TcChannel Offset: 0x4) Channel Mode Register */
-    RoReg      Reserved1[2];
-    RwReg      TC_CV;         /**< \brief (TcChannel Offset: 0x10) Counter Value */
-    RwReg      TC_RA;         /**< \brief (TcChannel Offset: 0x14) Register A */
-    RwReg      TC_RB;         /**< \brief (TcChannel Offset: 0x18) Register B */
-    RwReg      TC_RC;         /**< \brief (TcChannel Offset: 0x1C) Register C */
-    RwReg      TC_SR;         /**< \brief (TcChannel Offset: 0x20) Status Register */
-    RwReg      TC_IER;        /**< \brief (TcChannel Offset: 0x24) Interrupt Enable Register */
-    RwReg      TC_IDR;        /**< \brief (TcChannel Offset: 0x28) Interrupt Disable Register */
-    RwReg      TC_IMR;        /**< \brief (TcChannel Offset: 0x2C) Interrupt Mask Register */
-    RoReg      Reserved2[4];
+typedef struct {
+  RwReg      TC_CCR;        /**< \brief (TcChannel Offset: 0x0) Channel Control Register */
+  RwReg      TC_CMR;        /**< \brief (TcChannel Offset: 0x4) Channel Mode Register */
+  RoReg      Reserved1[2];
+  RwReg      TC_CV;         /**< \brief (TcChannel Offset: 0x10) Counter Value */
+  RwReg      TC_RA;         /**< \brief (TcChannel Offset: 0x14) Register A */
+  RwReg      TC_RB;         /**< \brief (TcChannel Offset: 0x18) Register B */
+  RwReg      TC_RC;         /**< \brief (TcChannel Offset: 0x1C) Register C */
+  RwReg      TC_SR;         /**< \brief (TcChannel Offset: 0x20) Status Register */
+  RwReg      TC_IER;        /**< \brief (TcChannel Offset: 0x24) Interrupt Enable Register */
+  RwReg      TC_IDR;        /**< \brief (TcChannel Offset: 0x28) Interrupt Disable Register */
+  RwReg      TC_IMR;        /**< \brief (TcChannel Offset: 0x2C) Interrupt Mask Register */
+  RoReg      Reserved2[4];
 } TcChannel;
 /** \brief Tc hardware registers */
 #define TCCHANNEL_NUMBER 3
-typedef struct
-{
-    TcChannel  TC_CHANNEL[TCCHANNEL_NUMBER]; /**< \brief (Tc Offset: 0x0) channel = 0 .. 2 */
-    WoReg      TC_BCR;        /**< \brief (Tc Offset: 0xC0) Block Control Register */
-    RwReg      TC_BMR;        /**< \brief (Tc Offset: 0xC4) Block Mode Register */
-    WoReg      TC_QIER;       /**< \brief (Tc Offset: 0xC8) QDEC Interrupt Enable Register */
-    WoReg      TC_QIDR;       /**< \brief (Tc Offset: 0xCC) QDEC Interrupt Disable Register */
-    RoReg      TC_QIMR;       /**< \brief (Tc Offset: 0xD0) QDEC Interrupt Mask Register */
-    RoReg      TC_QISR;       /**< \brief (Tc Offset: 0xD4) QDEC Interrupt Status Register */
+typedef struct {
+  TcChannel  TC_CHANNEL[TCCHANNEL_NUMBER]; /**< \brief (Tc Offset: 0x0) channel = 0 .. 2 */
+  WoReg      TC_BCR;        /**< \brief (Tc Offset: 0xC0) Block Control Register */
+  RwReg      TC_BMR;        /**< \brief (Tc Offset: 0xC4) Block Mode Register */
+  WoReg      TC_QIER;       /**< \brief (Tc Offset: 0xC8) QDEC Interrupt Enable Register */
+  WoReg      TC_QIDR;       /**< \brief (Tc Offset: 0xCC) QDEC Interrupt Disable Register */
+  RoReg      TC_QIMR;       /**< \brief (Tc Offset: 0xD0) QDEC Interrupt Mask Register */
+  RoReg      TC_QISR;       /**< \brief (Tc Offset: 0xD4) QDEC Interrupt Status Register */
 } Tc;
 #endif /* !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__)) */
 /* -------- TC_CCR : (TC Offset: N/A) Channel Control Register -------- */

@@ -29,8 +29,7 @@
 #define __NO_USB_LIB_C
 #include "usb_config.c"
 
-typedef struct __BUF_DESC
-{
+typedef struct __BUF_DESC {
     uint8_t    stat;
     uint8_t    reserved;
     uint16_t   bc;
@@ -178,13 +177,10 @@ void USBD_Init(void)
 
 void USBD_Connect(BOOL con)
 {
-    if (con)
-    {
+    if (con) {
         USB0->CTL  |= USB_CTL_USBENSOFEN_MASK;            /* enable USB           */
         USB0->CONTROL = USB_CONTROL_DPPULLUPNONOTG_MASK;  /* pull up on D+        */
-    }
-    else
-    {
+    } else {
         USB0->CTL  &= ~USB_CTL_USBENSOFEN_MASK;           /* disable USB          */
         USB0->CONTROL &= ~USB_CONTROL_DPPULLUPNONOTG_MASK;/* pull down on D+      */
     }
@@ -203,8 +199,7 @@ void USBD_Reset(void)
 
     NVIC_DisableIRQ(USB0_IRQn);
 
-    for (i = 1; i < 16; i++)
-    {
+    for (i = 1; i < 16; i++) {
         USB0->ENDPOINT[i].ENDPT = 0x00;
     }
 
@@ -271,12 +266,10 @@ void USBD_WakeUp(void)
 {
     uint32_t i = 50000;
 
-    if (USBD_DeviceStatus & USB_GETSTATUS_REMOTE_WAKEUP)
-    {
+    if (USBD_DeviceStatus & USB_GETSTATUS_REMOTE_WAKEUP) {
         USB0->CTL |=  USB_CTL_RESUME_MASK;
 
-        while (i--)
-        {
+        while (i--) {
             __NOP();
         }
 
@@ -305,8 +298,7 @@ void USBD_WakeUpCfg(BOOL cfg)
 
 void USBD_SetAddress(uint32_t  adr, uint32_t setup)
 {
-    if (!setup)
-    {
+    if (!setup) {
         USB0->ADDR    = adr & 0x7F;
     }
 }
@@ -335,8 +327,7 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
     num  = pEPD->bEndpointAddress;
     val  = pEPD->wMaxPacketSize;
 
-    if (!(pEPD->bEndpointAddress & 0x80))
-    {
+    if (!(pEPD->bEndpointAddress & 0x80)) {
         OutEpSize[num] = val;
     }
 
@@ -366,14 +357,11 @@ void USBD_DirCtrlEP(uint32_t dir)
 
 void USBD_EnableEP(uint32_t EPNum)
 {
-    if (EPNum & 0x80)
-    {
+    if (EPNum & 0x80) {
         EPNum &= 0x0F;
         USB0->ENDPOINT[EPNum].ENDPT |= USB_ENDPT_EPHSHK_MASK | /*en ep handshaking*/
                                        USB_ENDPT_EPTXEN_MASK;  /*en TX (IN) tran  */
-    }
-    else
-    {
+    } else {
         USB0->ENDPOINT[EPNum].ENDPT |= USB_ENDPT_EPHSHK_MASK | /*en ep handshaking*/
                                        USB_ENDPT_EPRXEN_MASK;  /*en RX (OUT) tran.*/
     }
@@ -390,14 +378,11 @@ void USBD_EnableEP(uint32_t EPNum)
 
 void USBD_DisableEP(uint32_t EPNum)
 {
-    if (EPNum & 0x80)
-    {
+    if (EPNum & 0x80) {
         EPNum &= 0x0F;
         USB0->ENDPOINT[EPNum].ENDPT &= ~(USB_ENDPT_EPHSHK_MASK |/*dis handshaking */
                                          USB_ENDPT_EPTXEN_MASK);/*dis TX(IN) tran */
-    }
-    else
-    {
+    } else {
         USB0->ENDPOINT[EPNum].ENDPT &= ~(USB_ENDPT_EPHSHK_MASK |/*dis handshaking */
                                          USB_ENDPT_EPRXEN_MASK);/*dis RX(OUT) tran*/
     }
@@ -414,15 +399,12 @@ void USBD_DisableEP(uint32_t EPNum)
 
 void USBD_ResetEP(uint32_t EPNum)
 {
-    if (EPNum & 0x80)
-    {
+    if (EPNum & 0x80) {
         EPNum &= 0x0F;
         protected_or(&Data1, (1 << ((EPNum * 2) + 1)));
         BD[IDX(EPNum, TX, ODD)].buf_addr = (uint32_t) & (EPBuf[IDX(EPNum, TX, ODD)][0]);
         BD[IDX(EPNum, TX, EVEN)].buf_addr = 0;
-    }
-    else
-    {
+    } else {
         protected_and(&Data1, ~(1 << (EPNum * 2)));
         BD[IDX(EPNum, RX, ODD)].bc       = OutEpSize[EPNum];
         BD[IDX(EPNum, RX, ODD)].buf_addr = (uint32_t) & (EPBuf[IDX(EPNum, RX, ODD)][0]);
@@ -489,8 +471,7 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
     idx = IDX(EPNum, RX, 0);
     sz  = BD[idx].bc;
 
-    if ((EPNum == 0) && Ep0ZlpOut)
-    {
+    if ((EPNum == 0) && Ep0ZlpOut) {
         // This packet was a zero length data out packet. It has already
         // been processed by USB0_IRQHandler. Only toggle the DATAx bit
         // and return a size of 0.
@@ -498,44 +479,34 @@ uint32_t USBD_ReadEP(uint32_t EPNum, uint8_t *pData, uint32_t size)
         return 0;
     }
 
-    if ((EPNum == 0) && (TOK_PID(idx) == SETUP_TOKEN))
-    {
+    if ((EPNum == 0) && (TOK_PID(idx) == SETUP_TOKEN)) {
         setup = 1;
     }
 
-    if (size < sz)
-    {
+    if (size < sz) {
         util_assert(0);
         sz = size;
     }
 
-    for (n = 0; n < sz; n++)
-    {
+    for (n = 0; n < sz; n++) {
         pData[n] = EPBuf[idx][n];
     }
 
     BD[idx].bc = OutEpSize[EPNum];
 
-    if ((Data1 >> (idx / 2) & 1) == ((BD[idx].stat >> 6) & 1))
-    {
+    if ((Data1 >> (idx / 2) & 1) == ((BD[idx].stat >> 6) & 1)) {
         uint32_t xfer_size = (pData[7] << 8) | (pData[6] << 0);
-        if (setup && (0 == xfer_size))       /* if no setup data stage,            */
-        {
+        if (setup && (0 == xfer_size)) {     /* if no setup data stage,            */
             protected_and(&Data1, ~1);           /* set DATA0                          */
-        }
-        else
-        {
+        } else {
             protected_xor(&Data1, (1 << (idx / 2)));
         }
     }
 
-    if ((Data1 >> (idx / 2)) & 1)
-    {
+    if ((Data1 >> (idx / 2)) & 1) {
         BD[idx].stat  = BD_DTS_MASK | BD_DATA01_MASK;
         BD[idx].stat |= BD_OWN_MASK;
-    }
-    else
-    {
+    } else {
         BD[idx].stat  = BD_DTS_MASK;
         BD[idx].stat |= BD_OWN_MASK;
     }
@@ -561,17 +532,13 @@ uint32_t USBD_WriteEP(uint32_t EPNum, uint8_t *pData, uint32_t cnt)
     idx = IDX(EPNum, TX, 0);
     BD[idx].bc = cnt;
 
-    for (n = 0; n < cnt; n++)
-    {
+    for (n = 0; n < cnt; n++) {
         EPBuf[idx][n] = pData[n];
     }
 
-    if ((Data1 >> (idx / 2)) & 1)
-    {
+    if ((Data1 >> (idx / 2)) & 1) {
         BD[idx].stat = BD_OWN_MASK | BD_DTS_MASK;
-    }
-    else
-    {
+    } else {
         BD[idx].stat = BD_OWN_MASK | BD_DTS_MASK | BD_DATA01_MASK;
     }
 
@@ -618,10 +585,8 @@ void USB0_IRQHandler(void)
     new_istat = istat = USB0->ISTAT;
 
     // Read all tokens
-    if (istat & USB_ISTAT_TOKDNE_MASK)
-    {
-        while (istat & USB_ISTAT_TOKDNE_MASK)
-        {
+    if (istat & USB_ISTAT_TOKDNE_MASK) {
+        while (istat & USB_ISTAT_TOKDNE_MASK) {
             uint8_t stat = USB0->STAT;
             num    = (stat >> 4) & 0x0F;
             dir    = (stat >> 3) & 0x01;
@@ -629,19 +594,14 @@ void USB0_IRQHandler(void)
 
             // Consume all zero length OUT packets on endpoint 0 to prevent
             // a subsequent SETUP packet from being dropped
-            if ((0 == num) && (RX == dir))
-            {
+            if ((0 == num) && (RX == dir)) {
                 uint32_t idx;
                 idx = IDX(num, dir, ev_odd);
-                if ((TOK_PID(idx) == OUT_TOKEN) && (BD[idx].bc == 0))
-                {
+                if ((TOK_PID(idx) == OUT_TOKEN) && (BD[idx].bc == 0)) {
                     BD[idx].bc = OutEpSize[num];
-                    if (BD[idx].stat & BD_DATA01_MASK)
-                    {
+                    if (BD[idx].stat & BD_DATA01_MASK) {
                         BD[idx].stat = BD_OWN_MASK | BD_DTS_MASK;
-                    }
-                    else
-                    {
+                    } else {
                         BD[idx].stat = BD_OWN_MASK | BD_DTS_MASK | BD_DATA01_MASK;
                     }
                     stat |= 1 << 0;
@@ -686,21 +646,18 @@ void USBD_Handler(void)
 
 
     /* reset interrupt                                                            */
-    if (istr & USB_ISTAT_USBRST_MASK)
-    {
+    if (istr & USB_ISTAT_USBRST_MASK) {
         USBD_Reset();
         usbd_reset_core();
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_RESET, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Reset_Event)
-        {
+        if (USBD_P_Reset_Event) {
             USBD_P_Reset_Event();
         }
 
@@ -708,20 +665,17 @@ void USBD_Handler(void)
     }
 
     /* suspend interrupt                                                          */
-    if (istr & USB_ISTAT_SLEEP_MASK)
-    {
+    if (istr & USB_ISTAT_SLEEP_MASK) {
         USBD_Suspend();
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_SUSPEND, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Suspend_Event)
-        {
+        if (USBD_P_Suspend_Event) {
             USBD_P_Suspend_Event();
         }
 
@@ -729,20 +683,17 @@ void USBD_Handler(void)
     }
 
     /* resume interrupt                                                           */
-    if (istr & USB_ISTAT_RESUME_MASK)
-    {
+    if (istr & USB_ISTAT_RESUME_MASK) {
         USBD_Resume();
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_RESUME, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Resume_Event)
-        {
+        if (USBD_P_Resume_Event) {
             USBD_P_Resume_Event();
         }
 
@@ -750,19 +701,16 @@ void USBD_Handler(void)
     }
 
     /* Start Of Frame                                                             */
-    if (istr & USB_ISTAT_SOFTOK_MASK)
-    {
+    if (istr & USB_ISTAT_SOFTOK_MASK) {
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_SOF, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_SOF_Event)
-        {
+        if (USBD_P_SOF_Event) {
             USBD_P_SOF_Event();
         }
 
@@ -770,20 +718,17 @@ void USBD_Handler(void)
     }
 
     /* Error interrupt                                                            */
-    if (istr == USB_ISTAT_ERROR_MASK)
-    {
+    if (istr == USB_ISTAT_ERROR_MASK) {
 #ifdef __RTX
         LastError = USB0->ERRSTAT;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_ERROR, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Error_Event)
-        {
+        if (USBD_P_Error_Event) {
             USBD_P_Error_Event(USB0->ERRSTAT);
         }
 
@@ -792,10 +737,8 @@ void USBD_Handler(void)
     }
 
     /* token interrupt                                                            */
-    if (istr & USB_ISTAT_TOKDNE_MASK)
-    {
-        while (!stat_is_empty())
-        {
+    if (istr & USB_ISTAT_TOKDNE_MASK) {
+        while (!stat_is_empty()) {
             uint32_t stat;
 
             stat = stat_deque();
@@ -804,49 +747,40 @@ void USBD_Handler(void)
             ev_odd = (stat >> 2) & 0x01;
 
             /* setup packet                                                               */
-            if ((num == 0) && (TOK_PID((IDX(num, dir, ev_odd))) == SETUP_TOKEN))
-            {
+            if ((num == 0) && (TOK_PID((IDX(num, dir, ev_odd))) == SETUP_TOKEN)) {
                 Data1 &= ~0x02;
                 BD[IDX(0, TX, EVEN)].stat &= ~BD_OWN_MASK;
                 BD[IDX(0, TX, ODD)].stat  &= ~BD_OWN_MASK;
                 Ep0ZlpOut = 0;
 #ifdef __RTX
 
-                if (USBD_RTX_EPTask[num])
-                {
+                if (USBD_RTX_EPTask[num]) {
                     isr_evt_set(USBD_EVT_SETUP, USBD_RTX_EPTask[num]);
                 }
 
 #else
 
-                if (USBD_P_EP[num])
-                {
+                if (USBD_P_EP[num]) {
                     USBD_P_EP[num](USBD_EVT_SETUP);
                 }
 
 #endif
 
-            }
-            else
-            {
+            } else {
                 /* OUT packet                                                                 */
-                if (TOK_PID((IDX(num, dir, ev_odd))) == OUT_TOKEN)
-                {
-                    if (0 == num)
-                    {
+                if (TOK_PID((IDX(num, dir, ev_odd))) == OUT_TOKEN) {
+                    if (0 == num) {
                         Ep0ZlpOut = stat & (1 << 0);
                     }
 #ifdef __RTX
 
-                    if (USBD_RTX_EPTask[num])
-                    {
+                    if (USBD_RTX_EPTask[num]) {
                         isr_evt_set(USBD_EVT_OUT, USBD_RTX_EPTask[num]);
                     }
 
 #else
 
-                    if (USBD_P_EP[num])
-                    {
+                    if (USBD_P_EP[num]) {
                         USBD_P_EP[num](USBD_EVT_OUT);
                     }
 
@@ -854,19 +788,16 @@ void USBD_Handler(void)
                 }
 
                 /* IN packet                                                                  */
-                if (TOK_PID((IDX(num, dir, ev_odd))) == IN_TOKEN)
-                {
+                if (TOK_PID((IDX(num, dir, ev_odd))) == IN_TOKEN) {
 #ifdef __RTX
 
-                    if (USBD_RTX_EPTask[num])
-                    {
+                    if (USBD_RTX_EPTask[num]) {
                         isr_evt_set(USBD_EVT_IN,  USBD_RTX_EPTask[num]);
                     }
 
 #else
 
-                    if (USBD_P_EP[num])
-                    {
+                    if (USBD_P_EP[num]) {
                         USBD_P_EP[num](USBD_EVT_IN);
                     }
 
@@ -876,8 +807,7 @@ void USBD_Handler(void)
         }
     }
 
-    if (suspended)
-    {
+    if (suspended) {
         USB0->CTL &= ~USB_CTL_TXSUSPENDTOKENBUSY_MASK;
     }
 }

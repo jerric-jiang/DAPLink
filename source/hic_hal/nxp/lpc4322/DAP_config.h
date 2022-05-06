@@ -44,10 +44,10 @@ This information includes:
 typedef unsigned int    BOOL;
 
 #ifndef __TRUE
-#define __TRUE         1
+ #define __TRUE         1
 #endif
 #ifndef __FALSE
-#define __FALSE        0
+ #define __FALSE        0
 #endif
 
 /// Processor Clock of the Cortex-M MCU used in the Debug Unit.
@@ -300,12 +300,9 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 */
 __STATIC_FORCEINLINE void     PIN_SWDIO_OUT(uint32_t bit)
 {
-    if (bit & 0x1)
-    {
+    if (bit & 0x1) {
         X_SET(SWDIO);
-    }
-    else
-    {
+    } else {
         X_CLR(SWDIO);
     }
 }
@@ -388,12 +385,9 @@ __STATIC_FORCEINLINE void     PIN_nTRST_OUT(uint32_t bit)
 */
 __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 {
-    if (gpio_reset_pin_is_input)
-    {
+    if (gpio_reset_pin_is_input) {
         return X_BYTE(nRESET) & 0x1;
-    }
-    else
-    {
+    } else {
         return 0; // Always LOW when output
     }
 }
@@ -405,17 +399,14 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 */
 __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 {
-    if (bit)
-    {
+    if (bit) {
         // release device hardware reset. (reset INPUT, reset oe LOW=INPUT)
         X_DIR_IN(nRESET);
         X_CLR(RESET_TXE);
         gpio_reset_pin_is_input = true;
         LPC_GPIO_PIN_INT->IST = 0x01;    // ACK any pending edge interrupt
         LPC_GPIO_PIN_INT->SIENF |= 0x1;  // Enable falling edge interrupt
-    }
-    else
-    {
+    } else {
         // issue a device hardware reset. (reset OUTPUT+LOW, reset oe HIGH=OUTPUT)
         gpio_reset_pin_is_input = false;
         LPC_GPIO_PIN_INT->CIENF |= 0x1;  // Disable falling edge interrupt
@@ -449,12 +440,9 @@ It is recommended to provide the following LEDs for status indication:
 */
 __STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit)
 {
-    if (bit)
-    {
+    if (bit) {
         X_SET(LED_CONNECTED);
-    }
-    else
-    {
+    } else {
         X_CLR(LED_CONNECTED);
     }
 }
@@ -487,9 +475,8 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
-{
-    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
+  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}

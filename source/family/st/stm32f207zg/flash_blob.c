@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t STM32F207ZG_flash_prog_blob[] =
-{
+static const uint32_t STM32F207ZG_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x0e000300, 0xd3022820, 0x1d000940, 0x28104770, 0x0900d302, 0x47701cc0, 0x47700880, 0x49414842,
     0x49426041, 0x21006041, 0x68c16001, 0x431122f0, 0x694060c1, 0xd4060680, 0x493d483e, 0x21066001,
@@ -37,13 +36,11 @@ static const uint32_t STM32F207ZG_flash_prog_blob[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x08000000, 0x4000},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x2000003d, // Init
     0x2000006b, // UnInit
     0x20000079, // EraseChip

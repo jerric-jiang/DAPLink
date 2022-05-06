@@ -26,21 +26,18 @@
 #include "target_board.h"
 
 // Stub families
-const target_family_descriptor_t g_hw_reset_family =
-{
+const target_family_descriptor_t g_hw_reset_family = {
     .family_id = kStub_HWReset_FamilyID,
     .default_reset_type = kHardwareReset,
 };
 
-const target_family_descriptor_t g_sw_vectreset_family =
-{
+const target_family_descriptor_t g_sw_vectreset_family = {
     .family_id = kStub_SWVectReset_FamilyID,
     .default_reset_type = kSoftwareReset,
     .soft_reset_type = VECTRESET,
 };
 
-const target_family_descriptor_t g_sw_sysresetreq_family =
-{
+const target_family_descriptor_t g_sw_sysresetreq_family = {
     .family_id = kStub_SWSysReset_FamilyID,
     .default_reset_type = kSoftwareReset,
     .soft_reset_type = SYSRESETREQ,
@@ -75,8 +72,7 @@ __WEAK const target_family_descriptor_t g_maxim_max3266x_family = {0};
 //! descriptors has a weak reference defined above, the entry in this list for a family whose
 //! descriptor is not included in the link will resolve to NULL and init_family() can skip it.
 __WEAK
-const target_family_descriptor_t *g_families[] =
-{
+const target_family_descriptor_t *g_families[] = {
     &g_hw_reset_family,
     &g_sw_vectreset_family,
     &g_sw_sysresetreq_family,
@@ -104,8 +100,7 @@ const target_family_descriptor_t *g_target_family = NULL;
 void init_family(void)
 {
     // Check if the family is already set.
-    if (g_target_family != NULL)
-    {
+    if (g_target_family != NULL) {
         return;
     }
 
@@ -113,10 +108,8 @@ void init_family(void)
     uint8_t index = 0;
     uint16_t family_id = get_family_id();
 
-    while (g_families[index] != FAMILY_LIST_TERMINATOR)
-    {
-        if ((g_families[index] != NULL) && (g_families[index]->family_id == family_id))
-        {
+    while (g_families[index] != FAMILY_LIST_TERMINATOR) {
+        if ((g_families[index] != NULL) && (g_families[index]->family_id == family_id)) {
             g_target_family = g_families[index];
             break;
         }
@@ -124,75 +117,53 @@ void init_family(void)
     }
 
     // Last resort is to use a default family.
-    if (g_target_family == NULL)
-    {
+    if (g_target_family == NULL) {
         g_target_family = &g_hw_reset_family;
     }
 }
 
 uint8_t target_set_state(target_state_t state)
 {
-    if (g_board_info.target_set_state)   //target specific
-    {
+    if (g_board_info.target_set_state) { //target specific
         g_board_info.target_set_state(state);
     }
-    if (g_target_family)
-    {
-        if (g_target_family->target_set_state)
-        {
+    if (g_target_family) {
+        if (g_target_family->target_set_state) {
             //customize target state
             return g_target_family->target_set_state(state);
-        }
-        else
-        {
-            if (g_target_family->default_reset_type == kHardwareReset)
-            {
+        } else {
+            if (g_target_family->default_reset_type == kHardwareReset) {
                 return swd_set_target_state_hw(state);
-            }
-            else if (g_target_family->default_reset_type == kSoftwareReset)
-            {
-                if (g_board_info.soft_reset_type)   //board has precedence
-                {
+            } else if (g_target_family->default_reset_type == kSoftwareReset) {
+                if (g_board_info.soft_reset_type) { //board has precedence
                     swd_set_soft_reset(g_board_info.soft_reset_type);
-                }
-                else if (g_target_family->soft_reset_type)
-                {
+                } else if (g_target_family->soft_reset_type) {
                     swd_set_soft_reset(g_target_family->soft_reset_type);
                 }
                 return swd_set_target_state_sw(state);
-            }
-            else
-            {
+            } else {
                 return 1;
             }
         }
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
 
 void swd_set_target_reset(uint8_t asserted)
 {
-    if (g_target_family && g_target_family->swd_set_target_reset)
-    {
+    if (g_target_family && g_target_family->swd_set_target_reset) {
         g_target_family->swd_set_target_reset(asserted);
-    }
-    else
-    {
+    } else {
         (asserted) ? PIN_nRESET_OUT(0) : PIN_nRESET_OUT(1);
     }
 }
 
 uint32_t target_get_apsel()
 {
-    if (g_target_family && g_target_family->apsel)
-    {
+    if (g_target_family && g_target_family->apsel) {
         return g_target_family->apsel;
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }

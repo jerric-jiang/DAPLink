@@ -50,12 +50,9 @@ void USBD_BULK_EP_BULKIN_Event(U32 event)
 {
     uint8_t * sbuf = 0;
     int slen;
-    if (DAP_queue_get_send_buf(&DAP_Cmd_queue, &sbuf, &slen))
-    {
+    if(DAP_queue_get_send_buf(&DAP_Cmd_queue, &sbuf, &slen)){
         USBD_WriteEP(usbd_bulk_ep_bulkin | 0x80, sbuf, slen);
-    }
-    else
-    {
+    } else {
         USB_ResponseIdle = 1;
     }
 }
@@ -77,13 +74,10 @@ void USBD_BULK_EP_BULKOUT_Event(U32 event)
     DataInReceLen  += bytes_rece;
 
     if ((DataInReceLen >= USBD_Bulk_BulkBufSize) ||
-        (bytes_rece    <  usbd_bulk_maxpacketsize[USBD_HighSpeed]))
-    {
-        if (DAP_queue_execute_buf(&DAP_Cmd_queue, USBD_Bulk_BulkOutBuf, DataInReceLen, &rbuf))
-        {
+            (bytes_rece    <  usbd_bulk_maxpacketsize[USBD_HighSpeed])) {
+        if (DAP_queue_execute_buf(&DAP_Cmd_queue, USBD_Bulk_BulkOutBuf, DataInReceLen, &rbuf)) {
             //Trigger the BULKIn for the reply
-            if (USB_ResponseIdle)
-            {
+            if (USB_ResponseIdle) {
                 USBD_BULK_EP_BULKIN_Event(0);
                 USB_ResponseIdle = 0;
             }
@@ -105,13 +99,11 @@ void USBD_BULK_EP_BULKOUT_Event(U32 event)
 
 void USBD_BULK_EP_BULK_Event(U32 event)
 {
-    if (event & USBD_EVT_OUT)
-    {
+    if (event & USBD_EVT_OUT) {
         USBD_BULK_EP_BULKOUT_Event(0);
     }
 
-    if (event & USBD_EVT_IN)
-    {
+    if (event & USBD_EVT_IN) {
         USBD_BULK_EP_BULKIN_Event(0);
     }
 }

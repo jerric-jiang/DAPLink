@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t STM32F334R8_flash_prog_blob[] =
-{
+static const uint32_t STM32F334R8_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x49364837, 0x49376041, 0x21006041, 0x68c16001, 0x43112214, 0x69c060c1, 0xd40605c0, 0x49324833,
     0x21066001, 0x49326041, 0x20006081, 0x482c4770, 0x22806901, 0x61014311, 0x47702000, 0x4828b510,
@@ -34,13 +33,11 @@ static const uint32_t STM32F334R8_flash_prog_blob[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x08000000, 0x800},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000021, // Init
     0x2000004f, // UnInit
     0x2000005d, // EraseChip

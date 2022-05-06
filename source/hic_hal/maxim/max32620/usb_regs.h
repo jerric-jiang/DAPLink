@@ -74,8 +74,7 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
+typedef struct {
     __IO uint32_t cn;                                   /*  0x0000          USB Control Register                                                         */
     __R  uint32_t rsv004[127];                          /*  0x0004-0x01FC                                                                                */
     __IO uint32_t dev_addr;                             /*  0x0200          USB Device Address Register                                                  */

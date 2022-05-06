@@ -345,7 +345,7 @@ static inline void CTIMER_EnableInterrupts(CTIMER_Type *base, uint32_t mask)
     /* Enable match interrupts */
     base->MCR |= mask & (CTIMER_MCR_MR0I_MASK | CTIMER_MCR_MR1I_MASK | CTIMER_MCR_MR2I_MASK | CTIMER_MCR_MR3I_MASK);
 
-    /* Enable capture interrupts */
+/* Enable capture interrupts */
 #if !(defined(FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE) && (FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE))
     base->CCR |= mask & (CTIMER_CCR_CAP0I_MASK | CTIMER_CCR_CAP1I_MASK | CTIMER_CCR_CAP2I_MASK
 #if defined(FSL_FEATURE_CTIMER_HAS_CCR_CAP3) && FSL_FEATURE_CTIMER_HAS_CCR_CAP3
@@ -367,13 +367,13 @@ static inline void CTIMER_DisableInterrupts(CTIMER_Type *base, uint32_t mask)
     /* Disable match interrupts */
     base->MCR &= ~(mask & (CTIMER_MCR_MR0I_MASK | CTIMER_MCR_MR1I_MASK | CTIMER_MCR_MR2I_MASK | CTIMER_MCR_MR3I_MASK));
 
-    /* Disable capture interrupts */
+/* Disable capture interrupts */
 #if !(defined(FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE) && (FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE))
     base->CCR &= ~(mask & (CTIMER_CCR_CAP0I_MASK | CTIMER_CCR_CAP1I_MASK | CTIMER_CCR_CAP2I_MASK
 #if defined(FSL_FEATURE_CTIMER_HAS_CCR_CAP3) && FSL_FEATURE_CTIMER_HAS_CCR_CAP3
                            | CTIMER_CCR_CAP3I_MASK
 #endif /* FSL_FEATURE_CTIMER_HAS_CCR_CAP3 */
-                          ));
+                           ));
 #endif
 }
 
@@ -393,7 +393,7 @@ static inline uint32_t CTIMER_GetEnabledInterrupts(CTIMER_Type *base)
     enabledIntrs =
         base->MCR & (CTIMER_MCR_MR0I_MASK | CTIMER_MCR_MR1I_MASK | CTIMER_MCR_MR2I_MASK | CTIMER_MCR_MR3I_MASK);
 
-    /* Get all the capture interrupts enabled */
+/* Get all the capture interrupts enabled */
 #if !(defined(FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE) && (FSL_FEATURE_CTIMER_HAS_NO_INPUT_CAPTURE))
     enabledIntrs |= base->CCR & (CTIMER_CCR_CAP0I_MASK | CTIMER_CCR_CAP1I_MASK | CTIMER_CCR_CAP2I_MASK
 #if defined(FSL_FEATURE_CTIMER_HAS_CCR_CAP3) && FSL_FEATURE_CTIMER_HAS_CCR_CAP3

@@ -24,10 +24,9 @@
 #include "flash_blob.c"
 
 /* MAX32666 1MiB Flash, 560KiB RAM */
-target_cfg_t target_device =
-{
+target_cfg_t target_device = {
     .sectors_info                   = sectors_info,
-    .sector_info_length             = (sizeof(sectors_info)) / (sizeof(sector_info_t)),
+    .sector_info_length             = (sizeof(sectors_info))/(sizeof(sector_info_t)),
     .flash_regions[0].start         = FLASH_BASE,
     .flash_regions[0].end           = FLASH_BASE + FLASH_SIZE,
     .flash_regions[0].flags         = kRegionIsDefault,

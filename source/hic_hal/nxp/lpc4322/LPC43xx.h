@@ -38,195 +38,193 @@ extern "C" {
      CORE_M0SUB LPC43xx M0 Subsystem core
  */
 #if !defined (CORE_M4) && !defined (CORE_M0) && !defined (CORE_M0SUB)
-#define CORE_M4
+  #define CORE_M4
 #endif
 
 /* -------------------------  Interrupt Number Definition  ------------------------ */
 
-typedef enum
-{
+typedef enum {
 #ifdef CORE_M4
-    /* -------------------  Cortex-M4 Processor Exceptions Numbers  ------------------- */
-    NonMaskableInt_IRQn               = -14, /*!<   2  Non maskable Interrupt, cannot be stopped or preempted    */
-    HardFault_IRQn                    = -13, /*!<   3  Hard Fault, all classes of Fault                          */
-    MemoryManagement_IRQn             = -12, /*!<   4  Memory Management                                         */
-    BusFault_IRQn                     = -11, /*!<   5  Bus Fault                                                 */
-    UsageFault_IRQn                   = -10, /*!<   6  Usage Fault                                               */
-    SVCall_IRQn                       =  -5, /*!<  11  System Service Call via SVC instruction                   */
-    DebugMonitor_IRQn                 =  -4, /*!<  12  Debug Monitor                                             */
-    PendSV_IRQn                       =  -2, /*!<  14  Pendable request for system service                       */
-    SysTick_IRQn                      =  -1, /*!<  15  System Tick Timer                                         */
+/* -------------------  Cortex-M4 Processor Exceptions Numbers  ------------------- */
+  NonMaskableInt_IRQn               = -14, /*!<   2  Non maskable Interrupt, cannot be stopped or preempted    */
+  HardFault_IRQn                    = -13, /*!<   3  Hard Fault, all classes of Fault                          */
+  MemoryManagement_IRQn             = -12, /*!<   4  Memory Management                                         */
+  BusFault_IRQn                     = -11, /*!<   5  Bus Fault                                                 */
+  UsageFault_IRQn                   = -10, /*!<   6  Usage Fault                                               */
+  SVCall_IRQn                       =  -5, /*!<  11  System Service Call via SVC instruction                   */
+  DebugMonitor_IRQn                 =  -4, /*!<  12  Debug Monitor                                             */
+  PendSV_IRQn                       =  -2, /*!<  14  Pendable request for system service                       */
+  SysTick_IRQn                      =  -1, /*!<  15  System Tick Timer                                         */
 // ---------------------------  LPC43xx/M4 Specific Interrupt Numbers  ----------------------------
-    DAC_IRQn                          =  0,  /*!<   0  DAC interrupt                                             */
-    M0APP_IRQn                        =  1,  /*!<   1  Cortex-M0APP; Latched TXEV; for M4-M0APP communication    */
-    DMA_IRQn                          =  2,  /*!<   2  DMA interrupt                                             */
+  DAC_IRQn                          =  0,  /*!<   0  DAC interrupt                                             */
+  M0APP_IRQn                        =  1,  /*!<   1  Cortex-M0APP; Latched TXEV; for M4-M0APP communication    */
+  DMA_IRQn                          =  2,  /*!<   2  DMA interrupt                                             */
 
-    FLASHEEPROM_IRQn                  =  4,  /*!<   4  flash bank A, flash bank B, EEPROM ORed interrupt         */
-    ETHERNET_IRQn                     =  5,  /*!<   5  Ethernet interrupt                                         */
-    SDIO_IRQn                         =  6,  /*!<   6  SD/MMC interrupt                                          */
-    LCD_IRQn                          =  7,  /*!<   7  LCD interrupt                                             */
-    USB0_IRQn                         =  8,  /*!<   8  OTG interrupt                                             */
-    USB1_IRQn                         =  9,  /*!<   9  USB1 interrupt                                            */
-    SCT_IRQn                          = 10,  /*!<  10  SCT combined interrupt                                    */
-    RITIMER_IRQn                      = 11,  /*!<  11  RI Timer interrupt                                        */
-    TIMER0_IRQn                       = 12,  /*!<  12  Timer 0 interrupt                                         */
-    TIMER1_IRQn                       = 13,  /*!<  13  Timer 1 interrupt                                         */
-    TIMER2_IRQn                       = 14,  /*!<  14  Timer 2 interrupt                                         */
-    TIMER3_IRQn                       = 15,  /*!<  15  Timer 3 interrupt                                         */
-    MCPWM_IRQn                        = 16,  /*!<  16  Motor control PWM interrupt                               */
-    ADC0_IRQn                         = 17,  /*!<  17  ADC0 interrupt                                            */
-    I2C0_IRQn                         = 18,  /*!<  18  I2C0 interrupt                                            */
-    I2C1_IRQn                         = 19,  /*!<  19  I2C1 interrupt                                            */
-    SPI_IRQn                          = 20,  /*!<  20  SPI interrupt                                             */
-    ADC1_IRQn                         = 21,  /*!<  21  ADC1 interrupt                                            */
-    SSP0_IRQn                         = 22,  /*!<  22  SSP0 interrupt                                            */
-    SSP1_IRQn                         = 23,  /*!<  23  SSP1 interrupt                                            */
-    USART0_IRQn                       = 24,  /*!<  24  USART0 interrupt                                          */
-    UART1_IRQn                        = 25,  /*!<  25  Combined UART1, Modem interrupt                           */
-    USART2_IRQn                       = 26,  /*!<  26  USART2 interrupt                                          */
-    USART3_IRQn                       = 27,  /*!<  27  Combined USART3, IrDA interrupt                           */
-    I2S0_IRQn                         = 28,  /*!<  28  I2S0 interrupt                                            */
-    I2S1_IRQn                         = 29,  /*!<  29  I2S1 interrupt                                            */
-    SPIFI_IRQn                        = 30,  /*!<  30  SPISI interrupt                                           */
-    SGPIO_IRQn                        = 31,  /*!<  31  SGPIO interrupt                                           */
-    PIN_INT0_IRQn                     = 32,  /*!<  32  GPIO pin interrupt 0                                      */
-    PIN_INT1_IRQn                     = 33,  /*!<  33  GPIO pin interrupt 1                                      */
-    PIN_INT2_IRQn                     = 34,  /*!<  34  GPIO pin interrupt 2                                      */
-    PIN_INT3_IRQn                     = 35,  /*!<  35  GPIO pin interrupt 3                                      */
-    PIN_INT4_IRQn                     = 36,  /*!<  36  GPIO pin interrupt 4                                      */
-    PIN_INT5_IRQn                     = 37,  /*!<  37  GPIO pin interrupt 5                                      */
-    PIN_INT6_IRQn                     = 38,  /*!<  38  GPIO pin interrupt 6                                      */
-    PIN_INT7_IRQn                     = 39,  /*!<  39  GPIO pin interrupt 7                                      */
-    GINT0_IRQn                        = 40,  /*!<  40  GPIO global interrupt 0                                   */
-    GINT1_IRQn                        = 41,  /*!<  41  GPIO global interrupt 1                                   */
-    EVENTROUTER_IRQn                  = 42,  /*!<  42  Event router interrupt                                    */
-    C_CAN1_IRQn                       = 43,  /*!<  43  C_CAN1 interrupt                                          */
+  FLASHEEPROM_IRQn                  =  4,  /*!<   4  flash bank A, flash bank B, EEPROM ORed interrupt         */
+  ETHERNET_IRQn                     =  5,  /*!<   5  Ethernet interrupt                                         */
+  SDIO_IRQn                         =  6,  /*!<   6  SD/MMC interrupt                                          */
+  LCD_IRQn                          =  7,  /*!<   7  LCD interrupt                                             */
+  USB0_IRQn                         =  8,  /*!<   8  OTG interrupt                                             */
+  USB1_IRQn                         =  9,  /*!<   9  USB1 interrupt                                            */
+  SCT_IRQn                          = 10,  /*!<  10  SCT combined interrupt                                    */
+  RITIMER_IRQn                      = 11,  /*!<  11  RI Timer interrupt                                        */
+  TIMER0_IRQn                       = 12,  /*!<  12  Timer 0 interrupt                                         */
+  TIMER1_IRQn                       = 13,  /*!<  13  Timer 1 interrupt                                         */
+  TIMER2_IRQn                       = 14,  /*!<  14  Timer 2 interrupt                                         */
+  TIMER3_IRQn                       = 15,  /*!<  15  Timer 3 interrupt                                         */
+  MCPWM_IRQn                        = 16,  /*!<  16  Motor control PWM interrupt                               */
+  ADC0_IRQn                         = 17,  /*!<  17  ADC0 interrupt                                            */
+  I2C0_IRQn                         = 18,  /*!<  18  I2C0 interrupt                                            */
+  I2C1_IRQn                         = 19,  /*!<  19  I2C1 interrupt                                            */
+  SPI_IRQn                          = 20,  /*!<  20  SPI interrupt                                             */
+  ADC1_IRQn                         = 21,  /*!<  21  ADC1 interrupt                                            */
+  SSP0_IRQn                         = 22,  /*!<  22  SSP0 interrupt                                            */
+  SSP1_IRQn                         = 23,  /*!<  23  SSP1 interrupt                                            */
+  USART0_IRQn                       = 24,  /*!<  24  USART0 interrupt                                          */
+  UART1_IRQn                        = 25,  /*!<  25  Combined UART1, Modem interrupt                           */
+  USART2_IRQn                       = 26,  /*!<  26  USART2 interrupt                                          */
+  USART3_IRQn                       = 27,  /*!<  27  Combined USART3, IrDA interrupt                           */
+  I2S0_IRQn                         = 28,  /*!<  28  I2S0 interrupt                                            */
+  I2S1_IRQn                         = 29,  /*!<  29  I2S1 interrupt                                            */
+  SPIFI_IRQn                        = 30,  /*!<  30  SPISI interrupt                                           */
+  SGPIO_IRQn                        = 31,  /*!<  31  SGPIO interrupt                                           */
+  PIN_INT0_IRQn                     = 32,  /*!<  32  GPIO pin interrupt 0                                      */
+  PIN_INT1_IRQn                     = 33,  /*!<  33  GPIO pin interrupt 1                                      */
+  PIN_INT2_IRQn                     = 34,  /*!<  34  GPIO pin interrupt 2                                      */
+  PIN_INT3_IRQn                     = 35,  /*!<  35  GPIO pin interrupt 3                                      */
+  PIN_INT4_IRQn                     = 36,  /*!<  36  GPIO pin interrupt 4                                      */
+  PIN_INT5_IRQn                     = 37,  /*!<  37  GPIO pin interrupt 5                                      */
+  PIN_INT6_IRQn                     = 38,  /*!<  38  GPIO pin interrupt 6                                      */
+  PIN_INT7_IRQn                     = 39,  /*!<  39  GPIO pin interrupt 7                                      */
+  GINT0_IRQn                        = 40,  /*!<  40  GPIO global interrupt 0                                   */
+  GINT1_IRQn                        = 41,  /*!<  41  GPIO global interrupt 1                                   */
+  EVENTROUTER_IRQn                  = 42,  /*!<  42  Event router interrupt                                    */
+  C_CAN1_IRQn                       = 43,  /*!<  43  C_CAN1 interrupt                                          */
 
-    ADCHS_IRQn                        = 45,  /*!<  45  ADCHS combined interrupt                                  */
-    ATIMER_IRQn                       = 46,  /*!<  46  Alarm timer interrupt                                     */
-    RTC_IRQn                          = 47,  /*!<  47  RTC interrupt                                             */
+  ADCHS_IRQn                        = 45,  /*!<  45  ADCHS combined interrupt                                  */
+  ATIMER_IRQn                       = 46,  /*!<  46  Alarm timer interrupt                                     */
+  RTC_IRQn                          = 47,  /*!<  47  RTC interrupt                                             */
 
-    WWDT_IRQn                         = 49,  /*!<  49  WWDT interrupt                                            */
-    M0SUB_IRQn                        = 50,  /*!<  50  TXEV instruction from the M0 subsystem core interrupt     */
-    C_CAN0_IRQn                       = 51,  /*!<  51  C_CAN0 interrupt                                          */
-    QEI_IRQn                          = 52,  /*!<  52  QEI interrupt                                             */
+  WWDT_IRQn                         = 49,  /*!<  49  WWDT interrupt                                            */
+  M0SUB_IRQn                        = 50,  /*!<  50  TXEV instruction from the M0 subsystem core interrupt     */
+  C_CAN0_IRQn                       = 51,  /*!<  51  C_CAN0 interrupt                                          */
+  QEI_IRQn                          = 52,  /*!<  52  QEI interrupt                                             */
 #endif
 #ifdef CORE_M0
-    /* -------------------  Cortex-M0 Processor Exceptions Numbers  ------------------- */
-    NonMaskableInt_IRQn               = -14, /*!<   2  Non maskable Interrupt, cannot be stopped or preempted    */
-    HardFault_IRQn                    = -13, /*!<   3  Hard Fault, all classes of Fault                          */
+/* -------------------  Cortex-M0 Processor Exceptions Numbers  ------------------- */
+  NonMaskableInt_IRQn               = -14, /*!<   2  Non maskable Interrupt, cannot be stopped or preempted    */
+  HardFault_IRQn                    = -13, /*!<   3  Hard Fault, all classes of Fault                          */
 
 
 
-    SVCall_IRQn                       =  -5, /*!<  11  System Service Call via SVC instruction                   */
+  SVCall_IRQn                       =  -5, /*!<  11  System Service Call via SVC instruction                   */
 
-    PendSV_IRQn                       =  -2, /*!<  14  Pendable request for system service                       */
-    SysTick_IRQn                      =  -1, /*!<  15  System Tick Timer                                         */
+  PendSV_IRQn                       =  -2, /*!<  14  Pendable request for system service                       */
+  SysTick_IRQn                      =  -1, /*!<  15  System Tick Timer                                         */
 // ---------------------------  LPC43xx/M0App Specific Interrupt Numbers  -------------------------
-    M0_RTC_IRQn                       =  0,  /*!<   0  RTC interrupt                                             */
-    M0_M4CORE_IRQn                    =  1,  /*!<   1  M4 core interrupt                                         */
-    M0_DMA_IRQn                       =  2,  /*!<   2  DMA interrupt                                             */
+  M0_RTC_IRQn                       =  0,  /*!<   0  RTC interrupt                                             */
+  M0_M4CORE_IRQn                    =  1,  /*!<   1  M4 core interrupt                                         */
+  M0_DMA_IRQn                       =  2,  /*!<   2  DMA interrupt                                             */
 
-    M0_FLASHEEPROMAT_IRQn             =  4,  /*!<   4  flash bank A, flash bank B, EEPROM, Atimer ORed interrupt */
-    M0_ETHERNET_IRQn                  =  5,  /*!<   5  Ethernet interrupt                                        */
-    M0_SDIO_IRQn                      =  6,  /*!<   6  SD/MMC interrupt                                          */
-    M0_LCD_IRQn                       =  7,  /*!<   7  LCD interrupt                                             */
-    M0_USB0_IRQn                      =  8,  /*!<   8  OTG interrupt                                             */
-    M0_USB1_IRQn                      =  9,  /*!<   9  USB1 interrupt                                            */
-    M0_SCT_IRQn                       = 10,  /*!<  10  SCT combined interrupt                                    */
-    M0_RITIMER_OR_WWDT_IRQn           = 11,  /*!<  11  RI timer, WWDT ORed interrupt                             */
-    M0_TIMER0_IRQn                    = 12,  /*!<  12  Timer 0 interrupt                                         */
-    M0_GINT1_IRQn                     = 13,  /*!<  13  GPIO global interrupt 1                                   */
-    M0_PIN_INT4_IRQn                  = 14,  /*!<  14  GPIO pin interrupt 4                                      */
-    M0_TIMER3_IRQn                    = 15,  /*!<  15  Timer 3                                                   */
-    M0_MCPWM_IRQn                     = 16,  /*!<  16  Motor control PWM interrupt                               */
-    M0_ADC0_IRQn                      = 17,  /*!<  17  ADC0 interrupt                                            */
-    M0_I2C0_OR_I2C1_IRQn              = 18,  /*!<  18  I2C0, I2C1 ORed interrupt                                 */
-    M0_SGPIO_IRQn                     = 19,  /*!<  19  SGPIO interrupt                                           */
-    M0_SPI_OR_DAC_IRQn                = 20,  /*!<  20  SPI, DAC ORed interrupt                                   */
-    M0_ADC1_IRQn                      = 21,  /*!<  21  ADC1 interrupt                                            */
-    M0_SSP0_OR_SSP1_IRQn              = 22,  /*!<  22  SSP0, SSP 1 ORed interrupt                                */
-    M0_EVENTROUTER_IRQn               = 23,  /*!<  23  Event router interrupt                                    */
-    M0_USART0_IRQn                    = 24,  /*!<  24  USART0 interrupt                                          */
-    M0_UART1_IRQn                     = 25,  /*!<  25  Modem/UART1 interrupt                                     */
-    M0_USART2_OR_C_CAN1_IRQn          = 26,  /*!<  26  USART2, C_CAN1 ORed interrupt                             */
-    M0_USART3_IRQn                    = 27,  /*!<  27  USART3 interrupt                                          */
-    M0_I2S0_OR_I2S1_QEI_IRQn          = 28,  /*!<  28  I2S0, I2S1, QEI ORed interrupt                            */
-    M0_C_CAN0_IRQn                    = 29,  /*!<  29  C_CAN0 interrupt                                          */
-    M0_SPIFI_OR_ADCHS_IRQn            = 30,  /*!<  30  SPIFI, ADCHS ORed interrupt                               */
-    M0_M0SUB_IRQn                     = 31,  /*!<  31  M0SUB core interrupt                                      */
+  M0_FLASHEEPROMAT_IRQn             =  4,  /*!<   4  flash bank A, flash bank B, EEPROM, Atimer ORed interrupt */
+  M0_ETHERNET_IRQn                  =  5,  /*!<   5  Ethernet interrupt                                        */
+  M0_SDIO_IRQn                      =  6,  /*!<   6  SD/MMC interrupt                                          */
+  M0_LCD_IRQn                       =  7,  /*!<   7  LCD interrupt                                             */
+  M0_USB0_IRQn                      =  8,  /*!<   8  OTG interrupt                                             */
+  M0_USB1_IRQn                      =  9,  /*!<   9  USB1 interrupt                                            */
+  M0_SCT_IRQn                       = 10,  /*!<  10  SCT combined interrupt                                    */
+  M0_RITIMER_OR_WWDT_IRQn           = 11,  /*!<  11  RI timer, WWDT ORed interrupt                             */
+  M0_TIMER0_IRQn                    = 12,  /*!<  12  Timer 0 interrupt                                         */
+  M0_GINT1_IRQn                     = 13,  /*!<  13  GPIO global interrupt 1                                   */
+  M0_PIN_INT4_IRQn                  = 14,  /*!<  14  GPIO pin interrupt 4                                      */
+  M0_TIMER3_IRQn                    = 15,  /*!<  15  Timer 3                                                   */
+  M0_MCPWM_IRQn                     = 16,  /*!<  16  Motor control PWM interrupt                               */
+  M0_ADC0_IRQn                      = 17,  /*!<  17  ADC0 interrupt                                            */
+  M0_I2C0_OR_I2C1_IRQn              = 18,  /*!<  18  I2C0, I2C1 ORed interrupt                                 */
+  M0_SGPIO_IRQn                     = 19,  /*!<  19  SGPIO interrupt                                           */
+  M0_SPI_OR_DAC_IRQn                = 20,  /*!<  20  SPI, DAC ORed interrupt                                   */
+  M0_ADC1_IRQn                      = 21,  /*!<  21  ADC1 interrupt                                            */
+  M0_SSP0_OR_SSP1_IRQn              = 22,  /*!<  22  SSP0, SSP 1 ORed interrupt                                */
+  M0_EVENTROUTER_IRQn               = 23,  /*!<  23  Event router interrupt                                    */
+  M0_USART0_IRQn                    = 24,  /*!<  24  USART0 interrupt                                          */
+  M0_UART1_IRQn                     = 25,  /*!<  25  Modem/UART1 interrupt                                     */
+  M0_USART2_OR_C_CAN1_IRQn          = 26,  /*!<  26  USART2, C_CAN1 ORed interrupt                             */
+  M0_USART3_IRQn                    = 27,  /*!<  27  USART3 interrupt                                          */
+  M0_I2S0_OR_I2S1_QEI_IRQn          = 28,  /*!<  28  I2S0, I2S1, QEI ORed interrupt                            */
+  M0_C_CAN0_IRQn                    = 29,  /*!<  29  C_CAN0 interrupt                                          */
+  M0_SPIFI_OR_ADCHS_IRQn            = 30,  /*!<  30  SPIFI, ADCHS ORed interrupt                               */
+  M0_M0SUB_IRQn                     = 31,  /*!<  31  M0SUB core interrupt                                      */
 #endif
 #ifdef CORE_M0SUB
-    /* -------------------  Cortex-M0 Processor Exceptions Numbers  ------------------- */
-    NonMaskableInt_IRQn               = -14, /*!<   2  Non maskable Interrupt, cannot be stopped or preempted    */
-    HardFault_IRQn                    = -13, /*!<   3  Hard Fault, all classes of Fault                          */
+/* -------------------  Cortex-M0 Processor Exceptions Numbers  ------------------- */
+  NonMaskableInt_IRQn               = -14, /*!<   2  Non maskable Interrupt, cannot be stopped or preempted    */
+  HardFault_IRQn                    = -13, /*!<   3  Hard Fault, all classes of Fault                          */
 
 
 
-    SVCall_IRQn                       =  -5, /*!<  11  System Service Call via SVC instruction                   */
+  SVCall_IRQn                       =  -5, /*!<  11  System Service Call via SVC instruction                   */
 
-    PendSV_IRQn                       =  -2, /*!<  14  Pendable request for system service                       */
-    SysTick_IRQn                      =  -1, /*!<  15  System Tick Timer                                         */
+  PendSV_IRQn                       =  -2, /*!<  14  Pendable request for system service                       */
+  SysTick_IRQn                      =  -1, /*!<  15  System Tick Timer                                         */
 // ---------------------------  LPC43xx/M0Sub Specific Interrupt Numbers  -------------------------
-    M0S_RTC_IRQn                      =  0,  /*!<   0  RTC interrupt                                             */
-    M0S_M4CORE_IRQn                   =  1,  /*!<   1  M4 core interrupt                                         */
-    M0S_DMA_IRQn                      =  2,  /*!<   2  DMA interrupt                                             */
+  M0S_RTC_IRQn                      =  0,  /*!<   0  RTC interrupt                                             */
+  M0S_M4CORE_IRQn                   =  1,  /*!<   1  M4 core interrupt                                         */
+  M0S_DMA_IRQn                      =  2,  /*!<   2  DMA interrupt                                             */
 
-    M0S_SGPIO_INPUT_IRQn              =  4,  /*!<   4  SGPIO input bit match interrupt                           */
-    M0S_SGPIO_MATCH_IRQn              =  5,  /*!<   5  SGPIO pattern match interrupt                             */
-    M0S_SGPIO_SHIFT_IRQn              =  6,  /*!<   6  SGPIO shift clock interrupt                               */
-    M0S_SGPIO_POS_IRQn                =  7,  /*!<   7  SGPIO capture clock interrupt                             */
-    M0S_USB0_IRQn                     =  8,  /*!<   8  OTG interrupt                                             */
-    M0S_USB1_IRQn                     =  9,  /*!<   9  USB1 interrupt                                            */
-    M0S_SCT_IRQn                      = 10,  /*!<  10  SCT combined interrupt                                     */
-    M0S_RITIMER_IRQn                  = 11,  /*!<  11  RI timer interrupt                                        */
-    M0S_GINT1_IRQn                    = 12,  /*!<  12  GPIO global interrupt 1                                   */
-    M0S_TIMER1_IRQn                   = 13,  /*!<  13  Timer 1 interrupt                                         */
-    M0S_TIMER2_IRQn                   = 14,  /*!<  14  Timer 2 interrupt                                         */
-    M0S_PIN_INT5_IRQn                 = 15,  /*!<  15  GPIO pin interrupt 5                                      */
-    M0S_MCPWM_IRQn                    = 16,  /*!<  16  Motor control PWM interrupt                               */
-    M0S_ADC0_IRQn                     = 17,  /*!<  17  ADC0 interrupt                                            */
-    M0S_I2C0_IRQn                     = 18,  /*!<  18  I2C0 interrupt                                            */
-    M0S_I2C1_IRQn                     = 19,  /*!<  19  I2C1 interrupt                                            */
-    M0S_SPI_IRQn                      = 20,  /*!<  20  SPI interrupt                                             */
-    M0S_ADC1_IRQn                     = 21,  /*!<  21  ADC1 interrupt                                            */
-    M0S_SSP0_OR_SSP1_IRQn             = 22,  /*!<  22  SSP0, SSP1 ORed interrupt                                 */
-    M0S_EVENTROUTER_IRQn              = 23,  /*!<  23  Event router interrupt                                    */
-    M0S_USART0_IRQn                   = 24,  /*!<  24  USART0 interrupt                                          */
-    M0S_UART1_IRQn                    = 25,  /*!<  25  Modem/UART1 interrupt                                     */
-    M0S_USART2_OR_C_CAN1_IRQn         = 26,  /*!<  26  USART2, C_CAN1 ORed interrupt                             */
-    M0S_USART3_IRQn                   = 27,  /*!<  27  USART3 interrupt                                          */
-    M0S_I2S0_OR_I2S1_OR_QEI_IRQn      = 28,  /*!<  28  I2S0, I2S1, QEI ORed interrupt                            */
-    M0S_C_CAN0_IRQn                   = 29,  /*!<  29  C_CAN0 interrupt                                          */
-    M0S_SPIFI_OR_ADCHS_IRQn           = 30,  /*!<  30  SPIFI, ADCHS ORed interrupt                               */
-    M0S_M0APP_IRQn                    = 31,  /*!<  31  M0APP core interrupt                                      */
+  M0S_SGPIO_INPUT_IRQn              =  4,  /*!<   4  SGPIO input bit match interrupt                           */
+  M0S_SGPIO_MATCH_IRQn              =  5,  /*!<   5  SGPIO pattern match interrupt                             */
+  M0S_SGPIO_SHIFT_IRQn              =  6,  /*!<   6  SGPIO shift clock interrupt                               */
+  M0S_SGPIO_POS_IRQn                =  7,  /*!<   7  SGPIO capture clock interrupt                             */
+  M0S_USB0_IRQn                     =  8,  /*!<   8  OTG interrupt                                             */
+  M0S_USB1_IRQn                     =  9,  /*!<   9  USB1 interrupt                                            */
+  M0S_SCT_IRQn                      = 10,  /*!<  10  SCT combined interrupt                                     */
+  M0S_RITIMER_IRQn                  = 11,  /*!<  11  RI timer interrupt                                        */
+  M0S_GINT1_IRQn                    = 12,  /*!<  12  GPIO global interrupt 1                                   */
+  M0S_TIMER1_IRQn                   = 13,  /*!<  13  Timer 1 interrupt                                         */
+  M0S_TIMER2_IRQn                   = 14,  /*!<  14  Timer 2 interrupt                                         */
+  M0S_PIN_INT5_IRQn                 = 15,  /*!<  15  GPIO pin interrupt 5                                      */
+  M0S_MCPWM_IRQn                    = 16,  /*!<  16  Motor control PWM interrupt                               */
+  M0S_ADC0_IRQn                     = 17,  /*!<  17  ADC0 interrupt                                            */
+  M0S_I2C0_IRQn                     = 18,  /*!<  18  I2C0 interrupt                                            */
+  M0S_I2C1_IRQn                     = 19,  /*!<  19  I2C1 interrupt                                            */
+  M0S_SPI_IRQn                      = 20,  /*!<  20  SPI interrupt                                             */
+  M0S_ADC1_IRQn                     = 21,  /*!<  21  ADC1 interrupt                                            */
+  M0S_SSP0_OR_SSP1_IRQn             = 22,  /*!<  22  SSP0, SSP1 ORed interrupt                                 */
+  M0S_EVENTROUTER_IRQn              = 23,  /*!<  23  Event router interrupt                                    */
+  M0S_USART0_IRQn                   = 24,  /*!<  24  USART0 interrupt                                          */
+  M0S_UART1_IRQn                    = 25,  /*!<  25  Modem/UART1 interrupt                                     */
+  M0S_USART2_OR_C_CAN1_IRQn         = 26,  /*!<  26  USART2, C_CAN1 ORed interrupt                             */
+  M0S_USART3_IRQn                   = 27,  /*!<  27  USART3 interrupt                                          */
+  M0S_I2S0_OR_I2S1_OR_QEI_IRQn      = 28,  /*!<  28  I2S0, I2S1, QEI ORed interrupt                            */
+  M0S_C_CAN0_IRQn                   = 29,  /*!<  29  C_CAN0 interrupt                                          */
+  M0S_SPIFI_OR_ADCHS_IRQn           = 30,  /*!<  30  SPIFI, ADCHS ORed interrupt                               */
+  M0S_M0APP_IRQn                    = 31,  /*!<  31  M0APP core interrupt                                      */
 #endif
 } IRQn_Type;
 
-/* Event Router Input (ERI) Number Definitions */
-typedef enum
-{
-    WAKEUP0_ERIn                      = 0,
-    WAKEUP1_ERIn                      = 1,
-    WAKEUP2_ERIn                      = 2,
-    WAKEUP3_ERIn                      = 3,
-    ATIMER_ERIn                       = 4,
-    RTC_ERIn                          = 5,
-    BOD1_ERIn                         = 6,  /* Bod trip 1 */
-    WWDT_ERIn                         = 7,
-    ETH_ERIn                          = 8,
-    USB0_ERIn                         = 9,
-    USB1_ERIn                         = 10,
-    SDIO_ERIn                         = 11,
-    CAN_ERIn                          = 12, /* CAN0/1 or'ed */
-    TIM2_ERIn                         = 13,
-    TIM6_ERIn                         = 14,
-    QEI_ERIn                          = 15,
-    TIM14_ERIn                        = 16,
-    RESERVED0_ERIn                    = 17, /* M0s */
-    RESERVED1_ERIn                    = 18, /* M3/M4 */
-    RESET_ERIn                        = 19
-} ERIn_Type;
+ /* Event Router Input (ERI) Number Definitions */
+typedef enum {
+  WAKEUP0_ERIn                      = 0,
+  WAKEUP1_ERIn                      = 1,
+  WAKEUP2_ERIn                      = 2,
+  WAKEUP3_ERIn                      = 3,
+  ATIMER_ERIn                       = 4,
+  RTC_ERIn                          = 5,
+  BOD1_ERIn                         = 6,  /* Bod trip 1 */
+  WWDT_ERIn                         = 7,
+  ETH_ERIn                          = 8,
+  USB0_ERIn                         = 9,
+  USB1_ERIn                         = 10,
+  SDIO_ERIn                         = 11,
+  CAN_ERIn                          = 12, /* CAN0/1 or'ed */
+  TIM2_ERIn                         = 13,
+  TIM6_ERIn                         = 14,
+  QEI_ERIn                          = 15,
+  TIM14_ERIn                        = 16,
+  RESERVED0_ERIn                    = 17, /* M0s */
+  RESERVED1_ERIn                    = 18, /* M3/M4 */
+  RESET_ERIn                        = 19
+}ERIn_Type;
 
 /** @addtogroup Configuration_of_CMSIS
   * @{
@@ -274,18 +272,18 @@ typedef enum
 
 /* -------------------  Start of section using anonymous unions  ------------------ */
 #if defined(__CC_ARM)
-#pragma push
-#pragma anon_unions
+  #pragma push
+  #pragma anon_unions
 #elif defined(__ICCARM__)
-#pragma language=extended
+  #pragma language=extended
 #elif defined(__GNUC__)
-/* anonymous unions are enabled by default */
+  /* anonymous unions are enabled by default */
 #elif defined(__TMS470__)
 /* anonymous unions are enabled by default */
 #elif defined(__TASKING__)
-#pragma warning 586
+  #pragma warning 586
 #else
-#warning Not supported compiler type
+  #warning Not supported compiler type
 #endif
 
 
@@ -299,377 +297,344 @@ typedef enum
   * @brief State Configurable Timer (SCT) with dither engine  (SCT)
   */
 
-typedef struct                                      /*!< (@ 0x40000000) SCT Structure                                          */
-{
-    __IO uint32_t  CONFIG;                            /*!< (@ 0x40000000) SCT configuration register                             */
-    __IO uint32_t  CTRL;                              /*!< (@ 0x40000004) SCT control register                                   */
-    __IO uint32_t  LIMIT;                             /*!< (@ 0x40000008) SCT limit register                                     */
-    __IO uint32_t  HALT;                              /*!< (@ 0x4000000C) SCT halt condition register                            */
-    __IO uint32_t  STOP;                              /*!< (@ 0x40000010) SCT stop condition register                            */
-    __IO uint32_t  START;                             /*!< (@ 0x40000014) SCT start condition register                           */
-    __IO uint32_t  DITHER;                            /*!< (@ 0x40000018) SCT dither condition register                          */
-    __I  uint32_t  RESERVED0[9];
-    __IO uint32_t  COUNT;                             /*!< (@ 0x40000040) SCT counter register                                   */
-    __IO uint32_t  STATE;                             /*!< (@ 0x40000044) SCT state register                                     */
-    __I  uint32_t  INPUT;                             /*!< (@ 0x40000048) SCT input register                                     */
-    __IO uint32_t  REGMODE;                           /*!< (@ 0x4000004C) SCT match/capture registers mode register              */
-    __IO uint32_t  OUTPUT;                            /*!< (@ 0x40000050) SCT output register                                    */
-    __IO uint32_t  OUTPUTDIRCTRL;                     /*!< (@ 0x40000054) SCT output counter direction control register          */
-    __IO uint32_t  RES;                               /*!< (@ 0x40000058) SCT conflict resolution register                       */
-    __IO uint32_t  DMAREQ0;                           /*!< (@ 0x4000005C) SCT DMA request 0 register                             */
-    __IO uint32_t  DMAREQ1;                           /*!< (@ 0x40000060) SCT DMA request 1 register                             */
-    __I  uint32_t  RESERVED1[35];
-    __IO uint32_t  EVEN;                              /*!< (@ 0x400000F0) SCT event enable register                              */
-    __IO uint32_t  EVFLAG;                            /*!< (@ 0x400000F4) SCT event flag register                                */
-    __IO uint32_t  CONEN;                             /*!< (@ 0x400000F8) SCT conflict enable register                           */
-    __IO uint32_t  CONFLAG;                           /*!< (@ 0x400000FC) SCT conflict flag register                             */
+typedef struct {                                    /*!< (@ 0x40000000) SCT Structure                                          */
+  __IO uint32_t  CONFIG;                            /*!< (@ 0x40000000) SCT configuration register                             */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x40000004) SCT control register                                   */
+  __IO uint32_t  LIMIT;                             /*!< (@ 0x40000008) SCT limit register                                     */
+  __IO uint32_t  HALT;                              /*!< (@ 0x4000000C) SCT halt condition register                            */
+  __IO uint32_t  STOP;                              /*!< (@ 0x40000010) SCT stop condition register                            */
+  __IO uint32_t  START;                             /*!< (@ 0x40000014) SCT start condition register                           */
+  __IO uint32_t  DITHER;                            /*!< (@ 0x40000018) SCT dither condition register                          */
+  __I  uint32_t  RESERVED0[9];
+  __IO uint32_t  COUNT;                             /*!< (@ 0x40000040) SCT counter register                                   */
+  __IO uint32_t  STATE;                             /*!< (@ 0x40000044) SCT state register                                     */
+  __I  uint32_t  INPUT;                             /*!< (@ 0x40000048) SCT input register                                     */
+  __IO uint32_t  REGMODE;                           /*!< (@ 0x4000004C) SCT match/capture registers mode register              */
+  __IO uint32_t  OUTPUT;                            /*!< (@ 0x40000050) SCT output register                                    */
+  __IO uint32_t  OUTPUTDIRCTRL;                     /*!< (@ 0x40000054) SCT output counter direction control register          */
+  __IO uint32_t  RES;                               /*!< (@ 0x40000058) SCT conflict resolution register                       */
+  __IO uint32_t  DMAREQ0;                           /*!< (@ 0x4000005C) SCT DMA request 0 register                             */
+  __IO uint32_t  DMAREQ1;                           /*!< (@ 0x40000060) SCT DMA request 1 register                             */
+  __I  uint32_t  RESERVED1[35];
+  __IO uint32_t  EVEN;                              /*!< (@ 0x400000F0) SCT event enable register                              */
+  __IO uint32_t  EVFLAG;                            /*!< (@ 0x400000F4) SCT event flag register                                */
+  __IO uint32_t  CONEN;                             /*!< (@ 0x400000F8) SCT conflict enable register                           */
+  __IO uint32_t  CONFLAG;                           /*!< (@ 0x400000FC) SCT conflict flag register                             */
 
-    union
-    {
-        __IO uint32_t  CAP0;                            /*!< (@ 0x40000100) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP0;                            /*!< (@ 0x40000100) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH0;                          /*!< (@ 0x40000100) SCT match value register of match channels 0
+    __IO uint32_t  MATCH0;                          /*!< (@ 0x40000100) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAP1;                            /*!< (@ 0x40000104) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP1;                            /*!< (@ 0x40000104) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH1;                          /*!< (@ 0x40000104) SCT match value register of match channels 0
+    __IO uint32_t  MATCH1;                          /*!< (@ 0x40000104) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAP2;                            /*!< (@ 0x40000108) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP2;                            /*!< (@ 0x40000108) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH2;                          /*!< (@ 0x40000108) SCT match value register of match channels 0
+    __IO uint32_t  MATCH2;                          /*!< (@ 0x40000108) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAP3;                            /*!< (@ 0x4000010C) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP3;                            /*!< (@ 0x4000010C) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH3;                          /*!< (@ 0x4000010C) SCT match value register of match channels 0
+    __IO uint32_t  MATCH3;                          /*!< (@ 0x4000010C) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH4;                          /*!< (@ 0x40000110) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH4;                          /*!< (@ 0x40000110) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP4;                            /*!< (@ 0x40000110) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP4;                            /*!< (@ 0x40000110) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAP5;                            /*!< (@ 0x40000114) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP5;                            /*!< (@ 0x40000114) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH5;                          /*!< (@ 0x40000114) SCT match value register of match channels 0
+    __IO uint32_t  MATCH5;                          /*!< (@ 0x40000114) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH6;                          /*!< (@ 0x40000118) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH6;                          /*!< (@ 0x40000118) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP6;                            /*!< (@ 0x40000118) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP6;                            /*!< (@ 0x40000118) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH7;                          /*!< (@ 0x4000011C) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH7;                          /*!< (@ 0x4000011C) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP7;                            /*!< (@ 0x4000011C) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP7;                            /*!< (@ 0x4000011C) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH8;                          /*!< (@ 0x40000120) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH8;                          /*!< (@ 0x40000120) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP8;                            /*!< (@ 0x40000120) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP8;                            /*!< (@ 0x40000120) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH9;                          /*!< (@ 0x40000124) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH9;                          /*!< (@ 0x40000124) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP9;                            /*!< (@ 0x40000124) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP9;                            /*!< (@ 0x40000124) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH10;                         /*!< (@ 0x40000128) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH10;                         /*!< (@ 0x40000128) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP10;                           /*!< (@ 0x40000128) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP10;                           /*!< (@ 0x40000128) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH11;                         /*!< (@ 0x4000012C) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH11;                         /*!< (@ 0x4000012C) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP11;                           /*!< (@ 0x4000012C) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP11;                           /*!< (@ 0x4000012C) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH12;                         /*!< (@ 0x40000130) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH12;                         /*!< (@ 0x40000130) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP12;                           /*!< (@ 0x40000130) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP12;                           /*!< (@ 0x40000130) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAP13;                           /*!< (@ 0x40000134) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP13;                           /*!< (@ 0x40000134) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH13;                         /*!< (@ 0x40000134) SCT match value register of match channels 0
+    __IO uint32_t  MATCH13;                         /*!< (@ 0x40000134) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCH14;                         /*!< (@ 0x40000138) SCT match value register of match channels 0
+  union {
+    __IO uint32_t  MATCH14;                         /*!< (@ 0x40000138) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-        __IO uint32_t  CAP14;                           /*!< (@ 0x40000138) SCT capture register of capture channel 0 to
+    __IO uint32_t  CAP14;                           /*!< (@ 0x40000138) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAP15;                           /*!< (@ 0x4000013C) SCT capture register of capture channel 0 to
+  union {
+    __IO uint32_t  CAP15;                           /*!< (@ 0x4000013C) SCT capture register of capture channel 0 to
                                                          15; REGMOD0 to REGMODE15 = 1                                          */
-        __IO uint32_t  MATCH15;                         /*!< (@ 0x4000013C) SCT match value register of match channels 0
+    __IO uint32_t  MATCH15;                         /*!< (@ 0x4000013C) SCT match value register of match channels 0
                                                          to 15; REGMOD0 to REGMODE15 = 0                                       */
-    };
-    __IO uint32_t  FRACMAT0;                          /*!< (@ 0x40000140) Fractional match registers 0 to 5 for SCT match
+  };
+  __IO uint32_t  FRACMAT0;                          /*!< (@ 0x40000140) Fractional match registers 0 to 5 for SCT match
                                                          value registers 0 to 5.                                               */
-    __IO uint32_t  FRACMAT1;                          /*!< (@ 0x40000144) Fractional match registers 0 to 5 for SCT match
+  __IO uint32_t  FRACMAT1;                          /*!< (@ 0x40000144) Fractional match registers 0 to 5 for SCT match
                                                          value registers 0 to 5.                                               */
-    __IO uint32_t  FRACMAT2;                          /*!< (@ 0x40000148) Fractional match registers 0 to 5 for SCT match
+  __IO uint32_t  FRACMAT2;                          /*!< (@ 0x40000148) Fractional match registers 0 to 5 for SCT match
                                                          value registers 0 to 5.                                               */
-    __IO uint32_t  FRACMAT3;                          /*!< (@ 0x4000014C) Fractional match registers 0 to 5 for SCT match
+  __IO uint32_t  FRACMAT3;                          /*!< (@ 0x4000014C) Fractional match registers 0 to 5 for SCT match
                                                          value registers 0 to 5.                                               */
-    __IO uint32_t  FRACMAT4;                          /*!< (@ 0x40000150) Fractional match registers 0 to 5 for SCT match
+  __IO uint32_t  FRACMAT4;                          /*!< (@ 0x40000150) Fractional match registers 0 to 5 for SCT match
                                                          value registers 0 to 5.                                               */
-    __IO uint32_t  FRACMAT5;                          /*!< (@ 0x40000154) Fractional match registers 0 to 5 for SCT match
+  __IO uint32_t  FRACMAT5;                          /*!< (@ 0x40000154) Fractional match registers 0 to 5 for SCT match
                                                          value registers 0 to 5.                                               */
-    __I  uint32_t  RESERVED2[42];
+  __I  uint32_t  RESERVED2[42];
 
-    union
-    {
-        __IO uint32_t  CAPCTRL0;                        /*!< (@ 0x40000200) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL0;                        /*!< (@ 0x40000200) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL0;                       /*!< (@ 0x40000200) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL0;                       /*!< (@ 0x40000200) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL1;                       /*!< (@ 0x40000204) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL1;                       /*!< (@ 0x40000204) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL1;                        /*!< (@ 0x40000204) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL1;                        /*!< (@ 0x40000204) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL2;                        /*!< (@ 0x40000208) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL2;                        /*!< (@ 0x40000208) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL2;                       /*!< (@ 0x40000208) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL2;                       /*!< (@ 0x40000208) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL3;                       /*!< (@ 0x4000020C) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL3;                       /*!< (@ 0x4000020C) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL3;                        /*!< (@ 0x4000020C) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL3;                        /*!< (@ 0x4000020C) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL4;                        /*!< (@ 0x40000210) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL4;                        /*!< (@ 0x40000210) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL4;                       /*!< (@ 0x40000210) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL4;                       /*!< (@ 0x40000210) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL5;                        /*!< (@ 0x40000214) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL5;                        /*!< (@ 0x40000214) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL5;                       /*!< (@ 0x40000214) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL5;                       /*!< (@ 0x40000214) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL6;                       /*!< (@ 0x40000218) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL6;                       /*!< (@ 0x40000218) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL6;                        /*!< (@ 0x40000218) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL6;                        /*!< (@ 0x40000218) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL7;                        /*!< (@ 0x4000021C) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL7;                        /*!< (@ 0x4000021C) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL7;                       /*!< (@ 0x4000021C) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL7;                       /*!< (@ 0x4000021C) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL8;                       /*!< (@ 0x40000220) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL8;                       /*!< (@ 0x40000220) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL8;                        /*!< (@ 0x40000220) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL8;                        /*!< (@ 0x40000220) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL9;                        /*!< (@ 0x40000224) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL9;                        /*!< (@ 0x40000224) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL9;                       /*!< (@ 0x40000224) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL9;                       /*!< (@ 0x40000224) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL10;                      /*!< (@ 0x40000228) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL10;                      /*!< (@ 0x40000228) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL10;                       /*!< (@ 0x40000228) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL10;                       /*!< (@ 0x40000228) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL11;                      /*!< (@ 0x4000022C) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL11;                      /*!< (@ 0x4000022C) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL11;                       /*!< (@ 0x4000022C) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL11;                       /*!< (@ 0x4000022C) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  MATCHREL12;                      /*!< (@ 0x40000230) SCT match reload value register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  MATCHREL12;                      /*!< (@ 0x40000230) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-        __IO uint32_t  CAPCTRL12;                       /*!< (@ 0x40000230) SCT capture control register 0 to 15; REGMOD0
+    __IO uint32_t  CAPCTRL12;                       /*!< (@ 0x40000230) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL13;                       /*!< (@ 0x40000234) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL13;                       /*!< (@ 0x40000234) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL13;                      /*!< (@ 0x40000234) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL13;                      /*!< (@ 0x40000234) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL14;                       /*!< (@ 0x40000238) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL14;                       /*!< (@ 0x40000238) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL14;                      /*!< (@ 0x40000238) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL14;                      /*!< (@ 0x40000238) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  CAPCTRL15;                       /*!< (@ 0x4000023C) SCT capture control register 0 to 15; REGMOD0
+  union {
+    __IO uint32_t  CAPCTRL15;                       /*!< (@ 0x4000023C) SCT capture control register 0 to 15; REGMOD0
                                                          = 1 to REGMODE15 = 1                                                  */
-        __IO uint32_t  MATCHREL15;                      /*!< (@ 0x4000023C) SCT match reload value register 0 to 15; REGMOD0
+    __IO uint32_t  MATCHREL15;                      /*!< (@ 0x4000023C) SCT match reload value register 0 to 15; REGMOD0
                                                          = 0 to REGMODE15 = 0                                                  */
-    };
-    __IO uint32_t  FRACMATREL0;                       /*!< (@ 0x40000240) Fractional match reload registers 0 to 5 for
+  };
+  __IO uint32_t  FRACMATREL0;                       /*!< (@ 0x40000240) Fractional match reload registers 0 to 5 for
                                                          SCT match value registers 0 to 5.                                     */
-    __IO uint32_t  FRACMATREL1;                       /*!< (@ 0x40000244) Fractional match reload registers 0 to 5 for
+  __IO uint32_t  FRACMATREL1;                       /*!< (@ 0x40000244) Fractional match reload registers 0 to 5 for
                                                          SCT match value registers 0 to 5.                                     */
-    __IO uint32_t  FRACMATREL2;                       /*!< (@ 0x40000248) Fractional match reload registers 0 to 5 for
+  __IO uint32_t  FRACMATREL2;                       /*!< (@ 0x40000248) Fractional match reload registers 0 to 5 for
                                                          SCT match value registers 0 to 5.                                     */
-    __IO uint32_t  FRACMATREL3;                       /*!< (@ 0x4000024C) Fractional match reload registers 0 to 5 for
+  __IO uint32_t  FRACMATREL3;                       /*!< (@ 0x4000024C) Fractional match reload registers 0 to 5 for
                                                          SCT match value registers 0 to 5.                                     */
-    __IO uint32_t  FRACMATREL4;                       /*!< (@ 0x40000250) Fractional match reload registers 0 to 5 for
+  __IO uint32_t  FRACMATREL4;                       /*!< (@ 0x40000250) Fractional match reload registers 0 to 5 for
                                                          SCT match value registers 0 to 5.                                     */
-    __IO uint32_t  FRACMATREL5;                       /*!< (@ 0x40000254) Fractional match reload registers 0 to 5 for
+  __IO uint32_t  FRACMATREL5;                       /*!< (@ 0x40000254) Fractional match reload registers 0 to 5 for
                                                          SCT match value registers 0 to 5.                                     */
-    __I  uint32_t  RESERVED3[42];
-    __IO uint32_t  EV0_STATE;                         /*!< (@ 0x40000300) SCT event state register 0                             */
-    __IO uint32_t  EV0_CTRL;                          /*!< (@ 0x40000304) SCT event control register 0                           */
-    __IO uint32_t  EV1_STATE;                         /*!< (@ 0x40000308) SCT event state register 0                             */
-    __IO uint32_t  EV1_CTRL;                          /*!< (@ 0x4000030C) SCT event control register 0                           */
-    __IO uint32_t  EV2_STATE;                         /*!< (@ 0x40000310) SCT event state register 0                             */
-    __IO uint32_t  EV2_CTRL;                          /*!< (@ 0x40000314) SCT event control register 0                           */
-    __IO uint32_t  EV3_STATE;                         /*!< (@ 0x40000318) SCT event state register 0                             */
-    __IO uint32_t  EV3_CTRL;                          /*!< (@ 0x4000031C) SCT event control register 0                           */
-    __IO uint32_t  EV4_STATE;                         /*!< (@ 0x40000320) SCT event state register 0                             */
-    __IO uint32_t  EV4_CTRL;                          /*!< (@ 0x40000324) SCT event control register 0                           */
-    __IO uint32_t  EV5_STATE;                         /*!< (@ 0x40000328) SCT event state register 0                             */
-    __IO uint32_t  EV5_CTRL;                          /*!< (@ 0x4000032C) SCT event control register 0                           */
-    __IO uint32_t  EV6_STATE;                         /*!< (@ 0x40000330) SCT event state register 0                             */
-    __IO uint32_t  EV6_CTRL;                          /*!< (@ 0x40000334) SCT event control register 0                           */
-    __IO uint32_t  EV7_STATE;                         /*!< (@ 0x40000338) SCT event state register 0                             */
-    __IO uint32_t  EV7_CTRL;                          /*!< (@ 0x4000033C) SCT event control register 0                           */
-    __IO uint32_t  EV8_STATE;                         /*!< (@ 0x40000340) SCT event state register 0                             */
-    __IO uint32_t  EV8_CTRL;                          /*!< (@ 0x40000344) SCT event control register 0                           */
-    __IO uint32_t  EV9_STATE;                         /*!< (@ 0x40000348) SCT event state register 0                             */
-    __IO uint32_t  EV9_CTRL;                          /*!< (@ 0x4000034C) SCT event control register 0                           */
-    __IO uint32_t  EV10_STATE;                        /*!< (@ 0x40000350) SCT event state register 0                             */
-    __IO uint32_t  EV10_CTRL;                         /*!< (@ 0x40000354) SCT event control register 0                           */
-    __IO uint32_t  EV11_STATE;                        /*!< (@ 0x40000358) SCT event state register 0                             */
-    __IO uint32_t  EV11_CTRL;                         /*!< (@ 0x4000035C) SCT event control register 0                           */
-    __IO uint32_t  EV12_STATE;                        /*!< (@ 0x40000360) SCT event state register 0                             */
-    __IO uint32_t  EV12_CTRL;                         /*!< (@ 0x40000364) SCT event control register 0                           */
-    __IO uint32_t  EV13_STATE;                        /*!< (@ 0x40000368) SCT event state register 0                             */
-    __IO uint32_t  EV13_CTRL;                         /*!< (@ 0x4000036C) SCT event control register 0                           */
-    __IO uint32_t  EV14_STATE;                        /*!< (@ 0x40000370) SCT event state register 0                             */
-    __IO uint32_t  EV14_CTRL;                         /*!< (@ 0x40000374) SCT event control register 0                           */
-    __IO uint32_t  EV15_STATE;                        /*!< (@ 0x40000378) SCT event state register 0                             */
-    __IO uint32_t  EV15_CTRL;                         /*!< (@ 0x4000037C) SCT event control register 0                           */
-    __I  uint32_t  RESERVED4[96];
-    __IO uint32_t  OUT0_SET;                          /*!< (@ 0x40000500) SCT output 0 set register                              */
-    __IO uint32_t  OUT0_CLR;                          /*!< (@ 0x40000504) SCT output 0 clear register                            */
-    __IO uint32_t  OUT1_SET;                          /*!< (@ 0x40000508) SCT output 0 set register                              */
-    __IO uint32_t  OUT1_CLR;                          /*!< (@ 0x4000050C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT2_SET;                          /*!< (@ 0x40000510) SCT output 0 set register                              */
-    __IO uint32_t  OUT2_CLR;                          /*!< (@ 0x40000514) SCT output 0 clear register                            */
-    __IO uint32_t  OUT3_SET;                          /*!< (@ 0x40000518) SCT output 0 set register                              */
-    __IO uint32_t  OUT3_CLR;                          /*!< (@ 0x4000051C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT4_SET;                          /*!< (@ 0x40000520) SCT output 0 set register                              */
-    __IO uint32_t  OUT4_CLR;                          /*!< (@ 0x40000524) SCT output 0 clear register                            */
-    __IO uint32_t  OUT5_SET;                          /*!< (@ 0x40000528) SCT output 0 set register                              */
-    __IO uint32_t  OUT5_CLR;                          /*!< (@ 0x4000052C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT6_SET;                          /*!< (@ 0x40000530) SCT output 0 set register                              */
-    __IO uint32_t  OUT6_CLR;                          /*!< (@ 0x40000534) SCT output 0 clear register                            */
-    __IO uint32_t  OUT7_SET;                          /*!< (@ 0x40000538) SCT output 0 set register                              */
-    __IO uint32_t  OUT7_CLR;                          /*!< (@ 0x4000053C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT8_SET;                          /*!< (@ 0x40000540) SCT output 0 set register                              */
-    __IO uint32_t  OUT8_CLR;                          /*!< (@ 0x40000544) SCT output 0 clear register                            */
-    __IO uint32_t  OUT9_SET;                          /*!< (@ 0x40000548) SCT output 0 set register                              */
-    __IO uint32_t  OUT9_CLR;                          /*!< (@ 0x4000054C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT10_SET;                         /*!< (@ 0x40000550) SCT output 0 set register                              */
-    __IO uint32_t  OUT10_CLR;                         /*!< (@ 0x40000554) SCT output 0 clear register                            */
-    __IO uint32_t  OUT11_SET;                         /*!< (@ 0x40000558) SCT output 0 set register                              */
-    __IO uint32_t  OUT11_CLR;                         /*!< (@ 0x4000055C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT12_SET;                         /*!< (@ 0x40000560) SCT output 0 set register                              */
-    __IO uint32_t  OUT12_CLR;                         /*!< (@ 0x40000564) SCT output 0 clear register                            */
-    __IO uint32_t  OUT13_SET;                         /*!< (@ 0x40000568) SCT output 0 set register                              */
-    __IO uint32_t  OUT13_CLR;                         /*!< (@ 0x4000056C) SCT output 0 clear register                            */
-    __IO uint32_t  OUT14_SET;                         /*!< (@ 0x40000570) SCT output 0 set register                              */
-    __IO uint32_t  OUT14_CLR;                         /*!< (@ 0x40000574) SCT output 0 clear register                            */
-    __IO uint32_t  OUT15_SET;                         /*!< (@ 0x40000578) SCT output 0 set register                              */
-    __IO uint32_t  OUT15_CLR;                         /*!< (@ 0x4000057C) SCT output 0 clear register                            */
+  __I  uint32_t  RESERVED3[42];
+  __IO uint32_t  EV0_STATE;                         /*!< (@ 0x40000300) SCT event state register 0                             */
+  __IO uint32_t  EV0_CTRL;                          /*!< (@ 0x40000304) SCT event control register 0                           */
+  __IO uint32_t  EV1_STATE;                         /*!< (@ 0x40000308) SCT event state register 0                             */
+  __IO uint32_t  EV1_CTRL;                          /*!< (@ 0x4000030C) SCT event control register 0                           */
+  __IO uint32_t  EV2_STATE;                         /*!< (@ 0x40000310) SCT event state register 0                             */
+  __IO uint32_t  EV2_CTRL;                          /*!< (@ 0x40000314) SCT event control register 0                           */
+  __IO uint32_t  EV3_STATE;                         /*!< (@ 0x40000318) SCT event state register 0                             */
+  __IO uint32_t  EV3_CTRL;                          /*!< (@ 0x4000031C) SCT event control register 0                           */
+  __IO uint32_t  EV4_STATE;                         /*!< (@ 0x40000320) SCT event state register 0                             */
+  __IO uint32_t  EV4_CTRL;                          /*!< (@ 0x40000324) SCT event control register 0                           */
+  __IO uint32_t  EV5_STATE;                         /*!< (@ 0x40000328) SCT event state register 0                             */
+  __IO uint32_t  EV5_CTRL;                          /*!< (@ 0x4000032C) SCT event control register 0                           */
+  __IO uint32_t  EV6_STATE;                         /*!< (@ 0x40000330) SCT event state register 0                             */
+  __IO uint32_t  EV6_CTRL;                          /*!< (@ 0x40000334) SCT event control register 0                           */
+  __IO uint32_t  EV7_STATE;                         /*!< (@ 0x40000338) SCT event state register 0                             */
+  __IO uint32_t  EV7_CTRL;                          /*!< (@ 0x4000033C) SCT event control register 0                           */
+  __IO uint32_t  EV8_STATE;                         /*!< (@ 0x40000340) SCT event state register 0                             */
+  __IO uint32_t  EV8_CTRL;                          /*!< (@ 0x40000344) SCT event control register 0                           */
+  __IO uint32_t  EV9_STATE;                         /*!< (@ 0x40000348) SCT event state register 0                             */
+  __IO uint32_t  EV9_CTRL;                          /*!< (@ 0x4000034C) SCT event control register 0                           */
+  __IO uint32_t  EV10_STATE;                        /*!< (@ 0x40000350) SCT event state register 0                             */
+  __IO uint32_t  EV10_CTRL;                         /*!< (@ 0x40000354) SCT event control register 0                           */
+  __IO uint32_t  EV11_STATE;                        /*!< (@ 0x40000358) SCT event state register 0                             */
+  __IO uint32_t  EV11_CTRL;                         /*!< (@ 0x4000035C) SCT event control register 0                           */
+  __IO uint32_t  EV12_STATE;                        /*!< (@ 0x40000360) SCT event state register 0                             */
+  __IO uint32_t  EV12_CTRL;                         /*!< (@ 0x40000364) SCT event control register 0                           */
+  __IO uint32_t  EV13_STATE;                        /*!< (@ 0x40000368) SCT event state register 0                             */
+  __IO uint32_t  EV13_CTRL;                         /*!< (@ 0x4000036C) SCT event control register 0                           */
+  __IO uint32_t  EV14_STATE;                        /*!< (@ 0x40000370) SCT event state register 0                             */
+  __IO uint32_t  EV14_CTRL;                         /*!< (@ 0x40000374) SCT event control register 0                           */
+  __IO uint32_t  EV15_STATE;                        /*!< (@ 0x40000378) SCT event state register 0                             */
+  __IO uint32_t  EV15_CTRL;                         /*!< (@ 0x4000037C) SCT event control register 0                           */
+  __I  uint32_t  RESERVED4[96];
+  __IO uint32_t  OUT0_SET;                          /*!< (@ 0x40000500) SCT output 0 set register                              */
+  __IO uint32_t  OUT0_CLR;                          /*!< (@ 0x40000504) SCT output 0 clear register                            */
+  __IO uint32_t  OUT1_SET;                          /*!< (@ 0x40000508) SCT output 0 set register                              */
+  __IO uint32_t  OUT1_CLR;                          /*!< (@ 0x4000050C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT2_SET;                          /*!< (@ 0x40000510) SCT output 0 set register                              */
+  __IO uint32_t  OUT2_CLR;                          /*!< (@ 0x40000514) SCT output 0 clear register                            */
+  __IO uint32_t  OUT3_SET;                          /*!< (@ 0x40000518) SCT output 0 set register                              */
+  __IO uint32_t  OUT3_CLR;                          /*!< (@ 0x4000051C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT4_SET;                          /*!< (@ 0x40000520) SCT output 0 set register                              */
+  __IO uint32_t  OUT4_CLR;                          /*!< (@ 0x40000524) SCT output 0 clear register                            */
+  __IO uint32_t  OUT5_SET;                          /*!< (@ 0x40000528) SCT output 0 set register                              */
+  __IO uint32_t  OUT5_CLR;                          /*!< (@ 0x4000052C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT6_SET;                          /*!< (@ 0x40000530) SCT output 0 set register                              */
+  __IO uint32_t  OUT6_CLR;                          /*!< (@ 0x40000534) SCT output 0 clear register                            */
+  __IO uint32_t  OUT7_SET;                          /*!< (@ 0x40000538) SCT output 0 set register                              */
+  __IO uint32_t  OUT7_CLR;                          /*!< (@ 0x4000053C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT8_SET;                          /*!< (@ 0x40000540) SCT output 0 set register                              */
+  __IO uint32_t  OUT8_CLR;                          /*!< (@ 0x40000544) SCT output 0 clear register                            */
+  __IO uint32_t  OUT9_SET;                          /*!< (@ 0x40000548) SCT output 0 set register                              */
+  __IO uint32_t  OUT9_CLR;                          /*!< (@ 0x4000054C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT10_SET;                         /*!< (@ 0x40000550) SCT output 0 set register                              */
+  __IO uint32_t  OUT10_CLR;                         /*!< (@ 0x40000554) SCT output 0 clear register                            */
+  __IO uint32_t  OUT11_SET;                         /*!< (@ 0x40000558) SCT output 0 set register                              */
+  __IO uint32_t  OUT11_CLR;                         /*!< (@ 0x4000055C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT12_SET;                         /*!< (@ 0x40000560) SCT output 0 set register                              */
+  __IO uint32_t  OUT12_CLR;                         /*!< (@ 0x40000564) SCT output 0 clear register                            */
+  __IO uint32_t  OUT13_SET;                         /*!< (@ 0x40000568) SCT output 0 set register                              */
+  __IO uint32_t  OUT13_CLR;                         /*!< (@ 0x4000056C) SCT output 0 clear register                            */
+  __IO uint32_t  OUT14_SET;                         /*!< (@ 0x40000570) SCT output 0 set register                              */
+  __IO uint32_t  OUT14_CLR;                         /*!< (@ 0x40000574) SCT output 0 clear register                            */
+  __IO uint32_t  OUT15_SET;                         /*!< (@ 0x40000578) SCT output 0 set register                              */
+  __IO uint32_t  OUT15_CLR;                         /*!< (@ 0x4000057C) SCT output 0 clear register                            */
 } LPC_SCT_Type;
 
 
@@ -682,70 +647,69 @@ typedef struct                                      /*!< (@ 0x40000000) SCT Stru
   * @brief General Purpose DMA (GPDMA)  (GPDMA)
   */
 
-typedef struct                                      /*!< (@ 0x40002000) GPDMA Structure                                        */
-{
-    __I  uint32_t  INTSTAT;                           /*!< (@ 0x40002000) DMA Interrupt Status Register                          */
-    __I  uint32_t  INTTCSTAT;                         /*!< (@ 0x40002004) DMA Interrupt Terminal Count Request Status Register   */
-    __O  uint32_t  INTTCCLEAR;                        /*!< (@ 0x40002008) DMA Interrupt Terminal Count Request Clear Register    */
-    __I  uint32_t  INTERRSTAT;                        /*!< (@ 0x4000200C) DMA Interrupt Error Status Register                    */
-    __O  uint32_t  INTERRCLR;                         /*!< (@ 0x40002010) DMA Interrupt Error Clear Register                     */
-    __I  uint32_t  RAWINTTCSTAT;                      /*!< (@ 0x40002014) DMA Raw Interrupt Terminal Count Status Register       */
-    __I  uint32_t  RAWINTERRSTAT;                     /*!< (@ 0x40002018) DMA Raw Error Interrupt Status Register                */
-    __I  uint32_t  ENBLDCHNS;                         /*!< (@ 0x4000201C) DMA Enabled Channel Register                           */
-    __IO uint32_t  SOFTBREQ;                          /*!< (@ 0x40002020) DMA Software Burst Request Register                    */
-    __IO uint32_t  SOFTSREQ;                          /*!< (@ 0x40002024) DMA Software Single Request Register                   */
-    __IO uint32_t  SOFTLBREQ;                         /*!< (@ 0x40002028) DMA Software Last Burst Request Register               */
-    __IO uint32_t  SOFTLSREQ;                         /*!< (@ 0x4000202C) DMA Software Last Single Request Register              */
-    __IO uint32_t  CONFIG;                            /*!< (@ 0x40002030) DMA Configuration Register                             */
-    __IO uint32_t  SYNC;                              /*!< (@ 0x40002034) DMA Synchronization Register                           */
-    __I  uint32_t  RESERVED0[50];
-    __IO uint32_t  C0SRCADDR;                         /*!< (@ 0x40002100) DMA Channel Source Address Register                    */
-    __IO uint32_t  C0DESTADDR;                        /*!< (@ 0x40002104) DMA Channel Destination Address Register               */
-    __IO uint32_t  C0LLI;                             /*!< (@ 0x40002108) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C0CONTROL;                         /*!< (@ 0x4000210C) DMA Channel Control Register                           */
-    __IO uint32_t  C0CONFIG;                          /*!< (@ 0x40002110) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED1[3];
-    __IO uint32_t  C1SRCADDR;                         /*!< (@ 0x40002120) DMA Channel Source Address Register                    */
-    __IO uint32_t  C1DESTADDR;                        /*!< (@ 0x40002124) DMA Channel Destination Address Register               */
-    __IO uint32_t  C1LLI;                             /*!< (@ 0x40002128) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C1CONTROL;                         /*!< (@ 0x4000212C) DMA Channel Control Register                           */
-    __IO uint32_t  C1CONFIG;                          /*!< (@ 0x40002130) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED2[3];
-    __IO uint32_t  C2SRCADDR;                         /*!< (@ 0x40002140) DMA Channel Source Address Register                    */
-    __IO uint32_t  C2DESTADDR;                        /*!< (@ 0x40002144) DMA Channel Destination Address Register               */
-    __IO uint32_t  C2LLI;                             /*!< (@ 0x40002148) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C2CONTROL;                         /*!< (@ 0x4000214C) DMA Channel Control Register                           */
-    __IO uint32_t  C2CONFIG;                          /*!< (@ 0x40002150) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED3[3];
-    __IO uint32_t  C3SRCADDR;                         /*!< (@ 0x40002160) DMA Channel Source Address Register                    */
-    __IO uint32_t  C3DESTADDR;                        /*!< (@ 0x40002164) DMA Channel Destination Address Register               */
-    __IO uint32_t  C3LLI;                             /*!< (@ 0x40002168) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C3CONTROL;                         /*!< (@ 0x4000216C) DMA Channel Control Register                           */
-    __IO uint32_t  C3CONFIG;                          /*!< (@ 0x40002170) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED4[3];
-    __IO uint32_t  C4SRCADDR;                         /*!< (@ 0x40002180) DMA Channel Source Address Register                    */
-    __IO uint32_t  C4DESTADDR;                        /*!< (@ 0x40002184) DMA Channel Destination Address Register               */
-    __IO uint32_t  C4LLI;                             /*!< (@ 0x40002188) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C4CONTROL;                         /*!< (@ 0x4000218C) DMA Channel Control Register                           */
-    __IO uint32_t  C4CONFIG;                          /*!< (@ 0x40002190) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED5[3];
-    __IO uint32_t  C5SRCADDR;                         /*!< (@ 0x400021A0) DMA Channel Source Address Register                    */
-    __IO uint32_t  C5DESTADDR;                        /*!< (@ 0x400021A4) DMA Channel Destination Address Register               */
-    __IO uint32_t  C5LLI;                             /*!< (@ 0x400021A8) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C5CONTROL;                         /*!< (@ 0x400021AC) DMA Channel Control Register                           */
-    __IO uint32_t  C5CONFIG;                          /*!< (@ 0x400021B0) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED6[3];
-    __IO uint32_t  C6SRCADDR;                         /*!< (@ 0x400021C0) DMA Channel Source Address Register                    */
-    __IO uint32_t  C6DESTADDR;                        /*!< (@ 0x400021C4) DMA Channel Destination Address Register               */
-    __IO uint32_t  C6LLI;                             /*!< (@ 0x400021C8) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C6CONTROL;                         /*!< (@ 0x400021CC) DMA Channel Control Register                           */
-    __IO uint32_t  C6CONFIG;                          /*!< (@ 0x400021D0) DMA Channel Configuration Register                     */
-    __I  uint32_t  RESERVED7[3];
-    __IO uint32_t  C7SRCADDR;                         /*!< (@ 0x400021E0) DMA Channel Source Address Register                    */
-    __IO uint32_t  C7DESTADDR;                        /*!< (@ 0x400021E4) DMA Channel Destination Address Register               */
-    __IO uint32_t  C7LLI;                             /*!< (@ 0x400021E8) DMA Channel Linked List Item Register                  */
-    __IO uint32_t  C7CONTROL;                         /*!< (@ 0x400021EC) DMA Channel Control Register                           */
-    __IO uint32_t  C7CONFIG;                          /*!< (@ 0x400021F0) DMA Channel Configuration Register                     */
+typedef struct {                                    /*!< (@ 0x40002000) GPDMA Structure                                        */
+  __I  uint32_t  INTSTAT;                           /*!< (@ 0x40002000) DMA Interrupt Status Register                          */
+  __I  uint32_t  INTTCSTAT;                         /*!< (@ 0x40002004) DMA Interrupt Terminal Count Request Status Register   */
+  __O  uint32_t  INTTCCLEAR;                        /*!< (@ 0x40002008) DMA Interrupt Terminal Count Request Clear Register    */
+  __I  uint32_t  INTERRSTAT;                        /*!< (@ 0x4000200C) DMA Interrupt Error Status Register                    */
+  __O  uint32_t  INTERRCLR;                         /*!< (@ 0x40002010) DMA Interrupt Error Clear Register                     */
+  __I  uint32_t  RAWINTTCSTAT;                      /*!< (@ 0x40002014) DMA Raw Interrupt Terminal Count Status Register       */
+  __I  uint32_t  RAWINTERRSTAT;                     /*!< (@ 0x40002018) DMA Raw Error Interrupt Status Register                */
+  __I  uint32_t  ENBLDCHNS;                         /*!< (@ 0x4000201C) DMA Enabled Channel Register                           */
+  __IO uint32_t  SOFTBREQ;                          /*!< (@ 0x40002020) DMA Software Burst Request Register                    */
+  __IO uint32_t  SOFTSREQ;                          /*!< (@ 0x40002024) DMA Software Single Request Register                   */
+  __IO uint32_t  SOFTLBREQ;                         /*!< (@ 0x40002028) DMA Software Last Burst Request Register               */
+  __IO uint32_t  SOFTLSREQ;                         /*!< (@ 0x4000202C) DMA Software Last Single Request Register              */
+  __IO uint32_t  CONFIG;                            /*!< (@ 0x40002030) DMA Configuration Register                             */
+  __IO uint32_t  SYNC;                              /*!< (@ 0x40002034) DMA Synchronization Register                           */
+  __I  uint32_t  RESERVED0[50];
+  __IO uint32_t  C0SRCADDR;                         /*!< (@ 0x40002100) DMA Channel Source Address Register                    */
+  __IO uint32_t  C0DESTADDR;                        /*!< (@ 0x40002104) DMA Channel Destination Address Register               */
+  __IO uint32_t  C0LLI;                             /*!< (@ 0x40002108) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C0CONTROL;                         /*!< (@ 0x4000210C) DMA Channel Control Register                           */
+  __IO uint32_t  C0CONFIG;                          /*!< (@ 0x40002110) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED1[3];
+  __IO uint32_t  C1SRCADDR;                         /*!< (@ 0x40002120) DMA Channel Source Address Register                    */
+  __IO uint32_t  C1DESTADDR;                        /*!< (@ 0x40002124) DMA Channel Destination Address Register               */
+  __IO uint32_t  C1LLI;                             /*!< (@ 0x40002128) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C1CONTROL;                         /*!< (@ 0x4000212C) DMA Channel Control Register                           */
+  __IO uint32_t  C1CONFIG;                          /*!< (@ 0x40002130) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED2[3];
+  __IO uint32_t  C2SRCADDR;                         /*!< (@ 0x40002140) DMA Channel Source Address Register                    */
+  __IO uint32_t  C2DESTADDR;                        /*!< (@ 0x40002144) DMA Channel Destination Address Register               */
+  __IO uint32_t  C2LLI;                             /*!< (@ 0x40002148) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C2CONTROL;                         /*!< (@ 0x4000214C) DMA Channel Control Register                           */
+  __IO uint32_t  C2CONFIG;                          /*!< (@ 0x40002150) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED3[3];
+  __IO uint32_t  C3SRCADDR;                         /*!< (@ 0x40002160) DMA Channel Source Address Register                    */
+  __IO uint32_t  C3DESTADDR;                        /*!< (@ 0x40002164) DMA Channel Destination Address Register               */
+  __IO uint32_t  C3LLI;                             /*!< (@ 0x40002168) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C3CONTROL;                         /*!< (@ 0x4000216C) DMA Channel Control Register                           */
+  __IO uint32_t  C3CONFIG;                          /*!< (@ 0x40002170) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED4[3];
+  __IO uint32_t  C4SRCADDR;                         /*!< (@ 0x40002180) DMA Channel Source Address Register                    */
+  __IO uint32_t  C4DESTADDR;                        /*!< (@ 0x40002184) DMA Channel Destination Address Register               */
+  __IO uint32_t  C4LLI;                             /*!< (@ 0x40002188) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C4CONTROL;                         /*!< (@ 0x4000218C) DMA Channel Control Register                           */
+  __IO uint32_t  C4CONFIG;                          /*!< (@ 0x40002190) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED5[3];
+  __IO uint32_t  C5SRCADDR;                         /*!< (@ 0x400021A0) DMA Channel Source Address Register                    */
+  __IO uint32_t  C5DESTADDR;                        /*!< (@ 0x400021A4) DMA Channel Destination Address Register               */
+  __IO uint32_t  C5LLI;                             /*!< (@ 0x400021A8) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C5CONTROL;                         /*!< (@ 0x400021AC) DMA Channel Control Register                           */
+  __IO uint32_t  C5CONFIG;                          /*!< (@ 0x400021B0) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED6[3];
+  __IO uint32_t  C6SRCADDR;                         /*!< (@ 0x400021C0) DMA Channel Source Address Register                    */
+  __IO uint32_t  C6DESTADDR;                        /*!< (@ 0x400021C4) DMA Channel Destination Address Register               */
+  __IO uint32_t  C6LLI;                             /*!< (@ 0x400021C8) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C6CONTROL;                         /*!< (@ 0x400021CC) DMA Channel Control Register                           */
+  __IO uint32_t  C6CONFIG;                          /*!< (@ 0x400021D0) DMA Channel Configuration Register                     */
+  __I  uint32_t  RESERVED7[3];
+  __IO uint32_t  C7SRCADDR;                         /*!< (@ 0x400021E0) DMA Channel Source Address Register                    */
+  __IO uint32_t  C7DESTADDR;                        /*!< (@ 0x400021E4) DMA Channel Destination Address Register               */
+  __IO uint32_t  C7LLI;                             /*!< (@ 0x400021E8) DMA Channel Linked List Item Register                  */
+  __IO uint32_t  C7CONTROL;                         /*!< (@ 0x400021EC) DMA Channel Control Register                           */
+  __IO uint32_t  C7CONFIG;                          /*!< (@ 0x400021F0) DMA Channel Configuration Register                     */
 } LPC_GPDMA_Type;
 
 
@@ -758,16 +722,15 @@ typedef struct                                      /*!< (@ 0x40002000) GPDMA St
   * @brief SPI Flash Interface (SPIFI) (SPIFI)
   */
 
-typedef struct                                      /*!< (@ 0x40003000) SPIFI Structure                                        */
-{
-    __IO uint32_t  CTRL;                              /*!< (@ 0x40003000) SPIFI control register                                 */
-    __IO uint32_t  CMD;                               /*!< (@ 0x40003004) SPIFI command register                                 */
-    __IO uint32_t  ADDR;                              /*!< (@ 0x40003008) SPIFI address register                                 */
-    __IO uint32_t  IDATA;                             /*!< (@ 0x4000300C) SPIFI intermediate data register                       */
-    __IO uint32_t  CLIMIT;                            /*!< (@ 0x40003010) SPIFI cache limit register                             */
-    __IO uint32_t  DATA;                              /*!< (@ 0x40003014) SPIFI data register                                    */
-    __IO uint32_t  MCMD;                              /*!< (@ 0x40003018) SPIFI memory command register                          */
-    __IO uint32_t  STAT;                              /*!< (@ 0x4000301C) SPIFI status register                                  */
+typedef struct {                                    /*!< (@ 0x40003000) SPIFI Structure                                        */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x40003000) SPIFI control register                                 */
+  __IO uint32_t  CMD;                               /*!< (@ 0x40003004) SPIFI command register                                 */
+  __IO uint32_t  ADDR;                              /*!< (@ 0x40003008) SPIFI address register                                 */
+  __IO uint32_t  IDATA;                             /*!< (@ 0x4000300C) SPIFI intermediate data register                       */
+  __IO uint32_t  CLIMIT;                            /*!< (@ 0x40003010) SPIFI cache limit register                             */
+  __IO uint32_t  DATA;                              /*!< (@ 0x40003014) SPIFI data register                                    */
+  __IO uint32_t  MCMD;                              /*!< (@ 0x40003018) SPIFI memory command register                          */
+  __IO uint32_t  STAT;                              /*!< (@ 0x4000301C) SPIFI status register                                  */
 } LPC_SPIFI_Type;
 
 
@@ -780,44 +743,43 @@ typedef struct                                      /*!< (@ 0x40003000) SPIFI St
   * @brief SD/MMC (SDMMC)
   */
 
-typedef struct                                      /*!< (@ 0x40004000) SDMMC Structure                                        */
-{
-    __IO uint32_t  CTRL;                              /*!< (@ 0x40004000) Control Register                                       */
-    __IO uint32_t  PWREN;                             /*!< (@ 0x40004004) Power Enable Register                                  */
-    __IO uint32_t  CLKDIV;                            /*!< (@ 0x40004008) Clock Divider Register                                 */
-    __IO uint32_t  CLKSRC;                            /*!< (@ 0x4000400C) SD Clock Source Register                               */
-    __IO uint32_t  CLKENA;                            /*!< (@ 0x40004010) Clock Enable Register                                  */
-    __IO uint32_t  TMOUT;                             /*!< (@ 0x40004014) Time-out Register                                      */
-    __IO uint32_t  CTYPE;                             /*!< (@ 0x40004018) Card Type Register                                     */
-    __IO uint32_t  BLKSIZ;                            /*!< (@ 0x4000401C) Block Size Register                                    */
-    __IO uint32_t  BYTCNT;                            /*!< (@ 0x40004020) Byte Count Register                                    */
-    __IO uint32_t  INTMASK;                           /*!< (@ 0x40004024) Interrupt Mask Register                                */
-    __IO uint32_t  CMDARG;                            /*!< (@ 0x40004028) Command Argument Register                              */
-    __IO uint32_t  CMD;                               /*!< (@ 0x4000402C) Command Register                                       */
-    __I  uint32_t  RESP0;                             /*!< (@ 0x40004030) Response Register 0                                    */
-    __I  uint32_t  RESP1;                             /*!< (@ 0x40004034) Response Register 1                                    */
-    __I  uint32_t  RESP2;                             /*!< (@ 0x40004038) Response Register 2                                    */
-    __I  uint32_t  RESP3;                             /*!< (@ 0x4000403C) Response Register 3                                    */
-    __I  uint32_t  MINTSTS;                           /*!< (@ 0x40004040) Masked Interrupt Status Register                       */
-    __IO uint32_t  RINTSTS;                           /*!< (@ 0x40004044) Raw Interrupt Status Register                          */
-    __I  uint32_t  STATUS;                            /*!< (@ 0x40004048) Status Register                                        */
-    __IO uint32_t  FIFOTH;                            /*!< (@ 0x4000404C) FIFO Threshold Watermark Register                      */
-    __I  uint32_t  CDETECT;                           /*!< (@ 0x40004050) Card Detect Register                                   */
-    __I  uint32_t  WRTPRT;                            /*!< (@ 0x40004054) Write Protect Register                                 */
-    __I  uint32_t  RESERVED0;
-    __I  uint32_t  TCBCNT;                            /*!< (@ 0x4000405C) Transferred CIU Card Byte Count Register               */
-    __I  uint32_t  TBBCNT;                            /*!< (@ 0x40004060) Transferred Host to BIU-FIFO Byte Count Register       */
-    __IO uint32_t  DEBNCE;                            /*!< (@ 0x40004064) Debounce Count Register                                */
-    __I  uint32_t  RESERVED1[4];
-    __IO uint32_t  RST_N;                             /*!< (@ 0x40004078) Hardware Reset                                         */
-    __I  uint32_t  RESERVED2;
-    __IO uint32_t  BMOD;                              /*!< (@ 0x40004080) Bus Mode Register                                      */
-    __O  uint32_t  PLDMND;                            /*!< (@ 0x40004084) Poll Demand Register                                   */
-    __IO uint32_t  DBADDR;                            /*!< (@ 0x40004088) Descriptor List Base Address Register                  */
-    __IO uint32_t  IDSTS;                             /*!< (@ 0x4000408C) Internal DMAC Status Register                          */
-    __IO uint32_t  IDINTEN;                           /*!< (@ 0x40004090) Internal DMAC Interrupt Enable Register                */
-    __I  uint32_t  DSCADDR;                           /*!< (@ 0x40004094) Current Host Descriptor Address Register               */
-    __I  uint32_t  BUFADDR;                           /*!< (@ 0x40004098) Current Buffer Descriptor Address Register             */
+typedef struct {                                    /*!< (@ 0x40004000) SDMMC Structure                                        */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x40004000) Control Register                                       */
+  __IO uint32_t  PWREN;                             /*!< (@ 0x40004004) Power Enable Register                                  */
+  __IO uint32_t  CLKDIV;                            /*!< (@ 0x40004008) Clock Divider Register                                 */
+  __IO uint32_t  CLKSRC;                            /*!< (@ 0x4000400C) SD Clock Source Register                               */
+  __IO uint32_t  CLKENA;                            /*!< (@ 0x40004010) Clock Enable Register                                  */
+  __IO uint32_t  TMOUT;                             /*!< (@ 0x40004014) Time-out Register                                      */
+  __IO uint32_t  CTYPE;                             /*!< (@ 0x40004018) Card Type Register                                     */
+  __IO uint32_t  BLKSIZ;                            /*!< (@ 0x4000401C) Block Size Register                                    */
+  __IO uint32_t  BYTCNT;                            /*!< (@ 0x40004020) Byte Count Register                                    */
+  __IO uint32_t  INTMASK;                           /*!< (@ 0x40004024) Interrupt Mask Register                                */
+  __IO uint32_t  CMDARG;                            /*!< (@ 0x40004028) Command Argument Register                              */
+  __IO uint32_t  CMD;                               /*!< (@ 0x4000402C) Command Register                                       */
+  __I  uint32_t  RESP0;                             /*!< (@ 0x40004030) Response Register 0                                    */
+  __I  uint32_t  RESP1;                             /*!< (@ 0x40004034) Response Register 1                                    */
+  __I  uint32_t  RESP2;                             /*!< (@ 0x40004038) Response Register 2                                    */
+  __I  uint32_t  RESP3;                             /*!< (@ 0x4000403C) Response Register 3                                    */
+  __I  uint32_t  MINTSTS;                           /*!< (@ 0x40004040) Masked Interrupt Status Register                       */
+  __IO uint32_t  RINTSTS;                           /*!< (@ 0x40004044) Raw Interrupt Status Register                          */
+  __I  uint32_t  STATUS;                            /*!< (@ 0x40004048) Status Register                                        */
+  __IO uint32_t  FIFOTH;                            /*!< (@ 0x4000404C) FIFO Threshold Watermark Register                      */
+  __I  uint32_t  CDETECT;                           /*!< (@ 0x40004050) Card Detect Register                                   */
+  __I  uint32_t  WRTPRT;                            /*!< (@ 0x40004054) Write Protect Register                                 */
+  __I  uint32_t  RESERVED0;
+  __I  uint32_t  TCBCNT;                            /*!< (@ 0x4000405C) Transferred CIU Card Byte Count Register               */
+  __I  uint32_t  TBBCNT;                            /*!< (@ 0x40004060) Transferred Host to BIU-FIFO Byte Count Register       */
+  __IO uint32_t  DEBNCE;                            /*!< (@ 0x40004064) Debounce Count Register                                */
+  __I  uint32_t  RESERVED1[4];
+  __IO uint32_t  RST_N;                             /*!< (@ 0x40004078) Hardware Reset                                         */
+  __I  uint32_t  RESERVED2;
+  __IO uint32_t  BMOD;                              /*!< (@ 0x40004080) Bus Mode Register                                      */
+  __O  uint32_t  PLDMND;                            /*!< (@ 0x40004084) Poll Demand Register                                   */
+  __IO uint32_t  DBADDR;                            /*!< (@ 0x40004088) Descriptor List Base Address Register                  */
+  __IO uint32_t  IDSTS;                             /*!< (@ 0x4000408C) Internal DMAC Status Register                          */
+  __IO uint32_t  IDINTEN;                           /*!< (@ 0x40004090) Internal DMAC Interrupt Enable Register                */
+  __I  uint32_t  DSCADDR;                           /*!< (@ 0x40004094) Current Host Descriptor Address Register               */
+  __I  uint32_t  BUFADDR;                           /*!< (@ 0x40004098) Current Buffer Descriptor Address Register             */
 } LPC_SDMMC_Type;
 
 
@@ -830,111 +792,110 @@ typedef struct                                      /*!< (@ 0x40004000) SDMMC St
   * @brief External Memory Controller (EMC)  (EMC)
   */
 
-typedef struct                                      /*!< (@ 0x40005000) EMC Structure                                          */
-{
-    __IO uint32_t  CONTROL;                           /*!< (@ 0x40005000) Controls operation of the memory controller.           */
-    __I  uint32_t  STATUS;                            /*!< (@ 0x40005004) Provides EMC status information.                       */
-    __IO uint32_t  CONFIG;                            /*!< (@ 0x40005008) Configures operation of the memory controller.         */
-    __I  uint32_t  RESERVED0[5];
-    __IO uint32_t  DYNAMICCONTROL;                    /*!< (@ 0x40005020) Controls dynamic memory operation.                     */
-    __IO uint32_t  DYNAMICREFRESH;                    /*!< (@ 0x40005024) Configures dynamic memory refresh operation.           */
-    __IO uint32_t  DYNAMICREADCONFIG;                 /*!< (@ 0x40005028) Configures the dynamic memory read strategy.           */
-    __I  uint32_t  RESERVED1;
-    __IO uint32_t  DYNAMICRP;                         /*!< (@ 0x40005030) Selects the precharge command period.                  */
-    __IO uint32_t  DYNAMICRAS;                        /*!< (@ 0x40005034) Selects the active to precharge command period.        */
-    __IO uint32_t  DYNAMICSREX;                       /*!< (@ 0x40005038) Selects the self-refresh exit time.                    */
-    __IO uint32_t  DYNAMICAPR;                        /*!< (@ 0x4000503C) Selects the last-data-out to active command time.      */
-    __IO uint32_t  DYNAMICDAL;                        /*!< (@ 0x40005040) Selects the data-in to active command time.            */
-    __IO uint32_t  DYNAMICWR;                         /*!< (@ 0x40005044) Selects the write recovery time.                       */
-    __IO uint32_t  DYNAMICRC;                         /*!< (@ 0x40005048) Selects the active to active command period.           */
-    __IO uint32_t  DYNAMICRFC;                        /*!< (@ 0x4000504C) Selects the auto-refresh period.                       */
-    __IO uint32_t  DYNAMICXSR;                        /*!< (@ 0x40005050) Selects the exit self-refresh to active command
+typedef struct {                                    /*!< (@ 0x40005000) EMC Structure                                          */
+  __IO uint32_t  CONTROL;                           /*!< (@ 0x40005000) Controls operation of the memory controller.           */
+  __I  uint32_t  STATUS;                            /*!< (@ 0x40005004) Provides EMC status information.                       */
+  __IO uint32_t  CONFIG;                            /*!< (@ 0x40005008) Configures operation of the memory controller.         */
+  __I  uint32_t  RESERVED0[5];
+  __IO uint32_t  DYNAMICCONTROL;                    /*!< (@ 0x40005020) Controls dynamic memory operation.                     */
+  __IO uint32_t  DYNAMICREFRESH;                    /*!< (@ 0x40005024) Configures dynamic memory refresh operation.           */
+  __IO uint32_t  DYNAMICREADCONFIG;                 /*!< (@ 0x40005028) Configures the dynamic memory read strategy.           */
+  __I  uint32_t  RESERVED1;
+  __IO uint32_t  DYNAMICRP;                         /*!< (@ 0x40005030) Selects the precharge command period.                  */
+  __IO uint32_t  DYNAMICRAS;                        /*!< (@ 0x40005034) Selects the active to precharge command period.        */
+  __IO uint32_t  DYNAMICSREX;                       /*!< (@ 0x40005038) Selects the self-refresh exit time.                    */
+  __IO uint32_t  DYNAMICAPR;                        /*!< (@ 0x4000503C) Selects the last-data-out to active command time.      */
+  __IO uint32_t  DYNAMICDAL;                        /*!< (@ 0x40005040) Selects the data-in to active command time.            */
+  __IO uint32_t  DYNAMICWR;                         /*!< (@ 0x40005044) Selects the write recovery time.                       */
+  __IO uint32_t  DYNAMICRC;                         /*!< (@ 0x40005048) Selects the active to active command period.           */
+  __IO uint32_t  DYNAMICRFC;                        /*!< (@ 0x4000504C) Selects the auto-refresh period.                       */
+  __IO uint32_t  DYNAMICXSR;                        /*!< (@ 0x40005050) Selects the exit self-refresh to active command
                                                          time.                                                                 */
-    __IO uint32_t  DYNAMICRRD;                        /*!< (@ 0x40005054) Selects the active bank A to active bank B latency.    */
-    __IO uint32_t  DYNAMICMRD;                        /*!< (@ 0x40005058) Selects the load mode register to active command
+  __IO uint32_t  DYNAMICRRD;                        /*!< (@ 0x40005054) Selects the active bank A to active bank B latency.    */
+  __IO uint32_t  DYNAMICMRD;                        /*!< (@ 0x40005058) Selects the load mode register to active command
                                                          time.                                                                 */
-    __I  uint32_t  RESERVED2[9];
-    __IO uint32_t  STATICEXTENDEDWAIT;                /*!< (@ 0x40005080) Selects time for long static memory read and
+  __I  uint32_t  RESERVED2[9];
+  __IO uint32_t  STATICEXTENDEDWAIT;                /*!< (@ 0x40005080) Selects time for long static memory read and
                                                          write transfers.                                                      */
-    __I  uint32_t  RESERVED3[31];
-    __IO uint32_t  DYNAMICCONFIG0;                    /*!< (@ 0x40005100) Selects the configuration information for dynamic
+  __I  uint32_t  RESERVED3[31];
+  __IO uint32_t  DYNAMICCONFIG0;                    /*!< (@ 0x40005100) Selects the configuration information for dynamic
                                                          memory chip select 0.                                                 */
-    __IO uint32_t  DYNAMICRASCAS0;                    /*!< (@ 0x40005104) Selects the RAS and CAS latencies for dynamic
+  __IO uint32_t  DYNAMICRASCAS0;                    /*!< (@ 0x40005104) Selects the RAS and CAS latencies for dynamic
                                                          memory chip select 0.                                                 */
-    __I  uint32_t  RESERVED4[6];
-    __IO uint32_t  DYNAMICCONFIG1;                    /*!< (@ 0x40005120) Selects the configuration information for dynamic
+  __I  uint32_t  RESERVED4[6];
+  __IO uint32_t  DYNAMICCONFIG1;                    /*!< (@ 0x40005120) Selects the configuration information for dynamic
                                                          memory chip select 0.                                                 */
-    __IO uint32_t  DYNAMICRASCAS1;                    /*!< (@ 0x40005124) Selects the RAS and CAS latencies for dynamic
+  __IO uint32_t  DYNAMICRASCAS1;                    /*!< (@ 0x40005124) Selects the RAS and CAS latencies for dynamic
                                                          memory chip select 0.                                                 */
-    __I  uint32_t  RESERVED5[6];
-    __IO uint32_t  DYNAMICCONFIG2;                    /*!< (@ 0x40005140) Selects the configuration information for dynamic
+  __I  uint32_t  RESERVED5[6];
+  __IO uint32_t  DYNAMICCONFIG2;                    /*!< (@ 0x40005140) Selects the configuration information for dynamic
                                                          memory chip select 0.                                                 */
-    __IO uint32_t  DYNAMICRASCAS2;                    /*!< (@ 0x40005144) Selects the RAS and CAS latencies for dynamic
+  __IO uint32_t  DYNAMICRASCAS2;                    /*!< (@ 0x40005144) Selects the RAS and CAS latencies for dynamic
                                                          memory chip select 0.                                                 */
-    __I  uint32_t  RESERVED6[6];
-    __IO uint32_t  DYNAMICCONFIG3;                    /*!< (@ 0x40005160) Selects the configuration information for dynamic
+  __I  uint32_t  RESERVED6[6];
+  __IO uint32_t  DYNAMICCONFIG3;                    /*!< (@ 0x40005160) Selects the configuration information for dynamic
                                                          memory chip select 0.                                                 */
-    __IO uint32_t  DYNAMICRASCAS3;                    /*!< (@ 0x40005164) Selects the RAS and CAS latencies for dynamic
+  __IO uint32_t  DYNAMICRASCAS3;                    /*!< (@ 0x40005164) Selects the RAS and CAS latencies for dynamic
                                                          memory chip select 0.                                                 */
-    __I  uint32_t  RESERVED7[38];
-    __IO uint32_t  STATICCONFIG0;                     /*!< (@ 0x40005200) Selects the memory configuration for static chip
+  __I  uint32_t  RESERVED7[38];
+  __IO uint32_t  STATICCONFIG0;                     /*!< (@ 0x40005200) Selects the memory configuration for static chip
                                                          select 0.                                                             */
-    __IO uint32_t  STATICWAITWEN0;                    /*!< (@ 0x40005204) Selects the delay from chip select 0 to write
+  __IO uint32_t  STATICWAITWEN0;                    /*!< (@ 0x40005204) Selects the delay from chip select 0 to write
                                                          enable.                                                               */
-    __IO uint32_t  STATICWAITOEN0;                    /*!< (@ 0x40005208) Selects the delay from chip select 0 or address
+  __IO uint32_t  STATICWAITOEN0;                    /*!< (@ 0x40005208) Selects the delay from chip select 0 or address
                                                          change, whichever is later, to output enable.                         */
-    __IO uint32_t  STATICWAITRD0;                     /*!< (@ 0x4000520C) Selects the delay from chip select 0 to a read
+  __IO uint32_t  STATICWAITRD0;                     /*!< (@ 0x4000520C) Selects the delay from chip select 0 to a read
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITPAGE0;                   /*!< (@ 0x40005210) Selects the delay for asynchronous page mode
+  __IO uint32_t  STATICWAITPAGE0;                   /*!< (@ 0x40005210) Selects the delay for asynchronous page mode
                                                          sequential accesses for chip select 0.                                */
-    __IO uint32_t  STATICWAITWR0;                     /*!< (@ 0x40005214) Selects the delay from chip select 0 to a write
+  __IO uint32_t  STATICWAITWR0;                     /*!< (@ 0x40005214) Selects the delay from chip select 0 to a write
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITTURN0;                   /*!< (@ 0x40005218) Selects the number of bus turnaround cycles for
+  __IO uint32_t  STATICWAITTURN0;                   /*!< (@ 0x40005218) Selects the number of bus turnaround cycles for
                                                          chip select 0.                                                        */
-    __I  uint32_t  RESERVED8;
-    __IO uint32_t  STATICCONFIG1;                     /*!< (@ 0x40005220) Selects the memory configuration for static chip
+  __I  uint32_t  RESERVED8;
+  __IO uint32_t  STATICCONFIG1;                     /*!< (@ 0x40005220) Selects the memory configuration for static chip
                                                          select 0.                                                             */
-    __IO uint32_t  STATICWAITWEN1;                    /*!< (@ 0x40005224) Selects the delay from chip select 0 to write
+  __IO uint32_t  STATICWAITWEN1;                    /*!< (@ 0x40005224) Selects the delay from chip select 0 to write
                                                          enable.                                                               */
-    __IO uint32_t  STATICWAITOEN1;                    /*!< (@ 0x40005228) Selects the delay from chip select 0 or address
+  __IO uint32_t  STATICWAITOEN1;                    /*!< (@ 0x40005228) Selects the delay from chip select 0 or address
                                                          change, whichever is later, to output enable.                         */
-    __IO uint32_t  STATICWAITRD1;                     /*!< (@ 0x4000522C) Selects the delay from chip select 0 to a read
+  __IO uint32_t  STATICWAITRD1;                     /*!< (@ 0x4000522C) Selects the delay from chip select 0 to a read
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITPAGE1;                   /*!< (@ 0x40005230) Selects the delay for asynchronous page mode
+  __IO uint32_t  STATICWAITPAGE1;                   /*!< (@ 0x40005230) Selects the delay for asynchronous page mode
                                                          sequential accesses for chip select 0.                                */
-    __IO uint32_t  STATICWAITWR1;                     /*!< (@ 0x40005234) Selects the delay from chip select 0 to a write
+  __IO uint32_t  STATICWAITWR1;                     /*!< (@ 0x40005234) Selects the delay from chip select 0 to a write
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITTURN1;                   /*!< (@ 0x40005238) Selects the number of bus turnaround cycles for
+  __IO uint32_t  STATICWAITTURN1;                   /*!< (@ 0x40005238) Selects the number of bus turnaround cycles for
                                                          chip select 0.                                                        */
-    __I  uint32_t  RESERVED9;
-    __IO uint32_t  STATICCONFIG2;                     /*!< (@ 0x40005240) Selects the memory configuration for static chip
+  __I  uint32_t  RESERVED9;
+  __IO uint32_t  STATICCONFIG2;                     /*!< (@ 0x40005240) Selects the memory configuration for static chip
                                                          select 0.                                                             */
-    __IO uint32_t  STATICWAITWEN2;                    /*!< (@ 0x40005244) Selects the delay from chip select 0 to write
+  __IO uint32_t  STATICWAITWEN2;                    /*!< (@ 0x40005244) Selects the delay from chip select 0 to write
                                                          enable.                                                               */
-    __IO uint32_t  STATICWAITOEN2;                    /*!< (@ 0x40005248) Selects the delay from chip select 0 or address
+  __IO uint32_t  STATICWAITOEN2;                    /*!< (@ 0x40005248) Selects the delay from chip select 0 or address
                                                          change, whichever is later, to output enable.                         */
-    __IO uint32_t  STATICWAITRD2;                     /*!< (@ 0x4000524C) Selects the delay from chip select 0 to a read
+  __IO uint32_t  STATICWAITRD2;                     /*!< (@ 0x4000524C) Selects the delay from chip select 0 to a read
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITPAGE2;                   /*!< (@ 0x40005250) Selects the delay for asynchronous page mode
+  __IO uint32_t  STATICWAITPAGE2;                   /*!< (@ 0x40005250) Selects the delay for asynchronous page mode
                                                          sequential accesses for chip select 0.                                */
-    __IO uint32_t  STATICWAITWR2;                     /*!< (@ 0x40005254) Selects the delay from chip select 0 to a write
+  __IO uint32_t  STATICWAITWR2;                     /*!< (@ 0x40005254) Selects the delay from chip select 0 to a write
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITTURN2;                   /*!< (@ 0x40005258) Selects the number of bus turnaround cycles for
+  __IO uint32_t  STATICWAITTURN2;                   /*!< (@ 0x40005258) Selects the number of bus turnaround cycles for
                                                          chip select 0.                                                        */
-    __I  uint32_t  RESERVED10;
-    __IO uint32_t  STATICCONFIG3;                     /*!< (@ 0x40005260) Selects the memory configuration for static chip
+  __I  uint32_t  RESERVED10;
+  __IO uint32_t  STATICCONFIG3;                     /*!< (@ 0x40005260) Selects the memory configuration for static chip
                                                          select 0.                                                             */
-    __IO uint32_t  STATICWAITWEN3;                    /*!< (@ 0x40005264) Selects the delay from chip select 0 to write
+  __IO uint32_t  STATICWAITWEN3;                    /*!< (@ 0x40005264) Selects the delay from chip select 0 to write
                                                          enable.                                                               */
-    __IO uint32_t  STATICWAITOEN3;                    /*!< (@ 0x40005268) Selects the delay from chip select 0 or address
+  __IO uint32_t  STATICWAITOEN3;                    /*!< (@ 0x40005268) Selects the delay from chip select 0 or address
                                                          change, whichever is later, to output enable.                         */
-    __IO uint32_t  STATICWAITRD3;                     /*!< (@ 0x4000526C) Selects the delay from chip select 0 to a read
+  __IO uint32_t  STATICWAITRD3;                     /*!< (@ 0x4000526C) Selects the delay from chip select 0 to a read
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITPAGE3;                   /*!< (@ 0x40005270) Selects the delay for asynchronous page mode
+  __IO uint32_t  STATICWAITPAGE3;                   /*!< (@ 0x40005270) Selects the delay for asynchronous page mode
                                                          sequential accesses for chip select 0.                                */
-    __IO uint32_t  STATICWAITWR3;                     /*!< (@ 0x40005274) Selects the delay from chip select 0 to a write
+  __IO uint32_t  STATICWAITWR3;                     /*!< (@ 0x40005274) Selects the delay from chip select 0 to a write
                                                          access.                                                               */
-    __IO uint32_t  STATICWAITTURN3;                   /*!< (@ 0x40005278) Selects the number of bus turnaround cycles for
+  __IO uint32_t  STATICWAITTURN3;                   /*!< (@ 0x40005278) Selects the number of bus turnaround cycles for
                                                          chip select 0.                                                        */
 } LPC_EMC_Type;
 
@@ -948,87 +909,78 @@ typedef struct                                      /*!< (@ 0x40005000) EMC Stru
   * @brief USB0 Host/Device/OTG controller (USB0)
   */
 
-typedef struct                                      /*!< (@ 0x40006000) USB0 Structure                                         */
-{
-    __I  uint32_t  RESERVED0[64];
-    __I  uint32_t  CAPLENGTH;                         /*!< (@ 0x40006100) Capability register length                             */
-    __I  uint32_t  HCSPARAMS;                         /*!< (@ 0x40006104) Host controller structural parameters                  */
-    __I  uint32_t  HCCPARAMS;                         /*!< (@ 0x40006108) Host controller capability parameters                  */
-    __I  uint32_t  RESERVED1[5];
-    __I  uint32_t  DCIVERSION;                        /*!< (@ 0x40006120) Device interface version number                        */
-    __I  uint32_t  RESERVED2[7];
+typedef struct {                                    /*!< (@ 0x40006000) USB0 Structure                                         */
+  __I  uint32_t  RESERVED0[64];
+  __I  uint32_t  CAPLENGTH;                         /*!< (@ 0x40006100) Capability register length                             */
+  __I  uint32_t  HCSPARAMS;                         /*!< (@ 0x40006104) Host controller structural parameters                  */
+  __I  uint32_t  HCCPARAMS;                         /*!< (@ 0x40006108) Host controller capability parameters                  */
+  __I  uint32_t  RESERVED1[5];
+  __I  uint32_t  DCIVERSION;                        /*!< (@ 0x40006120) Device interface version number                        */
+  __I  uint32_t  RESERVED2[7];
 
-    union
-    {
-        __IO uint32_t  USBCMD_H;                        /*!< (@ 0x40006140) USB command (host mode)                                */
-        __IO uint32_t  USBCMD_D;                        /*!< (@ 0x40006140) USB command (device mode)                              */
-    };
+  union {
+    __IO uint32_t  USBCMD_H;                        /*!< (@ 0x40006140) USB command (host mode)                                */
+    __IO uint32_t  USBCMD_D;                        /*!< (@ 0x40006140) USB command (device mode)                              */
+  };
 
-    union
-    {
-        __IO uint32_t  USBSTS_H;                        /*!< (@ 0x40006144) USB status (host mode)                                 */
-        __IO uint32_t  USBSTS_D;                        /*!< (@ 0x40006144) USB status (device mode)                               */
-    };
+  union {
+    __IO uint32_t  USBSTS_H;                        /*!< (@ 0x40006144) USB status (host mode)                                 */
+    __IO uint32_t  USBSTS_D;                        /*!< (@ 0x40006144) USB status (device mode)                               */
+  };
 
-    union
-    {
-        __IO uint32_t  USBINTR_H;                       /*!< (@ 0x40006148) USB interrupt enable (host mode)                       */
-        __IO uint32_t  USBINTR_D;                       /*!< (@ 0x40006148) USB interrupt enable (device mode)                     */
-    };
+  union {
+    __IO uint32_t  USBINTR_H;                       /*!< (@ 0x40006148) USB interrupt enable (host mode)                       */
+    __IO uint32_t  USBINTR_D;                       /*!< (@ 0x40006148) USB interrupt enable (device mode)                     */
+  };
 
-    union
-    {
-        __IO uint32_t  FRINDEX_H;                       /*!< (@ 0x4000614C) USB frame index (host mode)                            */
-        __IO uint32_t  FRINDEX_D;                       /*!< (@ 0x4000614C) USB frame index (device mode)                          */
-    };
-    __I  uint32_t  RESERVED3;
+  union {
+    __IO uint32_t  FRINDEX_H;                       /*!< (@ 0x4000614C) USB frame index (host mode)                            */
+    __IO uint32_t  FRINDEX_D;                       /*!< (@ 0x4000614C) USB frame index (device mode)                          */
+  };
+  __I  uint32_t  RESERVED3;
 
-    union
-    {
-        __IO uint32_t  PERIODICLISTBASE;                /*!< (@ 0x40006154) Frame list base address (host mode)                    */
-        __IO uint32_t  DEVICEADDR;                      /*!< (@ 0x40006154) USB device address (device mode)                       */
-    };
+  union {
+    __IO uint32_t  PERIODICLISTBASE;                /*!< (@ 0x40006154) Frame list base address (host mode)                    */
+    __IO uint32_t  DEVICEADDR;                      /*!< (@ 0x40006154) USB device address (device mode)                       */
+  };
 
-    union
-    {
-        __IO uint32_t  ASYNCLISTADDR;                   /*!< (@ 0x40006158) Address of endpoint list in memory                     */
-        __IO uint32_t  ENDPOINTLISTADDR;                /*!< (@ 0x40006158) Address of endpoint list in memory                     */
-    };
-    __IO uint32_t  TTCTRL;                            /*!< (@ 0x4000615C) Asynchronous buffer status for embedded TT (host
+  union {
+    __IO uint32_t  ASYNCLISTADDR;                   /*!< (@ 0x40006158) Address of endpoint list in memory                     */
+    __IO uint32_t  ENDPOINTLISTADDR;                /*!< (@ 0x40006158) Address of endpoint list in memory                     */
+  };
+  __IO uint32_t  TTCTRL;                            /*!< (@ 0x4000615C) Asynchronous buffer status for embedded TT (host
                                                          mode)                                                                 */
-    __IO uint32_t  BURSTSIZE;                         /*!< (@ 0x40006160) Programmable burst size                                */
-    __IO uint32_t  TXFILLTUNING;                      /*!< (@ 0x40006164) Host transmit pre-buffer packet tuning (host
+  __IO uint32_t  BURSTSIZE;                         /*!< (@ 0x40006160) Programmable burst size                                */
+  __IO uint32_t  TXFILLTUNING;                      /*!< (@ 0x40006164) Host transmit pre-buffer packet tuning (host
                                                          mode)                                                                 */
-    __I  uint32_t  RESERVED4[3];
-    __IO uint32_t  BINTERVAL;                         /*!< (@ 0x40006174) Length of virtual frame                                */
-    __IO uint32_t  ENDPTNAK;                          /*!< (@ 0x40006178) Endpoint NAK (device mode)                             */
-    __IO uint32_t  ENDPTNAKEN;                        /*!< (@ 0x4000617C) Endpoint NAK Enable (device mode)                      */
-    __I  uint32_t  RESERVED5;
+  __I  uint32_t  RESERVED4[3];
+  __IO uint32_t  BINTERVAL;                         /*!< (@ 0x40006174) Length of virtual frame                                */
+  __IO uint32_t  ENDPTNAK;                          /*!< (@ 0x40006178) Endpoint NAK (device mode)                             */
+  __IO uint32_t  ENDPTNAKEN;                        /*!< (@ 0x4000617C) Endpoint NAK Enable (device mode)                      */
+  __I  uint32_t  RESERVED5;
 
-    union
-    {
-        __IO uint32_t  PORTSC1_H;                       /*!< (@ 0x40006184) Port 1 status/control (host mode)                      */
-        __IO uint32_t  PORTSC1_D;                       /*!< (@ 0x40006184) Port 1 status/control (device mode)                    */
-    };
-    __I  uint32_t  RESERVED6[7];
-    __IO uint32_t  OTGSC;                             /*!< (@ 0x400061A4) OTG status and control                                 */
+  union {
+    __IO uint32_t  PORTSC1_H;                       /*!< (@ 0x40006184) Port 1 status/control (host mode)                      */
+    __IO uint32_t  PORTSC1_D;                       /*!< (@ 0x40006184) Port 1 status/control (device mode)                    */
+  };
+  __I  uint32_t  RESERVED6[7];
+  __IO uint32_t  OTGSC;                             /*!< (@ 0x400061A4) OTG status and control                                 */
 
-    union
-    {
-        __IO uint32_t  USBMODE_H;                       /*!< (@ 0x400061A8) USB mode (host mode)                                   */
-        __IO uint32_t  USBMODE_D;                       /*!< (@ 0x400061A8) USB device mode (device mode)                          */
-    };
-    __IO uint32_t  ENDPTSETUPSTAT;                    /*!< (@ 0x400061AC) Endpoint setup status                                  */
-    __IO uint32_t  ENDPTPRIME;                        /*!< (@ 0x400061B0) Endpoint initialization                                */
-    __IO uint32_t  ENDPTFLUSH;                        /*!< (@ 0x400061B4) Endpoint de-initialization                             */
-    __I  uint32_t  ENDPTSTAT;                         /*!< (@ 0x400061B8) Endpoint status                                        */
-    __IO uint32_t  ENDPTCOMPLETE;                     /*!< (@ 0x400061BC) Endpoint complete                                      */
-    __IO uint32_t  ENDPTCTRL0;                        /*!< (@ 0x400061C0) Endpoint control 0                                     */
-    __IO uint32_t  ENDPTCTRL1;                        /*!< (@ 0x400061C4) Endpoint control                                       */
-    __IO uint32_t  ENDPTCTRL2;                        /*!< (@ 0x400061C8) Endpoint control                                       */
-    __IO uint32_t  ENDPTCTRL3;                        /*!< (@ 0x400061CC) Endpoint control                                       */
-    __IO uint32_t  ENDPTCTRL4;                        /*!< (@ 0x400061D0) Endpoint control                                       */
-    __IO uint32_t  ENDPTCTRL5;                        /*!< (@ 0x400061D4) Endpoint control                                       */
+  union {
+    __IO uint32_t  USBMODE_H;                       /*!< (@ 0x400061A8) USB mode (host mode)                                   */
+    __IO uint32_t  USBMODE_D;                       /*!< (@ 0x400061A8) USB device mode (device mode)                          */
+  };
+  __IO uint32_t  ENDPTSETUPSTAT;                    /*!< (@ 0x400061AC) Endpoint setup status                                  */
+  __IO uint32_t  ENDPTPRIME;                        /*!< (@ 0x400061B0) Endpoint initialization                                */
+  __IO uint32_t  ENDPTFLUSH;                        /*!< (@ 0x400061B4) Endpoint de-initialization                             */
+  __I  uint32_t  ENDPTSTAT;                         /*!< (@ 0x400061B8) Endpoint status                                        */
+  __IO uint32_t  ENDPTCOMPLETE;                     /*!< (@ 0x400061BC) Endpoint complete                                      */
+  __IO uint32_t  ENDPTCTRL0;                        /*!< (@ 0x400061C0) Endpoint control 0                                     */
+  __IO uint32_t  ENDPTCTRL1;                        /*!< (@ 0x400061C4) Endpoint control                                       */
+  __IO uint32_t  ENDPTCTRL2;                        /*!< (@ 0x400061C8) Endpoint control                                       */
+  __IO uint32_t  ENDPTCTRL3;                        /*!< (@ 0x400061CC) Endpoint control                                       */
+  __IO uint32_t  ENDPTCTRL4;                        /*!< (@ 0x400061D0) Endpoint control                                       */
+  __IO uint32_t  ENDPTCTRL5;                        /*!< (@ 0x400061D4) Endpoint control                                       */
 } LPC_USB0_Type;
 
 
@@ -1041,85 +993,76 @@ typedef struct                                      /*!< (@ 0x40006000) USB0 Str
   * @brief USB1 Host/Device controller  (USB1)
   */
 
-typedef struct                                      /*!< (@ 0x40007000) USB1 Structure                                         */
-{
-    __I  uint32_t  RESERVED0[64];
-    __I  uint32_t  CAPLENGTH;                         /*!< (@ 0x40007100) Capability register length                             */
-    __I  uint32_t  HCSPARAMS;                         /*!< (@ 0x40007104) Host controller structural parameters                  */
-    __I  uint32_t  HCCPARAMS;                         /*!< (@ 0x40007108) Host controller capability parameters                  */
-    __I  uint32_t  RESERVED1[5];
-    __I  uint32_t  DCIVERSION;                        /*!< (@ 0x40007120) Device interface version number                        */
-    __I  uint32_t  RESERVED2[7];
+typedef struct {                                    /*!< (@ 0x40007000) USB1 Structure                                         */
+  __I  uint32_t  RESERVED0[64];
+  __I  uint32_t  CAPLENGTH;                         /*!< (@ 0x40007100) Capability register length                             */
+  __I  uint32_t  HCSPARAMS;                         /*!< (@ 0x40007104) Host controller structural parameters                  */
+  __I  uint32_t  HCCPARAMS;                         /*!< (@ 0x40007108) Host controller capability parameters                  */
+  __I  uint32_t  RESERVED1[5];
+  __I  uint32_t  DCIVERSION;                        /*!< (@ 0x40007120) Device interface version number                        */
+  __I  uint32_t  RESERVED2[7];
 
-    union
-    {
-        __IO uint32_t  USBCMD_H;                        /*!< (@ 0x40007140) USB command (host mode)                                */
-        __IO uint32_t  USBCMD_D;                        /*!< (@ 0x40007140) USB command (device mode)                              */
-    };
+  union {
+    __IO uint32_t  USBCMD_H;                        /*!< (@ 0x40007140) USB command (host mode)                                */
+    __IO uint32_t  USBCMD_D;                        /*!< (@ 0x40007140) USB command (device mode)                              */
+  };
 
-    union
-    {
-        __IO uint32_t  USBSTS_H;                        /*!< (@ 0x40007144) USB status (host mode)                                 */
-        __IO uint32_t  USBSTS_D;                        /*!< (@ 0x40007144) USB status (device mode)                               */
-    };
+  union {
+    __IO uint32_t  USBSTS_H;                        /*!< (@ 0x40007144) USB status (host mode)                                 */
+    __IO uint32_t  USBSTS_D;                        /*!< (@ 0x40007144) USB status (device mode)                               */
+  };
 
-    union
-    {
-        __IO uint32_t  USBINTR_H;                       /*!< (@ 0x40007148) USB interrupt enable (host mode)                       */
-        __IO uint32_t  USBINTR_D;                       /*!< (@ 0x40007148) USB interrupt enable (device mode)                     */
-    };
+  union {
+    __IO uint32_t  USBINTR_H;                       /*!< (@ 0x40007148) USB interrupt enable (host mode)                       */
+    __IO uint32_t  USBINTR_D;                       /*!< (@ 0x40007148) USB interrupt enable (device mode)                     */
+  };
 
-    union
-    {
-        __IO uint32_t  FRINDEX_H;                       /*!< (@ 0x4000714C) USB frame index (host mode)                            */
-        __I  uint32_t  FRINDEX_D;                       /*!< (@ 0x4000714C) USB frame index (device mode)                          */
-    };
-    __I  uint32_t  RESERVED3;
+  union {
+    __IO uint32_t  FRINDEX_H;                       /*!< (@ 0x4000714C) USB frame index (host mode)                            */
+    __I  uint32_t  FRINDEX_D;                       /*!< (@ 0x4000714C) USB frame index (device mode)                          */
+  };
+  __I  uint32_t  RESERVED3;
 
-    union
-    {
-        __IO uint32_t  PERIODICLISTBASE;                /*!< (@ 0x40007154) Frame list base address                                */
-        __IO uint32_t  DEVICEADDR;                      /*!< (@ 0x40007154) USB device address                                     */
-    };
+  union {
+    __IO uint32_t  PERIODICLISTBASE;                /*!< (@ 0x40007154) Frame list base address                                */
+    __IO uint32_t  DEVICEADDR;                      /*!< (@ 0x40007154) USB device address                                     */
+  };
 
-    union
-    {
-        __IO uint32_t  ASYNCLISTADDR;                   /*!< (@ 0x40007158) Address of endpoint list in memory (host mode)         */
-        __IO uint32_t  ENDPOINTLISTADDR;                /*!< (@ 0x40007158) Address of endpoint list in memory (device mode)       */
-    };
-    __IO uint32_t  TTCTRL;                            /*!< (@ 0x4000715C) Asynchronous buffer status for embedded TT (host
+  union {
+    __IO uint32_t  ASYNCLISTADDR;                   /*!< (@ 0x40007158) Address of endpoint list in memory (host mode)         */
+    __IO uint32_t  ENDPOINTLISTADDR;                /*!< (@ 0x40007158) Address of endpoint list in memory (device mode)       */
+  };
+  __IO uint32_t  TTCTRL;                            /*!< (@ 0x4000715C) Asynchronous buffer status for embedded TT (host
                                                          mode)                                                                 */
-    __IO uint32_t  BURSTSIZE;                         /*!< (@ 0x40007160) Programmable burst size                                */
-    __IO uint32_t  TXFILLTUNING;                      /*!< (@ 0x40007164) Host transmit pre-buffer packet tuning (host
+  __IO uint32_t  BURSTSIZE;                         /*!< (@ 0x40007160) Programmable burst size                                */
+  __IO uint32_t  TXFILLTUNING;                      /*!< (@ 0x40007164) Host transmit pre-buffer packet tuning (host
                                                          mode)                                                                 */
-    __I  uint32_t  RESERVED4[2];
-    __IO uint32_t  ULPIVIEWPORT;                      /*!< (@ 0x40007170) ULPI viewport                                          */
-    __IO uint32_t  BINTERVAL;                         /*!< (@ 0x40007174) Length of virtual frame                                */
-    __IO uint32_t  ENDPTNAK;                          /*!< (@ 0x40007178) Endpoint NAK (device mode)                             */
-    __IO uint32_t  ENDPTNAKEN;                        /*!< (@ 0x4000717C) Endpoint NAK Enable (device mode)                      */
-    __I  uint32_t  RESERVED5;
+  __I  uint32_t  RESERVED4[2];
+  __IO uint32_t  ULPIVIEWPORT;                      /*!< (@ 0x40007170) ULPI viewport                                          */
+  __IO uint32_t  BINTERVAL;                         /*!< (@ 0x40007174) Length of virtual frame                                */
+  __IO uint32_t  ENDPTNAK;                          /*!< (@ 0x40007178) Endpoint NAK (device mode)                             */
+  __IO uint32_t  ENDPTNAKEN;                        /*!< (@ 0x4000717C) Endpoint NAK Enable (device mode)                      */
+  __I  uint32_t  RESERVED5;
 
-    union
-    {
-        __IO uint32_t  PORTSC1_H;                       /*!< (@ 0x40007184) Port 1 status/control (host mode)                      */
-        __IO uint32_t  PORTSC1_D;                       /*!< (@ 0x40007184) Port 1 status/control (device mode)                    */
-    };
-    __I  uint32_t  RESERVED6[8];
+  union {
+    __IO uint32_t  PORTSC1_H;                       /*!< (@ 0x40007184) Port 1 status/control (host mode)                      */
+    __IO uint32_t  PORTSC1_D;                       /*!< (@ 0x40007184) Port 1 status/control (device mode)                    */
+  };
+  __I  uint32_t  RESERVED6[8];
 
-    union
-    {
-        __IO uint32_t  USBMODE_H;                       /*!< (@ 0x400071A8) USB mode (host mode)                                   */
-        __IO uint32_t  USBMODE_D;                       /*!< (@ 0x400071A8) USB mode (device mode)                                 */
-    };
-    __IO uint32_t  ENDPTSETUPSTAT;                    /*!< (@ 0x400071AC) Endpoint setup status                                  */
-    __IO uint32_t  ENDPTPRIME;                        /*!< (@ 0x400071B0) Endpoint initialization                                */
-    __IO uint32_t  ENDPTFLUSH;                        /*!< (@ 0x400071B4) Endpoint de-initialization                             */
-    __I  uint32_t  ENDPTSTAT;                         /*!< (@ 0x400071B8) Endpoint status                                        */
-    __IO uint32_t  ENDPTCOMPLETE;                     /*!< (@ 0x400071BC) Endpoint complete                                      */
-    __IO uint32_t  ENDPTCTRL0;                        /*!< (@ 0x400071C0) Endpoint control 0                                     */
-    __IO uint32_t  ENDPTCTRL1;                        /*!< (@ 0x400071C4) Endpoint control                                       */
-    __IO uint32_t  ENDPTCTRL2;                        /*!< (@ 0x400071C8) Endpoint control                                       */
-    __IO uint32_t  ENDPTCTRL3;                        /*!< (@ 0x400071CC) Endpoint control                                       */
+  union {
+    __IO uint32_t  USBMODE_H;                       /*!< (@ 0x400071A8) USB mode (host mode)                                   */
+    __IO uint32_t  USBMODE_D;                       /*!< (@ 0x400071A8) USB mode (device mode)                                 */
+  };
+  __IO uint32_t  ENDPTSETUPSTAT;                    /*!< (@ 0x400071AC) Endpoint setup status                                  */
+  __IO uint32_t  ENDPTPRIME;                        /*!< (@ 0x400071B0) Endpoint initialization                                */
+  __IO uint32_t  ENDPTFLUSH;                        /*!< (@ 0x400071B4) Endpoint de-initialization                             */
+  __I  uint32_t  ENDPTSTAT;                         /*!< (@ 0x400071B8) Endpoint status                                        */
+  __IO uint32_t  ENDPTCOMPLETE;                     /*!< (@ 0x400071BC) Endpoint complete                                      */
+  __IO uint32_t  ENDPTCTRL0;                        /*!< (@ 0x400071C0) Endpoint control 0                                     */
+  __IO uint32_t  ENDPTCTRL1;                        /*!< (@ 0x400071C4) Endpoint control                                       */
+  __IO uint32_t  ENDPTCTRL2;                        /*!< (@ 0x400071C8) Endpoint control                                       */
+  __IO uint32_t  ENDPTCTRL3;                        /*!< (@ 0x400071CC) Endpoint control                                       */
 } LPC_USB1_Type;
 
 
@@ -1132,36 +1075,35 @@ typedef struct                                      /*!< (@ 0x40007000) USB1 Str
   * @brief LCD controller  (LCD)
   */
 
-typedef struct                                      /*!< (@ 0x40008000) LCD Structure                                          */
-{
-    __IO uint32_t  TIMH;                              /*!< (@ 0x40008000) Horizontal Timing Control register                     */
-    __IO uint32_t  TIMV;                              /*!< (@ 0x40008004) Vertical Timing Control register                       */
-    __IO uint32_t  POL;                               /*!< (@ 0x40008008) Clock and Signal Polarity Control register             */
-    __IO uint32_t  LE;                                /*!< (@ 0x4000800C) Line End Control register                              */
-    __IO uint32_t  UPBASE;                            /*!< (@ 0x40008010) Upper Panel Frame Base Address register                */
-    __IO uint32_t  LPBASE;                            /*!< (@ 0x40008014) Lower Panel Frame Base Address register                */
-    __IO uint32_t  CTRL;                              /*!< (@ 0x40008018) LCD Control register                                   */
-    __IO uint32_t  INTMSK;                            /*!< (@ 0x4000801C) Interrupt Mask register                                */
-    __I  uint32_t  INTRAW;                            /*!< (@ 0x40008020) Raw Interrupt Status register                          */
-    __I  uint32_t  INTSTAT;                           /*!< (@ 0x40008024) Masked Interrupt Status register                       */
-    __O  uint32_t  INTCLR;                            /*!< (@ 0x40008028) Interrupt Clear register                               */
-    __I  uint32_t  UPCURR;                            /*!< (@ 0x4000802C) Upper Panel Current Address Value register             */
-    __I  uint32_t  LPCURR;                            /*!< (@ 0x40008030) Lower Panel Current Address Value register             */
-    __I  uint32_t  RESERVED0[115];
-    __IO uint32_t  PAL[256];                          /*!< (@ 0x40008200) 256x16-bit Color Palette registers                     */
-    __I  uint32_t  RESERVED1[128];
-    __IO uint32_t  CRSR_IMG[256];                     /*!< (@ 0x40008800) Cursor Image registers                                 */
-    __IO uint32_t  CRSR_CTRL;                         /*!< (@ 0x40008C00) Cursor Control register                                */
-    __IO uint32_t  CRSR_CFG;                          /*!< (@ 0x40008C04) Cursor Configuration register                          */
-    __IO uint32_t  CRSR_PAL0;                         /*!< (@ 0x40008C08) Cursor Palette register 0                              */
-    __IO uint32_t  CRSR_PAL1;                         /*!< (@ 0x40008C0C) Cursor Palette register 1                              */
-    __IO uint32_t  CRSR_XY;                           /*!< (@ 0x40008C10) Cursor XY Position register                            */
-    __IO uint32_t  CRSR_CLIP;                         /*!< (@ 0x40008C14) Cursor Clip Position register                          */
-    __I  uint32_t  RESERVED2[2];
-    __IO uint32_t  CRSR_INTMSK;                       /*!< (@ 0x40008C20) Cursor Interrupt Mask register                         */
-    __O  uint32_t  CRSR_INTCLR;                       /*!< (@ 0x40008C24) Cursor Interrupt Clear register                        */
-    __I  uint32_t  CRSR_INTRAW;                       /*!< (@ 0x40008C28) Cursor Raw Interrupt Status register                   */
-    __I  uint32_t  CRSR_INTSTAT;                      /*!< (@ 0x40008C2C) Cursor Masked Interrupt Status register                */
+typedef struct {                                    /*!< (@ 0x40008000) LCD Structure                                          */
+  __IO uint32_t  TIMH;                              /*!< (@ 0x40008000) Horizontal Timing Control register                     */
+  __IO uint32_t  TIMV;                              /*!< (@ 0x40008004) Vertical Timing Control register                       */
+  __IO uint32_t  POL;                               /*!< (@ 0x40008008) Clock and Signal Polarity Control register             */
+  __IO uint32_t  LE;                                /*!< (@ 0x4000800C) Line End Control register                              */
+  __IO uint32_t  UPBASE;                            /*!< (@ 0x40008010) Upper Panel Frame Base Address register                */
+  __IO uint32_t  LPBASE;                            /*!< (@ 0x40008014) Lower Panel Frame Base Address register                */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x40008018) LCD Control register                                   */
+  __IO uint32_t  INTMSK;                            /*!< (@ 0x4000801C) Interrupt Mask register                                */
+  __I  uint32_t  INTRAW;                            /*!< (@ 0x40008020) Raw Interrupt Status register                          */
+  __I  uint32_t  INTSTAT;                           /*!< (@ 0x40008024) Masked Interrupt Status register                       */
+  __O  uint32_t  INTCLR;                            /*!< (@ 0x40008028) Interrupt Clear register                               */
+  __I  uint32_t  UPCURR;                            /*!< (@ 0x4000802C) Upper Panel Current Address Value register             */
+  __I  uint32_t  LPCURR;                            /*!< (@ 0x40008030) Lower Panel Current Address Value register             */
+  __I  uint32_t  RESERVED0[115];
+  __IO uint32_t  PAL[256];                          /*!< (@ 0x40008200) 256x16-bit Color Palette registers                     */
+  __I  uint32_t  RESERVED1[128];
+  __IO uint32_t  CRSR_IMG[256];                     /*!< (@ 0x40008800) Cursor Image registers                                 */
+  __IO uint32_t  CRSR_CTRL;                         /*!< (@ 0x40008C00) Cursor Control register                                */
+  __IO uint32_t  CRSR_CFG;                          /*!< (@ 0x40008C04) Cursor Configuration register                          */
+  __IO uint32_t  CRSR_PAL0;                         /*!< (@ 0x40008C08) Cursor Palette register 0                              */
+  __IO uint32_t  CRSR_PAL1;                         /*!< (@ 0x40008C0C) Cursor Palette register 1                              */
+  __IO uint32_t  CRSR_XY;                           /*!< (@ 0x40008C10) Cursor XY Position register                            */
+  __IO uint32_t  CRSR_CLIP;                         /*!< (@ 0x40008C14) Cursor Clip Position register                          */
+  __I  uint32_t  RESERVED2[2];
+  __IO uint32_t  CRSR_INTMSK;                       /*!< (@ 0x40008C20) Cursor Interrupt Mask register                         */
+  __O  uint32_t  CRSR_INTCLR;                       /*!< (@ 0x40008C24) Cursor Interrupt Clear register                        */
+  __I  uint32_t  CRSR_INTRAW;                       /*!< (@ 0x40008C28) Cursor Raw Interrupt Status register                   */
+  __I  uint32_t  CRSR_INTSTAT;                      /*!< (@ 0x40008C2C) Cursor Masked Interrupt Status register                */
 } LPC_LCD_Type;
 
 
@@ -1174,21 +1116,20 @@ typedef struct                                      /*!< (@ 0x40008000) LCD Stru
   * @brief EEPROM (EEPROM)
   */
 
-typedef struct                                      /*!< (@ 0x4000E000) EEPROM Structure                                       */
-{
-    __IO uint32_t  CMD;                               /*!< (@ 0x4000E000) EEPROM command register                                */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  RWSTATE;                           /*!< (@ 0x4000E008) EEPROM read wait state register                        */
-    __IO uint32_t  AUTOPROG;                          /*!< (@ 0x4000E00C) EEPROM auto programming register                       */
-    __IO uint32_t  WSTATE;                            /*!< (@ 0x4000E010) EEPROM wait state register                             */
-    __IO uint32_t  CLKDIV;                            /*!< (@ 0x4000E014) EEPROM clock divider register                          */
-    __IO uint32_t  PWRDWN;                            /*!< (@ 0x4000E018) EEPROM power-down register                             */
-    __I  uint32_t  RESERVED1[1007];
-    __O  uint32_t  INTENCLR;                          /*!< (@ 0x4000EFD8) EEPROM interrupt enable clear                          */
-    __O  uint32_t  INTENSET;                          /*!< (@ 0x4000EFDC) EEPROM interrupt enable set                            */
-    __I  uint32_t  INTSTAT;                           /*!< (@ 0x4000EFE0) EEPROM interrupt status                                */
-    __I  uint32_t  INTEN;                             /*!< (@ 0x4000EFE4) EEPROM interrupt enable                                */
-    __O  uint32_t  INTSTATCLR;                        /*!< (@ 0x4000EFE8) EEPROM interrupt status clear                          */
+typedef struct {                                    /*!< (@ 0x4000E000) EEPROM Structure                                       */
+  __IO uint32_t  CMD;                               /*!< (@ 0x4000E000) EEPROM command register                                */
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  RWSTATE;                           /*!< (@ 0x4000E008) EEPROM read wait state register                        */
+  __IO uint32_t  AUTOPROG;                          /*!< (@ 0x4000E00C) EEPROM auto programming register                       */
+  __IO uint32_t  WSTATE;                            /*!< (@ 0x4000E010) EEPROM wait state register                             */
+  __IO uint32_t  CLKDIV;                            /*!< (@ 0x4000E014) EEPROM clock divider register                          */
+  __IO uint32_t  PWRDWN;                            /*!< (@ 0x4000E018) EEPROM power-down register                             */
+  __I  uint32_t  RESERVED1[1007];
+  __O  uint32_t  INTENCLR;                          /*!< (@ 0x4000EFD8) EEPROM interrupt enable clear                          */
+  __O  uint32_t  INTENSET;                          /*!< (@ 0x4000EFDC) EEPROM interrupt enable set                            */
+  __I  uint32_t  INTSTAT;                           /*!< (@ 0x4000EFE0) EEPROM interrupt status                                */
+  __I  uint32_t  INTEN;                             /*!< (@ 0x4000EFE4) EEPROM interrupt enable                                */
+  __O  uint32_t  INTSTATCLR;                        /*!< (@ 0x4000EFE8) EEPROM interrupt status clear                          */
 } LPC_EEPROM_Type;
 
 
@@ -1201,53 +1142,52 @@ typedef struct                                      /*!< (@ 0x4000E000) EEPROM S
   * @brief Ethernet (ETHERNET)
   */
 
-typedef struct                                      /*!< (@ 0x40010000) ETHERNET Structure                                     */
-{
-    __IO uint32_t  MAC_CONFIG;                        /*!< (@ 0x40010000) MAC configuration register                             */
-    __IO uint32_t  MAC_FRAME_FILTER;                  /*!< (@ 0x40010004) MAC frame filter                                       */
-    __IO uint32_t  MAC_HASHTABLE_HIGH;                /*!< (@ 0x40010008) Hash table high register                               */
-    __IO uint32_t  MAC_HASHTABLE_LOW;                 /*!< (@ 0x4001000C) Hash table low register                                */
-    __IO uint32_t  MAC_MII_ADDR;                      /*!< (@ 0x40010010) MII address register                                   */
-    __IO uint32_t  MAC_MII_DATA;                      /*!< (@ 0x40010014) MII data register                                      */
-    __IO uint32_t  MAC_FLOW_CTRL;                     /*!< (@ 0x40010018) Flow control register                                  */
-    __IO uint32_t  MAC_VLAN_TAG;                      /*!< (@ 0x4001001C) VLAN tag register                                      */
-    __I  uint32_t  RESERVED0;
-    __I  uint32_t  MAC_DEBUG;                         /*!< (@ 0x40010024) Debug register                                         */
-    __IO uint32_t  MAC_RWAKE_FRFLT;                   /*!< (@ 0x40010028) Remote wake-up frame filter                            */
-    __IO uint32_t  MAC_PMT_CTRL_STAT;                 /*!< (@ 0x4001002C) PMT control and status                                 */
-    __I  uint32_t  RESERVED1[2];
-    __I  uint32_t  MAC_INTR;                          /*!< (@ 0x40010038) Interrupt status register                              */
-    __IO uint32_t  MAC_INTR_MASK;                     /*!< (@ 0x4001003C) Interrupt mask register                                */
-    __IO uint32_t  MAC_ADDR0_HIGH;                    /*!< (@ 0x40010040) MAC address 0 high register                            */
-    __IO uint32_t  MAC_ADDR0_LOW;                     /*!< (@ 0x40010044) MAC address 0 low register                             */
-    __I  uint32_t  RESERVED2[430];
-    __IO uint32_t  MAC_TIMESTP_CTRL;                  /*!< (@ 0x40010700) Time stamp control register                            */
-    __IO uint32_t  SUBSECOND_INCR;                    /*!< (@ 0x40010704) Sub-second increment register                          */
-    __I  uint32_t  SECONDS;                           /*!< (@ 0x40010708) System time seconds register                           */
-    __I  uint32_t  NANOSECONDS;                       /*!< (@ 0x4001070C) System time nanoseconds register                       */
-    __IO uint32_t  SECONDSUPDATE;                     /*!< (@ 0x40010710) System time seconds update register                    */
-    __IO uint32_t  NANOSECONDSUPDATE;                 /*!< (@ 0x40010714) System time nanoseconds update register                */
-    __IO uint32_t  ADDEND;                            /*!< (@ 0x40010718) Time stamp addend register                             */
-    __IO uint32_t  TARGETSECONDS;                     /*!< (@ 0x4001071C) Target time seconds register                           */
-    __IO uint32_t  TARGETNANOSECONDS;                 /*!< (@ 0x40010720) Target time nanoseconds register                       */
-    __IO uint32_t  HIGHWORD;                          /*!< (@ 0x40010724) System time higher word seconds register               */
-    __I  uint32_t  TIMESTAMPSTAT;                     /*!< (@ 0x40010728) Time stamp status register                             */
-    __I  uint32_t  RESERVED3[565];
-    __IO uint32_t  DMA_BUS_MODE;                      /*!< (@ 0x40011000) Bus Mode Register                                      */
-    __IO uint32_t  DMA_TRANS_POLL_DEMAND;             /*!< (@ 0x40011004) Transmit poll demand register                          */
-    __IO uint32_t  DMA_REC_POLL_DEMAND;               /*!< (@ 0x40011008) Receive poll demand register                           */
-    __IO uint32_t  DMA_REC_DES_ADDR;                  /*!< (@ 0x4001100C) Receive descriptor list address register               */
-    __IO uint32_t  DMA_TRANS_DES_ADDR;                /*!< (@ 0x40011010) Transmit descriptor list address register              */
-    __IO uint32_t  DMA_STAT;                          /*!< (@ 0x40011014) Status register                                        */
-    __IO uint32_t  DMA_OP_MODE;                       /*!< (@ 0x40011018) Operation mode register                                */
-    __IO uint32_t  DMA_INT_EN;                        /*!< (@ 0x4001101C) Interrupt enable register                              */
-    __I  uint32_t  DMA_MFRM_BUFOF;                    /*!< (@ 0x40011020) Missed frame and buffer overflow register              */
-    __IO uint32_t  DMA_REC_INT_WDT;                   /*!< (@ 0x40011024) Receive interrupt watchdog timer register              */
-    __I  uint32_t  RESERVED4[8];
-    __I  uint32_t  DMA_CURHOST_TRANS_DES;             /*!< (@ 0x40011048) Current host transmit descriptor register              */
-    __I  uint32_t  DMA_CURHOST_REC_DES;               /*!< (@ 0x4001104C) Current host receive descriptor register               */
-    __I  uint32_t  DMA_CURHOST_TRANS_BUF;             /*!< (@ 0x40011050) Current host transmit buffer address register          */
-    __I  uint32_t  DMA_CURHOST_REC_BUF;               /*!< (@ 0x40011054) Current host receive buffer address register           */
+typedef struct {                                    /*!< (@ 0x40010000) ETHERNET Structure                                     */
+  __IO uint32_t  MAC_CONFIG;                        /*!< (@ 0x40010000) MAC configuration register                             */
+  __IO uint32_t  MAC_FRAME_FILTER;                  /*!< (@ 0x40010004) MAC frame filter                                       */
+  __IO uint32_t  MAC_HASHTABLE_HIGH;                /*!< (@ 0x40010008) Hash table high register                               */
+  __IO uint32_t  MAC_HASHTABLE_LOW;                 /*!< (@ 0x4001000C) Hash table low register                                */
+  __IO uint32_t  MAC_MII_ADDR;                      /*!< (@ 0x40010010) MII address register                                   */
+  __IO uint32_t  MAC_MII_DATA;                      /*!< (@ 0x40010014) MII data register                                      */
+  __IO uint32_t  MAC_FLOW_CTRL;                     /*!< (@ 0x40010018) Flow control register                                  */
+  __IO uint32_t  MAC_VLAN_TAG;                      /*!< (@ 0x4001001C) VLAN tag register                                      */
+  __I  uint32_t  RESERVED0;
+  __I  uint32_t  MAC_DEBUG;                         /*!< (@ 0x40010024) Debug register                                         */
+  __IO uint32_t  MAC_RWAKE_FRFLT;                   /*!< (@ 0x40010028) Remote wake-up frame filter                            */
+  __IO uint32_t  MAC_PMT_CTRL_STAT;                 /*!< (@ 0x4001002C) PMT control and status                                 */
+  __I  uint32_t  RESERVED1[2];
+  __I  uint32_t  MAC_INTR;                          /*!< (@ 0x40010038) Interrupt status register                              */
+  __IO uint32_t  MAC_INTR_MASK;                     /*!< (@ 0x4001003C) Interrupt mask register                                */
+  __IO uint32_t  MAC_ADDR0_HIGH;                    /*!< (@ 0x40010040) MAC address 0 high register                            */
+  __IO uint32_t  MAC_ADDR0_LOW;                     /*!< (@ 0x40010044) MAC address 0 low register                             */
+  __I  uint32_t  RESERVED2[430];
+  __IO uint32_t  MAC_TIMESTP_CTRL;                  /*!< (@ 0x40010700) Time stamp control register                            */
+  __IO uint32_t  SUBSECOND_INCR;                    /*!< (@ 0x40010704) Sub-second increment register                          */
+  __I  uint32_t  SECONDS;                           /*!< (@ 0x40010708) System time seconds register                           */
+  __I  uint32_t  NANOSECONDS;                       /*!< (@ 0x4001070C) System time nanoseconds register                       */
+  __IO uint32_t  SECONDSUPDATE;                     /*!< (@ 0x40010710) System time seconds update register                    */
+  __IO uint32_t  NANOSECONDSUPDATE;                 /*!< (@ 0x40010714) System time nanoseconds update register                */
+  __IO uint32_t  ADDEND;                            /*!< (@ 0x40010718) Time stamp addend register                             */
+  __IO uint32_t  TARGETSECONDS;                     /*!< (@ 0x4001071C) Target time seconds register                           */
+  __IO uint32_t  TARGETNANOSECONDS;                 /*!< (@ 0x40010720) Target time nanoseconds register                       */
+  __IO uint32_t  HIGHWORD;                          /*!< (@ 0x40010724) System time higher word seconds register               */
+  __I  uint32_t  TIMESTAMPSTAT;                     /*!< (@ 0x40010728) Time stamp status register                             */
+  __I  uint32_t  RESERVED3[565];
+  __IO uint32_t  DMA_BUS_MODE;                      /*!< (@ 0x40011000) Bus Mode Register                                      */
+  __IO uint32_t  DMA_TRANS_POLL_DEMAND;             /*!< (@ 0x40011004) Transmit poll demand register                          */
+  __IO uint32_t  DMA_REC_POLL_DEMAND;               /*!< (@ 0x40011008) Receive poll demand register                           */
+  __IO uint32_t  DMA_REC_DES_ADDR;                  /*!< (@ 0x4001100C) Receive descriptor list address register               */
+  __IO uint32_t  DMA_TRANS_DES_ADDR;                /*!< (@ 0x40011010) Transmit descriptor list address register              */
+  __IO uint32_t  DMA_STAT;                          /*!< (@ 0x40011014) Status register                                        */
+  __IO uint32_t  DMA_OP_MODE;                       /*!< (@ 0x40011018) Operation mode register                                */
+  __IO uint32_t  DMA_INT_EN;                        /*!< (@ 0x4001101C) Interrupt enable register                              */
+  __I  uint32_t  DMA_MFRM_BUFOF;                    /*!< (@ 0x40011020) Missed frame and buffer overflow register              */
+  __IO uint32_t  DMA_REC_INT_WDT;                   /*!< (@ 0x40011024) Receive interrupt watchdog timer register              */
+  __I  uint32_t  RESERVED4[8];
+  __I  uint32_t  DMA_CURHOST_TRANS_DES;             /*!< (@ 0x40011048) Current host transmit descriptor register              */
+  __I  uint32_t  DMA_CURHOST_REC_DES;               /*!< (@ 0x4001104C) Current host receive descriptor register               */
+  __I  uint32_t  DMA_CURHOST_TRANS_BUF;             /*!< (@ 0x40011050) Current host transmit buffer address register          */
+  __I  uint32_t  DMA_CURHOST_REC_BUF;               /*!< (@ 0x40011054) Current host receive buffer address register           */
 } LPC_ETHERNET_Type;
 
 
@@ -1260,17 +1200,16 @@ typedef struct                                      /*!< (@ 0x40010000) ETHERNET
   * @brief Alarm timer  (ATIMER)
   */
 
-typedef struct                                      /*!< (@ 0x40040000) ATIMER Structure                                       */
-{
-    __IO uint32_t  DOWNCOUNTER;                       /*!< (@ 0x40040000) Downcounter register                                   */
-    __IO uint32_t  PRESET;                            /*!< (@ 0x40040004) Preset value register                                  */
-    __I  uint32_t  RESERVED0[1012];
-    __O  uint32_t  CLR_EN;                            /*!< (@ 0x40040FD8) Interrupt clear enable register                        */
-    __O  uint32_t  SET_EN;                            /*!< (@ 0x40040FDC) Interrupt set enable register                          */
-    __I  uint32_t  STATUS;                            /*!< (@ 0x40040FE0) Status register                                        */
-    __I  uint32_t  ENABLE;                            /*!< (@ 0x40040FE4) Enable register                                        */
-    __O  uint32_t  CLR_STAT;                          /*!< (@ 0x40040FE8) Clear register                                         */
-    __O  uint32_t  SET_STAT;                          /*!< (@ 0x40040FEC) Set register                                           */
+typedef struct {                                    /*!< (@ 0x40040000) ATIMER Structure                                       */
+  __IO uint32_t  DOWNCOUNTER;                       /*!< (@ 0x40040000) Downcounter register                                   */
+  __IO uint32_t  PRESET;                            /*!< (@ 0x40040004) Preset value register                                  */
+  __I  uint32_t  RESERVED0[1012];
+  __O  uint32_t  CLR_EN;                            /*!< (@ 0x40040FD8) Interrupt clear enable register                        */
+  __O  uint32_t  SET_EN;                            /*!< (@ 0x40040FDC) Interrupt set enable register                          */
+  __I  uint32_t  STATUS;                            /*!< (@ 0x40040FE0) Status register                                        */
+  __I  uint32_t  ENABLE;                            /*!< (@ 0x40040FE4) Enable register                                        */
+  __O  uint32_t  CLR_STAT;                          /*!< (@ 0x40040FE8) Clear register                                         */
+  __O  uint32_t  SET_STAT;                          /*!< (@ 0x40040FEC) Set register                                           */
 } LPC_ATIMER_Type;
 
 
@@ -1283,9 +1222,8 @@ typedef struct                                      /*!< (@ 0x40040000) ATIMER S
   * @brief RTC REGFILE  (REGFILE)
   */
 
-typedef struct                                      /*!< (@ 0x40041000) REGFILE Structure                                      */
-{
-    __IO uint32_t  REGFILE[64];                       /*!< (@ 0x40041000) General purpose storage register                       */
+typedef struct {                                    /*!< (@ 0x40041000) REGFILE Structure                                      */
+  __IO uint32_t  REGFILE[64];                       /*!< (@ 0x40041000) General purpose storage register                       */
 } LPC_REGFILE_Type;
 
 
@@ -1298,11 +1236,10 @@ typedef struct                                      /*!< (@ 0x40041000) REGFILE 
   * @brief Power Management Controller (PMC) (PMC)
   */
 
-typedef struct                                      /*!< (@ 0x40042000) PMC Structure                                          */
-{
-    __IO uint32_t  PD0_SLEEP0_HW_ENA;                 /*!< (@ 0x40042000) Hardware sleep event enable register                   */
-    __I  uint32_t  RESERVED0[6];
-    __IO uint32_t  PD0_SLEEP0_MODE;                   /*!< (@ 0x4004201C) Sleep power mode register                              */
+typedef struct {                                    /*!< (@ 0x40042000) PMC Structure                                          */
+  __IO uint32_t  PD0_SLEEP0_HW_ENA;                 /*!< (@ 0x40042000) Hardware sleep event enable register                   */
+  __I  uint32_t  RESERVED0[6];
+  __IO uint32_t  PD0_SLEEP0_MODE;                   /*!< (@ 0x4004201C) Sleep power mode register                              */
 } LPC_PMC_Type;
 
 
@@ -1315,39 +1252,38 @@ typedef struct                                      /*!< (@ 0x40042000) PMC Stru
   * @brief Configuration Registers (CREG) (CREG)
   */
 
-typedef struct                                      /*!< (@ 0x40043000) CREG Structure                                         */
-{
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  CREG0;                             /*!< (@ 0x40043004) Chip configuration register 32 kHz oscillator
+typedef struct {                                    /*!< (@ 0x40043000) CREG Structure                                         */
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  CREG0;                             /*!< (@ 0x40043004) Chip configuration register 32 kHz oscillator
                                                          output and BOD control register.                                      */
-    __I  uint32_t  RESERVED1[62];
-    __IO uint32_t  M4MEMMAP;                          /*!< (@ 0x40043100) ARM Cortex-M4 memory mapping                           */
-    __I  uint32_t  RESERVED2[5];
-    __IO uint32_t  CREG5;                             /*!< (@ 0x40043118) Chip configuration register 5. Controls JTAG
+  __I  uint32_t  RESERVED1[62];
+  __IO uint32_t  M4MEMMAP;                          /*!< (@ 0x40043100) ARM Cortex-M4 memory mapping                           */
+  __I  uint32_t  RESERVED2[5];
+  __IO uint32_t  CREG5;                             /*!< (@ 0x40043118) Chip configuration register 5. Controls JTAG
                                                          access.                                                               */
-    __IO uint32_t  DMAMUX;                            /*!< (@ 0x4004311C) DMA mux control                                        */
-    __IO uint32_t  FLASHCFGA;                         /*!< (@ 0x40043120) Flash accelerator configuration register for
+  __IO uint32_t  DMAMUX;                            /*!< (@ 0x4004311C) DMA mux control                                        */
+  __IO uint32_t  FLASHCFGA;                         /*!< (@ 0x40043120) Flash accelerator configuration register for
                                                          flash bank A                                                          */
-    __IO uint32_t  FLASHCFGB;                         /*!< (@ 0x40043124) Flash accelerator configuration register for
+  __IO uint32_t  FLASHCFGB;                         /*!< (@ 0x40043124) Flash accelerator configuration register for
                                                          flash bank B                                                          */
-    __IO uint32_t  ETBCFG;                            /*!< (@ 0x40043128) ETB RAM configuration                                  */
-    __IO uint32_t  CREG6;                             /*!< (@ 0x4004312C) Chip configuration register 6. Controls multiple
+  __IO uint32_t  ETBCFG;                            /*!< (@ 0x40043128) ETB RAM configuration                                  */
+  __IO uint32_t  CREG6;                             /*!< (@ 0x4004312C) Chip configuration register 6. Controls multiple
                                                          functions : Ethernet interface, SCT output, I2S0/1 inputs, EMC
                                                           clock.                                                               */
-    __IO uint32_t  M4TXEVENT;                         /*!< (@ 0x40043130) Cortex-M4 TXEV event clear                             */
-    __I  uint32_t  RESERVED3[51];
-    __I  uint32_t  CHIPID;                            /*!< (@ 0x40043200) Part ID                                                */
-    __I  uint32_t  RESERVED4[65];
-    __IO uint32_t  M0SUBMEMMAP;                       /*!< (@ 0x40043308) ARM Cortex-M0SUB memory mapping                        */
-    __I  uint32_t  RESERVED5[2];
-    __IO uint32_t  M0SUBTXEVENT;                      /*!< (@ 0x40043314) Cortex-M0SUB TXEV event clear                          */
-    __I  uint32_t  RESERVED6[58];
-    __IO uint32_t  M0APPTXEVENT;                      /*!< (@ 0x40043400) Cortex-M0APP TXEV event clear                          */
-    __IO uint32_t  M0APPMEMMAP;                       /*!< (@ 0x40043404) ARM Cortex-M0APP memory mapping                        */
-    __I  uint32_t  RESERVED7[62];
-    __IO uint32_t  USB0FLADJ;                         /*!< (@ 0x40043500) USB0 frame length adjust register                      */
-    __I  uint32_t  RESERVED8[63];
-    __IO uint32_t  USB1FLADJ;                         /*!< (@ 0x40043600) USB1 frame length adjust register                      */
+  __IO uint32_t  M4TXEVENT;                         /*!< (@ 0x40043130) Cortex-M4 TXEV event clear                             */
+  __I  uint32_t  RESERVED3[51];
+  __I  uint32_t  CHIPID;                            /*!< (@ 0x40043200) Part ID                                                */
+  __I  uint32_t  RESERVED4[65];
+  __IO uint32_t  M0SUBMEMMAP;                       /*!< (@ 0x40043308) ARM Cortex-M0SUB memory mapping                        */
+  __I  uint32_t  RESERVED5[2];
+  __IO uint32_t  M0SUBTXEVENT;                      /*!< (@ 0x40043314) Cortex-M0SUB TXEV event clear                          */
+  __I  uint32_t  RESERVED6[58];
+  __IO uint32_t  M0APPTXEVENT;                      /*!< (@ 0x40043400) Cortex-M0APP TXEV event clear                          */
+  __IO uint32_t  M0APPMEMMAP;                       /*!< (@ 0x40043404) ARM Cortex-M0APP memory mapping                        */
+  __I  uint32_t  RESERVED7[62];
+  __IO uint32_t  USB0FLADJ;                         /*!< (@ 0x40043500) USB0 frame length adjust register                      */
+  __I  uint32_t  RESERVED8[63];
+  __IO uint32_t  USB1FLADJ;                         /*!< (@ 0x40043600) USB1 frame length adjust register                      */
 } LPC_CREG_Type;
 
 
@@ -1360,17 +1296,16 @@ typedef struct                                      /*!< (@ 0x40043000) CREG Str
   * @brief Event router (EVENTROUTER)
   */
 
-typedef struct                                      /*!< (@ 0x40044000) EVENTROUTER Structure                                  */
-{
-    __IO uint32_t  HILO;                              /*!< (@ 0x40044000) Level configuration register                           */
-    __IO uint32_t  EDGE;                              /*!< (@ 0x40044004) Edge configuration                                     */
-    __I  uint32_t  RESERVED0[1012];
-    __O  uint32_t  CLR_EN;                            /*!< (@ 0x40044FD8) Clear event enable register                            */
-    __O  uint32_t  SET_EN;                            /*!< (@ 0x40044FDC) Set event enable register                              */
-    __I  uint32_t  STATUS;                            /*!< (@ 0x40044FE0) Event Status register                                  */
-    __I  uint32_t  ENABLE;                            /*!< (@ 0x40044FE4) Event Enable register                                  */
-    __O  uint32_t  CLR_STAT;                          /*!< (@ 0x40044FE8) Clear event status register                            */
-    __O  uint32_t  SET_STAT;                          /*!< (@ 0x40044FEC) Set event status register                              */
+typedef struct {                                    /*!< (@ 0x40044000) EVENTROUTER Structure                                  */
+  __IO uint32_t  HILO;                              /*!< (@ 0x40044000) Level configuration register                           */
+  __IO uint32_t  EDGE;                              /*!< (@ 0x40044004) Edge configuration                                     */
+  __I  uint32_t  RESERVED0[1012];
+  __O  uint32_t  CLR_EN;                            /*!< (@ 0x40044FD8) Clear event enable register                            */
+  __O  uint32_t  SET_EN;                            /*!< (@ 0x40044FDC) Set event enable register                              */
+  __I  uint32_t  STATUS;                            /*!< (@ 0x40044FE0) Event Status register                                  */
+  __I  uint32_t  ENABLE;                            /*!< (@ 0x40044FE4) Event Enable register                                  */
+  __O  uint32_t  CLR_STAT;                          /*!< (@ 0x40044FE8) Clear event status register                            */
+  __O  uint32_t  SET_STAT;                          /*!< (@ 0x40044FEC) Set event status register                              */
 } LPC_EVENTROUTER_Type;
 
 
@@ -1383,60 +1318,59 @@ typedef struct                                      /*!< (@ 0x40044000) EVENTROU
   * @brief Real-Time Clock (RTC) and event recorder  (RTC)
   */
 
-typedef struct                                      /*!< (@ 0x40046000) RTC Structure                                          */
-{
-    __O  uint32_t  ILR;                               /*!< (@ 0x40046000) Interrupt Location Register                            */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  CCR;                               /*!< (@ 0x40046008) Clock Control Register                                 */
-    __IO uint32_t  CIIR;                              /*!< (@ 0x4004600C) Counter Increment Interrupt Register                   */
-    __IO uint32_t  AMR;                               /*!< (@ 0x40046010) Alarm Mask Register                                    */
-    __I  uint32_t  CTIME0;                            /*!< (@ 0x40046014) Consolidated Time Register 0                           */
-    __I  uint32_t  CTIME1;                            /*!< (@ 0x40046018) Consolidated Time Register 1                           */
-    __I  uint32_t  CTIME2;                            /*!< (@ 0x4004601C) Consolidated Time Register 2                           */
-    __IO uint32_t  SEC;                               /*!< (@ 0x40046020) Seconds Register                                       */
-    __IO uint32_t  MIN;                               /*!< (@ 0x40046024) Minutes Register                                       */
-    __IO uint32_t  HRS;                               /*!< (@ 0x40046028) Hours Register                                         */
-    __IO uint32_t  DOM;                               /*!< (@ 0x4004602C) Day of Month Register                                  */
-    __IO uint32_t  DOW;                               /*!< (@ 0x40046030) Day of Week Register                                   */
-    __IO uint32_t  DOY;                               /*!< (@ 0x40046034) Day of Year Register                                   */
-    __IO uint32_t  MONTH;                             /*!< (@ 0x40046038) Months Register                                        */
-    __IO uint32_t  YEAR;                              /*!< (@ 0x4004603C) Years Register                                         */
-    __IO uint32_t  CALIBRATION;                       /*!< (@ 0x40046040) Calibration Value Register                             */
-    __I  uint32_t  RESERVED1[7];
-    __IO uint32_t  ASEC;                              /*!< (@ 0x40046060) Alarm value for Seconds                                */
-    __IO uint32_t  AMIN;                              /*!< (@ 0x40046064) Alarm value for Minutes                                */
-    __IO uint32_t  AHRS;                              /*!< (@ 0x40046068) Alarm value for Hours                                  */
-    __IO uint32_t  ADOM;                              /*!< (@ 0x4004606C) Alarm value for Day of Month                           */
-    __IO uint32_t  ADOW;                              /*!< (@ 0x40046070) Alarm value for Day of Week                            */
-    __IO uint32_t  ADOY;                              /*!< (@ 0x40046074) Alarm value for Day of Year                            */
-    __IO uint32_t  AMON;                              /*!< (@ 0x40046078) Alarm value for Months                                 */
-    __IO uint32_t  AYRS;                              /*!< (@ 0x4004607C) Alarm value for Year                                   */
-    __IO uint32_t  ERSTATUS;                          /*!< (@ 0x40046080) Event Monitor/Recorder Status register. Contains
+typedef struct {                                    /*!< (@ 0x40046000) RTC Structure                                          */
+  __O  uint32_t  ILR;                               /*!< (@ 0x40046000) Interrupt Location Register                            */
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  CCR;                               /*!< (@ 0x40046008) Clock Control Register                                 */
+  __IO uint32_t  CIIR;                              /*!< (@ 0x4004600C) Counter Increment Interrupt Register                   */
+  __IO uint32_t  AMR;                               /*!< (@ 0x40046010) Alarm Mask Register                                    */
+  __I  uint32_t  CTIME0;                            /*!< (@ 0x40046014) Consolidated Time Register 0                           */
+  __I  uint32_t  CTIME1;                            /*!< (@ 0x40046018) Consolidated Time Register 1                           */
+  __I  uint32_t  CTIME2;                            /*!< (@ 0x4004601C) Consolidated Time Register 2                           */
+  __IO uint32_t  SEC;                               /*!< (@ 0x40046020) Seconds Register                                       */
+  __IO uint32_t  MIN;                               /*!< (@ 0x40046024) Minutes Register                                       */
+  __IO uint32_t  HRS;                               /*!< (@ 0x40046028) Hours Register                                         */
+  __IO uint32_t  DOM;                               /*!< (@ 0x4004602C) Day of Month Register                                  */
+  __IO uint32_t  DOW;                               /*!< (@ 0x40046030) Day of Week Register                                   */
+  __IO uint32_t  DOY;                               /*!< (@ 0x40046034) Day of Year Register                                   */
+  __IO uint32_t  MONTH;                             /*!< (@ 0x40046038) Months Register                                        */
+  __IO uint32_t  YEAR;                              /*!< (@ 0x4004603C) Years Register                                         */
+  __IO uint32_t  CALIBRATION;                       /*!< (@ 0x40046040) Calibration Value Register                             */
+  __I  uint32_t  RESERVED1[7];
+  __IO uint32_t  ASEC;                              /*!< (@ 0x40046060) Alarm value for Seconds                                */
+  __IO uint32_t  AMIN;                              /*!< (@ 0x40046064) Alarm value for Minutes                                */
+  __IO uint32_t  AHRS;                              /*!< (@ 0x40046068) Alarm value for Hours                                  */
+  __IO uint32_t  ADOM;                              /*!< (@ 0x4004606C) Alarm value for Day of Month                           */
+  __IO uint32_t  ADOW;                              /*!< (@ 0x40046070) Alarm value for Day of Week                            */
+  __IO uint32_t  ADOY;                              /*!< (@ 0x40046074) Alarm value for Day of Year                            */
+  __IO uint32_t  AMON;                              /*!< (@ 0x40046078) Alarm value for Months                                 */
+  __IO uint32_t  AYRS;                              /*!< (@ 0x4004607C) Alarm value for Year                                   */
+  __IO uint32_t  ERSTATUS;                          /*!< (@ 0x40046080) Event Monitor/Recorder Status register. Contains
                                                          status flags for event channels and other Event Monitor/Recorder
                                                           conditions.                                                          */
-    __IO uint32_t  ERCONTRO;                          /*!< (@ 0x40046084) Event Monitor/Recorder Control register. Contains
+  __IO uint32_t  ERCONTRO;                          /*!< (@ 0x40046084) Event Monitor/Recorder Control register. Contains
                                                          bits that control actions for the event channels as well as
                                                           for Event Monitor/Recorder setup.                                    */
-    __I  uint32_t  ERCOUNTERS;                        /*!< (@ 0x40046088) Event Monitor/Recorder Counters register. Allows
+  __I  uint32_t  ERCOUNTERS;                        /*!< (@ 0x40046088) Event Monitor/Recorder Counters register. Allows
                                                          reading the counters associated with the event channels.              */
-    __I  uint32_t  RESERVED2;
-    __I  uint32_t  ERFIRSTSTAMP0;                     /*!< (@ 0x40046090) Event Monitor/Recorder First Stamp register for
+  __I  uint32_t  RESERVED2;
+  __I  uint32_t  ERFIRSTSTAMP0;                     /*!< (@ 0x40046090) Event Monitor/Recorder First Stamp register for
                                                          channel 0. Retains the time stamp for the first event on channel
                                                           0.                                                                   */
-    __I  uint32_t  ERFIRSTSTAMP1;                     /*!< (@ 0x40046094) Event Monitor/Recorder First Stamp register for
+  __I  uint32_t  ERFIRSTSTAMP1;                     /*!< (@ 0x40046094) Event Monitor/Recorder First Stamp register for
                                                          channel 0. Retains the time stamp for the first event on channel
                                                           0.                                                                   */
-    __I  uint32_t  ERFIRSTSTAMP2;                     /*!< (@ 0x40046098) Event Monitor/Recorder First Stamp register for
+  __I  uint32_t  ERFIRSTSTAMP2;                     /*!< (@ 0x40046098) Event Monitor/Recorder First Stamp register for
                                                          channel 0. Retains the time stamp for the first event on channel
                                                           0.                                                                   */
-    __I  uint32_t  RESERVED3;
-    __I  uint32_t  ERLASTSTAMP0;                      /*!< (@ 0x400460A0) Event Monitor/Recorder Last Stamp register for
+  __I  uint32_t  RESERVED3;
+  __I  uint32_t  ERLASTSTAMP0;                      /*!< (@ 0x400460A0) Event Monitor/Recorder Last Stamp register for
                                                          channel 0. Retains the time stamp for the last (i.e. most recent)
                                                           event on channel 0.                                                  */
-    __I  uint32_t  ERLASTSTAMP1;                      /*!< (@ 0x400460A4) Event Monitor/Recorder Last Stamp register for
+  __I  uint32_t  ERLASTSTAMP1;                      /*!< (@ 0x400460A4) Event Monitor/Recorder Last Stamp register for
                                                          channel 0. Retains the time stamp for the last (i.e. most recent)
                                                           event on channel 0.                                                  */
-    __I  uint32_t  ERLASTSTAMP2;                      /*!< (@ 0x400460A8) Event Monitor/Recorder Last Stamp register for
+  __I  uint32_t  ERLASTSTAMP2;                      /*!< (@ 0x400460A8) Event Monitor/Recorder Last Stamp register for
                                                          channel 0. Retains the time stamp for the last (i.e. most recent)
                                                           event on channel 0.                                                  */
 } LPC_RTC_Type;
@@ -1451,59 +1385,58 @@ typedef struct                                      /*!< (@ 0x40046000) RTC Stru
   * @brief Clock Generation Unit (CGU) (CGU)
   */
 
-typedef struct                                      /*!< (@ 0x40050000) CGU Structure                                          */
-{
-    __I  uint32_t  RESERVED0[5];
-    __IO uint32_t  FREQ_MON;                          /*!< (@ 0x40050014) Frequency monitor register                             */
-    __IO uint32_t  XTAL_OSC_CTRL;                     /*!< (@ 0x40050018) Crystal oscillator control register                    */
-    __I  uint32_t  PLL0USB_STAT;                      /*!< (@ 0x4005001C) PLL0USB status register                                */
-    __IO uint32_t  PLL0USB_CTRL;                      /*!< (@ 0x40050020) PLL0USB control register                               */
-    __IO uint32_t  PLL0USB_MDIV;                      /*!< (@ 0x40050024) PLL0USB M-divider register                             */
-    __IO uint32_t  PLL0USB_NP_DIV;                    /*!< (@ 0x40050028) PLL0USB N/P-divider register                           */
-    __I  uint32_t  PLL0AUDIO_STAT;                    /*!< (@ 0x4005002C) PLL0AUDIO status register                              */
-    __IO uint32_t  PLL0AUDIO_CTRL;                    /*!< (@ 0x40050030) PLL0AUDIO control register                             */
-    __IO uint32_t  PLL0AUDIO_MDIV;                    /*!< (@ 0x40050034) PLL0AUDIO M-divider register                           */
-    __IO uint32_t  PLL0AUDIO_NP_DIV;                  /*!< (@ 0x40050038) PLL0AUDIO N/P-divider register                         */
-    __IO uint32_t  PLL0AUDIO_FRAC;                    /*!< (@ 0x4005003C) PLL0AUDIO fractional divider register                  */
-    __I  uint32_t  PLL1_STAT;                         /*!< (@ 0x40050040) PLL1 status register                                   */
-    __IO uint32_t  PLL1_CTRL;                         /*!< (@ 0x40050044) PLL1 control register                                  */
-    __IO uint32_t  IDIVA_CTRL;                        /*!< (@ 0x40050048) Integer divider A control register                     */
-    __IO uint32_t  IDIVB_CTRL;                        /*!< (@ 0x4005004C) Integer divider B control register                     */
-    __IO uint32_t  IDIVC_CTRL;                        /*!< (@ 0x40050050) Integer divider C control register                     */
-    __IO uint32_t  IDIVD_CTRL;                        /*!< (@ 0x40050054) Integer divider D control register                     */
-    __IO uint32_t  IDIVE_CTRL;                        /*!< (@ 0x40050058) Integer divider E control register                     */
-    __I  uint32_t  BASE_SAFE_CLK;                     /*!< (@ 0x4005005C) Output stage 0 control register for base clock
+typedef struct {                                    /*!< (@ 0x40050000) CGU Structure                                          */
+  __I  uint32_t  RESERVED0[5];
+  __IO uint32_t  FREQ_MON;                          /*!< (@ 0x40050014) Frequency monitor register                             */
+  __IO uint32_t  XTAL_OSC_CTRL;                     /*!< (@ 0x40050018) Crystal oscillator control register                    */
+  __I  uint32_t  PLL0USB_STAT;                      /*!< (@ 0x4005001C) PLL0USB status register                                */
+  __IO uint32_t  PLL0USB_CTRL;                      /*!< (@ 0x40050020) PLL0USB control register                               */
+  __IO uint32_t  PLL0USB_MDIV;                      /*!< (@ 0x40050024) PLL0USB M-divider register                             */
+  __IO uint32_t  PLL0USB_NP_DIV;                    /*!< (@ 0x40050028) PLL0USB N/P-divider register                           */
+  __I  uint32_t  PLL0AUDIO_STAT;                    /*!< (@ 0x4005002C) PLL0AUDIO status register                              */
+  __IO uint32_t  PLL0AUDIO_CTRL;                    /*!< (@ 0x40050030) PLL0AUDIO control register                             */
+  __IO uint32_t  PLL0AUDIO_MDIV;                    /*!< (@ 0x40050034) PLL0AUDIO M-divider register                           */
+  __IO uint32_t  PLL0AUDIO_NP_DIV;                  /*!< (@ 0x40050038) PLL0AUDIO N/P-divider register                         */
+  __IO uint32_t  PLL0AUDIO_FRAC;                    /*!< (@ 0x4005003C) PLL0AUDIO fractional divider register                  */
+  __I  uint32_t  PLL1_STAT;                         /*!< (@ 0x40050040) PLL1 status register                                   */
+  __IO uint32_t  PLL1_CTRL;                         /*!< (@ 0x40050044) PLL1 control register                                  */
+  __IO uint32_t  IDIVA_CTRL;                        /*!< (@ 0x40050048) Integer divider A control register                     */
+  __IO uint32_t  IDIVB_CTRL;                        /*!< (@ 0x4005004C) Integer divider B control register                     */
+  __IO uint32_t  IDIVC_CTRL;                        /*!< (@ 0x40050050) Integer divider C control register                     */
+  __IO uint32_t  IDIVD_CTRL;                        /*!< (@ 0x40050054) Integer divider D control register                     */
+  __IO uint32_t  IDIVE_CTRL;                        /*!< (@ 0x40050058) Integer divider E control register                     */
+  __I  uint32_t  BASE_SAFE_CLK;                     /*!< (@ 0x4005005C) Output stage 0 control register for base clock
                                                          BASE_SAFE_CLK                                                         */
-    __IO uint32_t  BASE_USB0_CLK;                     /*!< (@ 0x40050060) Output stage 1 control register for base clock
+  __IO uint32_t  BASE_USB0_CLK;                     /*!< (@ 0x40050060) Output stage 1 control register for base clock
                                                          BASE_USB0_CLK                                                         */
-    __IO uint32_t  BASE_PERIPH_CLK;                   /*!< (@ 0x40050064) Output stage 2 control register for base clock
+  __IO uint32_t  BASE_PERIPH_CLK;                   /*!< (@ 0x40050064) Output stage 2 control register for base clock
                                                          BASE_PERIPH_CLK                                                       */
-    __IO uint32_t  BASE_USB1_CLK;                     /*!< (@ 0x40050068) Output stage 3 control register for base clock
+  __IO uint32_t  BASE_USB1_CLK;                     /*!< (@ 0x40050068) Output stage 3 control register for base clock
                                                          BASE_USB1_CLK                                                         */
-    __IO uint32_t  BASE_M4_CLK;                       /*!< (@ 0x4005006C) Output stage BASE_M4_CLK control register              */
-    __IO uint32_t  BASE_SPIFI_CLK;                    /*!< (@ 0x40050070) Output stage BASE_SPIFI_CLK control register           */
-    __IO uint32_t  BASE_SPI_CLK;                      /*!< (@ 0x40050074) Output stage BASE_SPI_CLK control register             */
-    __IO uint32_t  BASE_PHY_RX_CLK;                   /*!< (@ 0x40050078) Output stage BASE_PHY_RX_CLK control register          */
-    __IO uint32_t  BASE_PHY_TX_CLK;                   /*!< (@ 0x4005007C) Output stage BASE_PHY_TX_CLK control register          */
-    __IO uint32_t  BASE_APB1_CLK;                     /*!< (@ 0x40050080) Output stage BASE_APB1_CLK control register            */
-    __IO uint32_t  BASE_APB3_CLK;                     /*!< (@ 0x40050084) Output stage BASE_APB3_CLK control register            */
-    __IO uint32_t  BASE_LCD_CLK;                      /*!< (@ 0x40050088) Output stage BASE_LCD_CLK control register             */
-    __I  uint32_t  RESERVED1;
-    __IO uint32_t  BASE_SDIO_CLK;                     /*!< (@ 0x40050090) Output stage BASE_SDIO_CLK control register            */
-    __IO uint32_t  BASE_SSP0_CLK;                     /*!< (@ 0x40050094) Output stage BASE_SSP0_CLK control register            */
-    __IO uint32_t  BASE_SSP1_CLK;                     /*!< (@ 0x40050098) Output stage BASE_SSP1_CLK control register            */
-    __IO uint32_t  BASE_UART0_CLK;                    /*!< (@ 0x4005009C) Output stage BASE_UART0_CLK control register           */
-    __IO uint32_t  BASE_UART1_CLK;                    /*!< (@ 0x400500A0) Output stage BASE_UART1_CLK control register           */
-    __IO uint32_t  BASE_UART2_CLK;                    /*!< (@ 0x400500A4) Output stage BASE_UART2_CLK control register           */
-    __IO uint32_t  BASE_UART3_CLK;                    /*!< (@ 0x400500A8) Output stage BASE_UART3_CLK control register           */
-    __IO uint32_t  BASE_OUT_CLK;                      /*!< (@ 0x400500AC) Output stage 20 control register for base clock
+  __IO uint32_t  BASE_M4_CLK;                       /*!< (@ 0x4005006C) Output stage BASE_M4_CLK control register              */
+  __IO uint32_t  BASE_SPIFI_CLK;                    /*!< (@ 0x40050070) Output stage BASE_SPIFI_CLK control register           */
+  __IO uint32_t  BASE_SPI_CLK;                      /*!< (@ 0x40050074) Output stage BASE_SPI_CLK control register             */
+  __IO uint32_t  BASE_PHY_RX_CLK;                   /*!< (@ 0x40050078) Output stage BASE_PHY_RX_CLK control register          */
+  __IO uint32_t  BASE_PHY_TX_CLK;                   /*!< (@ 0x4005007C) Output stage BASE_PHY_TX_CLK control register          */
+  __IO uint32_t  BASE_APB1_CLK;                     /*!< (@ 0x40050080) Output stage BASE_APB1_CLK control register            */
+  __IO uint32_t  BASE_APB3_CLK;                     /*!< (@ 0x40050084) Output stage BASE_APB3_CLK control register            */
+  __IO uint32_t  BASE_LCD_CLK;                      /*!< (@ 0x40050088) Output stage BASE_LCD_CLK control register             */
+  __I  uint32_t  RESERVED1;
+  __IO uint32_t  BASE_SDIO_CLK;                     /*!< (@ 0x40050090) Output stage BASE_SDIO_CLK control register            */
+  __IO uint32_t  BASE_SSP0_CLK;                     /*!< (@ 0x40050094) Output stage BASE_SSP0_CLK control register            */
+  __IO uint32_t  BASE_SSP1_CLK;                     /*!< (@ 0x40050098) Output stage BASE_SSP1_CLK control register            */
+  __IO uint32_t  BASE_UART0_CLK;                    /*!< (@ 0x4005009C) Output stage BASE_UART0_CLK control register           */
+  __IO uint32_t  BASE_UART1_CLK;                    /*!< (@ 0x400500A0) Output stage BASE_UART1_CLK control register           */
+  __IO uint32_t  BASE_UART2_CLK;                    /*!< (@ 0x400500A4) Output stage BASE_UART2_CLK control register           */
+  __IO uint32_t  BASE_UART3_CLK;                    /*!< (@ 0x400500A8) Output stage BASE_UART3_CLK control register           */
+  __IO uint32_t  BASE_OUT_CLK;                      /*!< (@ 0x400500AC) Output stage 20 control register for base clock
                                                          BASE_OUT_CLK                                                          */
-    __I  uint32_t  RESERVED2[4];
-    __IO uint32_t  BASE_APLL_CLK;                     /*!< (@ 0x400500C0) Output stage 25 control register for base clock
+  __I  uint32_t  RESERVED2[4];
+  __IO uint32_t  BASE_APLL_CLK;                     /*!< (@ 0x400500C0) Output stage 25 control register for base clock
                                                          BASE_APLL_CLK                                                         */
-    __IO uint32_t  BASE_CGU_OUT0_CLK;                 /*!< (@ 0x400500C4) Output stage 25 control register for base clock
+  __IO uint32_t  BASE_CGU_OUT0_CLK;                 /*!< (@ 0x400500C4) Output stage 25 control register for base clock
                                                          BASE_CGU_OUT0_CLK                                                     */
-    __IO uint32_t  BASE_CGU_OUT1_CLK;                 /*!< (@ 0x400500C8) Output stage 25 control register for base clock
+  __IO uint32_t  BASE_CGU_OUT1_CLK;                 /*!< (@ 0x400500C8) Output stage 25 control register for base clock
                                                          BASE_CGU_OUT1_CLK                                                     */
 } LPC_CGU_Type;
 
@@ -1517,127 +1450,126 @@ typedef struct                                      /*!< (@ 0x40050000) CGU Stru
   * @brief Clock Control Unit (CCU) (CCU1)
   */
 
-typedef struct                                      /*!< (@ 0x40051000) CCU1 Structure                                         */
-{
-    __IO uint32_t  PM;                                /*!< (@ 0x40051000) CCU1 power mode register                               */
-    __I  uint32_t  BASE_STAT;                         /*!< (@ 0x40051004) CCU1 base clocks status register                       */
-    __I  uint32_t  RESERVED0[62];
-    __IO uint32_t  CLK_APB3_BUS_CFG;                  /*!< (@ 0x40051100) CLK_APB3_BUS clock configuration register              */
-    __I  uint32_t  CLK_APB3_BUS_STAT;                 /*!< (@ 0x40051104) CLK_APB3_BUS clock status register                     */
-    __IO uint32_t  CLK_APB3_I2C1_CFG;                 /*!< (@ 0x40051108) CLK_APB3_I2C1 clock configuration register             */
-    __I  uint32_t  CLK_APB3_I2C1_STAT;                /*!< (@ 0x4005110C) CLK_APB3_I2C1 clock status register                    */
-    __IO uint32_t  CLK_APB3_DAC_CFG;                  /*!< (@ 0x40051110) CLK_APB3_DAC clock configuration register              */
-    __I  uint32_t  CLK_APB3_DAC_STAT;                 /*!< (@ 0x40051114) CLK_APB3_DAC clock status register                     */
-    __IO uint32_t  CLK_APB3_ADC0_CFG;                 /*!< (@ 0x40051118) CLK_APB3_ADC0 clock configuration register             */
-    __I  uint32_t  CLK_APB3_ADC0_STAT;                /*!< (@ 0x4005111C) CLK_APB3_ADC0 clock status register                    */
-    __IO uint32_t  CLK_APB3_ADC1_CFG;                 /*!< (@ 0x40051120) CLK_APB3_ADC1 clock configuration register             */
-    __I  uint32_t  CLK_APB3_ADC1_STAT;                /*!< (@ 0x40051124) CLK_APB3_ADC1 clock status register                    */
-    __IO uint32_t  CLK_APB3_CAN0_CFG;                 /*!< (@ 0x40051128) CLK_APB3_CAN0 clock configuration register             */
-    __I  uint32_t  CLK_APB3_CAN0_STAT;                /*!< (@ 0x4005112C) CLK_APB3_CAN0 clock status register                    */
-    __I  uint32_t  RESERVED1[52];
-    __IO uint32_t  CLK_APB1_BUS_CFG;                  /*!< (@ 0x40051200) CLK_APB1_BUS clock configuration register              */
-    __I  uint32_t  CLK_APB1_BUS_STAT;                 /*!< (@ 0x40051204) CLK_APB1_BUS clock status register                     */
-    __IO uint32_t  CLK_APB1_MOTOCONPWM_CFG;           /*!< (@ 0x40051208) CLK_APB1_MOTOCONPWM clock configuration register       */
-    __I  uint32_t  CLK_APB1_MOTOCONPWM_STAT;          /*!< (@ 0x4005120C) CLK_APB1_MOTOCONPWM clock status register              */
-    __IO uint32_t  CLK_APB1_I2C0_CFG;                 /*!< (@ 0x40051210) CLK_ABP1_I2C0 clock configuration register             */
-    __I  uint32_t  CLK_APB1_I2C0_STAT;                /*!< (@ 0x40051214) CLK_APB1_I2C0 clock status register                    */
-    __IO uint32_t  CLK_APB1_I2S_CFG;                  /*!< (@ 0x40051218) CLK_APB1_I2S clock configuration register              */
-    __I  uint32_t  CLK_APB1_I2S_STAT;                 /*!< (@ 0x4005121C) CLK_APB1_I2S clock status register                     */
-    __IO uint32_t  CLK_APB1_CAN1_CFG;                 /*!< (@ 0x40051220) CLK_APB1_CAN1 clock configuration register             */
-    __I  uint32_t  CLK_APB1_CAN1_STAT;                /*!< (@ 0x40051224) CLK_APB1_CAN1 clock status register                    */
-    __I  uint32_t  RESERVED2[54];
-    __IO uint32_t  CLK_SPIFI_CFG;                     /*!< (@ 0x40051300) CLK_SPIFI clock configuration register                 */
-    __I  uint32_t  CLK_SPIFI_STAT;                    /*!< (@ 0x40051304) CLK_APB1_SPIFI clock status register                   */
-    __I  uint32_t  RESERVED3[62];
-    __IO uint32_t  CLK_M4_BUS_CFG;                    /*!< (@ 0x40051400) CLK_M4_BUS clock configuration register                */
-    __I  uint32_t  CLK_M4_BUS_STAT;                   /*!< (@ 0x40051404) CLK_M4_BUSclock status register                        */
-    __IO uint32_t  CLK_M4_SPIFI_CFG;                  /*!< (@ 0x40051408) CLK_M4_SPIFI clock configuration register              */
-    __I  uint32_t  CLK_M4_SPIFI_STAT;                 /*!< (@ 0x4005140C) CLK_M4_SPIFI clock status register                     */
-    __IO uint32_t  CLK_M4_GPIO_CFG;                   /*!< (@ 0x40051410) CLK_M4_GPIO clock configuration register               */
-    __I  uint32_t  CLK_M4_GPIO_STAT;                  /*!< (@ 0x40051414) CLK_M4_GPIO clock status register                      */
-    __IO uint32_t  CLK_M4_LCD_CFG;                    /*!< (@ 0x40051418) CLK_M4_LCD clock configuration register                */
-    __I  uint32_t  CLK_M4_LCD_STAT;                   /*!< (@ 0x4005141C) CLK_M4_LCD clock status register                       */
-    __IO uint32_t  CLK_M4_ETHERNET_CFG;               /*!< (@ 0x40051420) CLK_M4_ETHERNET clock configuration register           */
-    __I  uint32_t  CLK_M4_ETHERNET_STAT;              /*!< (@ 0x40051424) CLK_M4_ETHERNET clock status register                  */
-    __IO uint32_t  CLK_M4_USB0_CFG;                   /*!< (@ 0x40051428) CLK_M4_USB0 clock configuration register               */
-    __I  uint32_t  CLK_M4_USB0_STAT;                  /*!< (@ 0x4005142C) CLK_M4_USB0 clock status register                      */
-    __IO uint32_t  CLK_M4_EMC_CFG;                    /*!< (@ 0x40051430) CLK_M4_EMC clock configuration register                */
-    __I  uint32_t  CLK_M4_EMC_STAT;                   /*!< (@ 0x40051434) CLK_M4_EMC clock status register                       */
-    __IO uint32_t  CLK_M4_SDIO_CFG;                   /*!< (@ 0x40051438) CLK_M4_SDIO clock configuration register               */
-    __I  uint32_t  CLK_M4_SDIO_STAT;                  /*!< (@ 0x4005143C) CLK_M4_SDIO clock status register                      */
-    __IO uint32_t  CLK_M4_DMA_CFG;                    /*!< (@ 0x40051440) CLK_M4_DMA clock configuration register                */
-    __I  uint32_t  CLK_M4_DMA_STAT;                   /*!< (@ 0x40051444) CLK_M4_DMA clock status register                       */
-    __IO uint32_t  CLK_M4_M4CORE_CFG;                 /*!< (@ 0x40051448) CLK_M4_M4CORE clock configuration register             */
-    __I  uint32_t  CLK_M4_M4CORE_STAT;                /*!< (@ 0x4005144C) CLK_M4_M3CORE clock status register                    */
-    __I  uint32_t  RESERVED4[6];
-    __IO uint32_t  CLK_M4_SCT_CFG;                    /*!< (@ 0x40051468) CLK_M4_SCT clock configuration register                */
-    __I  uint32_t  CLK_M4_SCT_STAT;                   /*!< (@ 0x4005146C) CLK_M4_SCT clock status register                       */
-    __IO uint32_t  CLK_M4_USB1_CFG;                   /*!< (@ 0x40051470) CLK_M4_USB1 clock configuration register               */
-    __I  uint32_t  CLK_M4_USB1_STAT;                  /*!< (@ 0x40051474) CLK_M4_USB1 clock status register                      */
-    __IO uint32_t  CLK_M4_EMCDIV_CFG;                 /*!< (@ 0x40051478) CLK_M4_EMCDIV clock configuration register             */
-    __I  uint32_t  CLK_M4_EMCDIV_STAT;                /*!< (@ 0x4005147C) CLK_M4_EMCDIV clock status register                    */
-    __IO uint32_t  CLK_M4_FLASHA_CFG;                 /*!< (@ 0x40051480) CLK_M4_FLASHA clock configuration register             */
-    __I  uint32_t  CLK_M4_FLASHA_STAT;                /*!< (@ 0x40051484) CLK_M4_FLASHA clock status register                    */
-    __IO uint32_t  CLK_M4_FLASHB_CFG;                 /*!< (@ 0x40051488) CLK_M4_FLASHB clock configuration register             */
-    __I  uint32_t  CLK_M4_FLASHB_STAT;                /*!< (@ 0x4005148C) CLK_M4_FLASHB clock status register                    */
-    __IO uint32_t  CLK_M4_M0APP_CFG;                  /*!< (@ 0x40051490) CLK_M0APP_CFG clock configuration register             */
-    __I  uint32_t  CLK_M4_M0APP_STAT;                 /*!< (@ 0x40051494) CLK_M4_MOAPP clock status register                     */
-    __IO uint32_t  CLK_M4_ADCHS_CFG;                  /*!< (@ 0x40051498) CLK_ADCHS_CFG clock configuration register             */
-    __I  uint32_t  CLK_M4_ADCHS_STAT;                 /*!< (@ 0x4005149C) CLK_M4_ADCHS clock status register                     */
-    __IO uint32_t  CLK_M4_EEPROM_CFG;                 /*!< (@ 0x400514A0) CLK_EEPROM_CFG clock configuration register            */
-    __I  uint32_t  CLK_M4_EEPROM_STAT;                /*!< (@ 0x400514A4) CLK_M4_EEPROM clock status register                    */
-    __I  uint32_t  RESERVED5[22];
-    __IO uint32_t  CLK_M4_WWDT_CFG;                   /*!< (@ 0x40051500) CLK_M4_WWDT clock configuration register               */
-    __I  uint32_t  CLK_M4_WWDT_STAT;                  /*!< (@ 0x40051504) CLK_M4_WWDT clock status register                      */
-    __IO uint32_t  CLK_M4_USART0_CFG;                 /*!< (@ 0x40051508) CLK_M4_USART0 clock configuration register             */
-    __I  uint32_t  CLK_M4_USART0_STAT;                /*!< (@ 0x4005150C) CLK_M4_USART0 clock status register                    */
-    __IO uint32_t  CLK_M4_UART1_CFG;                  /*!< (@ 0x40051510) CLK_M4_UART1 clock configuration register              */
-    __I  uint32_t  CLK_M4_UART1_STAT;                 /*!< (@ 0x40051514) CLK_M4_UART1 clock status register                     */
-    __IO uint32_t  CLK_M4_SSP0_CFG;                   /*!< (@ 0x40051518) CLK_M4_SSP0 clock configuration register               */
-    __I  uint32_t  CLK_M4_SSP0_STAT;                  /*!< (@ 0x4005151C) CLK_M4_SSP0 clock status register                      */
-    __IO uint32_t  CLK_M4_TIMER0_CFG;                 /*!< (@ 0x40051520) CLK_M4_TIMER0 clock configuration register             */
-    __I  uint32_t  CLK_M4_TIMER0_STAT;                /*!< (@ 0x40051524) CLK_M4_TIMER0 clock status register                    */
-    __IO uint32_t  CLK_M4_TIMER1_CFG;                 /*!< (@ 0x40051528) CLK_M4_TIMER1clock configuration register              */
-    __I  uint32_t  CLK_M4_TIMER1_STAT;                /*!< (@ 0x4005152C) CLK_M4_TIMER1 clock status register                    */
-    __IO uint32_t  CLK_M4_SCU_CFG;                    /*!< (@ 0x40051530) CLK_M4_SCU clock configuration register                */
-    __I  uint32_t  CLK_M4_SCU_STAT;                   /*!< (@ 0x40051534) CLK_SCU_XXX clock status register                      */
-    __IO uint32_t  CLK_M4_CREG_CFG;                   /*!< (@ 0x40051538) CLK_M4_CREGclock configuration register                */
-    __I  uint32_t  CLK_M4_CREG_STAT;                  /*!< (@ 0x4005153C) CLK_M4_CREG clock status register                      */
-    __I  uint32_t  RESERVED6[48];
-    __IO uint32_t  CLK_M4_RITIMER_CFG;                /*!< (@ 0x40051600) CLK_M4_RITIMER clock configuration register            */
-    __I  uint32_t  CLK_M4_RITIMER_STAT;               /*!< (@ 0x40051604) CLK_M4_RITIMER clock status register                   */
-    __IO uint32_t  CLK_M4_USART2_CFG;                 /*!< (@ 0x40051608) CLK_M4_USART2 clock configuration register             */
-    __I  uint32_t  CLK_M4_USART2_STAT;                /*!< (@ 0x4005160C) CLK_M4_USART2 clock status register                    */
-    __IO uint32_t  CLK_M4_USART3_CFG;                 /*!< (@ 0x40051610) CLK_M4_USART3 clock configuration register             */
-    __I  uint32_t  CLK_M4_USART3_STAT;                /*!< (@ 0x40051614) CLK_M4_USART3 clock status register                    */
-    __IO uint32_t  CLK_M4_TIMER2_CFG;                 /*!< (@ 0x40051618) CLK_M4_TIMER2 clock configuration register             */
-    __I  uint32_t  CLK_M4_TIMER2_STAT;                /*!< (@ 0x4005161C) CLK_M4_TIMER2 clock status register                    */
-    __IO uint32_t  CLK_M4_TIMER3_CFG;                 /*!< (@ 0x40051620) CLK_M4_TIMER3 clock configuration register             */
-    __I  uint32_t  CLK_M4_TIMER3_STAT;                /*!< (@ 0x40051624) CLK_M4_TIMER3 clock status register                    */
-    __IO uint32_t  CLK_M4_SSP1_CFG;                   /*!< (@ 0x40051628) CLK_M4_SSP1 clock configuration register               */
-    __I  uint32_t  CLK_M4_SSP1_STAT;                  /*!< (@ 0x4005162C) CLK_M4_SSP1 clock status register                      */
-    __IO uint32_t  CLK_M4_QEI_CFG;                    /*!< (@ 0x40051630) CLK_M4_QEIclock configuration register                 */
-    __I  uint32_t  CLK_M4_QEI_STAT;                   /*!< (@ 0x40051634) CLK_M4_QEI clock status register                       */
-    __I  uint32_t  RESERVED7[50];
-    __IO uint32_t  CLK_PERIPH_BUS_CFG;                /*!< (@ 0x40051700) CLK_PERIPH_BUS_CFG clock configuration register        */
-    __I  uint32_t  CLK_PERIPH_BUS_STAT;               /*!< (@ 0x40051704) CLK_PERIPH_BUS_STAT clock status register              */
-    __I  uint32_t  RESERVED8[2];
-    __IO uint32_t  CLK_PERIPH_CORE_CFG;               /*!< (@ 0x40051710) CLK_PERIPH_CORE_CFG clock configuration register       */
-    __I  uint32_t  CLK_PERIPH_CORE_STAT;              /*!< (@ 0x40051714) CLK_CORE_BUS_STAT clock status register                */
-    __IO uint32_t  CLK_PERIPH_SGPIO_CFG;              /*!< (@ 0x40051718) CLK_PERIPH_SGPIO_CFG clock configuration register      */
-    __I  uint32_t  CLK_PERIPH_SGPIO_STAT;             /*!< (@ 0x4005171C) CLK_CORE_SGPIO_STAT clock status register              */
-    __I  uint32_t  RESERVED9[56];
-    __IO uint32_t  CLK_USB0_CFG;                      /*!< (@ 0x40051800) CLK_M4_USB0 clock configuration register               */
-    __I  uint32_t  CLK_USB0_STAT;                     /*!< (@ 0x40051804) CLK_USB0 clock status register                         */
-    __I  uint32_t  RESERVED10[62];
-    __IO uint32_t  CLK_USB1_CFG;                      /*!< (@ 0x40051900) CLK_USB1 clock configuration register                  */
-    __I  uint32_t  CLK_USB1_STAT;                     /*!< (@ 0x40051904) CLK_USB1 clock status register                         */
-    __I  uint32_t  RESERVED11[62];
-    __IO uint32_t  CLK_SPI_CFG;                       /*!< (@ 0x40051A00) CLK_SPI clock configuration register                   */
-    __I  uint32_t  CLK_SPI_STAT;                      /*!< (@ 0x40051A04) CLK_SPI clock status register                          */
-    __I  uint32_t  RESERVED12[62];
-    __IO uint32_t  CLK_ADCHS_CFG;                     /*!< (@ 0x40051B00) CLK_ADCHS clock configuration register                 */
-    __I  uint32_t  CLK_ADCHS_STAT;                    /*!< (@ 0x40051B04) CLK_ADCHS clock status register                        */
+typedef struct {                                    /*!< (@ 0x40051000) CCU1 Structure                                         */
+  __IO uint32_t  PM;                                /*!< (@ 0x40051000) CCU1 power mode register                               */
+  __I  uint32_t  BASE_STAT;                         /*!< (@ 0x40051004) CCU1 base clocks status register                       */
+  __I  uint32_t  RESERVED0[62];
+  __IO uint32_t  CLK_APB3_BUS_CFG;                  /*!< (@ 0x40051100) CLK_APB3_BUS clock configuration register              */
+  __I  uint32_t  CLK_APB3_BUS_STAT;                 /*!< (@ 0x40051104) CLK_APB3_BUS clock status register                     */
+  __IO uint32_t  CLK_APB3_I2C1_CFG;                 /*!< (@ 0x40051108) CLK_APB3_I2C1 clock configuration register             */
+  __I  uint32_t  CLK_APB3_I2C1_STAT;                /*!< (@ 0x4005110C) CLK_APB3_I2C1 clock status register                    */
+  __IO uint32_t  CLK_APB3_DAC_CFG;                  /*!< (@ 0x40051110) CLK_APB3_DAC clock configuration register              */
+  __I  uint32_t  CLK_APB3_DAC_STAT;                 /*!< (@ 0x40051114) CLK_APB3_DAC clock status register                     */
+  __IO uint32_t  CLK_APB3_ADC0_CFG;                 /*!< (@ 0x40051118) CLK_APB3_ADC0 clock configuration register             */
+  __I  uint32_t  CLK_APB3_ADC0_STAT;                /*!< (@ 0x4005111C) CLK_APB3_ADC0 clock status register                    */
+  __IO uint32_t  CLK_APB3_ADC1_CFG;                 /*!< (@ 0x40051120) CLK_APB3_ADC1 clock configuration register             */
+  __I  uint32_t  CLK_APB3_ADC1_STAT;                /*!< (@ 0x40051124) CLK_APB3_ADC1 clock status register                    */
+  __IO uint32_t  CLK_APB3_CAN0_CFG;                 /*!< (@ 0x40051128) CLK_APB3_CAN0 clock configuration register             */
+  __I  uint32_t  CLK_APB3_CAN0_STAT;                /*!< (@ 0x4005112C) CLK_APB3_CAN0 clock status register                    */
+  __I  uint32_t  RESERVED1[52];
+  __IO uint32_t  CLK_APB1_BUS_CFG;                  /*!< (@ 0x40051200) CLK_APB1_BUS clock configuration register              */
+  __I  uint32_t  CLK_APB1_BUS_STAT;                 /*!< (@ 0x40051204) CLK_APB1_BUS clock status register                     */
+  __IO uint32_t  CLK_APB1_MOTOCONPWM_CFG;           /*!< (@ 0x40051208) CLK_APB1_MOTOCONPWM clock configuration register       */
+  __I  uint32_t  CLK_APB1_MOTOCONPWM_STAT;          /*!< (@ 0x4005120C) CLK_APB1_MOTOCONPWM clock status register              */
+  __IO uint32_t  CLK_APB1_I2C0_CFG;                 /*!< (@ 0x40051210) CLK_ABP1_I2C0 clock configuration register             */
+  __I  uint32_t  CLK_APB1_I2C0_STAT;                /*!< (@ 0x40051214) CLK_APB1_I2C0 clock status register                    */
+  __IO uint32_t  CLK_APB1_I2S_CFG;                  /*!< (@ 0x40051218) CLK_APB1_I2S clock configuration register              */
+  __I  uint32_t  CLK_APB1_I2S_STAT;                 /*!< (@ 0x4005121C) CLK_APB1_I2S clock status register                     */
+  __IO uint32_t  CLK_APB1_CAN1_CFG;                 /*!< (@ 0x40051220) CLK_APB1_CAN1 clock configuration register             */
+  __I  uint32_t  CLK_APB1_CAN1_STAT;                /*!< (@ 0x40051224) CLK_APB1_CAN1 clock status register                    */
+  __I  uint32_t  RESERVED2[54];
+  __IO uint32_t  CLK_SPIFI_CFG;                     /*!< (@ 0x40051300) CLK_SPIFI clock configuration register                 */
+  __I  uint32_t  CLK_SPIFI_STAT;                    /*!< (@ 0x40051304) CLK_APB1_SPIFI clock status register                   */
+  __I  uint32_t  RESERVED3[62];
+  __IO uint32_t  CLK_M4_BUS_CFG;                    /*!< (@ 0x40051400) CLK_M4_BUS clock configuration register                */
+  __I  uint32_t  CLK_M4_BUS_STAT;                   /*!< (@ 0x40051404) CLK_M4_BUSclock status register                        */
+  __IO uint32_t  CLK_M4_SPIFI_CFG;                  /*!< (@ 0x40051408) CLK_M4_SPIFI clock configuration register              */
+  __I  uint32_t  CLK_M4_SPIFI_STAT;                 /*!< (@ 0x4005140C) CLK_M4_SPIFI clock status register                     */
+  __IO uint32_t  CLK_M4_GPIO_CFG;                   /*!< (@ 0x40051410) CLK_M4_GPIO clock configuration register               */
+  __I  uint32_t  CLK_M4_GPIO_STAT;                  /*!< (@ 0x40051414) CLK_M4_GPIO clock status register                      */
+  __IO uint32_t  CLK_M4_LCD_CFG;                    /*!< (@ 0x40051418) CLK_M4_LCD clock configuration register                */
+  __I  uint32_t  CLK_M4_LCD_STAT;                   /*!< (@ 0x4005141C) CLK_M4_LCD clock status register                       */
+  __IO uint32_t  CLK_M4_ETHERNET_CFG;               /*!< (@ 0x40051420) CLK_M4_ETHERNET clock configuration register           */
+  __I  uint32_t  CLK_M4_ETHERNET_STAT;              /*!< (@ 0x40051424) CLK_M4_ETHERNET clock status register                  */
+  __IO uint32_t  CLK_M4_USB0_CFG;                   /*!< (@ 0x40051428) CLK_M4_USB0 clock configuration register               */
+  __I  uint32_t  CLK_M4_USB0_STAT;                  /*!< (@ 0x4005142C) CLK_M4_USB0 clock status register                      */
+  __IO uint32_t  CLK_M4_EMC_CFG;                    /*!< (@ 0x40051430) CLK_M4_EMC clock configuration register                */
+  __I  uint32_t  CLK_M4_EMC_STAT;                   /*!< (@ 0x40051434) CLK_M4_EMC clock status register                       */
+  __IO uint32_t  CLK_M4_SDIO_CFG;                   /*!< (@ 0x40051438) CLK_M4_SDIO clock configuration register               */
+  __I  uint32_t  CLK_M4_SDIO_STAT;                  /*!< (@ 0x4005143C) CLK_M4_SDIO clock status register                      */
+  __IO uint32_t  CLK_M4_DMA_CFG;                    /*!< (@ 0x40051440) CLK_M4_DMA clock configuration register                */
+  __I  uint32_t  CLK_M4_DMA_STAT;                   /*!< (@ 0x40051444) CLK_M4_DMA clock status register                       */
+  __IO uint32_t  CLK_M4_M4CORE_CFG;                 /*!< (@ 0x40051448) CLK_M4_M4CORE clock configuration register             */
+  __I  uint32_t  CLK_M4_M4CORE_STAT;                /*!< (@ 0x4005144C) CLK_M4_M3CORE clock status register                    */
+  __I  uint32_t  RESERVED4[6];
+  __IO uint32_t  CLK_M4_SCT_CFG;                    /*!< (@ 0x40051468) CLK_M4_SCT clock configuration register                */
+  __I  uint32_t  CLK_M4_SCT_STAT;                   /*!< (@ 0x4005146C) CLK_M4_SCT clock status register                       */
+  __IO uint32_t  CLK_M4_USB1_CFG;                   /*!< (@ 0x40051470) CLK_M4_USB1 clock configuration register               */
+  __I  uint32_t  CLK_M4_USB1_STAT;                  /*!< (@ 0x40051474) CLK_M4_USB1 clock status register                      */
+  __IO uint32_t  CLK_M4_EMCDIV_CFG;                 /*!< (@ 0x40051478) CLK_M4_EMCDIV clock configuration register             */
+  __I  uint32_t  CLK_M4_EMCDIV_STAT;                /*!< (@ 0x4005147C) CLK_M4_EMCDIV clock status register                    */
+  __IO uint32_t  CLK_M4_FLASHA_CFG;                 /*!< (@ 0x40051480) CLK_M4_FLASHA clock configuration register             */
+  __I  uint32_t  CLK_M4_FLASHA_STAT;                /*!< (@ 0x40051484) CLK_M4_FLASHA clock status register                    */
+  __IO uint32_t  CLK_M4_FLASHB_CFG;                 /*!< (@ 0x40051488) CLK_M4_FLASHB clock configuration register             */
+  __I  uint32_t  CLK_M4_FLASHB_STAT;                /*!< (@ 0x4005148C) CLK_M4_FLASHB clock status register                    */
+  __IO uint32_t  CLK_M4_M0APP_CFG;                  /*!< (@ 0x40051490) CLK_M0APP_CFG clock configuration register             */
+  __I  uint32_t  CLK_M4_M0APP_STAT;                 /*!< (@ 0x40051494) CLK_M4_MOAPP clock status register                     */
+  __IO uint32_t  CLK_M4_ADCHS_CFG;                  /*!< (@ 0x40051498) CLK_ADCHS_CFG clock configuration register             */
+  __I  uint32_t  CLK_M4_ADCHS_STAT;                 /*!< (@ 0x4005149C) CLK_M4_ADCHS clock status register                     */
+  __IO uint32_t  CLK_M4_EEPROM_CFG;                 /*!< (@ 0x400514A0) CLK_EEPROM_CFG clock configuration register            */
+  __I  uint32_t  CLK_M4_EEPROM_STAT;                /*!< (@ 0x400514A4) CLK_M4_EEPROM clock status register                    */
+  __I  uint32_t  RESERVED5[22];
+  __IO uint32_t  CLK_M4_WWDT_CFG;                   /*!< (@ 0x40051500) CLK_M4_WWDT clock configuration register               */
+  __I  uint32_t  CLK_M4_WWDT_STAT;                  /*!< (@ 0x40051504) CLK_M4_WWDT clock status register                      */
+  __IO uint32_t  CLK_M4_USART0_CFG;                 /*!< (@ 0x40051508) CLK_M4_USART0 clock configuration register             */
+  __I  uint32_t  CLK_M4_USART0_STAT;                /*!< (@ 0x4005150C) CLK_M4_USART0 clock status register                    */
+  __IO uint32_t  CLK_M4_UART1_CFG;                  /*!< (@ 0x40051510) CLK_M4_UART1 clock configuration register              */
+  __I  uint32_t  CLK_M4_UART1_STAT;                 /*!< (@ 0x40051514) CLK_M4_UART1 clock status register                     */
+  __IO uint32_t  CLK_M4_SSP0_CFG;                   /*!< (@ 0x40051518) CLK_M4_SSP0 clock configuration register               */
+  __I  uint32_t  CLK_M4_SSP0_STAT;                  /*!< (@ 0x4005151C) CLK_M4_SSP0 clock status register                      */
+  __IO uint32_t  CLK_M4_TIMER0_CFG;                 /*!< (@ 0x40051520) CLK_M4_TIMER0 clock configuration register             */
+  __I  uint32_t  CLK_M4_TIMER0_STAT;                /*!< (@ 0x40051524) CLK_M4_TIMER0 clock status register                    */
+  __IO uint32_t  CLK_M4_TIMER1_CFG;                 /*!< (@ 0x40051528) CLK_M4_TIMER1clock configuration register              */
+  __I  uint32_t  CLK_M4_TIMER1_STAT;                /*!< (@ 0x4005152C) CLK_M4_TIMER1 clock status register                    */
+  __IO uint32_t  CLK_M4_SCU_CFG;                    /*!< (@ 0x40051530) CLK_M4_SCU clock configuration register                */
+  __I  uint32_t  CLK_M4_SCU_STAT;                   /*!< (@ 0x40051534) CLK_SCU_XXX clock status register                      */
+  __IO uint32_t  CLK_M4_CREG_CFG;                   /*!< (@ 0x40051538) CLK_M4_CREGclock configuration register                */
+  __I  uint32_t  CLK_M4_CREG_STAT;                  /*!< (@ 0x4005153C) CLK_M4_CREG clock status register                      */
+  __I  uint32_t  RESERVED6[48];
+  __IO uint32_t  CLK_M4_RITIMER_CFG;                /*!< (@ 0x40051600) CLK_M4_RITIMER clock configuration register            */
+  __I  uint32_t  CLK_M4_RITIMER_STAT;               /*!< (@ 0x40051604) CLK_M4_RITIMER clock status register                   */
+  __IO uint32_t  CLK_M4_USART2_CFG;                 /*!< (@ 0x40051608) CLK_M4_USART2 clock configuration register             */
+  __I  uint32_t  CLK_M4_USART2_STAT;                /*!< (@ 0x4005160C) CLK_M4_USART2 clock status register                    */
+  __IO uint32_t  CLK_M4_USART3_CFG;                 /*!< (@ 0x40051610) CLK_M4_USART3 clock configuration register             */
+  __I  uint32_t  CLK_M4_USART3_STAT;                /*!< (@ 0x40051614) CLK_M4_USART3 clock status register                    */
+  __IO uint32_t  CLK_M4_TIMER2_CFG;                 /*!< (@ 0x40051618) CLK_M4_TIMER2 clock configuration register             */
+  __I  uint32_t  CLK_M4_TIMER2_STAT;                /*!< (@ 0x4005161C) CLK_M4_TIMER2 clock status register                    */
+  __IO uint32_t  CLK_M4_TIMER3_CFG;                 /*!< (@ 0x40051620) CLK_M4_TIMER3 clock configuration register             */
+  __I  uint32_t  CLK_M4_TIMER3_STAT;                /*!< (@ 0x40051624) CLK_M4_TIMER3 clock status register                    */
+  __IO uint32_t  CLK_M4_SSP1_CFG;                   /*!< (@ 0x40051628) CLK_M4_SSP1 clock configuration register               */
+  __I  uint32_t  CLK_M4_SSP1_STAT;                  /*!< (@ 0x4005162C) CLK_M4_SSP1 clock status register                      */
+  __IO uint32_t  CLK_M4_QEI_CFG;                    /*!< (@ 0x40051630) CLK_M4_QEIclock configuration register                 */
+  __I  uint32_t  CLK_M4_QEI_STAT;                   /*!< (@ 0x40051634) CLK_M4_QEI clock status register                       */
+  __I  uint32_t  RESERVED7[50];
+  __IO uint32_t  CLK_PERIPH_BUS_CFG;                /*!< (@ 0x40051700) CLK_PERIPH_BUS_CFG clock configuration register        */
+  __I  uint32_t  CLK_PERIPH_BUS_STAT;               /*!< (@ 0x40051704) CLK_PERIPH_BUS_STAT clock status register              */
+  __I  uint32_t  RESERVED8[2];
+  __IO uint32_t  CLK_PERIPH_CORE_CFG;               /*!< (@ 0x40051710) CLK_PERIPH_CORE_CFG clock configuration register       */
+  __I  uint32_t  CLK_PERIPH_CORE_STAT;              /*!< (@ 0x40051714) CLK_CORE_BUS_STAT clock status register                */
+  __IO uint32_t  CLK_PERIPH_SGPIO_CFG;              /*!< (@ 0x40051718) CLK_PERIPH_SGPIO_CFG clock configuration register      */
+  __I  uint32_t  CLK_PERIPH_SGPIO_STAT;             /*!< (@ 0x4005171C) CLK_CORE_SGPIO_STAT clock status register              */
+  __I  uint32_t  RESERVED9[56];
+  __IO uint32_t  CLK_USB0_CFG;                      /*!< (@ 0x40051800) CLK_M4_USB0 clock configuration register               */
+  __I  uint32_t  CLK_USB0_STAT;                     /*!< (@ 0x40051804) CLK_USB0 clock status register                         */
+  __I  uint32_t  RESERVED10[62];
+  __IO uint32_t  CLK_USB1_CFG;                      /*!< (@ 0x40051900) CLK_USB1 clock configuration register                  */
+  __I  uint32_t  CLK_USB1_STAT;                     /*!< (@ 0x40051904) CLK_USB1 clock status register                         */
+  __I  uint32_t  RESERVED11[62];
+  __IO uint32_t  CLK_SPI_CFG;                       /*!< (@ 0x40051A00) CLK_SPI clock configuration register                   */
+  __I  uint32_t  CLK_SPI_STAT;                      /*!< (@ 0x40051A04) CLK_SPI clock status register                          */
+  __I  uint32_t  RESERVED12[62];
+  __IO uint32_t  CLK_ADCHS_CFG;                     /*!< (@ 0x40051B00) CLK_ADCHS clock configuration register                 */
+  __I  uint32_t  CLK_ADCHS_STAT;                    /*!< (@ 0x40051B04) CLK_ADCHS clock status register                        */
 } LPC_CCU1_Type;
 
 
@@ -1650,34 +1582,33 @@ typedef struct                                      /*!< (@ 0x40051000) CCU1 Str
   * @brief Clock Control Unit (CCU2) (CCU2)
   */
 
-typedef struct                                      /*!< (@ 0x40052000) CCU2 Structure                                         */
-{
-    __IO uint32_t  PM;                                /*!< (@ 0x40052000) Power mode register                                    */
-    __I  uint32_t  BASE_STAT;                         /*!< (@ 0x40052004) CCU base clocks status register                        */
-    __I  uint32_t  RESERVED0[62];
-    __IO uint32_t  CLK_AUDIO_CFG;                     /*!< (@ 0x40052100) CLK_AUDIO clock configuration register                 */
-    __I  uint32_t  CLK_AUDIO_STAT;                    /*!< (@ 0x40052104) CLK_AUDIO clock status register                        */
-    __I  uint32_t  RESERVED1[62];
-    __IO uint32_t  CLK_APB2_USART3_CFG;               /*!< (@ 0x40052200) CLK_APB2_USART3 clock configuration register           */
-    __I  uint32_t  CLK_APB2_USART3_STAT;              /*!< (@ 0x40052204) CLK_APB2_USART3 clock status register                  */
-    __I  uint32_t  RESERVED2[62];
-    __IO uint32_t  CLK_APB2_USART2_CFG;               /*!< (@ 0x40052300) CLK_APB2_USART2 clock configuration register           */
-    __I  uint32_t  CLK_APB2_USART2_STAT;              /*!< (@ 0x40052304) CLK_APB2_USART clock status register                   */
-    __I  uint32_t  RESERVED3[62];
-    __IO uint32_t  CLK_APB0_UART1_CFG;            /*!< (@ 0x40052400) CLK_APB2_UART1 clock configuration register            */
-    __I  uint32_t  CLK_APB0_UART1_STAT;               /*!< (@ 0x40052404) CLK_APB0_UART1 clock status register                   */
-    __I  uint32_t  RESERVED4[62];
-    __IO uint32_t  CLK_APB0_USART0_CFG;               /*!< (@ 0x40052500) CLK_APB2_USART0 clock configuration register           */
-    __I  uint32_t  CLK_APB0_USART0_STAT;              /*!< (@ 0x40052504) CLK_APB0_USART0 clock status register                  */
-    __I  uint32_t  RESERVED5[62];
-    __IO uint32_t  CLK_APB2_SSP1_CFG;                 /*!< (@ 0x40052600) CLK_APB2_SSP1 clock configuration register             */
-    __I  uint32_t  CLK_APB2_SSP1_STAT;                /*!< (@ 0x40052604) CLK_APB2_SSP1 clock status register                    */
-    __I  uint32_t  RESERVED6[62];
-    __IO uint32_t  CLK_APB0_SSP0_CFG;                 /*!< (@ 0x40052700) CLK_APB0_SSP0 clock configuration register             */
-    __I  uint32_t  CLK_APB0_SSP0_STAT;                /*!< (@ 0x40052704) CLK_APB0_SSP0 clock status register                    */
-    __I  uint32_t  RESERVED7[62];
-    __IO uint32_t  CLK_SDIO_CFG;                      /*!< (@ 0x40052800) CLK_SDIO clock configuration register                  */
-    __I  uint32_t  CLK_SDIO_STAT;                     /*!< (@ 0x40052804) CLK_SDIO clock status register                         */
+typedef struct {                                    /*!< (@ 0x40052000) CCU2 Structure                                         */
+  __IO uint32_t  PM;                                /*!< (@ 0x40052000) Power mode register                                    */
+  __I  uint32_t  BASE_STAT;                         /*!< (@ 0x40052004) CCU base clocks status register                        */
+  __I  uint32_t  RESERVED0[62];
+  __IO uint32_t  CLK_AUDIO_CFG;                     /*!< (@ 0x40052100) CLK_AUDIO clock configuration register                 */
+  __I  uint32_t  CLK_AUDIO_STAT;                    /*!< (@ 0x40052104) CLK_AUDIO clock status register                        */
+  __I  uint32_t  RESERVED1[62];
+  __IO uint32_t  CLK_APB2_USART3_CFG;               /*!< (@ 0x40052200) CLK_APB2_USART3 clock configuration register           */
+  __I  uint32_t  CLK_APB2_USART3_STAT;              /*!< (@ 0x40052204) CLK_APB2_USART3 clock status register                  */
+  __I  uint32_t  RESERVED2[62];
+  __IO uint32_t  CLK_APB2_USART2_CFG;               /*!< (@ 0x40052300) CLK_APB2_USART2 clock configuration register           */
+  __I  uint32_t  CLK_APB2_USART2_STAT;              /*!< (@ 0x40052304) CLK_APB2_USART clock status register                   */
+  __I  uint32_t  RESERVED3[62];
+  __IO uint32_t  CLK_APB0_UART1_CFG;            /*!< (@ 0x40052400) CLK_APB2_UART1 clock configuration register            */
+  __I  uint32_t  CLK_APB0_UART1_STAT;               /*!< (@ 0x40052404) CLK_APB0_UART1 clock status register                   */
+  __I  uint32_t  RESERVED4[62];
+  __IO uint32_t  CLK_APB0_USART0_CFG;               /*!< (@ 0x40052500) CLK_APB2_USART0 clock configuration register           */
+  __I  uint32_t  CLK_APB0_USART0_STAT;              /*!< (@ 0x40052504) CLK_APB0_USART0 clock status register                  */
+  __I  uint32_t  RESERVED5[62];
+  __IO uint32_t  CLK_APB2_SSP1_CFG;                 /*!< (@ 0x40052600) CLK_APB2_SSP1 clock configuration register             */
+  __I  uint32_t  CLK_APB2_SSP1_STAT;                /*!< (@ 0x40052604) CLK_APB2_SSP1 clock status register                    */
+  __I  uint32_t  RESERVED6[62];
+  __IO uint32_t  CLK_APB0_SSP0_CFG;                 /*!< (@ 0x40052700) CLK_APB0_SSP0 clock configuration register             */
+  __I  uint32_t  CLK_APB0_SSP0_STAT;                /*!< (@ 0x40052704) CLK_APB0_SSP0 clock status register                    */
+  __I  uint32_t  RESERVED7[62];
+  __IO uint32_t  CLK_SDIO_CFG;                      /*!< (@ 0x40052800) CLK_SDIO clock configuration register                  */
+  __I  uint32_t  CLK_SDIO_STAT;                     /*!< (@ 0x40052804) CLK_SDIO clock status register                         */
 } LPC_CCU2_Type;
 
 
@@ -1690,74 +1621,73 @@ typedef struct                                      /*!< (@ 0x40052000) CCU2 Str
   * @brief Reset Generation Unit (RGU) (RGU)
   */
 
-typedef struct                                      /*!< (@ 0x40053000) RGU Structure                                          */
-{
-    __I  uint32_t  RESERVED0[64];
-    __O  uint32_t  RESET_CTRL0;                       /*!< (@ 0x40053100) Reset control register 0                               */
-    __O  uint32_t  RESET_CTRL1;                       /*!< (@ 0x40053104) Reset control register 1                               */
-    __I  uint32_t  RESERVED1[2];
-    __IO uint32_t  RESET_STATUS0;                     /*!< (@ 0x40053110) Reset status register 0                                */
-    __IO uint32_t  RESET_STATUS1;                     /*!< (@ 0x40053114) Reset status register 1                                */
-    __IO uint32_t  RESET_STATUS2;                     /*!< (@ 0x40053118) Reset status register 2                                */
-    __IO uint32_t  RESET_STATUS3;                     /*!< (@ 0x4005311C) Reset status register 3                                */
-    __I  uint32_t  RESERVED2[12];
-    __I  uint32_t  RESET_ACTIVE_STATUS0;              /*!< (@ 0x40053150) Reset active status register 0                         */
-    __I  uint32_t  RESET_ACTIVE_STATUS1;              /*!< (@ 0x40053154) Reset active status register 1                         */
-    __I  uint32_t  RESERVED3[171];
-    __IO uint32_t  RESET_EXT_STAT1;                   /*!< (@ 0x40053404) Reset external status register 1 for PERIPH_RST        */
-    __IO uint32_t  RESET_EXT_STAT2;                   /*!< (@ 0x40053408) Reset external status register 2 for MASTER_RST        */
-    __I  uint32_t  RESERVED4[2];
-    __IO uint32_t  RESET_EXT_STAT5;                   /*!< (@ 0x40053414) Reset external status register 5 for CREG_RST          */
-    __I  uint32_t  RESERVED5[2];
-    __IO uint32_t  RESET_EXT_STAT8;                   /*!< (@ 0x40053420) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT9;                   /*!< (@ 0x40053424) Reset external status register                         */
-    __I  uint32_t  RESERVED6[2];
-    __IO uint32_t  RESET_EXT_STAT12;                  /*!< (@ 0x40053430) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT13;                  /*!< (@ 0x40053434) Reset external status register                         */
-    __I  uint32_t  RESERVED7[2];
-    __IO uint32_t  RESET_EXT_STAT16;                  /*!< (@ 0x40053440) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT17;                  /*!< (@ 0x40053444) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT18;                  /*!< (@ 0x40053448) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT19;                  /*!< (@ 0x4005344C) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT20;                  /*!< (@ 0x40053450) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT21;                  /*!< (@ 0x40053454) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT22;                  /*!< (@ 0x40053458) Reset external status register                         */
-    __I  uint32_t  RESERVED8[2];
-    __IO uint32_t  RESET_EXT_STAT25;                  /*!< (@ 0x40053464) Reset external status register                         */
-    __I  uint32_t  RESERVED9;
-    __IO uint32_t  RESET_EXT_STAT27;                  /*!< (@ 0x4005346C) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT28;                  /*!< (@ 0x40053470) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT29;                  /*!< (@ 0x40053474) Reset external status register                         */
-    __I  uint32_t  RESERVED10[2];
-    __IO uint32_t  RESET_EXT_STAT32;                  /*!< (@ 0x40053480) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT33;                  /*!< (@ 0x40053484) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT34;                  /*!< (@ 0x40053488) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT35;                  /*!< (@ 0x4005348C) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT36;                  /*!< (@ 0x40053490) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT37;                  /*!< (@ 0x40053494) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT38;                  /*!< (@ 0x40053498) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT39;                  /*!< (@ 0x4005349C) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT40;                  /*!< (@ 0x400534A0) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT41;                  /*!< (@ 0x400534A4) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT42;                  /*!< (@ 0x400534A8) Reset external status register                         */
-    __I  uint32_t  RESERVED11;
-    __IO uint32_t  RESET_EXT_STAT44;                  /*!< (@ 0x400534B0) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT45;                  /*!< (@ 0x400534B4) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT46;                  /*!< (@ 0x400534B8) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT47;                  /*!< (@ 0x400534BC) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT48;                  /*!< (@ 0x400534C0) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT49;                  /*!< (@ 0x400534C4) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT50;                  /*!< (@ 0x400534C8) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT51;                  /*!< (@ 0x400534CC) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT52;                  /*!< (@ 0x400534D0) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT53;                  /*!< (@ 0x400534D4) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT54;                  /*!< (@ 0x400534D8) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT55;                  /*!< (@ 0x400534DC) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT56;                  /*!< (@ 0x400534E0) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT57;                  /*!< (@ 0x400534E4) Reset external status register                         */
-    __IO uint32_t  RESET_EXT_STAT58;                  /*!< (@ 0x400534E8) Reset external status register                         */
-    __I  uint32_t  RESERVED12;
-    __IO uint32_t  RESET_EXT_STAT60;                  /*!< (@ 0x400534F0) Reset external status register                         */
+typedef struct {                                    /*!< (@ 0x40053000) RGU Structure                                          */
+  __I  uint32_t  RESERVED0[64];
+  __O  uint32_t  RESET_CTRL0;                       /*!< (@ 0x40053100) Reset control register 0                               */
+  __O  uint32_t  RESET_CTRL1;                       /*!< (@ 0x40053104) Reset control register 1                               */
+  __I  uint32_t  RESERVED1[2];
+  __IO uint32_t  RESET_STATUS0;                     /*!< (@ 0x40053110) Reset status register 0                                */
+  __IO uint32_t  RESET_STATUS1;                     /*!< (@ 0x40053114) Reset status register 1                                */
+  __IO uint32_t  RESET_STATUS2;                     /*!< (@ 0x40053118) Reset status register 2                                */
+  __IO uint32_t  RESET_STATUS3;                     /*!< (@ 0x4005311C) Reset status register 3                                */
+  __I  uint32_t  RESERVED2[12];
+  __I  uint32_t  RESET_ACTIVE_STATUS0;              /*!< (@ 0x40053150) Reset active status register 0                         */
+  __I  uint32_t  RESET_ACTIVE_STATUS1;              /*!< (@ 0x40053154) Reset active status register 1                         */
+  __I  uint32_t  RESERVED3[171];
+  __IO uint32_t  RESET_EXT_STAT1;                   /*!< (@ 0x40053404) Reset external status register 1 for PERIPH_RST        */
+  __IO uint32_t  RESET_EXT_STAT2;                   /*!< (@ 0x40053408) Reset external status register 2 for MASTER_RST        */
+  __I  uint32_t  RESERVED4[2];
+  __IO uint32_t  RESET_EXT_STAT5;                   /*!< (@ 0x40053414) Reset external status register 5 for CREG_RST          */
+  __I  uint32_t  RESERVED5[2];
+  __IO uint32_t  RESET_EXT_STAT8;                   /*!< (@ 0x40053420) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT9;                   /*!< (@ 0x40053424) Reset external status register                         */
+  __I  uint32_t  RESERVED6[2];
+  __IO uint32_t  RESET_EXT_STAT12;                  /*!< (@ 0x40053430) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT13;                  /*!< (@ 0x40053434) Reset external status register                         */
+  __I  uint32_t  RESERVED7[2];
+  __IO uint32_t  RESET_EXT_STAT16;                  /*!< (@ 0x40053440) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT17;                  /*!< (@ 0x40053444) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT18;                  /*!< (@ 0x40053448) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT19;                  /*!< (@ 0x4005344C) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT20;                  /*!< (@ 0x40053450) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT21;                  /*!< (@ 0x40053454) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT22;                  /*!< (@ 0x40053458) Reset external status register                         */
+  __I  uint32_t  RESERVED8[2];
+  __IO uint32_t  RESET_EXT_STAT25;                  /*!< (@ 0x40053464) Reset external status register                         */
+  __I  uint32_t  RESERVED9;
+  __IO uint32_t  RESET_EXT_STAT27;                  /*!< (@ 0x4005346C) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT28;                  /*!< (@ 0x40053470) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT29;                  /*!< (@ 0x40053474) Reset external status register                         */
+  __I  uint32_t  RESERVED10[2];
+  __IO uint32_t  RESET_EXT_STAT32;                  /*!< (@ 0x40053480) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT33;                  /*!< (@ 0x40053484) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT34;                  /*!< (@ 0x40053488) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT35;                  /*!< (@ 0x4005348C) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT36;                  /*!< (@ 0x40053490) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT37;                  /*!< (@ 0x40053494) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT38;                  /*!< (@ 0x40053498) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT39;                  /*!< (@ 0x4005349C) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT40;                  /*!< (@ 0x400534A0) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT41;                  /*!< (@ 0x400534A4) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT42;                  /*!< (@ 0x400534A8) Reset external status register                         */
+  __I  uint32_t  RESERVED11;
+  __IO uint32_t  RESET_EXT_STAT44;                  /*!< (@ 0x400534B0) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT45;                  /*!< (@ 0x400534B4) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT46;                  /*!< (@ 0x400534B8) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT47;                  /*!< (@ 0x400534BC) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT48;                  /*!< (@ 0x400534C0) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT49;                  /*!< (@ 0x400534C4) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT50;                  /*!< (@ 0x400534C8) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT51;                  /*!< (@ 0x400534CC) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT52;                  /*!< (@ 0x400534D0) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT53;                  /*!< (@ 0x400534D4) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT54;                  /*!< (@ 0x400534D8) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT55;                  /*!< (@ 0x400534DC) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT56;                  /*!< (@ 0x400534E0) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT57;                  /*!< (@ 0x400534E4) Reset external status register                         */
+  __IO uint32_t  RESET_EXT_STAT58;                  /*!< (@ 0x400534E8) Reset external status register                         */
+  __I  uint32_t  RESERVED12;
+  __IO uint32_t  RESET_EXT_STAT60;                  /*!< (@ 0x400534F0) Reset external status register                         */
 } LPC_RGU_Type;
 
 
@@ -1770,21 +1700,20 @@ typedef struct                                      /*!< (@ 0x40053000) RGU Stru
   * @brief Windowed Watchdog timer (WWDT)  (WWDT)
   */
 
-typedef struct                                      /*!< (@ 0x40080000) WWDT Structure                                         */
-{
-    __IO uint32_t  MOD;                               /*!< (@ 0x40080000) Watchdog mode register. This register contains
+typedef struct {                                    /*!< (@ 0x40080000) WWDT Structure                                         */
+  __IO uint32_t  MOD;                               /*!< (@ 0x40080000) Watchdog mode register. This register contains
                                                          the basic mode and status of the Watchdog Timer.                      */
-    __IO uint32_t  TC;                                /*!< (@ 0x40080004) Watchdog timer constant register. This register
+  __IO uint32_t  TC;                                /*!< (@ 0x40080004) Watchdog timer constant register. This register
                                                          determines the time-out value.                                        */
-    __O  uint32_t  FEED;                              /*!< (@ 0x40080008) Watchdog feed sequence register. Writing 0xAA
+  __O  uint32_t  FEED;                              /*!< (@ 0x40080008) Watchdog feed sequence register. Writing 0xAA
                                                          followed by 0x55 to this register reloads the Watchdog timer
                                                           with the value contained in WDTC.                                    */
-    __I  uint32_t  TV;                                /*!< (@ 0x4008000C) Watchdog timer value register. This register
+  __I  uint32_t  TV;                                /*!< (@ 0x4008000C) Watchdog timer value register. This register
                                                          reads out the current value of the Watchdog timer.                    */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  WARNINT;                           /*!< (@ 0x40080014) Watchdog warning interrupt register. This register
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  WARNINT;                           /*!< (@ 0x40080014) Watchdog warning interrupt register. This register
                                                          contains the Watchdog warning interrupt compare value.                */
-    __IO uint32_t  WINDOW;                            /*!< (@ 0x40080018) Watchdog timer window register. This register
+  __IO uint32_t  WINDOW;                            /*!< (@ 0x40080018) Watchdog timer window register. This register
                                                          contains the Watchdog window value.                                   */
 } LPC_WWDT_Type;
 
@@ -1798,63 +1727,59 @@ typedef struct                                      /*!< (@ 0x40080000) WWDT Str
   * @brief USART0_2_3 (USARTn)
   */
 
-typedef struct                                      /*!< (@ 0x40081000) USARTn Structure                                       */
-{
+typedef struct {                                    /*!< (@ 0x40081000) USARTn Structure                                       */
 
-    union
-    {
-        __IO uint32_t  DLL;                             /*!< (@ 0x40081000) Divisor Latch LSB. Least significant byte of
+  union {
+    __IO uint32_t  DLL;                             /*!< (@ 0x40081000) Divisor Latch LSB. Least significant byte of
                                                          the baud rate divisor value. The full divisor is used to generate
                                                           a baud rate from the fractional rate divider (DLAB = 1).             */
-        __O  uint32_t  THR;                             /*!< (@ 0x40081000) Transmit Holding Register. The next character
+    __O  uint32_t  THR;                             /*!< (@ 0x40081000) Transmit Holding Register. The next character
                                                          to be transmitted is written here (DLAB = 0).                         */
-        __I  uint32_t  RBR;                             /*!< (@ 0x40081000) Receiver Buffer Register. Contains the next received
+    __I  uint32_t  RBR;                             /*!< (@ 0x40081000) Receiver Buffer Register. Contains the next received
                                                          character to be read (DLAB = 0).                                      */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  IER;                             /*!< (@ 0x40081004) Interrupt Enable Register. Contains individual
+  union {
+    __IO uint32_t  IER;                             /*!< (@ 0x40081004) Interrupt Enable Register. Contains individual
                                                          interrupt enable bits for the 7 potential USART interrupts (DLAB
                                                           = 0).                                                                */
-        __IO uint32_t  DLM;                             /*!< (@ 0x40081004) Divisor Latch MSB. Most significant byte of the
+    __IO uint32_t  DLM;                             /*!< (@ 0x40081004) Divisor Latch MSB. Most significant byte of the
                                                          baud rate divisor value. The full divisor is used to generate
                                                           a baud rate from the fractional rate divider (DLAB = 1).             */
-    };
+  };
 
-    union
-    {
-        __O  uint32_t  FCR;                             /*!< (@ 0x40081008) FIFO Control Register. Controls USART FIFO usage
+  union {
+    __O  uint32_t  FCR;                             /*!< (@ 0x40081008) FIFO Control Register. Controls USART FIFO usage
                                                          and modes.                                                            */
-        __I  uint32_t  IIR;                             /*!< (@ 0x40081008) Interrupt ID Register. Identifies which interrupt(s)
+    __I  uint32_t  IIR;                             /*!< (@ 0x40081008) Interrupt ID Register. Identifies which interrupt(s)
                                                          are pending.                                                          */
-    };
-    __IO uint32_t  LCR;                               /*!< (@ 0x4008100C) Line Control Register. Contains controls for
+  };
+  __IO uint32_t  LCR;                               /*!< (@ 0x4008100C) Line Control Register. Contains controls for
                                                          frame formatting and break generation.                                */
-    __I  uint32_t  RESERVED0;
-    __I  uint32_t  LSR;                               /*!< (@ 0x40081014) Line Status Register. Contains flags for transmit
+  __I  uint32_t  RESERVED0;
+  __I  uint32_t  LSR;                               /*!< (@ 0x40081014) Line Status Register. Contains flags for transmit
                                                          and receive status, including line errors.                            */
-    __I  uint32_t  RESERVED1;
-    __IO uint32_t  SCR;                               /*!< (@ 0x4008101C) Scratch Pad Register. Eight-bit temporary storage
+  __I  uint32_t  RESERVED1;
+  __IO uint32_t  SCR;                               /*!< (@ 0x4008101C) Scratch Pad Register. Eight-bit temporary storage
                                                          for software.                                                         */
-    __IO uint32_t  ACR;                               /*!< (@ 0x40081020) Auto-baud Control Register. Contains controls
+  __IO uint32_t  ACR;                               /*!< (@ 0x40081020) Auto-baud Control Register. Contains controls
                                                          for the auto-baud feature.                                            */
-    __IO uint32_t  ICR;                               /*!< (@ 0x40081024) IrDA control register (USART3 only)                    */
-    __IO uint32_t  FDR;                               /*!< (@ 0x40081028) Fractional Divider Register. Generates a clock
+  __IO uint32_t  ICR;                               /*!< (@ 0x40081024) IrDA control register (USART3 only)                    */
+  __IO uint32_t  FDR;                               /*!< (@ 0x40081028) Fractional Divider Register. Generates a clock
                                                          input for the baud rate divider.                                      */
-    __IO uint32_t  OSR;                               /*!< (@ 0x4008102C) Oversampling Register. Controls the degree of
+  __IO uint32_t  OSR;                               /*!< (@ 0x4008102C) Oversampling Register. Controls the degree of
                                                          oversampling during each bit time.                                    */
-    __I  uint32_t  RESERVED2[4];
-    __IO uint32_t  HDEN;                              /*!< (@ 0x40081040) Half-duplex enable Register                            */
-    __I  uint32_t  RESERVED3;
-    __IO uint32_t  SCICTRL;                           /*!< (@ 0x40081048) Smart card interface control register                  */
-    __IO uint32_t  RS485CTRL;                         /*!< (@ 0x4008104C) RS-485/EIA-485 Control. Contains controls to
+  __I  uint32_t  RESERVED2[4];
+  __IO uint32_t  HDEN;                              /*!< (@ 0x40081040) Half-duplex enable Register                            */
+  __I  uint32_t  RESERVED3;
+  __IO uint32_t  SCICTRL;                           /*!< (@ 0x40081048) Smart card interface control register                  */
+  __IO uint32_t  RS485CTRL;                         /*!< (@ 0x4008104C) RS-485/EIA-485 Control. Contains controls to
                                                          configure various aspects of RS-485/EIA-485 modes.                    */
-    __IO uint32_t  RS485ADRMATCH;                     /*!< (@ 0x40081050) RS-485/EIA-485 address match. Contains the address
+  __IO uint32_t  RS485ADRMATCH;                     /*!< (@ 0x40081050) RS-485/EIA-485 address match. Contains the address
                                                          match value for RS-485/EIA-485 mode.                                  */
-    __IO uint32_t  RS485DLY;                          /*!< (@ 0x40081054) RS-485/EIA-485 direction control delay.                */
-    __IO uint32_t  SYNCCTRL;                          /*!< (@ 0x40081058) Synchronous mode control register.                     */
-    __IO uint32_t  TER;                               /*!< (@ 0x4008105C) Transmit Enable Register. Turns off USART transmitter
+  __IO uint32_t  RS485DLY;                          /*!< (@ 0x40081054) RS-485/EIA-485 direction control delay.                */
+  __IO uint32_t  SYNCCTRL;                          /*!< (@ 0x40081058) Synchronous mode control register.                     */
+  __IO uint32_t  TER;                               /*!< (@ 0x4008105C) Transmit Enable Register. Turns off USART transmitter
                                                          for use with software flow control.                                   */
 } LPC_USARTn_Type;
 
@@ -1868,60 +1793,56 @@ typedef struct                                      /*!< (@ 0x40081000) USARTn S
   * @brief UART1 (UART1)
   */
 
-typedef struct                                      /*!< (@ 0x40082000) UART1 Structure                                        */
-{
+typedef struct {                                    /*!< (@ 0x40082000) UART1 Structure                                        */
 
-    union
-    {
-        __IO uint32_t  DLL;                             /*!< (@ 0x40082000) Divisor Latch LSB. Least significant byte of
+  union {
+    __IO uint32_t  DLL;                             /*!< (@ 0x40082000) Divisor Latch LSB. Least significant byte of
                                                          the baud rate divisor value. The full divisor is used to generate
                                                           a baud rate from the fractional rate divider. (DLAB=1)               */
-        __O  uint32_t  THR;                             /*!< (@ 0x40082000) Transmit Holding Register. The next character
+    __O  uint32_t  THR;                             /*!< (@ 0x40082000) Transmit Holding Register. The next character
                                                          to be transmitted is written here. (DLAB=0)                           */
-        __I  uint32_t  RBR;                             /*!< (@ 0x40082000) Receiver Buffer Register. Contains the next received
+    __I  uint32_t  RBR;                             /*!< (@ 0x40082000) Receiver Buffer Register. Contains the next received
                                                          character to be read. (DLAB=0)                                        */
-    };
+  };
 
-    union
-    {
-        __IO uint32_t  IER;                             /*!< (@ 0x40082004) Interrupt Enable Register. Contains individual
+  union {
+    __IO uint32_t  IER;                             /*!< (@ 0x40082004) Interrupt Enable Register. Contains individual
                                                          interrupt enable bits for the 7 potential UART1 interrupts.
                                                           (DLAB=0)                                                             */
-        __IO uint32_t  DLM;                             /*!< (@ 0x40082004) Divisor Latch MSB. Most significant byte of the
+    __IO uint32_t  DLM;                             /*!< (@ 0x40082004) Divisor Latch MSB. Most significant byte of the
                                                          baud rate divisor value. The full divisor is used to generate
                                                           a baud rate from the fractional rate divider.(DLAB=1)                */
-    };
+  };
 
-    union
-    {
-        __O  uint32_t  FCR;                             /*!< (@ 0x40082008) FIFO Control Register. Controls UART1 FIFO usage
+  union {
+    __O  uint32_t  FCR;                             /*!< (@ 0x40082008) FIFO Control Register. Controls UART1 FIFO usage
                                                          and modes.                                                            */
-        __I  uint32_t  IIR;                             /*!< (@ 0x40082008) Interrupt ID Register. Identifies which interrupt(s)
+    __I  uint32_t  IIR;                             /*!< (@ 0x40082008) Interrupt ID Register. Identifies which interrupt(s)
                                                          are pending.                                                          */
-    };
-    __IO uint32_t  LCR;                               /*!< (@ 0x4008200C) Line Control Register. Contains controls for
+  };
+  __IO uint32_t  LCR;                               /*!< (@ 0x4008200C) Line Control Register. Contains controls for
                                                          frame formatting and break generation.                                */
-    __IO uint32_t  MCR;                               /*!< (@ 0x40082010) Modem Control Register. Contains controls for
+  __IO uint32_t  MCR;                               /*!< (@ 0x40082010) Modem Control Register. Contains controls for
                                                          flow control handshaking and loopback mode.                           */
-    __I  uint32_t  LSR;                               /*!< (@ 0x40082014) Line Status Register. Contains flags for transmit
+  __I  uint32_t  LSR;                               /*!< (@ 0x40082014) Line Status Register. Contains flags for transmit
                                                          and receive status, including line errors.                            */
-    __I  uint32_t  MSR;                               /*!< (@ 0x40082018) Modem Status Register. Contains handshake signal
+  __I  uint32_t  MSR;                               /*!< (@ 0x40082018) Modem Status Register. Contains handshake signal
                                                          status flags.                                                         */
-    __IO uint32_t  SCR;                               /*!< (@ 0x4008201C) Scratch Pad Register. 8-bit temporary storage
+  __IO uint32_t  SCR;                               /*!< (@ 0x4008201C) Scratch Pad Register. 8-bit temporary storage
                                                          for software.                                                         */
-    __IO uint32_t  ACR;                               /*!< (@ 0x40082020) Auto-baud Control Register. Contains controls
+  __IO uint32_t  ACR;                               /*!< (@ 0x40082020) Auto-baud Control Register. Contains controls
                                                          for the auto-baud feature.                                            */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  FDR;                               /*!< (@ 0x40082028) Fractional Divider Register. Generates a clock
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  FDR;                               /*!< (@ 0x40082028) Fractional Divider Register. Generates a clock
                                                          input for the baud rate divider.                                      */
-    __I  uint32_t  RESERVED1[8];
-    __IO uint32_t  RS485CTRL;                         /*!< (@ 0x4008204C) RS-485/EIA-485 Control. Contains controls to
+  __I  uint32_t  RESERVED1[8];
+  __IO uint32_t  RS485CTRL;                         /*!< (@ 0x4008204C) RS-485/EIA-485 Control. Contains controls to
                                                          configure various aspects of RS-485/EIA-485 modes.                    */
-    __IO uint32_t  RS485ADRMATCH;                     /*!< (@ 0x40082050) RS-485/EIA-485 address match. Contains the address
+  __IO uint32_t  RS485ADRMATCH;                     /*!< (@ 0x40082050) RS-485/EIA-485 address match. Contains the address
                                                          match value for RS-485/EIA-485 mode.                                  */
-    __IO uint32_t  RS485DLY;                          /*!< (@ 0x40082054) RS-485/EIA-485 direction control delay.                */
-    __I  uint32_t  RESERVED2;
-    __IO uint32_t  TER;                               /*!< (@ 0x4008205C) Transmit Enable Register. Turns off UART transmitter
+  __IO uint32_t  RS485DLY;                          /*!< (@ 0x40082054) RS-485/EIA-485 direction control delay.                */
+  __I  uint32_t  RESERVED2;
+  __IO uint32_t  TER;                               /*!< (@ 0x4008205C) Transmit Enable Register. Turns off UART transmitter
                                                          for use with software flow control.                                   */
 } LPC_UART1_Type;
 
@@ -1935,21 +1856,20 @@ typedef struct                                      /*!< (@ 0x40082000) UART1 St
   * @brief SSP0/1 (SSPn)
   */
 
-typedef struct                                      /*!< (@ 0x40083000) SSPn Structure                                         */
-{
-    __IO uint32_t  CR0;                               /*!< (@ 0x40083000) Control Register 0. Selects the serial clock
+typedef struct {                                    /*!< (@ 0x40083000) SSPn Structure                                         */
+  __IO uint32_t  CR0;                               /*!< (@ 0x40083000) Control Register 0. Selects the serial clock
                                                          rate, bus type, and data size.                                        */
-    __IO uint32_t  CR1;                               /*!< (@ 0x40083004) Control Register 1. Selects master/slave and
+  __IO uint32_t  CR1;                               /*!< (@ 0x40083004) Control Register 1. Selects master/slave and
                                                          other modes.                                                          */
-    __IO uint32_t  DR;                                /*!< (@ 0x40083008) Data Register. Writes fill the transmit FIFO,
+  __IO uint32_t  DR;                                /*!< (@ 0x40083008) Data Register. Writes fill the transmit FIFO,
                                                          and reads empty the receive FIFO.                                     */
-    __I  uint32_t  SR;                                /*!< (@ 0x4008300C) Status Register                                        */
-    __IO uint32_t  CPSR;                              /*!< (@ 0x40083010) Clock Prescale Register                                */
-    __IO uint32_t  IMSC;                              /*!< (@ 0x40083014) Interrupt Mask Set and Clear Register                  */
-    __I  uint32_t  RIS;                               /*!< (@ 0x40083018) Raw Interrupt Status Register                          */
-    __I  uint32_t  MIS;                               /*!< (@ 0x4008301C) Masked Interrupt Status Register                       */
-    __O  uint32_t  ICR;                               /*!< (@ 0x40083020) SSPICR Interrupt Clear Register                        */
-    __IO uint32_t  DMACR;                             /*!< (@ 0x40083024) SSP0 DMA control register                              */
+  __I  uint32_t  SR;                                /*!< (@ 0x4008300C) Status Register                                        */
+  __IO uint32_t  CPSR;                              /*!< (@ 0x40083010) Clock Prescale Register                                */
+  __IO uint32_t  IMSC;                              /*!< (@ 0x40083014) Interrupt Mask Set and Clear Register                  */
+  __I  uint32_t  RIS;                               /*!< (@ 0x40083018) Raw Interrupt Status Register                          */
+  __I  uint32_t  MIS;                               /*!< (@ 0x4008301C) Masked Interrupt Status Register                       */
+  __O  uint32_t  ICR;                               /*!< (@ 0x40083020) SSPICR Interrupt Clear Register                        */
+  __IO uint32_t  DMACR;                             /*!< (@ 0x40083024) SSP0 DMA control register                              */
 } LPC_SSPn_Type;
 
 
@@ -1962,54 +1882,53 @@ typedef struct                                      /*!< (@ 0x40083000) SSPn Str
   * @brief Timer0/1/2/3 (TIMERn)
   */
 
-typedef struct                                      /*!< (@ 0x40084000) TIMERn Structure                                       */
-{
-    __IO uint32_t  IR;                                /*!< (@ 0x40084000) Interrupt Register. The IR can be written to
+typedef struct {                                    /*!< (@ 0x40084000) TIMERn Structure                                       */
+  __IO uint32_t  IR;                                /*!< (@ 0x40084000) Interrupt Register. The IR can be written to
                                                          clear interrupts. The IR can be read to identify which of eight
                                                           possible interrupt sources are pending.                              */
-    __IO uint32_t  TCR;                               /*!< (@ 0x40084004) Timer Control Register. The TCR is used to control
+  __IO uint32_t  TCR;                               /*!< (@ 0x40084004) Timer Control Register. The TCR is used to control
                                                          the Timer Counter functions. The Timer Counter can be disabled
                                                           or reset through the TCR.                                            */
-    __IO uint32_t  TC;                                /*!< (@ 0x40084008) Timer Counter. The 32 bit TC is incremented every
+  __IO uint32_t  TC;                                /*!< (@ 0x40084008) Timer Counter. The 32 bit TC is incremented every
                                                          PR+1 cycles of PCLK. The TC is controlled through the TCR.            */
-    __IO uint32_t  PR;                                /*!< (@ 0x4008400C) Prescale Register. When the Prescale Counter
+  __IO uint32_t  PR;                                /*!< (@ 0x4008400C) Prescale Register. When the Prescale Counter
                                                          (PC) is equal to this value, the next clock increments the TC
                                                           and clears the PC.                                                   */
-    __IO uint32_t  PC;                                /*!< (@ 0x40084010) Prescale Counter. The 32 bit PC is a counter
+  __IO uint32_t  PC;                                /*!< (@ 0x40084010) Prescale Counter. The 32 bit PC is a counter
                                                          which is incremented to the value stored in PR. When the value
                                                           in PR is reached, the TC is incremented and the PC is cleared.
                                                           The PC is observable and controllable through the bus interface.     */
-    __IO uint32_t  MCR;                               /*!< (@ 0x40084014) Match Control Register. The MCR is used to control
+  __IO uint32_t  MCR;                               /*!< (@ 0x40084014) Match Control Register. The MCR is used to control
                                                          if an interrupt is generated and if the TC is reset when a Match
                                                           occurs.                                                              */
-    __IO uint32_t  MR0;                               /*!< (@ 0x40084018) Match Register 0. MR0 can be enabled through
+  __IO uint32_t  MR0;                               /*!< (@ 0x40084018) Match Register 0. MR0 can be enabled through
                                                          the MCR to reset the TC, stop both the TC and PC, and/or generate
                                                           an interrupt every time MR0 matches the TC.                          */
-    __IO uint32_t  MR1;                               /*!< (@ 0x4008401C) Match Register 0. MR0 can be enabled through
+  __IO uint32_t  MR1;                               /*!< (@ 0x4008401C) Match Register 0. MR0 can be enabled through
                                                          the MCR to reset the TC, stop both the TC and PC, and/or generate
                                                           an interrupt every time MR0 matches the TC.                          */
-    __IO uint32_t  MR2;                               /*!< (@ 0x40084020) Match Register 0. MR0 can be enabled through
+  __IO uint32_t  MR2;                               /*!< (@ 0x40084020) Match Register 0. MR0 can be enabled through
                                                          the MCR to reset the TC, stop both the TC and PC, and/or generate
                                                           an interrupt every time MR0 matches the TC.                          */
-    __IO uint32_t  MR3;                               /*!< (@ 0x40084024) Match Register 0. MR0 can be enabled through
+  __IO uint32_t  MR3;                               /*!< (@ 0x40084024) Match Register 0. MR0 can be enabled through
                                                          the MCR to reset the TC, stop both the TC and PC, and/or generate
                                                           an interrupt every time MR0 matches the TC.                          */
-    __IO uint32_t  CCR;                               /*!< (@ 0x40084028) Capture Control Register. The CCR controls which
+  __IO uint32_t  CCR;                               /*!< (@ 0x40084028) Capture Control Register. The CCR controls which
                                                          edges of the capture inputs are used to load the Capture Registers
                                                           and whether or not an interrupt is generated when a capture
                                                           takes place.                                                         */
-    __I  uint32_t  CR0;                               /*!< (@ 0x4008402C) Capture Register 0. CR0 is loaded with the value
+  __I  uint32_t  CR0;                               /*!< (@ 0x4008402C) Capture Register 0. CR0 is loaded with the value
                                                          of TC when there is an event on the CAPn.0 input.                     */
-    __I  uint32_t  CR1;                               /*!< (@ 0x40084030) Capture Register 0. CR0 is loaded with the value
+  __I  uint32_t  CR1;                               /*!< (@ 0x40084030) Capture Register 0. CR0 is loaded with the value
                                                          of TC when there is an event on the CAPn.0 input.                     */
-    __I  uint32_t  CR2;                               /*!< (@ 0x40084034) Capture Register 0. CR0 is loaded with the value
+  __I  uint32_t  CR2;                               /*!< (@ 0x40084034) Capture Register 0. CR0 is loaded with the value
                                                          of TC when there is an event on the CAPn.0 input.                     */
-    __I  uint32_t  CR3;                               /*!< (@ 0x40084038) Capture Register 0. CR0 is loaded with the value
+  __I  uint32_t  CR3;                               /*!< (@ 0x40084038) Capture Register 0. CR0 is loaded with the value
                                                          of TC when there is an event on the CAPn.0 input.                     */
-    __IO uint32_t  EMR;                               /*!< (@ 0x4008403C) External Match Register. The EMR controls the
+  __IO uint32_t  EMR;                               /*!< (@ 0x4008403C) External Match Register. The EMR controls the
                                                          external match pins MATn.0-3 (MAT0.0-3 and MAT1.0-3 respectively).    */
-    __I  uint32_t  RESERVED0[12];
-    __IO uint32_t  CTCR;                              /*!< (@ 0x40084070) Count Control Register. The CTCR selects between
+  __I  uint32_t  RESERVED0[12];
+  __IO uint32_t  CTCR;                              /*!< (@ 0x40084070) Count Control Register. The CTCR selects between
                                                          Timer and Counter mode, and in Counter mode selects the signal
                                                           and edge(s) for counting.                                            */
 } LPC_TIMERn_Type;
@@ -2024,217 +1943,216 @@ typedef struct                                      /*!< (@ 0x40084000) TIMERn S
   * @brief System Control Unit (SCU) I/O configuration  (SCU)
   */
 
-typedef struct                                      /*!< (@ 0x40086000) SCU Structure                                          */
-{
-    __IO uint32_t  SFSP0_0;                           /*!< (@ 0x40086000) Pin configuration register for pins P0                 */
-    __IO uint32_t  SFSP0_1;                           /*!< (@ 0x40086004) Pin configuration register for pins P0                 */
-    __I  uint32_t  RESERVED0[30];
-    __IO uint32_t  SFSP1_0;                           /*!< (@ 0x40086080) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_1;                           /*!< (@ 0x40086084) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_2;                           /*!< (@ 0x40086088) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_3;                           /*!< (@ 0x4008608C) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_4;                           /*!< (@ 0x40086090) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_5;                           /*!< (@ 0x40086094) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_6;                           /*!< (@ 0x40086098) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_7;                           /*!< (@ 0x4008609C) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_8;                           /*!< (@ 0x400860A0) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_9;                           /*!< (@ 0x400860A4) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_10;                          /*!< (@ 0x400860A8) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_11;                          /*!< (@ 0x400860AC) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_12;                          /*!< (@ 0x400860B0) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_13;                          /*!< (@ 0x400860B4) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_14;                          /*!< (@ 0x400860B8) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_15;                          /*!< (@ 0x400860BC) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_16;                          /*!< (@ 0x400860C0) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_17;                          /*!< (@ 0x400860C4) Pin configuration register for pins P1_17              */
-    __IO uint32_t  SFSP1_18;                          /*!< (@ 0x400860C8) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_19;                          /*!< (@ 0x400860CC) Pin configuration register for pins P1                 */
-    __IO uint32_t  SFSP1_20;                          /*!< (@ 0x400860D0) Pin configuration register for pins P1                 */
-    __I  uint32_t  RESERVED1[11];
-    __IO uint32_t  SFSP2_0;                           /*!< (@ 0x40086100) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_1;                           /*!< (@ 0x40086104) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_2;                           /*!< (@ 0x40086108) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_3;                           /*!< (@ 0x4008610C) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_4;                           /*!< (@ 0x40086110) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_5;                           /*!< (@ 0x40086114) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_6;                           /*!< (@ 0x40086118) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_7;                           /*!< (@ 0x4008611C) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_8;                           /*!< (@ 0x40086120) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_9;                           /*!< (@ 0x40086124) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_10;                          /*!< (@ 0x40086128) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_11;                          /*!< (@ 0x4008612C) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_12;                          /*!< (@ 0x40086130) Pin configuration register for pins P2                 */
-    __IO uint32_t  SFSP2_13;                          /*!< (@ 0x40086134) Pin configuration register for pins P2                 */
-    __I  uint32_t  RESERVED2[18];
-    __IO uint32_t  SFSP3_0;                           /*!< (@ 0x40086180) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_1;                           /*!< (@ 0x40086184) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_2;                           /*!< (@ 0x40086188) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_3;                           /*!< (@ 0x4008618C) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_4;                           /*!< (@ 0x40086190) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_5;                           /*!< (@ 0x40086194) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_6;                           /*!< (@ 0x40086198) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_7;                           /*!< (@ 0x4008619C) Pin configuration register for pins P3                 */
-    __IO uint32_t  SFSP3_8;                           /*!< (@ 0x400861A0) Pin configuration register for pins P3                 */
-    __I  uint32_t  RESERVED3[23];
-    __IO uint32_t  SFSP4_0;                           /*!< (@ 0x40086200) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_1;                           /*!< (@ 0x40086204) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_2;                           /*!< (@ 0x40086208) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_3;                           /*!< (@ 0x4008620C) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_4;                           /*!< (@ 0x40086210) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_5;                           /*!< (@ 0x40086214) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_6;                           /*!< (@ 0x40086218) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_7;                           /*!< (@ 0x4008621C) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_8;                           /*!< (@ 0x40086220) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_9;                           /*!< (@ 0x40086224) Pin configuration register for pins P4                 */
-    __IO uint32_t  SFSP4_10;                          /*!< (@ 0x40086228) Pin configuration register for pins P4                 */
-    __I  uint32_t  RESERVED4[21];
-    __IO uint32_t  SFSP5_0;                           /*!< (@ 0x40086280) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_1;                           /*!< (@ 0x40086284) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_2;                           /*!< (@ 0x40086288) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_3;                           /*!< (@ 0x4008628C) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_4;                           /*!< (@ 0x40086290) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_5;                           /*!< (@ 0x40086294) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_6;                           /*!< (@ 0x40086298) Pin configuration register for pins P5                 */
-    __IO uint32_t  SFSP5_7;                           /*!< (@ 0x4008629C) Pin configuration register for pins P5                 */
-    __I  uint32_t  RESERVED5[24];
-    __IO uint32_t  SFSP6_0;                           /*!< (@ 0x40086300) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_1;                           /*!< (@ 0x40086304) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_2;                           /*!< (@ 0x40086308) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_3;                           /*!< (@ 0x4008630C) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_4;                           /*!< (@ 0x40086310) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_5;                           /*!< (@ 0x40086314) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_6;                           /*!< (@ 0x40086318) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_7;                           /*!< (@ 0x4008631C) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_8;                           /*!< (@ 0x40086320) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_9;                           /*!< (@ 0x40086324) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_10;                          /*!< (@ 0x40086328) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_11;                          /*!< (@ 0x4008632C) Pin configuration register for pins P6                 */
-    __IO uint32_t  SFSP6_12;                          /*!< (@ 0x40086330) Pin configuration register for pins P6                 */
-    __I  uint32_t  RESERVED6[19];
-    __IO uint32_t  SFSP7_0;                           /*!< (@ 0x40086380) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_1;                           /*!< (@ 0x40086384) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_2;                           /*!< (@ 0x40086388) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_3;                           /*!< (@ 0x4008638C) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_4;                           /*!< (@ 0x40086390) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_5;                           /*!< (@ 0x40086394) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_6;                           /*!< (@ 0x40086398) Pin configuration register for pins P7                 */
-    __IO uint32_t  SFSP7_7;                           /*!< (@ 0x4008639C) Pin configuration register for pins P7                 */
-    __I  uint32_t  RESERVED7[24];
-    __IO uint32_t  SFSP8_0;                           /*!< (@ 0x40086400) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_1;                           /*!< (@ 0x40086404) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_2;                           /*!< (@ 0x40086408) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_3;                           /*!< (@ 0x4008640C) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_4;                           /*!< (@ 0x40086410) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_5;                           /*!< (@ 0x40086414) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_6;                           /*!< (@ 0x40086418) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_7;                           /*!< (@ 0x4008641C) Pin configuration register for pins P8                 */
-    __IO uint32_t  SFSP8_8;                           /*!< (@ 0x40086420) Pin configuration register for pins P8                 */
-    __I  uint32_t  RESERVED8[23];
-    __IO uint32_t  SFSP9_0;                           /*!< (@ 0x40086480) Pin configuration register for pins P9                 */
-    __IO uint32_t  SFSP9_1;                           /*!< (@ 0x40086484) Pin configuration register for pins P9                 */
-    __IO uint32_t  SFSP9_2;                           /*!< (@ 0x40086488) Pin configuration register for pins P9                 */
-    __IO uint32_t  SFSP9_3;                           /*!< (@ 0x4008648C) Pin configuration register for pins P9                 */
-    __IO uint32_t  SFSP9_4;                           /*!< (@ 0x40086490) Pin configuration register for pins P9                 */
-    __IO uint32_t  SFSP9_5;                           /*!< (@ 0x40086494) Pin configuration register for pins P9                 */
-    __IO uint32_t  SFSP9_6;                           /*!< (@ 0x40086498) Pin configuration register for pins P9                 */
-    __I  uint32_t  RESERVED9[25];
-    __IO uint32_t  SFSPA_0;                           /*!< (@ 0x40086500) Pin configuration register for pins PA                 */
-    __IO uint32_t  SFSPA_1;                           /*!< (@ 0x40086504) Pin configuration register for pins PA                 */
-    __IO uint32_t  SFSPA_2;                           /*!< (@ 0x40086508) Pin configuration register for pins PA                 */
-    __IO uint32_t  SFSPA_3;                           /*!< (@ 0x4008650C) Pin configuration register for pins PA                 */
-    __IO uint32_t  SFSPA_4;                           /*!< (@ 0x40086510) Pin configuration register for pins PA                 */
-    __I  uint32_t  RESERVED10[27];
-    __IO uint32_t  SFSPB_0;                           /*!< (@ 0x40086580) Pin configuration register for pins PB                 */
-    __IO uint32_t  SFSPB_1;                           /*!< (@ 0x40086584) Pin configuration register for pins PB                 */
-    __IO uint32_t  SFSPB_2;                           /*!< (@ 0x40086588) Pin configuration register for pins PB                 */
-    __IO uint32_t  SFSPB_3;                           /*!< (@ 0x4008658C) Pin configuration register for pins PB                 */
-    __IO uint32_t  SFSPB_4;                           /*!< (@ 0x40086590) Pin configuration register for pins PB                 */
-    __IO uint32_t  SFSPB_5;                           /*!< (@ 0x40086594) Pin configuration register for pins PB                 */
-    __IO uint32_t  SFSPB_6;                           /*!< (@ 0x40086598) Pin configuration register for pins PB                 */
-    __I  uint32_t  RESERVED11[25];
-    __IO uint32_t  SFSPC_0;                           /*!< (@ 0x40086600) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_1;                           /*!< (@ 0x40086604) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_2;                           /*!< (@ 0x40086608) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_3;                           /*!< (@ 0x4008660C) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_4;                           /*!< (@ 0x40086610) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_5;                           /*!< (@ 0x40086614) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_6;                           /*!< (@ 0x40086618) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_7;                           /*!< (@ 0x4008661C) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_8;                           /*!< (@ 0x40086620) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_9;                           /*!< (@ 0x40086624) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_10;                          /*!< (@ 0x40086628) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_11;                          /*!< (@ 0x4008662C) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_12;                          /*!< (@ 0x40086630) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_13;                          /*!< (@ 0x40086634) Pin configuration register for pins PC                 */
-    __IO uint32_t  SFSPC_14;                          /*!< (@ 0x40086638) Pin configuration register for pins PC                 */
-    __I  uint32_t  RESERVED12[17];
-    __IO uint32_t  SFSPD_0;                           /*!< (@ 0x40086680) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_1;                           /*!< (@ 0x40086684) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_2;                           /*!< (@ 0x40086688) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_3;                           /*!< (@ 0x4008668C) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_4;                           /*!< (@ 0x40086690) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_5;                           /*!< (@ 0x40086694) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_6;                           /*!< (@ 0x40086698) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_7;                           /*!< (@ 0x4008669C) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_8;                           /*!< (@ 0x400866A0) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_9;                           /*!< (@ 0x400866A4) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_10;                          /*!< (@ 0x400866A8) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_11;                          /*!< (@ 0x400866AC) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_12;                          /*!< (@ 0x400866B0) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_13;                          /*!< (@ 0x400866B4) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_14;                          /*!< (@ 0x400866B8) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_15;                          /*!< (@ 0x400866BC) Pin configuration register for pins PD                 */
-    __IO uint32_t  SFSPD_16;                          /*!< (@ 0x400866C0) Pin configuration register for pins PD                 */
-    __I  uint32_t  RESERVED13[15];
-    __IO uint32_t  SFSPE_0;                           /*!< (@ 0x40086700) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_1;                           /*!< (@ 0x40086704) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_2;                           /*!< (@ 0x40086708) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_3;                           /*!< (@ 0x4008670C) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_4;                           /*!< (@ 0x40086710) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_5;                           /*!< (@ 0x40086714) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_6;                           /*!< (@ 0x40086718) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_7;                           /*!< (@ 0x4008671C) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_8;                           /*!< (@ 0x40086720) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_9;                           /*!< (@ 0x40086724) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_10;                          /*!< (@ 0x40086728) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_11;                          /*!< (@ 0x4008672C) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_12;                          /*!< (@ 0x40086730) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_13;                          /*!< (@ 0x40086734) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_14;                          /*!< (@ 0x40086738) Pin configuration register for pins PE                 */
-    __IO uint32_t  SFSPE_15;                          /*!< (@ 0x4008673C) Pin configuration register for pins PE                 */
-    __I  uint32_t  RESERVED14[16];
-    __IO uint32_t  SFSPF_0;                           /*!< (@ 0x40086780) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_1;                           /*!< (@ 0x40086784) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_2;                           /*!< (@ 0x40086788) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_3;                           /*!< (@ 0x4008678C) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_4;                           /*!< (@ 0x40086790) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_5;                           /*!< (@ 0x40086794) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_6;                           /*!< (@ 0x40086798) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_7;                           /*!< (@ 0x4008679C) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_8;                           /*!< (@ 0x400867A0) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_9;                           /*!< (@ 0x400867A4) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_10;                          /*!< (@ 0x400867A8) Pin configuration register for pins PF                 */
-    __IO uint32_t  SFSPF_11;                          /*!< (@ 0x400867AC) Pin configuration register for pins PF                 */
-    __I  uint32_t  RESERVED15[276];
-    __IO uint32_t  SFSCLK_0;                          /*!< (@ 0x40086C00) Pin configuration register for pins CLK                */
-    __IO uint32_t  SFSCLK_1;                          /*!< (@ 0x40086C04) Pin configuration register for pins CLK                */
-    __IO uint32_t  SFSCLK_2;                          /*!< (@ 0x40086C08) Pin configuration register for pins CLK                */
-    __IO uint32_t  SFSCLK_3;                          /*!< (@ 0x40086C0C) Pin configuration register for pins CLK                */
-    __I  uint32_t  RESERVED16[28];
-    __IO uint32_t  SFSUSB;                            /*!< (@ 0x40086C80) Pin configuration register for pins USB1_DM and
+typedef struct {                                    /*!< (@ 0x40086000) SCU Structure                                          */
+  __IO uint32_t  SFSP0_0;                           /*!< (@ 0x40086000) Pin configuration register for pins P0                 */
+  __IO uint32_t  SFSP0_1;                           /*!< (@ 0x40086004) Pin configuration register for pins P0                 */
+  __I  uint32_t  RESERVED0[30];
+  __IO uint32_t  SFSP1_0;                           /*!< (@ 0x40086080) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_1;                           /*!< (@ 0x40086084) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_2;                           /*!< (@ 0x40086088) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_3;                           /*!< (@ 0x4008608C) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_4;                           /*!< (@ 0x40086090) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_5;                           /*!< (@ 0x40086094) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_6;                           /*!< (@ 0x40086098) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_7;                           /*!< (@ 0x4008609C) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_8;                           /*!< (@ 0x400860A0) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_9;                           /*!< (@ 0x400860A4) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_10;                          /*!< (@ 0x400860A8) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_11;                          /*!< (@ 0x400860AC) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_12;                          /*!< (@ 0x400860B0) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_13;                          /*!< (@ 0x400860B4) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_14;                          /*!< (@ 0x400860B8) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_15;                          /*!< (@ 0x400860BC) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_16;                          /*!< (@ 0x400860C0) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_17;                          /*!< (@ 0x400860C4) Pin configuration register for pins P1_17              */
+  __IO uint32_t  SFSP1_18;                          /*!< (@ 0x400860C8) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_19;                          /*!< (@ 0x400860CC) Pin configuration register for pins P1                 */
+  __IO uint32_t  SFSP1_20;                          /*!< (@ 0x400860D0) Pin configuration register for pins P1                 */
+  __I  uint32_t  RESERVED1[11];
+  __IO uint32_t  SFSP2_0;                           /*!< (@ 0x40086100) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_1;                           /*!< (@ 0x40086104) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_2;                           /*!< (@ 0x40086108) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_3;                           /*!< (@ 0x4008610C) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_4;                           /*!< (@ 0x40086110) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_5;                           /*!< (@ 0x40086114) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_6;                           /*!< (@ 0x40086118) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_7;                           /*!< (@ 0x4008611C) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_8;                           /*!< (@ 0x40086120) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_9;                           /*!< (@ 0x40086124) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_10;                          /*!< (@ 0x40086128) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_11;                          /*!< (@ 0x4008612C) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_12;                          /*!< (@ 0x40086130) Pin configuration register for pins P2                 */
+  __IO uint32_t  SFSP2_13;                          /*!< (@ 0x40086134) Pin configuration register for pins P2                 */
+  __I  uint32_t  RESERVED2[18];
+  __IO uint32_t  SFSP3_0;                           /*!< (@ 0x40086180) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_1;                           /*!< (@ 0x40086184) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_2;                           /*!< (@ 0x40086188) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_3;                           /*!< (@ 0x4008618C) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_4;                           /*!< (@ 0x40086190) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_5;                           /*!< (@ 0x40086194) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_6;                           /*!< (@ 0x40086198) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_7;                           /*!< (@ 0x4008619C) Pin configuration register for pins P3                 */
+  __IO uint32_t  SFSP3_8;                           /*!< (@ 0x400861A0) Pin configuration register for pins P3                 */
+  __I  uint32_t  RESERVED3[23];
+  __IO uint32_t  SFSP4_0;                           /*!< (@ 0x40086200) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_1;                           /*!< (@ 0x40086204) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_2;                           /*!< (@ 0x40086208) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_3;                           /*!< (@ 0x4008620C) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_4;                           /*!< (@ 0x40086210) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_5;                           /*!< (@ 0x40086214) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_6;                           /*!< (@ 0x40086218) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_7;                           /*!< (@ 0x4008621C) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_8;                           /*!< (@ 0x40086220) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_9;                           /*!< (@ 0x40086224) Pin configuration register for pins P4                 */
+  __IO uint32_t  SFSP4_10;                          /*!< (@ 0x40086228) Pin configuration register for pins P4                 */
+  __I  uint32_t  RESERVED4[21];
+  __IO uint32_t  SFSP5_0;                           /*!< (@ 0x40086280) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_1;                           /*!< (@ 0x40086284) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_2;                           /*!< (@ 0x40086288) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_3;                           /*!< (@ 0x4008628C) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_4;                           /*!< (@ 0x40086290) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_5;                           /*!< (@ 0x40086294) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_6;                           /*!< (@ 0x40086298) Pin configuration register for pins P5                 */
+  __IO uint32_t  SFSP5_7;                           /*!< (@ 0x4008629C) Pin configuration register for pins P5                 */
+  __I  uint32_t  RESERVED5[24];
+  __IO uint32_t  SFSP6_0;                           /*!< (@ 0x40086300) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_1;                           /*!< (@ 0x40086304) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_2;                           /*!< (@ 0x40086308) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_3;                           /*!< (@ 0x4008630C) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_4;                           /*!< (@ 0x40086310) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_5;                           /*!< (@ 0x40086314) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_6;                           /*!< (@ 0x40086318) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_7;                           /*!< (@ 0x4008631C) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_8;                           /*!< (@ 0x40086320) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_9;                           /*!< (@ 0x40086324) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_10;                          /*!< (@ 0x40086328) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_11;                          /*!< (@ 0x4008632C) Pin configuration register for pins P6                 */
+  __IO uint32_t  SFSP6_12;                          /*!< (@ 0x40086330) Pin configuration register for pins P6                 */
+  __I  uint32_t  RESERVED6[19];
+  __IO uint32_t  SFSP7_0;                           /*!< (@ 0x40086380) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_1;                           /*!< (@ 0x40086384) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_2;                           /*!< (@ 0x40086388) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_3;                           /*!< (@ 0x4008638C) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_4;                           /*!< (@ 0x40086390) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_5;                           /*!< (@ 0x40086394) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_6;                           /*!< (@ 0x40086398) Pin configuration register for pins P7                 */
+  __IO uint32_t  SFSP7_7;                           /*!< (@ 0x4008639C) Pin configuration register for pins P7                 */
+  __I  uint32_t  RESERVED7[24];
+  __IO uint32_t  SFSP8_0;                           /*!< (@ 0x40086400) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_1;                           /*!< (@ 0x40086404) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_2;                           /*!< (@ 0x40086408) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_3;                           /*!< (@ 0x4008640C) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_4;                           /*!< (@ 0x40086410) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_5;                           /*!< (@ 0x40086414) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_6;                           /*!< (@ 0x40086418) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_7;                           /*!< (@ 0x4008641C) Pin configuration register for pins P8                 */
+  __IO uint32_t  SFSP8_8;                           /*!< (@ 0x40086420) Pin configuration register for pins P8                 */
+  __I  uint32_t  RESERVED8[23];
+  __IO uint32_t  SFSP9_0;                           /*!< (@ 0x40086480) Pin configuration register for pins P9                 */
+  __IO uint32_t  SFSP9_1;                           /*!< (@ 0x40086484) Pin configuration register for pins P9                 */
+  __IO uint32_t  SFSP9_2;                           /*!< (@ 0x40086488) Pin configuration register for pins P9                 */
+  __IO uint32_t  SFSP9_3;                           /*!< (@ 0x4008648C) Pin configuration register for pins P9                 */
+  __IO uint32_t  SFSP9_4;                           /*!< (@ 0x40086490) Pin configuration register for pins P9                 */
+  __IO uint32_t  SFSP9_5;                           /*!< (@ 0x40086494) Pin configuration register for pins P9                 */
+  __IO uint32_t  SFSP9_6;                           /*!< (@ 0x40086498) Pin configuration register for pins P9                 */
+  __I  uint32_t  RESERVED9[25];
+  __IO uint32_t  SFSPA_0;                           /*!< (@ 0x40086500) Pin configuration register for pins PA                 */
+  __IO uint32_t  SFSPA_1;                           /*!< (@ 0x40086504) Pin configuration register for pins PA                 */
+  __IO uint32_t  SFSPA_2;                           /*!< (@ 0x40086508) Pin configuration register for pins PA                 */
+  __IO uint32_t  SFSPA_3;                           /*!< (@ 0x4008650C) Pin configuration register for pins PA                 */
+  __IO uint32_t  SFSPA_4;                           /*!< (@ 0x40086510) Pin configuration register for pins PA                 */
+  __I  uint32_t  RESERVED10[27];
+  __IO uint32_t  SFSPB_0;                           /*!< (@ 0x40086580) Pin configuration register for pins PB                 */
+  __IO uint32_t  SFSPB_1;                           /*!< (@ 0x40086584) Pin configuration register for pins PB                 */
+  __IO uint32_t  SFSPB_2;                           /*!< (@ 0x40086588) Pin configuration register for pins PB                 */
+  __IO uint32_t  SFSPB_3;                           /*!< (@ 0x4008658C) Pin configuration register for pins PB                 */
+  __IO uint32_t  SFSPB_4;                           /*!< (@ 0x40086590) Pin configuration register for pins PB                 */
+  __IO uint32_t  SFSPB_5;                           /*!< (@ 0x40086594) Pin configuration register for pins PB                 */
+  __IO uint32_t  SFSPB_6;                           /*!< (@ 0x40086598) Pin configuration register for pins PB                 */
+  __I  uint32_t  RESERVED11[25];
+  __IO uint32_t  SFSPC_0;                           /*!< (@ 0x40086600) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_1;                           /*!< (@ 0x40086604) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_2;                           /*!< (@ 0x40086608) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_3;                           /*!< (@ 0x4008660C) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_4;                           /*!< (@ 0x40086610) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_5;                           /*!< (@ 0x40086614) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_6;                           /*!< (@ 0x40086618) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_7;                           /*!< (@ 0x4008661C) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_8;                           /*!< (@ 0x40086620) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_9;                           /*!< (@ 0x40086624) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_10;                          /*!< (@ 0x40086628) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_11;                          /*!< (@ 0x4008662C) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_12;                          /*!< (@ 0x40086630) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_13;                          /*!< (@ 0x40086634) Pin configuration register for pins PC                 */
+  __IO uint32_t  SFSPC_14;                          /*!< (@ 0x40086638) Pin configuration register for pins PC                 */
+  __I  uint32_t  RESERVED12[17];
+  __IO uint32_t  SFSPD_0;                           /*!< (@ 0x40086680) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_1;                           /*!< (@ 0x40086684) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_2;                           /*!< (@ 0x40086688) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_3;                           /*!< (@ 0x4008668C) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_4;                           /*!< (@ 0x40086690) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_5;                           /*!< (@ 0x40086694) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_6;                           /*!< (@ 0x40086698) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_7;                           /*!< (@ 0x4008669C) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_8;                           /*!< (@ 0x400866A0) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_9;                           /*!< (@ 0x400866A4) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_10;                          /*!< (@ 0x400866A8) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_11;                          /*!< (@ 0x400866AC) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_12;                          /*!< (@ 0x400866B0) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_13;                          /*!< (@ 0x400866B4) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_14;                          /*!< (@ 0x400866B8) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_15;                          /*!< (@ 0x400866BC) Pin configuration register for pins PD                 */
+  __IO uint32_t  SFSPD_16;                          /*!< (@ 0x400866C0) Pin configuration register for pins PD                 */
+  __I  uint32_t  RESERVED13[15];
+  __IO uint32_t  SFSPE_0;                           /*!< (@ 0x40086700) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_1;                           /*!< (@ 0x40086704) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_2;                           /*!< (@ 0x40086708) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_3;                           /*!< (@ 0x4008670C) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_4;                           /*!< (@ 0x40086710) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_5;                           /*!< (@ 0x40086714) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_6;                           /*!< (@ 0x40086718) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_7;                           /*!< (@ 0x4008671C) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_8;                           /*!< (@ 0x40086720) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_9;                           /*!< (@ 0x40086724) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_10;                          /*!< (@ 0x40086728) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_11;                          /*!< (@ 0x4008672C) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_12;                          /*!< (@ 0x40086730) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_13;                          /*!< (@ 0x40086734) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_14;                          /*!< (@ 0x40086738) Pin configuration register for pins PE                 */
+  __IO uint32_t  SFSPE_15;                          /*!< (@ 0x4008673C) Pin configuration register for pins PE                 */
+  __I  uint32_t  RESERVED14[16];
+  __IO uint32_t  SFSPF_0;                           /*!< (@ 0x40086780) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_1;                           /*!< (@ 0x40086784) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_2;                           /*!< (@ 0x40086788) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_3;                           /*!< (@ 0x4008678C) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_4;                           /*!< (@ 0x40086790) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_5;                           /*!< (@ 0x40086794) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_6;                           /*!< (@ 0x40086798) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_7;                           /*!< (@ 0x4008679C) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_8;                           /*!< (@ 0x400867A0) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_9;                           /*!< (@ 0x400867A4) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_10;                          /*!< (@ 0x400867A8) Pin configuration register for pins PF                 */
+  __IO uint32_t  SFSPF_11;                          /*!< (@ 0x400867AC) Pin configuration register for pins PF                 */
+  __I  uint32_t  RESERVED15[276];
+  __IO uint32_t  SFSCLK_0;                          /*!< (@ 0x40086C00) Pin configuration register for pins CLK                */
+  __IO uint32_t  SFSCLK_1;                          /*!< (@ 0x40086C04) Pin configuration register for pins CLK                */
+  __IO uint32_t  SFSCLK_2;                          /*!< (@ 0x40086C08) Pin configuration register for pins CLK                */
+  __IO uint32_t  SFSCLK_3;                          /*!< (@ 0x40086C0C) Pin configuration register for pins CLK                */
+  __I  uint32_t  RESERVED16[28];
+  __IO uint32_t  SFSUSB;                            /*!< (@ 0x40086C80) Pin configuration register for pins USB1_DM and
                                                          USB1_DP                                                               */
-    __IO uint32_t  SFSI2C0;                           /*!< (@ 0x40086C84) Pin configuration register for I2C0-bus pins           */
-    __IO uint32_t  ENAIO0;                            /*!< (@ 0x40086C88) ADC0 function select register                          */
-    __IO uint32_t  ENAIO1;                            /*!< (@ 0x40086C8C) ADC1 function select register                          */
-    __IO uint32_t  ENAIO2;                            /*!< (@ 0x40086C90) Analog function select register                        */
-    __I  uint32_t  RESERVED17[27];
-    __IO uint32_t  EMCDELAYCLK;                       /*!< (@ 0x40086D00) EMC clock delay register                               */
-    __I  uint32_t  RESERVED18[31];
-    __IO uint32_t  SDDELAY;                           /*!< (@ 0x40086D80) SD/MMC sample and drive delay register                 */
-    __I  uint32_t  RESERVED19[31];
-    __IO uint32_t  PINTSEL0;                          /*!< (@ 0x40086E00) Pin interrupt select register for pin interrupts
+  __IO uint32_t  SFSI2C0;                           /*!< (@ 0x40086C84) Pin configuration register for I2C0-bus pins           */
+  __IO uint32_t  ENAIO0;                            /*!< (@ 0x40086C88) ADC0 function select register                          */
+  __IO uint32_t  ENAIO1;                            /*!< (@ 0x40086C8C) ADC1 function select register                          */
+  __IO uint32_t  ENAIO2;                            /*!< (@ 0x40086C90) Analog function select register                        */
+  __I  uint32_t  RESERVED17[27];
+  __IO uint32_t  EMCDELAYCLK;                       /*!< (@ 0x40086D00) EMC clock delay register                               */
+  __I  uint32_t  RESERVED18[31];
+  __IO uint32_t  SDDELAY;                           /*!< (@ 0x40086D80) SD/MMC sample and drive delay register                 */
+  __I  uint32_t  RESERVED19[31];
+  __IO uint32_t  PINTSEL0;                          /*!< (@ 0x40086E00) Pin interrupt select register for pin interrupts
                                                          0 to 3.                                                               */
-    __IO uint32_t  PINTSEL1;                          /*!< (@ 0x40086E04) Pin interrupt select register for pin interrupts
+  __IO uint32_t  PINTSEL1;                          /*!< (@ 0x40086E04) Pin interrupt select register for pin interrupts
                                                          4 to 7.                                                               */
 } LPC_SCU_Type;
 
@@ -2248,21 +2166,20 @@ typedef struct                                      /*!< (@ 0x40086000) SCU Stru
   * @brief GPIO pin interrupt (GPIO_PIN_INT)
   */
 
-typedef struct                                      /*!< (@ 0x40087000) GPIO_PIN_INT Structure                                 */
-{
-    __IO uint32_t  ISEL;                              /*!< (@ 0x40087000) Pin Interrupt Mode register                            */
-    __IO uint32_t  IENR;                              /*!< (@ 0x40087004) Pin Interrupt Enable (Rising) register                 */
-    __O  uint32_t  SIENR;                             /*!< (@ 0x40087008) Set Pin Interrupt Enable (Rising) register             */
-    __O  uint32_t  CIENR;                             /*!< (@ 0x4008700C) Clear Pin Interrupt Enable (Rising) register           */
-    __IO uint32_t  IENF;                              /*!< (@ 0x40087010) Pin Interrupt Enable Falling Edge / Active Level
+typedef struct {                                    /*!< (@ 0x40087000) GPIO_PIN_INT Structure                                 */
+  __IO uint32_t  ISEL;                              /*!< (@ 0x40087000) Pin Interrupt Mode register                            */
+  __IO uint32_t  IENR;                              /*!< (@ 0x40087004) Pin Interrupt Enable (Rising) register                 */
+  __O  uint32_t  SIENR;                             /*!< (@ 0x40087008) Set Pin Interrupt Enable (Rising) register             */
+  __O  uint32_t  CIENR;                             /*!< (@ 0x4008700C) Clear Pin Interrupt Enable (Rising) register           */
+  __IO uint32_t  IENF;                              /*!< (@ 0x40087010) Pin Interrupt Enable Falling Edge / Active Level
                                                          register                                                              */
-    __O  uint32_t  SIENF;                             /*!< (@ 0x40087014) Set Pin Interrupt Enable Falling Edge / Active
+  __O  uint32_t  SIENF;                             /*!< (@ 0x40087014) Set Pin Interrupt Enable Falling Edge / Active
                                                          Level register                                                        */
-    __O  uint32_t  CIENF;                             /*!< (@ 0x40087018) Clear Pin Interrupt Enable Falling Edge / Active
+  __O  uint32_t  CIENF;                             /*!< (@ 0x40087018) Clear Pin Interrupt Enable Falling Edge / Active
                                                          Level address                                                         */
-    __IO uint32_t  RISE;                              /*!< (@ 0x4008701C) Pin Interrupt Rising Edge register                     */
-    __IO uint32_t  FALL;                              /*!< (@ 0x40087020) Pin Interrupt Falling Edge register                    */
-    __IO uint32_t  IST;                               /*!< (@ 0x40087024) Pin Interrupt Status register                          */
+  __IO uint32_t  RISE;                              /*!< (@ 0x4008701C) Pin Interrupt Rising Edge register                     */
+  __IO uint32_t  FALL;                              /*!< (@ 0x40087020) Pin Interrupt Falling Edge register                    */
+  __IO uint32_t  IST;                               /*!< (@ 0x40087024) Pin Interrupt Status register                          */
 } LPC_GPIO_PIN_INT_Type;
 
 
@@ -2275,26 +2192,25 @@ typedef struct                                      /*!< (@ 0x40087000) GPIO_PIN
   * @brief GPIO group interrupt 0 (GPIO_GROUP_INTn)
   */
 
-typedef struct                                      /*!< (@ 0x40088000) GPIO_GROUP_INTn Structure                              */
-{
-    __IO uint32_t  CTRL;                              /*!< (@ 0x40088000) GPIO grouped interrupt control register                */
-    __I  uint32_t  RESERVED0[7];
-    __IO uint32_t  PORT_POL0;                         /*!< (@ 0x40088020) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL1;                         /*!< (@ 0x40088024) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL2;                         /*!< (@ 0x40088028) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL3;                         /*!< (@ 0x4008802C) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL4;                         /*!< (@ 0x40088030) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL5;                         /*!< (@ 0x40088034) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL6;                         /*!< (@ 0x40088038) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_POL7;                         /*!< (@ 0x4008803C) GPIO grouped interrupt port polarity register          */
-    __IO uint32_t  PORT_ENA0;                         /*!< (@ 0x40088040) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA1;                         /*!< (@ 0x40088044) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA2;                         /*!< (@ 0x40088048) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA3;                         /*!< (@ 0x4008804C) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA4;                         /*!< (@ 0x40088050) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA5;                         /*!< (@ 0x40088054) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA6;                         /*!< (@ 0x40088058) GPIO grouped interrupt port m enable register          */
-    __IO uint32_t  PORT_ENA7;                         /*!< (@ 0x4008805C) GPIO grouped interrupt port m enable register          */
+typedef struct {                                    /*!< (@ 0x40088000) GPIO_GROUP_INTn Structure                              */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x40088000) GPIO grouped interrupt control register                */
+  __I  uint32_t  RESERVED0[7];
+  __IO uint32_t  PORT_POL0;                         /*!< (@ 0x40088020) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL1;                         /*!< (@ 0x40088024) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL2;                         /*!< (@ 0x40088028) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL3;                         /*!< (@ 0x4008802C) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL4;                         /*!< (@ 0x40088030) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL5;                         /*!< (@ 0x40088034) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL6;                         /*!< (@ 0x40088038) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_POL7;                         /*!< (@ 0x4008803C) GPIO grouped interrupt port polarity register          */
+  __IO uint32_t  PORT_ENA0;                         /*!< (@ 0x40088040) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA1;                         /*!< (@ 0x40088044) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA2;                         /*!< (@ 0x40088048) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA3;                         /*!< (@ 0x4008804C) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA4;                         /*!< (@ 0x40088050) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA5;                         /*!< (@ 0x40088054) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA6;                         /*!< (@ 0x40088058) GPIO grouped interrupt port m enable register          */
+  __IO uint32_t  PORT_ENA7;                         /*!< (@ 0x4008805C) GPIO grouped interrupt port m enable register          */
 } LPC_GPIO_GROUP_INTn_Type;
 
 
@@ -2307,38 +2223,37 @@ typedef struct                                      /*!< (@ 0x40088000) GPIO_GRO
   * @brief Motor Control PWM (MOTOCONPWM)  (MCPWM)
   */
 
-typedef struct                                      /*!< (@ 0x400A0000) MCPWM Structure                                        */
-{
-    __I  uint32_t  CON;                               /*!< (@ 0x400A0000) PWM Control read address                               */
-    __O  uint32_t  CON_SET;                           /*!< (@ 0x400A0004) PWM Control set address                                */
-    __O  uint32_t  CON_CLR;                           /*!< (@ 0x400A0008) PWM Control clear address                              */
-    __I  uint32_t  CAPCON;                            /*!< (@ 0x400A000C) Capture Control read address                           */
-    __O  uint32_t  CAPCON_SET;                        /*!< (@ 0x400A0010) Capture Control set address                            */
-    __O  uint32_t  CAPCON_CLR;                        /*!< (@ 0x400A0014) Event Control clear address                            */
-    __IO uint32_t  TC0;                               /*!< (@ 0x400A0018) Timer Counter register                                 */
-    __IO uint32_t  TC1;                               /*!< (@ 0x400A001C) Timer Counter register                                 */
-    __IO uint32_t  TC2;                               /*!< (@ 0x400A0020) Timer Counter register                                 */
-    __IO uint32_t  LIM0;                              /*!< (@ 0x400A0024) Limit register                                         */
-    __IO uint32_t  LIM1;                              /*!< (@ 0x400A0028) Limit register                                         */
-    __IO uint32_t  LIM2;                              /*!< (@ 0x400A002C) Limit register                                         */
-    __IO uint32_t  MAT0;                              /*!< (@ 0x400A0030) Match register                                         */
-    __IO uint32_t  MAT1;                              /*!< (@ 0x400A0034) Match register                                         */
-    __IO uint32_t  MAT2;                              /*!< (@ 0x400A0038) Match register                                         */
-    __IO uint32_t  DT;                                /*!< (@ 0x400A003C) Dead time register                                     */
-    __IO uint32_t  CCP;                               /*!< (@ 0x400A0040) Communication Pattern register                         */
-    __I  uint32_t  CAP0;                              /*!< (@ 0x400A0044) Capture register                                       */
-    __I  uint32_t  CAP1;                              /*!< (@ 0x400A0048) Capture register                                       */
-    __I  uint32_t  CAP2;                              /*!< (@ 0x400A004C) Capture register                                       */
-    __I  uint32_t  INTEN;                             /*!< (@ 0x400A0050) Interrupt Enable read address                          */
-    __O  uint32_t  INTEN_SET;                         /*!< (@ 0x400A0054) Interrupt Enable set address                           */
-    __O  uint32_t  INTEN_CLR;                         /*!< (@ 0x400A0058) Interrupt Enable clear address                         */
-    __I  uint32_t  CNTCON;                            /*!< (@ 0x400A005C) Count Control read address                             */
-    __O  uint32_t  CNTCON_SET;                        /*!< (@ 0x400A0060) Count Control set address                              */
-    __O  uint32_t  CNTCON_CLR;                        /*!< (@ 0x400A0064) Count Control clear address                            */
-    __I  uint32_t  INTF;                              /*!< (@ 0x400A0068) Interrupt flags read address                           */
-    __O  uint32_t  INTF_SET;                          /*!< (@ 0x400A006C) Interrupt flags set address                            */
-    __O  uint32_t  INTF_CLR;                          /*!< (@ 0x400A0070) Interrupt flags clear address                          */
-    __O  uint32_t  CAP_CLR;                           /*!< (@ 0x400A0074) Capture clear address                                  */
+typedef struct {                                    /*!< (@ 0x400A0000) MCPWM Structure                                        */
+  __I  uint32_t  CON;                               /*!< (@ 0x400A0000) PWM Control read address                               */
+  __O  uint32_t  CON_SET;                           /*!< (@ 0x400A0004) PWM Control set address                                */
+  __O  uint32_t  CON_CLR;                           /*!< (@ 0x400A0008) PWM Control clear address                              */
+  __I  uint32_t  CAPCON;                            /*!< (@ 0x400A000C) Capture Control read address                           */
+  __O  uint32_t  CAPCON_SET;                        /*!< (@ 0x400A0010) Capture Control set address                            */
+  __O  uint32_t  CAPCON_CLR;                        /*!< (@ 0x400A0014) Event Control clear address                            */
+  __IO uint32_t  TC0;                               /*!< (@ 0x400A0018) Timer Counter register                                 */
+  __IO uint32_t  TC1;                               /*!< (@ 0x400A001C) Timer Counter register                                 */
+  __IO uint32_t  TC2;                               /*!< (@ 0x400A0020) Timer Counter register                                 */
+  __IO uint32_t  LIM0;                              /*!< (@ 0x400A0024) Limit register                                         */
+  __IO uint32_t  LIM1;                              /*!< (@ 0x400A0028) Limit register                                         */
+  __IO uint32_t  LIM2;                              /*!< (@ 0x400A002C) Limit register                                         */
+  __IO uint32_t  MAT0;                              /*!< (@ 0x400A0030) Match register                                         */
+  __IO uint32_t  MAT1;                              /*!< (@ 0x400A0034) Match register                                         */
+  __IO uint32_t  MAT2;                              /*!< (@ 0x400A0038) Match register                                         */
+  __IO uint32_t  DT;                                /*!< (@ 0x400A003C) Dead time register                                     */
+  __IO uint32_t  CCP;                               /*!< (@ 0x400A0040) Communication Pattern register                         */
+  __I  uint32_t  CAP0;                              /*!< (@ 0x400A0044) Capture register                                       */
+  __I  uint32_t  CAP1;                              /*!< (@ 0x400A0048) Capture register                                       */
+  __I  uint32_t  CAP2;                              /*!< (@ 0x400A004C) Capture register                                       */
+  __I  uint32_t  INTEN;                             /*!< (@ 0x400A0050) Interrupt Enable read address                          */
+  __O  uint32_t  INTEN_SET;                         /*!< (@ 0x400A0054) Interrupt Enable set address                           */
+  __O  uint32_t  INTEN_CLR;                         /*!< (@ 0x400A0058) Interrupt Enable clear address                         */
+  __I  uint32_t  CNTCON;                            /*!< (@ 0x400A005C) Count Control read address                             */
+  __O  uint32_t  CNTCON_SET;                        /*!< (@ 0x400A0060) Count Control set address                              */
+  __O  uint32_t  CNTCON_CLR;                        /*!< (@ 0x400A0064) Count Control clear address                            */
+  __I  uint32_t  INTF;                              /*!< (@ 0x400A0068) Interrupt flags read address                           */
+  __O  uint32_t  INTF_SET;                          /*!< (@ 0x400A006C) Interrupt flags set address                            */
+  __O  uint32_t  INTF_CLR;                          /*!< (@ 0x400A0070) Interrupt flags clear address                          */
+  __O  uint32_t  CAP_CLR;                           /*!< (@ 0x400A0074) Capture clear address                                  */
 } LPC_MCPWM_Type;
 
 
@@ -2351,54 +2266,53 @@ typedef struct                                      /*!< (@ 0x400A0000) MCPWM St
   * @brief I2C-bus interface (I2Cn)
   */
 
-typedef struct                                      /*!< (@ 0x400A1000) I2Cn Structure                                         */
-{
-    __IO uint32_t  CONSET;                            /*!< (@ 0x400A1000) I2C Control Set Register. When a one is written
+typedef struct {                                    /*!< (@ 0x400A1000) I2Cn Structure                                         */
+  __IO uint32_t  CONSET;                            /*!< (@ 0x400A1000) I2C Control Set Register. When a one is written
                                                          to a bit of this register, the corresponding bit in the I2C
                                                           control register is set. Writing a zero has no effect on the
                                                           corresponding bit in the I2C control register.                       */
-    __I  uint32_t  STAT;                              /*!< (@ 0x400A1004) I2C Status Register. During I2C operation, this
+  __I  uint32_t  STAT;                              /*!< (@ 0x400A1004) I2C Status Register. During I2C operation, this
                                                          register provides detailed status codes that allow software
                                                           to determine the next action needed.                                 */
-    __IO uint32_t  DAT;                               /*!< (@ 0x400A1008) I2C Data Register. During master or slave transmit
+  __IO uint32_t  DAT;                               /*!< (@ 0x400A1008) I2C Data Register. During master or slave transmit
                                                          mode, data to be transmitted is written to this register. During
                                                           master or slave receive mode, data that has been received may
                                                           be read from this register.                                          */
-    __IO uint32_t  ADR0;                              /*!< (@ 0x400A100C) I2C Slave Address Register 0. Contains the 7-bit
+  __IO uint32_t  ADR0;                              /*!< (@ 0x400A100C) I2C Slave Address Register 0. Contains the 7-bit
                                                          slave address for operation of the I2C interface in slave mode,
                                                           and is not used in master mode. The least significant bit determines
                                                           whether a slave responds to the General Call address.                */
-    __IO uint32_t  SCLH;                              /*!< (@ 0x400A1010) SCH Duty Cycle Register High Half Word. Determines
+  __IO uint32_t  SCLH;                              /*!< (@ 0x400A1010) SCH Duty Cycle Register High Half Word. Determines
                                                          the high time of the I2C clock.                                       */
-    __IO uint32_t  SCLL;                              /*!< (@ 0x400A1014) SCL Duty Cycle Register Low Half Word. Determines
+  __IO uint32_t  SCLL;                              /*!< (@ 0x400A1014) SCL Duty Cycle Register Low Half Word. Determines
                                                          the low time of the I2C clock. SCLL and SCLH together determine
                                                           the clock frequency generated by an I2C master and certain times
                                                           used in slave mode.                                                  */
-    __O  uint32_t  CONCLR;                            /*!< (@ 0x400A1018) I2C Control Clear Register. When a one is written
+  __O  uint32_t  CONCLR;                            /*!< (@ 0x400A1018) I2C Control Clear Register. When a one is written
                                                          to a bit of this register, the corresponding bit in the I2C
                                                           control register is cleared. Writing a zero has no effect on
                                                           the corresponding bit in the I2C control register.                   */
-    __IO uint32_t  MMCTRL;                            /*!< (@ 0x400A101C) Monitor mode control register.                         */
-    __IO uint32_t  ADR1;                              /*!< (@ 0x400A1020) I2C Slave Address Register. Contains the 7-bit
+  __IO uint32_t  MMCTRL;                            /*!< (@ 0x400A101C) Monitor mode control register.                         */
+  __IO uint32_t  ADR1;                              /*!< (@ 0x400A1020) I2C Slave Address Register. Contains the 7-bit
                                                          slave address for operation of the I2C interface in slave mode,
                                                           and is not used in master mode. The least significant bit determines
                                                           whether a slave responds to the General Call address.                */
-    __IO uint32_t  ADR2;                              /*!< (@ 0x400A1024) I2C Slave Address Register. Contains the 7-bit
+  __IO uint32_t  ADR2;                              /*!< (@ 0x400A1024) I2C Slave Address Register. Contains the 7-bit
                                                          slave address for operation of the I2C interface in slave mode,
                                                           and is not used in master mode. The least significant bit determines
                                                           whether a slave responds to the General Call address.                */
-    __IO uint32_t  ADR3;                              /*!< (@ 0x400A1028) I2C Slave Address Register. Contains the 7-bit
+  __IO uint32_t  ADR3;                              /*!< (@ 0x400A1028) I2C Slave Address Register. Contains the 7-bit
                                                          slave address for operation of the I2C interface in slave mode,
                                                           and is not used in master mode. The least significant bit determines
                                                           whether a slave responds to the General Call address.                */
-    __I  uint32_t  DATA_BUFFER;                       /*!< (@ 0x400A102C) Data buffer register. The contents of the 8 MSBs
+  __I  uint32_t  DATA_BUFFER;                       /*!< (@ 0x400A102C) Data buffer register. The contents of the 8 MSBs
                                                          of the DAT shift register will be transferred to the DATA_BUFFER
                                                           automatically after every nine bits (8 bits of data plus ACK
                                                           or NACK) has been received on the bus.                               */
-    __IO uint32_t  MASK0;                             /*!< (@ 0x400A1030) I2C Slave address mask register                        */
-    __IO uint32_t  MASK1;                             /*!< (@ 0x400A1034) I2C Slave address mask register                        */
-    __IO uint32_t  MASK2;                             /*!< (@ 0x400A1038) I2C Slave address mask register                        */
-    __IO uint32_t  MASK3;                             /*!< (@ 0x400A103C) I2C Slave address mask register                        */
+  __IO uint32_t  MASK0;                             /*!< (@ 0x400A1030) I2C Slave address mask register                        */
+  __IO uint32_t  MASK1;                             /*!< (@ 0x400A1034) I2C Slave address mask register                        */
+  __IO uint32_t  MASK2;                             /*!< (@ 0x400A1038) I2C Slave address mask register                        */
+  __IO uint32_t  MASK3;                             /*!< (@ 0x400A103C) I2C Slave address mask register                        */
 } LPC_I2Cn_Type;
 
 
@@ -2411,38 +2325,37 @@ typedef struct                                      /*!< (@ 0x400A1000) I2Cn Str
   * @brief I2S interface  (I2Sn)
   */
 
-typedef struct                                      /*!< (@ 0x400A2000) I2Sn Structure                                         */
-{
-    __IO uint32_t  DAO;                               /*!< (@ 0x400A2000) I2S Digital Audio Output Register. Contains control
+typedef struct {                                    /*!< (@ 0x400A2000) I2Sn Structure                                         */
+  __IO uint32_t  DAO;                               /*!< (@ 0x400A2000) I2S Digital Audio Output Register. Contains control
                                                          bits for the I2S transmit channel.                                    */
-    __IO uint32_t  DAI;                               /*!< (@ 0x400A2004) I2S Digital Audio Input Register. Contains control
+  __IO uint32_t  DAI;                               /*!< (@ 0x400A2004) I2S Digital Audio Input Register. Contains control
                                                          bits for the I2S receive channel.                                     */
-    __O  uint32_t  TXFIFO;                            /*!< (@ 0x400A2008) I2S Transmit FIFO. Access register for the 8
+  __O  uint32_t  TXFIFO;                            /*!< (@ 0x400A2008) I2S Transmit FIFO. Access register for the 8
                                                          x 32-bit transmitter FIFO.                                            */
-    __I  uint32_t  RXFIFO;                            /*!< (@ 0x400A200C) I2S Receive FIFO. Access register for the 8 x
+  __I  uint32_t  RXFIFO;                            /*!< (@ 0x400A200C) I2S Receive FIFO. Access register for the 8 x
                                                          32-bit receiver FIFO.                                                 */
-    __I  uint32_t  STATE;                             /*!< (@ 0x400A2010) I2S Status Feedback Register. Contains status
+  __I  uint32_t  STATE;                             /*!< (@ 0x400A2010) I2S Status Feedback Register. Contains status
                                                          information about the I2S interface.                                  */
-    __IO uint32_t  DMA1;                              /*!< (@ 0x400A2014) I2S DMA Configuration Register 1. Contains control
+  __IO uint32_t  DMA1;                              /*!< (@ 0x400A2014) I2S DMA Configuration Register 1. Contains control
                                                          information for DMA request 1.                                        */
-    __IO uint32_t  DMA2;                              /*!< (@ 0x400A2018) I2S DMA Configuration Register 2. Contains control
+  __IO uint32_t  DMA2;                              /*!< (@ 0x400A2018) I2S DMA Configuration Register 2. Contains control
                                                          information for DMA request 2.                                        */
-    __IO uint32_t  IRQ;                               /*!< (@ 0x400A201C) I2S Interrupt Request Control Register. Contains
+  __IO uint32_t  IRQ;                               /*!< (@ 0x400A201C) I2S Interrupt Request Control Register. Contains
                                                          bits that control how the I2S interrupt request is generated.         */
-    __IO uint32_t  TXRATE;                            /*!< (@ 0x400A2020) I2S Transmit MCLK divider. This register determines
+  __IO uint32_t  TXRATE;                            /*!< (@ 0x400A2020) I2S Transmit MCLK divider. This register determines
                                                          the I2S TX MCLK rate by specifying the value to divide PCLK
                                                           by in order to produce MCLK.                                         */
-    __IO uint32_t  RXRATE;                            /*!< (@ 0x400A2024) I2S Receive MCLK divider. This register determines
+  __IO uint32_t  RXRATE;                            /*!< (@ 0x400A2024) I2S Receive MCLK divider. This register determines
                                                          the I2S RX MCLK rate by specifying the value to divide PCLK
                                                           by in order to produce MCLK.                                         */
-    __IO uint32_t  TXBITRATE;                         /*!< (@ 0x400A2028) I2S Transmit bit rate divider. This register
+  __IO uint32_t  TXBITRATE;                         /*!< (@ 0x400A2028) I2S Transmit bit rate divider. This register
                                                          determines the I2S transmit bit rate by specifying the value
                                                           to divide TX_MCLK by in order to produce the transmit bit clock.     */
-    __IO uint32_t  RXBITRATE;                         /*!< (@ 0x400A202C) I2S Receive bit rate divider. This register determines
+  __IO uint32_t  RXBITRATE;                         /*!< (@ 0x400A202C) I2S Receive bit rate divider. This register determines
                                                          the I2S receive bit rate by specifying the value to divide RX_MCLK
                                                           by in order to produce the receive bit clock.                        */
-    __IO uint32_t  TXMODE;                            /*!< (@ 0x400A2030) I2S Transmit mode control.                             */
-    __IO uint32_t  RXMODE;                            /*!< (@ 0x400A2034) I2S Receive mode control.                              */
+  __IO uint32_t  TXMODE;                            /*!< (@ 0x400A2030) I2S Transmit mode control.                             */
+  __IO uint32_t  RXMODE;                            /*!< (@ 0x400A2034) I2S Receive mode control.                              */
 } LPC_I2Sn_Type;
 
 
@@ -2455,63 +2368,60 @@ typedef struct                                      /*!< (@ 0x400A2000) I2Sn Str
   * @brief C_CAN  (C_CANn)
   */
 
-typedef struct                                      /*!< (@ 0x400A4000) C_CANn Structure                                       */
-{
-    __IO uint32_t  CNTL;                              /*!< (@ 0x400A4000) CAN control                                            */
-    __IO uint32_t  STAT;                              /*!< (@ 0x400A4004) Status register                                        */
-    __I  uint32_t  EC;                                /*!< (@ 0x400A4008) Error counter                                          */
-    __IO uint32_t  BT;                                /*!< (@ 0x400A400C) Bit timing register                                    */
-    __I  uint32_t  INT;                               /*!< (@ 0x400A4010) Interrupt register                                     */
-    __IO uint32_t  TEST;                              /*!< (@ 0x400A4014) Test register                                          */
-    __IO uint32_t  BRPE;                              /*!< (@ 0x400A4018) Baud rate prescaler extension register                 */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  IF1_CMDREQ;                        /*!< (@ 0x400A4020) Message interface command request                      */
+typedef struct {                                    /*!< (@ 0x400A4000) C_CANn Structure                                       */
+  __IO uint32_t  CNTL;                              /*!< (@ 0x400A4000) CAN control                                            */
+  __IO uint32_t  STAT;                              /*!< (@ 0x400A4004) Status register                                        */
+  __I  uint32_t  EC;                                /*!< (@ 0x400A4008) Error counter                                          */
+  __IO uint32_t  BT;                                /*!< (@ 0x400A400C) Bit timing register                                    */
+  __I  uint32_t  INT;                               /*!< (@ 0x400A4010) Interrupt register                                     */
+  __IO uint32_t  TEST;                              /*!< (@ 0x400A4014) Test register                                          */
+  __IO uint32_t  BRPE;                              /*!< (@ 0x400A4018) Baud rate prescaler extension register                 */
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  IF1_CMDREQ;                        /*!< (@ 0x400A4020) Message interface command request                      */
 
-    union
-    {
-        __IO uint32_t  IF1_CMDMSK_R;                    /*!< (@ 0x400A4024) Message interface command mask (read direction)        */
-        __IO uint32_t  IF1_CMDMSK_W;                    /*!< (@ 0x400A4024) Message interface command mask (write direction)       */
-    };
-    __IO uint32_t  IF1_MSK1;                          /*!< (@ 0x400A4028) Message interface mask 1                               */
-    __IO uint32_t  IF1_MSK2;                          /*!< (@ 0x400A402C) Message interface 1 mask 2                             */
-    __IO uint32_t  IF1_ARB1;                          /*!< (@ 0x400A4030) Message interface 1 arbitration 1                      */
-    __IO uint32_t  IF1_ARB2;                          /*!< (@ 0x400A4034) Message interface 1 arbitration 2                      */
-    __IO uint32_t  IF1_MCTRL;                         /*!< (@ 0x400A4038) Message interface 1 message control                    */
-    __IO uint32_t  IF1_DA1;                           /*!< (@ 0x400A403C) Message interface data A1                              */
-    __IO uint32_t  IF1_DA2;                           /*!< (@ 0x400A4040) Message interface 1 data A2                            */
-    __IO uint32_t  IF1_DB1;                           /*!< (@ 0x400A4044) Message interface 1 data B1                            */
-    __IO uint32_t  IF1_DB2;                           /*!< (@ 0x400A4048) Message interface 1 data B2                            */
-    __I  uint32_t  RESERVED1[13];
-    __IO uint32_t  IF2_CMDREQ;                        /*!< (@ 0x400A4080) Message interface command request                      */
+  union {
+    __IO uint32_t  IF1_CMDMSK_R;                    /*!< (@ 0x400A4024) Message interface command mask (read direction)        */
+    __IO uint32_t  IF1_CMDMSK_W;                    /*!< (@ 0x400A4024) Message interface command mask (write direction)       */
+  };
+  __IO uint32_t  IF1_MSK1;                          /*!< (@ 0x400A4028) Message interface mask 1                               */
+  __IO uint32_t  IF1_MSK2;                          /*!< (@ 0x400A402C) Message interface 1 mask 2                             */
+  __IO uint32_t  IF1_ARB1;                          /*!< (@ 0x400A4030) Message interface 1 arbitration 1                      */
+  __IO uint32_t  IF1_ARB2;                          /*!< (@ 0x400A4034) Message interface 1 arbitration 2                      */
+  __IO uint32_t  IF1_MCTRL;                         /*!< (@ 0x400A4038) Message interface 1 message control                    */
+  __IO uint32_t  IF1_DA1;                           /*!< (@ 0x400A403C) Message interface data A1                              */
+  __IO uint32_t  IF1_DA2;                           /*!< (@ 0x400A4040) Message interface 1 data A2                            */
+  __IO uint32_t  IF1_DB1;                           /*!< (@ 0x400A4044) Message interface 1 data B1                            */
+  __IO uint32_t  IF1_DB2;                           /*!< (@ 0x400A4048) Message interface 1 data B2                            */
+  __I  uint32_t  RESERVED1[13];
+  __IO uint32_t  IF2_CMDREQ;                        /*!< (@ 0x400A4080) Message interface command request                      */
 
-    union
-    {
-        __IO uint32_t  IF2_CMDMSK_R;                    /*!< (@ 0x400A4084) Message interface command mask (read direction)        */
-        __IO uint32_t  IF2_CMDMSK_W;                    /*!< (@ 0x400A4084) Message interface command mask (write direction)       */
-    };
-    __IO uint32_t  IF2_MSK1;                          /*!< (@ 0x400A4088) Message interface mask 1                               */
-    __IO uint32_t  IF2_MSK2;                          /*!< (@ 0x400A408C) Message interface 1 mask 2                             */
-    __IO uint32_t  IF2_ARB1;                          /*!< (@ 0x400A4090) Message interface 1 arbitration 1                      */
-    __IO uint32_t  IF2_ARB2;                          /*!< (@ 0x400A4094) Message interface 1 arbitration 2                      */
-    __IO uint32_t  IF2_MCTRL;                         /*!< (@ 0x400A4098) Message interface 1 message control                    */
-    __IO uint32_t  IF2_DA1;                           /*!< (@ 0x400A409C) Message interface data A1                              */
-    __IO uint32_t  IF2_DA2;                           /*!< (@ 0x400A40A0) Message interface 1 data A2                            */
-    __IO uint32_t  IF2_DB1;                           /*!< (@ 0x400A40A4) Message interface 1 data B1                            */
-    __IO uint32_t  IF2_DB2;                           /*!< (@ 0x400A40A8) Message interface 1 data B2                            */
-    __I  uint32_t  RESERVED2[21];
-    __I  uint32_t  TXREQ1;                            /*!< (@ 0x400A4100) Transmission request 1                                 */
-    __I  uint32_t  TXREQ2;                            /*!< (@ 0x400A4104) Transmission request 2                                 */
-    __I  uint32_t  RESERVED3[6];
-    __I  uint32_t  ND1;                               /*!< (@ 0x400A4120) New data 1                                             */
-    __I  uint32_t  ND2;                               /*!< (@ 0x400A4124) New data 2                                             */
-    __I  uint32_t  RESERVED4[6];
-    __I  uint32_t  IR1;                               /*!< (@ 0x400A4140) Interrupt pending 1                                    */
-    __I  uint32_t  IR2;                               /*!< (@ 0x400A4144) Interrupt pending 2                                    */
-    __I  uint32_t  RESERVED5[6];
-    __I  uint32_t  MSGV1;                             /*!< (@ 0x400A4160) Message valid 1                                        */
-    __I  uint32_t  MSGV2;                             /*!< (@ 0x400A4164) Message valid 2                                        */
-    __I  uint32_t  RESERVED6[6];
-    __IO uint32_t  CLKDIV;                            /*!< (@ 0x400A4180) CAN clock divider register                             */
+  union {
+    __IO uint32_t  IF2_CMDMSK_R;                    /*!< (@ 0x400A4084) Message interface command mask (read direction)        */
+    __IO uint32_t  IF2_CMDMSK_W;                    /*!< (@ 0x400A4084) Message interface command mask (write direction)       */
+  };
+  __IO uint32_t  IF2_MSK1;                          /*!< (@ 0x400A4088) Message interface mask 1                               */
+  __IO uint32_t  IF2_MSK2;                          /*!< (@ 0x400A408C) Message interface 1 mask 2                             */
+  __IO uint32_t  IF2_ARB1;                          /*!< (@ 0x400A4090) Message interface 1 arbitration 1                      */
+  __IO uint32_t  IF2_ARB2;                          /*!< (@ 0x400A4094) Message interface 1 arbitration 2                      */
+  __IO uint32_t  IF2_MCTRL;                         /*!< (@ 0x400A4098) Message interface 1 message control                    */
+  __IO uint32_t  IF2_DA1;                           /*!< (@ 0x400A409C) Message interface data A1                              */
+  __IO uint32_t  IF2_DA2;                           /*!< (@ 0x400A40A0) Message interface 1 data A2                            */
+  __IO uint32_t  IF2_DB1;                           /*!< (@ 0x400A40A4) Message interface 1 data B1                            */
+  __IO uint32_t  IF2_DB2;                           /*!< (@ 0x400A40A8) Message interface 1 data B2                            */
+  __I  uint32_t  RESERVED2[21];
+  __I  uint32_t  TXREQ1;                            /*!< (@ 0x400A4100) Transmission request 1                                 */
+  __I  uint32_t  TXREQ2;                            /*!< (@ 0x400A4104) Transmission request 2                                 */
+  __I  uint32_t  RESERVED3[6];
+  __I  uint32_t  ND1;                               /*!< (@ 0x400A4120) New data 1                                             */
+  __I  uint32_t  ND2;                               /*!< (@ 0x400A4124) New data 2                                             */
+  __I  uint32_t  RESERVED4[6];
+  __I  uint32_t  IR1;                               /*!< (@ 0x400A4140) Interrupt pending 1                                    */
+  __I  uint32_t  IR2;                               /*!< (@ 0x400A4144) Interrupt pending 2                                    */
+  __I  uint32_t  RESERVED5[6];
+  __I  uint32_t  MSGV1;                             /*!< (@ 0x400A4160) Message valid 1                                        */
+  __I  uint32_t  MSGV2;                             /*!< (@ 0x400A4164) Message valid 2                                        */
+  __I  uint32_t  RESERVED6[6];
+  __IO uint32_t  CLKDIV;                            /*!< (@ 0x400A4180) CAN clock divider register                             */
 } LPC_C_CANn_Type;
 
 
@@ -2524,14 +2434,13 @@ typedef struct                                      /*!< (@ 0x400A4000) C_CANn S
   * @brief Repetitive Interrupt Timer (RIT)  (RITIMER)
   */
 
-typedef struct                                      /*!< (@ 0x400C0000) RITIMER Structure                                      */
-{
-    __IO uint32_t  COMPVAL;                           /*!< (@ 0x400C0000) Compare register                                       */
-    __IO uint32_t  MASK;                              /*!< (@ 0x400C0004) Mask register. This register holds the 32-bit
+typedef struct {                                    /*!< (@ 0x400C0000) RITIMER Structure                                      */
+  __IO uint32_t  COMPVAL;                           /*!< (@ 0x400C0000) Compare register                                       */
+  __IO uint32_t  MASK;                              /*!< (@ 0x400C0004) Mask register. This register holds the 32-bit
                                                          mask value. A 1 written to any bit will force a compare on the
                                                           corresponding bit of the counter and compare register.               */
-    __IO uint32_t  CTRL;                              /*!< (@ 0x400C0008) Control register.                                      */
-    __IO uint32_t  COUNTER;                           /*!< (@ 0x400C000C) 32-bit counter                                         */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x400C0008) Control register.                                      */
+  __IO uint32_t  COUNTER;                           /*!< (@ 0x400C000C) 32-bit counter                                         */
 } LPC_RITIMER_Type;
 
 
@@ -2544,36 +2453,35 @@ typedef struct                                      /*!< (@ 0x400C0000) RITIMER 
   * @brief Quadrature Encoder Interface (QEI)  (QEI)
   */
 
-typedef struct                                      /*!< (@ 0x400C6000) QEI Structure                                          */
-{
-    __O  uint32_t  CON;                               /*!< (@ 0x400C6000) Control register                                       */
-    __I  uint32_t  STAT;                              /*!< (@ 0x400C6004) Encoder status register                                */
-    __IO uint32_t  CONF;                              /*!< (@ 0x400C6008) Configuration register                                 */
-    __I  uint32_t  POS;                               /*!< (@ 0x400C600C) Position register                                      */
-    __IO uint32_t  MAXPOS;                            /*!< (@ 0x400C6010) Maximum position register                              */
-    __IO uint32_t  CMPOS0;                            /*!< (@ 0x400C6014) position compare register 0                            */
-    __IO uint32_t  CMPOS1;                            /*!< (@ 0x400C6018) position compare register 1                            */
-    __IO uint32_t  CMPOS2;                            /*!< (@ 0x400C601C) position compare register 2                            */
-    __I  uint32_t  INXCNT;                            /*!< (@ 0x400C6020) Index count register                                   */
-    __IO uint32_t  INXCMP0;                           /*!< (@ 0x400C6024) Index compare register 0                               */
-    __IO uint32_t  LOAD;                              /*!< (@ 0x400C6028) Velocity timer reload register                         */
-    __I  uint32_t  TIME;                              /*!< (@ 0x400C602C) Velocity timer register                                */
-    __I  uint32_t  VEL;                               /*!< (@ 0x400C6030) Velocity counter register                              */
-    __I  uint32_t  CAP;                               /*!< (@ 0x400C6034) Velocity capture register                              */
-    __IO uint32_t  VELCOMP;                           /*!< (@ 0x400C6038) Velocity compare register                              */
-    __IO uint32_t  FILTERPHA;                         /*!< (@ 0x400C603C) Digital filter register on input phase A (QEI_A)       */
-    __IO uint32_t  FILTERPHB;                         /*!< (@ 0x400C6040) Digital filter register on input phase B (QEI_B)       */
-    __IO uint32_t  FILTERINX;                         /*!< (@ 0x400C6044) Digital filter register on input index (QEI_IDX)       */
-    __IO uint32_t  WINDOW;                            /*!< (@ 0x400C6048) Index acceptance window register                       */
-    __IO uint32_t  INXCMP1;                           /*!< (@ 0x400C604C) Index compare register 1                               */
-    __IO uint32_t  INXCMP2;                           /*!< (@ 0x400C6050) Index compare register 2                               */
-    __I  uint32_t  RESERVED0[993];
-    __O  uint32_t  IEC;                               /*!< (@ 0x400C6FD8) Interrupt enable clear register                        */
-    __O  uint32_t  IES;                               /*!< (@ 0x400C6FDC) Interrupt enable set register                          */
-    __I  uint32_t  INTSTAT;                           /*!< (@ 0x400C6FE0) Interrupt status register                              */
-    __I  uint32_t  IE;                                /*!< (@ 0x400C6FE4) Interrupt enable register                              */
-    __O  uint32_t  CLR;                               /*!< (@ 0x400C6FE8) Interrupt status clear register                        */
-    __O  uint32_t  SET;                               /*!< (@ 0x400C6FEC) Interrupt status set register                          */
+typedef struct {                                    /*!< (@ 0x400C6000) QEI Structure                                          */
+  __O  uint32_t  CON;                               /*!< (@ 0x400C6000) Control register                                       */
+  __I  uint32_t  STAT;                              /*!< (@ 0x400C6004) Encoder status register                                */
+  __IO uint32_t  CONF;                              /*!< (@ 0x400C6008) Configuration register                                 */
+  __I  uint32_t  POS;                               /*!< (@ 0x400C600C) Position register                                      */
+  __IO uint32_t  MAXPOS;                            /*!< (@ 0x400C6010) Maximum position register                              */
+  __IO uint32_t  CMPOS0;                            /*!< (@ 0x400C6014) position compare register 0                            */
+  __IO uint32_t  CMPOS1;                            /*!< (@ 0x400C6018) position compare register 1                            */
+  __IO uint32_t  CMPOS2;                            /*!< (@ 0x400C601C) position compare register 2                            */
+  __I  uint32_t  INXCNT;                            /*!< (@ 0x400C6020) Index count register                                   */
+  __IO uint32_t  INXCMP0;                           /*!< (@ 0x400C6024) Index compare register 0                               */
+  __IO uint32_t  LOAD;                              /*!< (@ 0x400C6028) Velocity timer reload register                         */
+  __I  uint32_t  TIME;                              /*!< (@ 0x400C602C) Velocity timer register                                */
+  __I  uint32_t  VEL;                               /*!< (@ 0x400C6030) Velocity counter register                              */
+  __I  uint32_t  CAP;                               /*!< (@ 0x400C6034) Velocity capture register                              */
+  __IO uint32_t  VELCOMP;                           /*!< (@ 0x400C6038) Velocity compare register                              */
+  __IO uint32_t  FILTERPHA;                         /*!< (@ 0x400C603C) Digital filter register on input phase A (QEI_A)       */
+  __IO uint32_t  FILTERPHB;                         /*!< (@ 0x400C6040) Digital filter register on input phase B (QEI_B)       */
+  __IO uint32_t  FILTERINX;                         /*!< (@ 0x400C6044) Digital filter register on input index (QEI_IDX)       */
+  __IO uint32_t  WINDOW;                            /*!< (@ 0x400C6048) Index acceptance window register                       */
+  __IO uint32_t  INXCMP1;                           /*!< (@ 0x400C604C) Index compare register 1                               */
+  __IO uint32_t  INXCMP2;                           /*!< (@ 0x400C6050) Index compare register 2                               */
+  __I  uint32_t  RESERVED0[993];
+  __O  uint32_t  IEC;                               /*!< (@ 0x400C6FD8) Interrupt enable clear register                        */
+  __O  uint32_t  IES;                               /*!< (@ 0x400C6FDC) Interrupt enable set register                          */
+  __I  uint32_t  INTSTAT;                           /*!< (@ 0x400C6FE0) Interrupt status register                              */
+  __I  uint32_t  IE;                                /*!< (@ 0x400C6FE4) Interrupt enable register                              */
+  __O  uint32_t  CLR;                               /*!< (@ 0x400C6FE8) Interrupt status clear register                        */
+  __O  uint32_t  SET;                               /*!< (@ 0x400C6FEC) Interrupt status set register                          */
 } LPC_QEI_Type;
 
 
@@ -2586,66 +2494,65 @@ typedef struct                                      /*!< (@ 0x400C6000) QEI Stru
   * @brief Global Input Multiplexer Array (GIMA) (GIMA)
   */
 
-typedef struct                                      /*!< (@ 0x400C7000) GIMA Structure                                         */
-{
-    __IO uint32_t  CAP0_0_IN;                         /*!< (@ 0x400C7000) Timer 0 CAP0_0 capture input multiplexer (GIMA
+typedef struct {                                    /*!< (@ 0x400C7000) GIMA Structure                                         */
+  __IO uint32_t  CAP0_0_IN;                         /*!< (@ 0x400C7000) Timer 0 CAP0_0 capture input multiplexer (GIMA
                                                          output 0)                                                             */
-    __IO uint32_t  CAP0_1_IN;                         /*!< (@ 0x400C7004) Timer 0 CAP0_1 capture input multiplexer (GIMA
+  __IO uint32_t  CAP0_1_IN;                         /*!< (@ 0x400C7004) Timer 0 CAP0_1 capture input multiplexer (GIMA
                                                          output 1)                                                             */
-    __IO uint32_t  CAP0_2_IN;                         /*!< (@ 0x400C7008) Timer 0 CAP0_2 capture input multiplexer (GIMA
+  __IO uint32_t  CAP0_2_IN;                         /*!< (@ 0x400C7008) Timer 0 CAP0_2 capture input multiplexer (GIMA
                                                          output 2)                                                             */
-    __IO uint32_t  CAP0_3_IN;                         /*!< (@ 0x400C700C) Timer 0 CAP0_3 capture input multiplexer (GIMA
+  __IO uint32_t  CAP0_3_IN;                         /*!< (@ 0x400C700C) Timer 0 CAP0_3 capture input multiplexer (GIMA
                                                          output 3)                                                             */
-    __IO uint32_t  CAP1_0_IN;                         /*!< (@ 0x400C7010) Timer 1 CAP1_0 capture input multiplexer (GIMA
+  __IO uint32_t  CAP1_0_IN;                         /*!< (@ 0x400C7010) Timer 1 CAP1_0 capture input multiplexer (GIMA
                                                          output 4)                                                             */
-    __IO uint32_t  CAP1_1_IN;                         /*!< (@ 0x400C7014) Timer 1 CAP1_1 capture input multiplexer (GIMA
+  __IO uint32_t  CAP1_1_IN;                         /*!< (@ 0x400C7014) Timer 1 CAP1_1 capture input multiplexer (GIMA
                                                          output 5)                                                             */
-    __IO uint32_t  CAP1_2_IN;                         /*!< (@ 0x400C7018) Timer 1 CAP1_2 capture input multiplexer (GIMA
+  __IO uint32_t  CAP1_2_IN;                         /*!< (@ 0x400C7018) Timer 1 CAP1_2 capture input multiplexer (GIMA
                                                          output 6)                                                             */
-    __IO uint32_t  CAP1_3_IN;                         /*!< (@ 0x400C701C) Timer 1 CAP1_3 capture input multiplexer (GIMA
+  __IO uint32_t  CAP1_3_IN;                         /*!< (@ 0x400C701C) Timer 1 CAP1_3 capture input multiplexer (GIMA
                                                          output 7)                                                             */
-    __IO uint32_t  CAP2_0_IN;                         /*!< (@ 0x400C7020) Timer 2 CAP2_0 capture input multiplexer (GIMA
+  __IO uint32_t  CAP2_0_IN;                         /*!< (@ 0x400C7020) Timer 2 CAP2_0 capture input multiplexer (GIMA
                                                          output 8)                                                             */
-    __IO uint32_t  CAP2_1_IN;                         /*!< (@ 0x400C7024) Timer 2 CAP2_1 capture input multiplexer (GIMA
+  __IO uint32_t  CAP2_1_IN;                         /*!< (@ 0x400C7024) Timer 2 CAP2_1 capture input multiplexer (GIMA
                                                          output 9)                                                             */
-    __IO uint32_t  CAP2_2_IN;                         /*!< (@ 0x400C7028) Timer 2 CAP2_2 capture input multiplexer (GIMA
+  __IO uint32_t  CAP2_2_IN;                         /*!< (@ 0x400C7028) Timer 2 CAP2_2 capture input multiplexer (GIMA
                                                          output 10)                                                            */
-    __IO uint32_t  CAP2_3_IN;                         /*!< (@ 0x400C702C) Timer 2 CAP2_3 capture input multiplexer (GIMA
+  __IO uint32_t  CAP2_3_IN;                         /*!< (@ 0x400C702C) Timer 2 CAP2_3 capture input multiplexer (GIMA
                                                          output 11)                                                            */
-    __IO uint32_t  CAP3_0_IN;                         /*!< (@ 0x400C7030) Timer 3 CAP3_0 capture input multiplexer (GIMA
+  __IO uint32_t  CAP3_0_IN;                         /*!< (@ 0x400C7030) Timer 3 CAP3_0 capture input multiplexer (GIMA
                                                          output 12)                                                            */
-    __IO uint32_t  CAP3_1_IN;                         /*!< (@ 0x400C7034) Timer 3 CAP3_1 capture input multiplexer (GIMA
+  __IO uint32_t  CAP3_1_IN;                         /*!< (@ 0x400C7034) Timer 3 CAP3_1 capture input multiplexer (GIMA
                                                          output 13)                                                            */
-    __IO uint32_t  CAP3_2_IN;                         /*!< (@ 0x400C7038) Timer 3 CAP3_2 capture input multiplexer (GIMA
+  __IO uint32_t  CAP3_2_IN;                         /*!< (@ 0x400C7038) Timer 3 CAP3_2 capture input multiplexer (GIMA
                                                          output 14)                                                            */
-    __IO uint32_t  CAP3_3_IN;                         /*!< (@ 0x400C703C) Timer 3 CAP3_3 capture input multiplexer (GIMA
+  __IO uint32_t  CAP3_3_IN;                         /*!< (@ 0x400C703C) Timer 3 CAP3_3 capture input multiplexer (GIMA
                                                          output 15)                                                            */
-    __IO uint32_t  CTIN_0_IN;                         /*!< (@ 0x400C7040) SCT CTIN_0 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_0_IN;                         /*!< (@ 0x400C7040) SCT CTIN_0 capture input multiplexer (GIMA output
                                                          16)                                                                   */
-    __IO uint32_t  CTIN_1_IN;                         /*!< (@ 0x400C7044) SCT CTIN_1 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_1_IN;                         /*!< (@ 0x400C7044) SCT CTIN_1 capture input multiplexer (GIMA output
                                                          17)                                                                   */
-    __IO uint32_t  CTIN_2_IN;                         /*!< (@ 0x400C7048) SCT CTIN_2 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_2_IN;                         /*!< (@ 0x400C7048) SCT CTIN_2 capture input multiplexer (GIMA output
                                                          18)                                                                   */
-    __IO uint32_t  CTIN_3_IN;                         /*!< (@ 0x400C704C) SCT CTIN_3 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_3_IN;                         /*!< (@ 0x400C704C) SCT CTIN_3 capture input multiplexer (GIMA output
                                                          19)                                                                   */
-    __IO uint32_t  CTIN_4_IN;                         /*!< (@ 0x400C7050) SCT CTIN_4 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_4_IN;                         /*!< (@ 0x400C7050) SCT CTIN_4 capture input multiplexer (GIMA output
                                                          20)                                                                   */
-    __IO uint32_t  CTIN_5_IN;                         /*!< (@ 0x400C7054) SCT CTIN_5 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_5_IN;                         /*!< (@ 0x400C7054) SCT CTIN_5 capture input multiplexer (GIMA output
                                                          21)                                                                   */
-    __IO uint32_t  CTIN_6_IN;                         /*!< (@ 0x400C7058) SCT CTIN_6 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_6_IN;                         /*!< (@ 0x400C7058) SCT CTIN_6 capture input multiplexer (GIMA output
                                                          22)                                                                   */
-    __IO uint32_t  CTIN_7_IN;                         /*!< (@ 0x400C705C) SCT CTIN_7 capture input multiplexer (GIMA output
+  __IO uint32_t  CTIN_7_IN;                         /*!< (@ 0x400C705C) SCT CTIN_7 capture input multiplexer (GIMA output
                                                          23)                                                                   */
-    __IO uint32_t  ADCHS_TRIGGER_IN;                  /*!< (@ 0x400C7060) ADCHS trigger input multiplexer (GIMA output
+  __IO uint32_t  ADCHS_TRIGGER_IN;                  /*!< (@ 0x400C7060) ADCHS trigger input multiplexer (GIMA output
                                                          24)                                                                   */
-    __IO uint32_t  EVENTROUTER_13_IN;                 /*!< (@ 0x400C7064) Event router input 13 multiplexer (GIMA output
+  __IO uint32_t  EVENTROUTER_13_IN;                 /*!< (@ 0x400C7064) Event router input 13 multiplexer (GIMA output
                                                          25)                                                                   */
-    __IO uint32_t  EVENTROUTER_14_IN;                 /*!< (@ 0x400C7068) Event router input 14 multiplexer (GIMA output
+  __IO uint32_t  EVENTROUTER_14_IN;                 /*!< (@ 0x400C7068) Event router input 14 multiplexer (GIMA output
                                                          26)                                                                   */
-    __IO uint32_t  EVENTROUTER_16_IN;                 /*!< (@ 0x400C706C) Event router input 16 multiplexer (GIMA output
+  __IO uint32_t  EVENTROUTER_16_IN;                 /*!< (@ 0x400C706C) Event router input 16 multiplexer (GIMA output
                                                          27)                                                                   */
-    __IO uint32_t  ADCSTART0_IN;                      /*!< (@ 0x400C7070) ADC start0 input multiplexer (GIMA output 28)          */
-    __IO uint32_t  ADCSTART1_IN;                      /*!< (@ 0x400C7074) ADC start1 input multiplexer (GIMA output 29)          */
+  __IO uint32_t  ADCSTART0_IN;                      /*!< (@ 0x400C7070) ADC start0 input multiplexer (GIMA output 28)          */
+  __IO uint32_t  ADCSTART1_IN;                      /*!< (@ 0x400C7074) ADC start1 input multiplexer (GIMA output 29)          */
 } LPC_GIMA_Type;
 
 
@@ -2658,11 +2565,10 @@ typedef struct                                      /*!< (@ 0x400C7000) GIMA Str
   * @brief Digital-to-Analog Converter (DAC)  (DAC)
   */
 
-typedef struct                                      /*!< (@ 0x400E1000) DAC Structure                                          */
-{
-    __IO uint32_t  CR;                                /*!< (@ 0x400E1000) DAC register. Holds the conversion data.               */
-    __IO uint32_t  CTRL;                              /*!< (@ 0x400E1004) DAC control register.                                  */
-    __IO uint32_t  CNTVAL;                            /*!< (@ 0x400E1008) DAC counter value register.                            */
+typedef struct {                                    /*!< (@ 0x400E1000) DAC Structure                                          */
+  __IO uint32_t  CR;                                /*!< (@ 0x400E1000) DAC register. Holds the conversion data.               */
+  __IO uint32_t  CTRL;                              /*!< (@ 0x400E1004) DAC control register.                                  */
+  __IO uint32_t  CNTVAL;                            /*!< (@ 0x400E1008) DAC counter value register.                            */
 } LPC_DAC_Type;
 
 
@@ -2675,22 +2581,21 @@ typedef struct                                      /*!< (@ 0x400E1000) DAC Stru
   * @brief 10-bit Analog-to-Digital Converter (ADC)  (ADCn)
   */
 
-typedef struct                                      /*!< (@ 0x400E3000) ADCn Structure                                         */
-{
-    __IO uint32_t  CR;                                /*!< (@ 0x400E3000) A/D Control Register. The AD0CR register must
+typedef struct {                                    /*!< (@ 0x400E3000) ADCn Structure                                         */
+  __IO uint32_t  CR;                                /*!< (@ 0x400E3000) A/D Control Register. The AD0CR register must
                                                          be written to select the operating mode before A/D conversion
                                                           can occur.                                                           */
-    __I  uint32_t  GDR;                               /*!< (@ 0x400E3004) A/D Global Data Register. Contains the result
+  __I  uint32_t  GDR;                               /*!< (@ 0x400E3004) A/D Global Data Register. Contains the result
                                                          of the most recent A/D conversion.                                    */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  INTEN;                             /*!< (@ 0x400E300C) A/D Interrupt Enable Register. This register
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  INTEN;                             /*!< (@ 0x400E300C) A/D Interrupt Enable Register. This register
                                                          contains enable bits that allow the DONE flag of each A/D channel
                                                           to be included or excluded from contributing to the generation
                                                           of an A/D interrupt.                                                 */
-    __I  uint32_t  DR[8];                             /*!< (@ 0x400E3010) A/D Channel Data Register. This register contains
+  __I  uint32_t  DR[8];                             /*!< (@ 0x400E3010) A/D Channel Data Register. This register contains
                                                          the result of the most recent conversion completed on channel
                                                           n.                                                                   */
-    __I  uint32_t  STAT;                              /*!< (@ 0x400E3030) A/D Status Register. This register contains DONE
+  __I  uint32_t  STAT;                              /*!< (@ 0x400E3030) A/D Status Register. This register contains DONE
                                                          and OVERRUN flags for all of the A/D channels, as well as the
                                                           A/D interrupt flag.                                                  */
 } LPC_ADCn_Type;
@@ -2705,50 +2610,49 @@ typedef struct                                      /*!< (@ 0x400E3000) ADCn Str
   * @brief 12-bit Analog-to-Digital Converter High-Speed (ADCHS) (ADCHS)
   */
 
-typedef struct                                      /*!< (@ 0x400F0000) ADCHS Structure                                        */
-{
-    __O  uint32_t  FLUSH;                             /*!< (@ 0x400F0000) Flushes FIFO                                           */
-    __IO uint32_t  DMA_REQ;                           /*!< (@ 0x400F0004) Set or clear DMA write request                         */
-    __I  uint32_t  FIFO_STS;                          /*!< (@ 0x400F0008) Indicates FIFO fill level status                       */
-    __IO uint32_t  FIFO_CFG;                          /*!< (@ 0x400F000C) Configures FIFO fill level that triggers interrupt
+typedef struct {                                    /*!< (@ 0x400F0000) ADCHS Structure                                        */
+  __O  uint32_t  FLUSH;                             /*!< (@ 0x400F0000) Flushes FIFO                                           */
+  __IO uint32_t  DMA_REQ;                           /*!< (@ 0x400F0004) Set or clear DMA write request                         */
+  __I  uint32_t  FIFO_STS;                          /*!< (@ 0x400F0008) Indicates FIFO fill level status                       */
+  __IO uint32_t  FIFO_CFG;                          /*!< (@ 0x400F000C) Configures FIFO fill level that triggers interrupt
                                                          and packing 1 or 2 samples per word.                                  */
-    __O  uint32_t  TRIGGER;                           /*!< (@ 0x400F0010) Enable software trigger to start descriptor processing */
-    __IO uint32_t  DSCR_STS;                          /*!< (@ 0x400F0014) Indicates active descriptor table and descriptor
+  __O  uint32_t  TRIGGER;                           /*!< (@ 0x400F0010) Enable software trigger to start descriptor processing */
+  __IO uint32_t  DSCR_STS;                          /*!< (@ 0x400F0014) Indicates active descriptor table and descriptor
                                                          entry                                                                 */
-    __IO uint32_t  POWER_DOWN;                        /*!< (@ 0x400F0018) Set or clear power down mode                           */
-    __IO uint32_t  CONFIG;                            /*!< (@ 0x400F001C) Configures external trigger mode, store channel
+  __IO uint32_t  POWER_DOWN;                        /*!< (@ 0x400F0018) Set or clear power down mode                           */
+  __IO uint32_t  CONFIG;                            /*!< (@ 0x400F001C) Configures external trigger mode, store channel
                                                          ID in FIFO and walk-up recovery time from power down.                 */
-    __IO uint32_t  THR_A;                             /*!< (@ 0x400F0020) Configures window comparator A levels.                 */
-    __IO uint32_t  THR_B;                             /*!< (@ 0x400F0024) Configures window comparator B levels.                 */
-    __I  uint32_t  LAST_SAMPLE[6];                    /*!< (@ 0x400F0028) Contains last converted sample of input M [M=0..5)
+  __IO uint32_t  THR_A;                             /*!< (@ 0x400F0020) Configures window comparator A levels.                 */
+  __IO uint32_t  THR_B;                             /*!< (@ 0x400F0024) Configures window comparator B levels.                 */
+  __I  uint32_t  LAST_SAMPLE[6];                    /*!< (@ 0x400F0028) Contains last converted sample of input M [M=0..5)
                                                          and result of window comparator.                                      */
-    __I  uint32_t  RESERVED0[49];
-    __IO uint32_t  ADC_SPEED;                         /*!< (@ 0x400F0104) ADC speed control                                      */
-    __IO uint32_t  POWER_CONTROL;                     /*!< (@ 0x400F0108) Configures ADC power vs. speed, DC-in biasing,
+  __I  uint32_t  RESERVED0[49];
+  __IO uint32_t  ADC_SPEED;                         /*!< (@ 0x400F0104) ADC speed control                                      */
+  __IO uint32_t  POWER_CONTROL;                     /*!< (@ 0x400F0108) Configures ADC power vs. speed, DC-in biasing,
                                                          output format and power gating.                                       */
-    __I  uint32_t  RESERVED1[61];
-    __I  uint32_t  FIFO_OUTPUT[16];                   /*!< (@ 0x400F0200) FIFO output mapped to 16 consecutive address
+  __I  uint32_t  RESERVED1[61];
+  __I  uint32_t  FIFO_OUTPUT[16];                   /*!< (@ 0x400F0200) FIFO output mapped to 16 consecutive address
                                                          locations. An output contains the value and input channel ID
                                                           of one or two converted samples                                      */
-    __I  uint32_t  RESERVED2[48];
-    __IO uint32_t  DESCRIPTOR0_[8];                   /*!< (@ 0x400F0300) Table 0 descriptor n, n= 0 to 7                        */
-    __IO uint32_t  DESCRIPTOR1_[8];                   /*!< (@ 0x400F0320) Table 1 descriptors n, n=0 to 7                        */
-    __I  uint32_t  RESERVED3[752];
-    __O  uint32_t  CLR_EN0;                           /*!< (@ 0x400F0F00) Interrupt 0 clear mask                                 */
-    __O  uint32_t  SET_EN0;                           /*!< (@ 0x400F0F04) Interrupt 0 set mask                                   */
-    __I  uint32_t  MASK0;                             /*!< (@ 0x400F0F08) Interrupt 0 mask                                       */
-    __I  uint32_t  STATUS0;                           /*!< (@ 0x400F0F0C) Interrupt 0 status. Interrupt 0 contains FIFO
+  __I  uint32_t  RESERVED2[48];
+  __IO uint32_t  DESCRIPTOR0_[8];                   /*!< (@ 0x400F0300) Table 0 descriptor n, n= 0 to 7                        */
+  __IO uint32_t  DESCRIPTOR1_[8];                   /*!< (@ 0x400F0320) Table 1 descriptors n, n=0 to 7                        */
+  __I  uint32_t  RESERVED3[752];
+  __O  uint32_t  CLR_EN0;                           /*!< (@ 0x400F0F00) Interrupt 0 clear mask                                 */
+  __O  uint32_t  SET_EN0;                           /*!< (@ 0x400F0F04) Interrupt 0 set mask                                   */
+  __I  uint32_t  MASK0;                             /*!< (@ 0x400F0F08) Interrupt 0 mask                                       */
+  __I  uint32_t  STATUS0;                           /*!< (@ 0x400F0F0C) Interrupt 0 status. Interrupt 0 contains FIFO
                                                          fill level, descriptor status and ADC range under/overflow            */
-    __O  uint32_t  CLR_STAT0;                         /*!< (@ 0x400F0F10) Interrupt 0 clear status                               */
-    __O  uint32_t  SET_STAT0;                         /*!< (@ 0x400F0F14) Interrupt 0 set status                                 */
-    __I  uint32_t  RESERVED4[2];
-    __O  uint32_t  CLR_EN1;                           /*!< (@ 0x400F0F20) Interrupt 1 mask clear enable.                         */
-    __O  uint32_t  SET_EN1;                           /*!< (@ 0x400F0F24) Interrupt 1 mask set enable                            */
-    __I  uint32_t  MASK1;                             /*!< (@ 0x400F0F28) Interrupt 1 mask                                       */
-    __I  uint32_t  STATUS1;                           /*!< (@ 0x400F0F2C) Interrupt 1 status. Interrupt 1 contains window
+  __O  uint32_t  CLR_STAT0;                         /*!< (@ 0x400F0F10) Interrupt 0 clear status                               */
+  __O  uint32_t  SET_STAT0;                         /*!< (@ 0x400F0F14) Interrupt 0 set status                                 */
+  __I  uint32_t  RESERVED4[2];
+  __O  uint32_t  CLR_EN1;                           /*!< (@ 0x400F0F20) Interrupt 1 mask clear enable.                         */
+  __O  uint32_t  SET_EN1;                           /*!< (@ 0x400F0F24) Interrupt 1 mask set enable                            */
+  __I  uint32_t  MASK1;                             /*!< (@ 0x400F0F28) Interrupt 1 mask                                       */
+  __I  uint32_t  STATUS1;                           /*!< (@ 0x400F0F2C) Interrupt 1 status. Interrupt 1 contains window
                                                          comparator results and register last LAST_SAMPLE[M] overrun.          */
-    __O  uint32_t  CLR_STAT1;                         /*!< (@ 0x400F0F30) Interrupt 1 clear status                               */
-    __O  uint32_t  SET_STAT1;                         /*!< (@ 0x400F0F34) Interrupt 1 set status                                 */
+  __O  uint32_t  CLR_STAT1;                         /*!< (@ 0x400F0F30) Interrupt 1 clear status                               */
+  __O  uint32_t  SET_STAT1;                         /*!< (@ 0x400F0F34) Interrupt 1 set status                                 */
 } LPC_ADCHS_Type;
 
 
@@ -2761,27 +2665,26 @@ typedef struct                                      /*!< (@ 0x400F0000) ADCHS St
   * @brief GPIO port  (GPIO_PORT)
   */
 
-typedef struct                                      /*!< (@ 0x400F4000) GPIO_PORT Structure                                    */
-{
-    __IO uint8_t   B[256];                            /*!< (@ 0x400F4000) Byte pin registers port 0 to 5; pins PIOn_0 to
+typedef struct {                                    /*!< (@ 0x400F4000) GPIO_PORT Structure                                    */
+  __IO uint8_t   B[256];                            /*!< (@ 0x400F4000) Byte pin registers port 0 to 5; pins PIOn_0 to
                                                          PIOn_31                                                               */
-    __I  uint32_t  RESERVED0[960];
-    __IO uint32_t  W[256];                            /*!< (@ 0x400F5000) Word pin registers port 0 to 5                         */
-    __I  uint32_t  RESERVED1[768];
-    __IO uint32_t  DIR[8];                            /*!< (@ 0x400F6000) Direction registers port m                             */
-    __I  uint32_t  RESERVED2[24];
-    __IO uint32_t  MASK[8];                           /*!< (@ 0x400F6080) Mask register port m                                   */
-    __I  uint32_t  RESERVED3[24];
-    __IO uint32_t  PIN[8];                            /*!< (@ 0x400F6100) Port pin register port m                               */
-    __I  uint32_t  RESERVED4[24];
-    __IO uint32_t  MPIN[8];                           /*!< (@ 0x400F6180) Masked port register port m                            */
-    __I  uint32_t  RESERVED5[24];
-    __IO uint32_t  SET[8];                            /*!< (@ 0x400F6200) Write: Set register for port m Read: output bits
+  __I  uint32_t  RESERVED0[960];
+  __IO uint32_t  W[256];                            /*!< (@ 0x400F5000) Word pin registers port 0 to 5                         */
+  __I  uint32_t  RESERVED1[768];
+  __IO uint32_t  DIR[8];                            /*!< (@ 0x400F6000) Direction registers port m                             */
+  __I  uint32_t  RESERVED2[24];
+  __IO uint32_t  MASK[8];                           /*!< (@ 0x400F6080) Mask register port m                                   */
+  __I  uint32_t  RESERVED3[24];
+  __IO uint32_t  PIN[8];                            /*!< (@ 0x400F6100) Port pin register port m                               */
+  __I  uint32_t  RESERVED4[24];
+  __IO uint32_t  MPIN[8];                           /*!< (@ 0x400F6180) Masked port register port m                            */
+  __I  uint32_t  RESERVED5[24];
+  __IO uint32_t  SET[8];                            /*!< (@ 0x400F6200) Write: Set register for port m Read: output bits
                                                          for port m                                                            */
-    __I  uint32_t  RESERVED6[24];
-    __O  uint32_t  CLR[8];                            /*!< (@ 0x400F6280) Clear port m                                           */
-    __I  uint32_t  RESERVED7[24];
-    __O  uint32_t  NOT[8];                            /*!< (@ 0x400F6300) Toggle port m                                          */
+  __I  uint32_t  RESERVED6[24];
+  __O  uint32_t  CLR[8];                            /*!< (@ 0x400F6280) Clear port m                                           */
+  __I  uint32_t  RESERVED7[24];
+  __O  uint32_t  NOT[8];                            /*!< (@ 0x400F6300) Toggle port m                                          */
 } LPC_GPIO_PORT_Type;
 
 
@@ -2794,24 +2697,23 @@ typedef struct                                      /*!< (@ 0x400F4000) GPIO_POR
   * @brief SPI  (SPI)
   */
 
-typedef struct                                      /*!< (@ 0x40100000) SPI Structure                                          */
-{
-    __IO uint32_t  CR;                                /*!< (@ 0x40100000) SPI Control Register. This register controls
+typedef struct {                                    /*!< (@ 0x40100000) SPI Structure                                          */
+  __IO uint32_t  CR;                                /*!< (@ 0x40100000) SPI Control Register. This register controls
                                                          the operation of the SPI.                                             */
-    __I  uint32_t  SR;                                /*!< (@ 0x40100004) SPI Status Register. This register shows the
+  __I  uint32_t  SR;                                /*!< (@ 0x40100004) SPI Status Register. This register shows the
                                                          status of the SPI.                                                    */
-    __IO uint32_t  DR;                                /*!< (@ 0x40100008) SPI Data Register. This bi-directional register
+  __IO uint32_t  DR;                                /*!< (@ 0x40100008) SPI Data Register. This bi-directional register
                                                          provides the transmit and receive data for the SPI. Transmit
                                                           data is provided to the SPI0 by writing to this register. Data
                                                           received by the SPI0 can be read from this register.                 */
-    __IO uint32_t  CCR;                               /*!< (@ 0x4010000C) SPI Clock Counter Register. This register controls
+  __IO uint32_t  CCR;                               /*!< (@ 0x4010000C) SPI Clock Counter Register. This register controls
                                                          the frequency of a master's SCK0.                                     */
-    __IO uint32_t  TCR;                               /*!< (@ 0x40100010) SPI Test Control register. For functional testing
+  __IO uint32_t  TCR;                               /*!< (@ 0x40100010) SPI Test Control register. For functional testing
                                                          only.                                                                 */
-    __IO uint32_t  TSR;                               /*!< (@ 0x40100014) SPI Test Status register. For functional testing
+  __IO uint32_t  TSR;                               /*!< (@ 0x40100014) SPI Test Status register. For functional testing
                                                          only.                                                                 */
-    __I  uint32_t  RESERVED0;
-    __IO uint32_t  INT;                               /*!< (@ 0x4010001C) SPI Interrupt Flag. This register contains the
+  __I  uint32_t  RESERVED0;
+  __IO uint32_t  INT;                               /*!< (@ 0x4010001C) SPI Interrupt Flag. This register contains the
                                                          interrupt flag for the SPI interface.                                 */
 } LPC_SPI_Type;
 
@@ -2825,74 +2727,73 @@ typedef struct                                      /*!< (@ 0x40100000) SPI Stru
   * @brief Serial GPIO (SGPIO) (SGPIO)
   */
 
-typedef struct                                      /*!< (@ 0x40101000) SGPIO Structure                                        */
-{
-    __IO uint32_t  OUT_MUX_CFG[16];                   /*!< (@ 0x40101000) Pin multiplexer configuration registers.               */
-    __IO uint32_t  SGPIO_MUX_CFG[16];                 /*!< (@ 0x40101040) SGPIO multiplexer configuration registers.             */
-    __IO uint32_t  SLICE_MUX_CFG[16];                 /*!< (@ 0x40101080) Slice multiplexer configuration registers.             */
-    __IO uint32_t  REG[16];                           /*!< (@ 0x401010C0) Slice data registers. Each time COUNT0 reaches
+typedef struct {                                    /*!< (@ 0x40101000) SGPIO Structure                                        */
+  __IO uint32_t  OUT_MUX_CFG[16];                   /*!< (@ 0x40101000) Pin multiplexer configuration registers.               */
+  __IO uint32_t  SGPIO_MUX_CFG[16];                 /*!< (@ 0x40101040) SGPIO multiplexer configuration registers.             */
+  __IO uint32_t  SLICE_MUX_CFG[16];                 /*!< (@ 0x40101080) Slice multiplexer configuration registers.             */
+  __IO uint32_t  REG[16];                           /*!< (@ 0x401010C0) Slice data registers. Each time COUNT0 reaches
                                                          0x0 the register shifts loading bit 31 with data captured from
                                                           DIN(n). DOUT(n) is set to REG(0)                                     */
-    __IO uint32_t  REG_SS[16];                        /*!< (@ 0x40101100) Slice data shadow registers. Each time POS reaches
+  __IO uint32_t  REG_SS[16];                        /*!< (@ 0x40101100) Slice data shadow registers. Each time POS reaches
                                                          0x0 the contents of REG_SS is exchanged with the content of
                                                           REG                                                                  */
-    __IO uint32_t  PRESET[16];                        /*!< (@ 0x40101140) Reload value of COUNT0, loaded when COUNT0 reaches
+  __IO uint32_t  PRESET[16];                        /*!< (@ 0x40101140) Reload value of COUNT0, loaded when COUNT0 reaches
                                                          0x0                                                                   */
-    __IO uint32_t  COUNT[16];                         /*!< (@ 0x40101180) Down counter, counts down each clock cycle.            */
-    __IO uint32_t  POS[16];                           /*!< (@ 0x401011C0) Each time COUNT0 reaches 0x0 POS counts down.          */
-    __IO uint32_t  MASK_A;                            /*!< (@ 0x40101200) Mask for pattern match function of slice A             */
-    __IO uint32_t  MASK_H;                            /*!< (@ 0x40101204) Mask for pattern match function of slice H             */
-    __IO uint32_t  MASK_I;                            /*!< (@ 0x40101208) Mask for pattern match function of slice I             */
-    __IO uint32_t  MASK_P;                            /*!< (@ 0x4010120C) Mask for pattern match function of slice P             */
-    __I  uint32_t  GPIO_INREG;                        /*!< (@ 0x40101210) GPIO input status register                             */
-    __IO uint32_t  GPIO_OUTREG;                       /*!< (@ 0x40101214) GPIO output control register                           */
-    __IO uint32_t  GPIO_OENREG;                       /*!< (@ 0x40101218) GPIO OE control register                               */
-    __IO uint32_t  CTRL_ENABLE;                       /*!< (@ 0x4010121C) Enables the slice COUNT counter                        */
-    __IO uint32_t  CTRL_DISABLE;                      /*!< (@ 0x40101220) Disables the slice POS counter                         */
-    __I  uint32_t  RESERVED0[823];
-    __O  uint32_t  CLR_EN_0;                          /*!< (@ 0x40101F00) Shift clock interrupt clear mask                       */
-    __O  uint32_t  SET_EN_0;                          /*!< (@ 0x40101F04) Shift clock interrupt set mask                         */
-    __I  uint32_t  ENABLE_0;                          /*!< (@ 0x40101F08) Shift clock interrupt enable                           */
-    __I  uint32_t  STATUS_0;                          /*!< (@ 0x40101F0C) Shift clock interrupt status                           */
-    __O  uint32_t  CLR_STATUS_0;                      /*!< (@ 0x40101F10) Shift clock interrupt clear status                     */
-    __O  uint32_t  SET_STATUS_0;                      /*!< (@ 0x40101F14) Shift clock interrupt set status                       */
-    __I  uint32_t  RESERVED1[2];
-    __O  uint32_t  CLR_EN_1;                          /*!< (@ 0x40101F20) Exchange clock interrupt clear mask                    */
-    __O  uint32_t  SET_EN_1;                          /*!< (@ 0x40101F24) Exchange clock interrupt set mask                      */
-    __I  uint32_t  ENABLE_1;                          /*!< (@ 0x40101F28) Exchange clock interrupt enable                        */
-    __I  uint32_t  STATUS_1;                          /*!< (@ 0x40101F2C) Exchange clock interrupt status                        */
-    __O  uint32_t  CLR_STATUS_1;                      /*!< (@ 0x40101F30) Exchange clock interrupt clear status                  */
-    __O  uint32_t  SET_STATUS_1;                      /*!< (@ 0x40101F34) Exchange clock interrupt set status                    */
-    __I  uint32_t  RESERVED2[2];
-    __O  uint32_t  CLR_EN_2;                          /*!< (@ 0x40101F40) Pattern match interrupt clear mask                     */
-    __O  uint32_t  SET_EN_2;                          /*!< (@ 0x40101F44) Pattern match interrupt set mask                       */
-    __I  uint32_t  ENABLE_2;                          /*!< (@ 0x40101F48) Pattern match interrupt enable                         */
-    __I  uint32_t  STATUS_2;                          /*!< (@ 0x40101F4C) Pattern match interrupt status                         */
-    __O  uint32_t  CLR_STATUS_2;                      /*!< (@ 0x40101F50) Pattern match interrupt clear status                   */
-    __O  uint32_t  SET_STATUS_2;                      /*!< (@ 0x40101F54) Pattern match interrupt set status                     */
-    __I  uint32_t  RESERVED3[2];
-    __O  uint32_t  CLR_EN_3;                          /*!< (@ 0x40101F60) Input interrupt clear mask                             */
-    __O  uint32_t  SET_EN_3;                          /*!< (@ 0x40101F64) Input bit match interrupt set mask                     */
-    __I  uint32_t  ENABLE_3;                          /*!< (@ 0x40101F68) Input bit match interrupt enable                       */
-    __I  uint32_t  STATUS_3;                          /*!< (@ 0x40101F6C) Input bit match interrupt status                       */
-    __O  uint32_t  CLR_STATUS_3;                      /*!< (@ 0x40101F70) Input bit match interrupt clear status                 */
-    __O  uint32_t  SET_STATUS_3;                      /*!< (@ 0x40101F74) Input bit match interrupt set status                   */
+  __IO uint32_t  COUNT[16];                         /*!< (@ 0x40101180) Down counter, counts down each clock cycle.            */
+  __IO uint32_t  POS[16];                           /*!< (@ 0x401011C0) Each time COUNT0 reaches 0x0 POS counts down.          */
+  __IO uint32_t  MASK_A;                            /*!< (@ 0x40101200) Mask for pattern match function of slice A             */
+  __IO uint32_t  MASK_H;                            /*!< (@ 0x40101204) Mask for pattern match function of slice H             */
+  __IO uint32_t  MASK_I;                            /*!< (@ 0x40101208) Mask for pattern match function of slice I             */
+  __IO uint32_t  MASK_P;                            /*!< (@ 0x4010120C) Mask for pattern match function of slice P             */
+  __I  uint32_t  GPIO_INREG;                        /*!< (@ 0x40101210) GPIO input status register                             */
+  __IO uint32_t  GPIO_OUTREG;                       /*!< (@ 0x40101214) GPIO output control register                           */
+  __IO uint32_t  GPIO_OENREG;                       /*!< (@ 0x40101218) GPIO OE control register                               */
+  __IO uint32_t  CTRL_ENABLE;                       /*!< (@ 0x4010121C) Enables the slice COUNT counter                        */
+  __IO uint32_t  CTRL_DISABLE;                      /*!< (@ 0x40101220) Disables the slice POS counter                         */
+  __I  uint32_t  RESERVED0[823];
+  __O  uint32_t  CLR_EN_0;                          /*!< (@ 0x40101F00) Shift clock interrupt clear mask                       */
+  __O  uint32_t  SET_EN_0;                          /*!< (@ 0x40101F04) Shift clock interrupt set mask                         */
+  __I  uint32_t  ENABLE_0;                          /*!< (@ 0x40101F08) Shift clock interrupt enable                           */
+  __I  uint32_t  STATUS_0;                          /*!< (@ 0x40101F0C) Shift clock interrupt status                           */
+  __O  uint32_t  CLR_STATUS_0;                      /*!< (@ 0x40101F10) Shift clock interrupt clear status                     */
+  __O  uint32_t  SET_STATUS_0;                      /*!< (@ 0x40101F14) Shift clock interrupt set status                       */
+  __I  uint32_t  RESERVED1[2];
+  __O  uint32_t  CLR_EN_1;                          /*!< (@ 0x40101F20) Exchange clock interrupt clear mask                    */
+  __O  uint32_t  SET_EN_1;                          /*!< (@ 0x40101F24) Exchange clock interrupt set mask                      */
+  __I  uint32_t  ENABLE_1;                          /*!< (@ 0x40101F28) Exchange clock interrupt enable                        */
+  __I  uint32_t  STATUS_1;                          /*!< (@ 0x40101F2C) Exchange clock interrupt status                        */
+  __O  uint32_t  CLR_STATUS_1;                      /*!< (@ 0x40101F30) Exchange clock interrupt clear status                  */
+  __O  uint32_t  SET_STATUS_1;                      /*!< (@ 0x40101F34) Exchange clock interrupt set status                    */
+  __I  uint32_t  RESERVED2[2];
+  __O  uint32_t  CLR_EN_2;                          /*!< (@ 0x40101F40) Pattern match interrupt clear mask                     */
+  __O  uint32_t  SET_EN_2;                          /*!< (@ 0x40101F44) Pattern match interrupt set mask                       */
+  __I  uint32_t  ENABLE_2;                          /*!< (@ 0x40101F48) Pattern match interrupt enable                         */
+  __I  uint32_t  STATUS_2;                          /*!< (@ 0x40101F4C) Pattern match interrupt status                         */
+  __O  uint32_t  CLR_STATUS_2;                      /*!< (@ 0x40101F50) Pattern match interrupt clear status                   */
+  __O  uint32_t  SET_STATUS_2;                      /*!< (@ 0x40101F54) Pattern match interrupt set status                     */
+  __I  uint32_t  RESERVED3[2];
+  __O  uint32_t  CLR_EN_3;                          /*!< (@ 0x40101F60) Input interrupt clear mask                             */
+  __O  uint32_t  SET_EN_3;                          /*!< (@ 0x40101F64) Input bit match interrupt set mask                     */
+  __I  uint32_t  ENABLE_3;                          /*!< (@ 0x40101F68) Input bit match interrupt enable                       */
+  __I  uint32_t  STATUS_3;                          /*!< (@ 0x40101F6C) Input bit match interrupt status                       */
+  __O  uint32_t  CLR_STATUS_3;                      /*!< (@ 0x40101F70) Input bit match interrupt clear status                 */
+  __O  uint32_t  SET_STATUS_3;                      /*!< (@ 0x40101F74) Input bit match interrupt set status                   */
 } LPC_SGPIO_Type;
 
 
 /* --------------------  End of section using anonymous unions  ------------------- */
 #if defined(__CC_ARM)
-#pragma pop
+  #pragma pop
 #elif defined(__ICCARM__)
-/* leave anonymous unions enabled */
+  /* leave anonymous unions enabled */
 #elif defined(__GNUC__)
-/* anonymous unions are enabled by default */
+  /* anonymous unions are enabled by default */
 #elif defined(__TMS470__)
-/* anonymous unions are enabled by default */
+  /* anonymous unions are enabled by default */
 #elif defined(__TASKING__)
-#pragma warning restore
+  #pragma warning restore
 #else
-#warning Not supported compiler type
+  #warning Not supported compiler type
 #endif
 
 

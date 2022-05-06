@@ -57,8 +57,7 @@ typedef struct
 } nrfx_twis_t;
 
 #ifndef __NRFX_DOXYGEN__
-enum
-{
+enum {
 #if NRFX_CHECK(NRFX_TWIS0_ENABLED)
     NRFX_TWIS0_INST_IDX,
 #endif
@@ -86,15 +85,15 @@ enum
 typedef enum
 {
     NRFX_TWIS_EVT_READ_REQ,     ///< Read request detected.
-    /**< If there is no buffer prepared, buf_req flag in the even will be set.
-         Call then @ref nrfx_twis_tx_prepare to give parameters for buffer.
-         */
+                                /**< If there is no buffer prepared, buf_req flag in the even will be set.
+                                     Call then @ref nrfx_twis_tx_prepare to give parameters for buffer.
+                                     */
     NRFX_TWIS_EVT_READ_DONE,    ///< Read request finished - free any data.
     NRFX_TWIS_EVT_READ_ERROR,   ///< Read request finished with error.
     NRFX_TWIS_EVT_WRITE_REQ,    ///< Write request detected.
-    /**< If there is no buffer prepared, buf_req flag in the even will be set.
-         Call then @ref nrfx_twis_rx_prepare to give parameters for buffer.
-         */
+                                /**< If there is no buffer prepared, buf_req flag in the even will be set.
+                                     Call then @ref nrfx_twis_rx_prepare to give parameters for buffer.
+                                     */
     NRFX_TWIS_EVT_WRITE_DONE,   ///< Write request finished - process data.
     NRFX_TWIS_EVT_WRITE_ERROR,  ///< Write request finished with error.
     NRFX_TWIS_EVT_GENERAL_ERROR ///< Error that happens not inside WRITE or READ transaction.
@@ -123,7 +122,7 @@ typedef struct
     union
     {
         bool buf_req;       ///< Flag for @ref NRFX_TWIS_EVT_READ_REQ and @ref NRFX_TWIS_EVT_WRITE_REQ.
-        /**< Information if transmission buffer requires to be prepared. */
+                            /**< Information if transmission buffer requires to be prepared. */
         uint32_t tx_amount; ///< Data for @ref NRFX_TWIS_EVT_READ_DONE.
         uint32_t rx_amount; ///< Data for @ref NRFX_TWIS_EVT_WRITE_DONE.
         uint32_t error;     ///< Data for @ref NRFX_TWIS_EVT_GENERAL_ERROR.

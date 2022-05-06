@@ -189,8 +189,7 @@
 /* Header functional descriptor */
 /* (usbcdc11.pdf, 5.2.3.1) */
 /* This header must precede any list of class-specific descriptors. */
-typedef __PACKED_STRUCT _CDC_HEADER_DESCRIPTOR
-{
+typedef __PACKED_STRUCT _CDC_HEADER_DESCRIPTOR {
     U8  bFunctionLength;                      /* size of this descriptor in bytes */
     U8  bDescriptorType;                      /* CS_INTERFACE descriptor type */
     U8  bDescriptorSubtype;                   /* Header functional descriptor subtype */
@@ -200,8 +199,7 @@ typedef __PACKED_STRUCT _CDC_HEADER_DESCRIPTOR
 /* Call management functional descriptor */
 /* (usbcdc11.pdf, 5.2.3.2) */
 /* Describes the processing of calls for the communication class interface. */
-typedef __PACKED_STRUCT _CDC_CALL_MANAGEMENT_DESCRIPTOR
-{
+typedef __PACKED_STRUCT _CDC_CALL_MANAGEMENT_DESCRIPTOR {
     U8  bFunctionLength;                      /* size of this descriptor in bytes */
     U8  bDescriptorType;                      /* CS_INTERFACE descriptor type */
     U8  bDescriptorSubtype;                   /* call management functional descriptor subtype */
@@ -212,8 +210,7 @@ typedef __PACKED_STRUCT _CDC_CALL_MANAGEMENT_DESCRIPTOR
 /* Abstract control management functional descriptor */
 /* (usbcdc11.pdf, 5.2.3.3) */
 /* Describes the command supported by the communication interface class with the Abstract Control Model subclass code. */
-typedef __PACKED_STRUCT _CDC_ABSTRACT_CONTROL_MANAGEMENT_DESCRIPTOR
-{
+typedef __PACKED_STRUCT _CDC_ABSTRACT_CONTROL_MANAGEMENT_DESCRIPTOR {
     U8  bFunctionLength;                      /* size of this descriptor in bytes */
     U8  bDescriptorType;                      /* CS_INTERFACE descriptor type */
     U8  bDescriptorSubtype;                   /* abstract control management functional descriptor subtype */
@@ -223,8 +220,7 @@ typedef __PACKED_STRUCT _CDC_ABSTRACT_CONTROL_MANAGEMENT_DESCRIPTOR
 /* Union functional descriptors */
 /* (usbcdc11.pdf, 5.2.3.8) */
 /* Describes the relationship between a group of interfaces that can be considered to form a functional unit. */
-typedef __PACKED_STRUCT _CDC_UNION_DESCRIPTOR
-{
+typedef __PACKED_STRUCT _CDC_UNION_DESCRIPTOR {
     U8  bFunctionLength;                      /* size of this descriptor in bytes */
     U8  bDescriptorType;                      /* CS_INTERFACE descriptor type */
     U8  bDescriptorSubtype;                   /* union functional descriptor subtype */
@@ -233,8 +229,7 @@ typedef __PACKED_STRUCT _CDC_UNION_DESCRIPTOR
 
 /* Union functional descriptors with one slave interface */
 /* (usbcdc11.pdf, 5.2.3.8) */
-typedef __PACKED_STRUCT _CDC_UNION_1SLAVE_DESCRIPTOR
-{
+typedef __PACKED_STRUCT _CDC_UNION_1SLAVE_DESCRIPTOR {
     CDC_UNION_DESCRIPTOR sUnion;              /* Union functional descriptor */
     U8                   bSlaveInterfaces[1]; /* Slave interface 0 */
 } CDC_UNION_1SLAVE_DESCRIPTOR;
@@ -242,8 +237,7 @@ typedef __PACKED_STRUCT _CDC_UNION_1SLAVE_DESCRIPTOR
 /* Line coding structure */
 /* Format of the data returned when a GetLineCoding request is received */
 /* (usbcdc11.pdf, 6.2.13) */
-typedef __PACKED_STRUCT _CDC_LINE_CODING
-{
+typedef __PACKED_STRUCT _CDC_LINE_CODING {
     U32 dwDTERate;                            /* Data terminal rate in bits per second */
     U8  bCharFormat;                          /* Number of stop bits */
     U8  bParityType;                          /* Parity bit type */

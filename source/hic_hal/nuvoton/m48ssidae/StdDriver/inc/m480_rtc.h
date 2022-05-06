@@ -15,7 +15,7 @@
  *   3. Neither the name of Nuvoton Technology Corp. nor the names of its contributors
  *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -133,8 +133,7 @@ extern "C"
 /**
   * @details    RTC define Time Data Struct
   */
-typedef struct
-{
+typedef struct {
     uint32_t u32Year;           /*!< Year value */
     uint32_t u32Month;          /*!< Month value */
     uint32_t u32Day;            /*!< Day value */
@@ -307,16 +306,14 @@ __STATIC_INLINE void RTC_WaitAccessEnable(void);
   */
 __STATIC_INLINE void RTC_WaitAccessEnable(void)
 {
-    while ((RTC->RWEN & RTC_RWEN_RTCBUSY_Msk) == RTC_RWEN_RTCBUSY_Msk)
-    {
+    while ((RTC->RWEN & RTC_RWEN_RTCBUSY_Msk) == RTC_RWEN_RTCBUSY_Msk) {
     }
 
     /* To wait RWENF bit is cleared and enable RWENF bit (Access Enable bit) again */
     RTC->RWEN = RTC_WRITE_KEY;
 
     /* To wait RWENF bit is set and user can access the protected-register of RTC from now on */
-    while ((RTC->RWEN & RTC_RWEN_RWENF_Msk) == (uint32_t)0x0)
-    {
+    while ((RTC->RWEN & RTC_RWEN_RWENF_Msk) == (uint32_t)0x0) {
     }
 }
 

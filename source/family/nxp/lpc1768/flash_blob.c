@@ -21,8 +21,7 @@
 
 #include "flash_blob.h"
 
-static const uint32_t LPC1768_FLM[] =
-{
+static const uint32_t LPC1768_FLM[] = {
     0xe00abe00, 0x062d780d, 0x24084068, 0xd3000040, 0x1e644058, 0x1c49d1fa, 0x2a001e52, 0x4770d1f2,
 
     /*0x20*/ 0x28100b00, 0x210ed302, 0xd0eb01, 0x494f4770, 0x607af44f, 0x60084449, 0x2100484d, 0x21aa7001,
@@ -46,20 +45,18 @@ static const uint32_t LPC1768_FLM[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0, 1024},
-};
+ };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x1000002f, // init
     0x10000051, // uninit
     0x10000055, // erase_chip
     0x10000097, // erase_sector
     0x100000dd, // program_page
     0x0,        // Verify
-
+    
     {0x10000001, 0x10000214, 0x10001000}, // {breakpoint, RSB, RSP}
 
     0x1000023c, // program_buffer

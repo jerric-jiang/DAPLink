@@ -22,9 +22,8 @@
 #include "target_family.h"
 #include "target_board.h"
 
-const board_info_t g_board_info =
-{
-    .info_version = kBoardInfoVersion,
+const board_info_t g_board_info = {
+	.info_version = kBoardInfoVersion,
     .board_id = "0421",
     .family_id = kMaxim_MAX3266X_FamilyID,
     .flags = kEnablePageErase,

@@ -30,15 +30,13 @@
 //! @brief Current board info version.
 //!
 //! - Version 1: Initial version.
-enum _board_info_version
-{
+enum _board_info_version {
     kBoardInfoVersion = 1, //!< The current board info version.
 };
 
 //! @brief Flags for board_info
-enum _board_info_flags
-{
-    kEnablePageErase = (1 << 0),            /*!< Enable page programming and sector erase for drag and drop */
+enum _board_info_flags {
+	kEnablePageErase = (1 << 0),            /*!< Enable page programming and sector erase for drag and drop */
     kEnableUnderResetConnect = (1 << 1),    /*!< Enable under reset connection when enabling debug mode */
 };
 
@@ -56,8 +54,7 @@ enum _board_info_flags
  * The board initialization function pointers allow the board to override the routines defined
  * by the device family.
  */
-typedef struct board_info
-{
+typedef struct board_info {
     uint16_t info_version;              /*!< Version number of the board info */
     uint16_t family_id;                 /*!< Use to select or identify target family from defined target family or custom ones */
     char board_id[5];                   /*!< 4-char board ID plus null terminator */
@@ -108,22 +105,13 @@ uint16_t get_family_id(void);
 uint8_t flash_algo_valid(void);
 
 //! @brief Returns the MSD HTML help filename or a default.
-static inline const char * get_daplink_url_name(void)
-{
-    return ((g_board_info.daplink_url_name[0] != 0) ? g_board_info.daplink_url_name : "MBED    HTM");
-}
+static inline const char * get_daplink_url_name ( void ) { return ((g_board_info.daplink_url_name[0] != 0) ? g_board_info.daplink_url_name : "MBED    HTM"); }
 
 //! @brief Returns the MSD volume name or a default.
-static inline const char * get_daplink_drive_name(void)
-{
-    return ((g_board_info.daplink_drive_name[0] != 0) ? g_board_info.daplink_drive_name : "DAPLINK    ");
-}
+static inline const char * get_daplink_drive_name ( void ) { return ((g_board_info.daplink_drive_name[0] != 0) ? g_board_info.daplink_drive_name : "DAPLINK    "); }
 
 //! @brief Returns the target information URL or a default.
-static inline const char * get_daplink_target_url(void)
-{
-    return ((g_board_info.daplink_target_url[0] != 0) ? g_board_info.daplink_target_url : "https://mbed.org/device/?code=@U?version=@V?target_id=@T");
-}
+static inline const char * get_daplink_target_url ( void ) { return ((g_board_info.daplink_target_url[0] != 0) ? g_board_info.daplink_target_url : "https://mbed.org/device/?code=@U?version=@V?target_id=@T"); }
 
 #ifdef __cplusplus
 }

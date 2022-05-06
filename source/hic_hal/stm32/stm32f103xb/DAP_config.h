@@ -139,73 +139,59 @@ This information includes:
 
 __STATIC_INLINE void pin_out_init(GPIO_TypeDef* GPIOx, uint8_t pin_bit)
 {
-    if (pin_bit >= 8)
+    if(pin_bit >= 8)
     {
-        GPIOx->CRH &= ~(0x0000000F << ((pin_bit - 8) << 2));
-        GPIOx->CRH |= (((uint32_t)(0x00 | 0x03) & 0x0F) << ((pin_bit - 8) << 2));
+        GPIOx->CRH &= ~(0x0000000F << ((pin_bit-8) << 2));
+        GPIOx->CRH |= ( ((uint32_t)(0x00|0x03) & 0x0F) << ((pin_bit-8) << 2) );
     }
     else
     {
         GPIOx->CRL &= ~(0x0000000F << ((pin_bit) << 2));
-        GPIOx->CRL |= (((uint32_t)(0x00 | 0x03) & 0x0F) << ((pin_bit) << 2));
+        GPIOx->CRL |= ( ((uint32_t)(0x00|0x03) & 0x0F) << ((pin_bit) << 2) );
     }
 }
 
 __STATIC_INLINE void pin_out_od_init(GPIO_TypeDef* GPIOx, uint8_t pin_bit)
 {
-    if (pin_bit >= 8)
+    if(pin_bit >= 8)
     {
-        GPIOx->CRH &= ~(0x0000000F << ((pin_bit - 8) << 2));
-        GPIOx->CRH |= (((uint32_t)(0x04 | 0x03) & 0x0F) << ((pin_bit - 8) << 2));
+        GPIOx->CRH &= ~(0x0000000F << ((pin_bit-8) << 2));
+        GPIOx->CRH |= ( ((uint32_t)(0x04|0x03) & 0x0F) << ((pin_bit-8) << 2) );
     }
     else
     {
         GPIOx->CRL &= ~(0x0000000F << ((pin_bit) << 2));
-        GPIOx->CRL |= (((uint32_t)(0x04 | 0x03) & 0x0F) << ((pin_bit) << 2));
+        GPIOx->CRL |= ( ((uint32_t)(0x04|0x03) & 0x0F) << ((pin_bit) << 2) );
     }
 }
 
 __STATIC_INLINE void pin_in_init(GPIO_TypeDef* GPIOx, uint8_t pin_bit, uint8_t mode)
 {
     uint8_t config;
-    if (mode == 1)
-    {
-        config = 0x08;    //Up
-    }
-    else if (mode == 2)
-    {
-        config = 0x08;    //down
-    }
+    if(mode == 1)
+        config = 0x08; //Up
+    else if(mode == 2)
+        config = 0x08; //down
     else
-    {
-        config = 0x00;    //GPIO_Mode_AIN
-    }
+        config = 0x00; //GPIO_Mode_AIN
 
-    if (pin_bit >= 8)
+    if(pin_bit >= 8)
     {
-        GPIOx->CRH &= ~(0x0000000F << ((pin_bit - 8) << 2));
-        GPIOx->CRH |= (((uint32_t)(config) & 0x0F) << ((pin_bit - 8) << 2));
-        if (mode == 1)
-        {
+        GPIOx->CRH &= ~(0x0000000F << ((pin_bit-8) << 2));
+        GPIOx->CRH |= ( ((uint32_t)(config) & 0x0F) << ((pin_bit-8) << 2) );
+        if(mode == 1)
             GPIOx->BSRR = (((uint32_t)0x01) << pin_bit);
-        }
-        else if (mode == 2)
-        {
+        else if(mode == 2)
             GPIOx->BRR = (((uint32_t)0x01) << pin_bit);
-        }
     }
     else
     {
         GPIOx->CRL &= ~(0x0000000F << ((pin_bit) << 2));
-        GPIOx->CRL |= (((uint32_t)(config) & 0x0F) << ((pin_bit) << 2));
-        if (mode == 1)
-        {
+        GPIOx->CRL |= ( ((uint32_t)(config) & 0x0F) << ((pin_bit) << 2) );
+        if(mode == 1)
             GPIOx->BSRR = (((uint32_t)0x01) << pin_bit);
-        }
-        else if (mode == 2)
-        {
+        else if(mode == 2)
             GPIOx->BRR = (((uint32_t)0x01) << pin_bit);
-        }
     }
 }
 //**************************************************************************************************
@@ -355,13 +341,9 @@ __STATIC_FORCEINLINE uint32_t PIN_SWDIO_IN(void)
 __STATIC_FORCEINLINE void PIN_SWDIO_OUT(uint32_t bit)
 {
     if (bit & 1)
-    {
         SWDIO_OUT_PIN_PORT->BSRR = SWDIO_OUT_PIN;
-    }
     else
-    {
         SWDIO_OUT_PIN_PORT->BRR = SWDIO_OUT_PIN;
-    }
 }
 
 /** SWDIO I/O pin: Switch to Output mode (used in SWD mode only).
@@ -455,13 +437,9 @@ __STATIC_FORCEINLINE uint32_t PIN_nRESET_IN(void)
 __STATIC_FORCEINLINE void     PIN_nRESET_OUT(uint32_t bit)
 {
     if (bit & 1)
-    {
         nRESET_PIN_PORT->BSRR = nRESET_PIN;
-    }
     else
-    {
         nRESET_PIN_PORT->BRR = nRESET_PIN;
-    }
 }
 
 //**************************************************************************************************
@@ -485,13 +463,9 @@ It is recommended to provide the following LEDs for status indication:
 __STATIC_INLINE void LED_CONNECTED_OUT(uint32_t bit)
 {
     if (bit & 1)
-    {
-        CONNECTED_LED_PORT->BRR = CONNECTED_LED_PIN;    // LED on
-    }
+        CONNECTED_LED_PORT->BRR = CONNECTED_LED_PIN; // LED on
     else
-    {
-        CONNECTED_LED_PORT->BSRR = CONNECTED_LED_PIN;    // LED off
-    }
+        CONNECTED_LED_PORT->BSRR = CONNECTED_LED_PIN;// LED off
 }
 
 /** Debug Unit: Set status Target Running LED.
@@ -522,9 +496,8 @@ default, the DWT timer is used.  The frequency of this timer is configured with 
 /** Get timestamp of Test Domain Timer.
 \return Current timestamp value.
 */
-__STATIC_INLINE uint32_t TIMESTAMP_GET(void)
-{
-    return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
+__STATIC_INLINE uint32_t TIMESTAMP_GET (void) {
+  return (DWT->CYCCNT) / (CPU_CLOCK / TIMESTAMP_CLOCK);
 }
 
 ///@}

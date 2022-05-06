@@ -64,8 +64,7 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
+typedef struct {
     __IO uint32_t ctrl;                                 /*  0x0000          UART Control Register                                                        */
     __IO uint32_t baud;                                 /*  0x0004          UART Baud Control Register                                                   */
     __IO uint32_t tx_fifo_ctrl;                         /*  0x0008          UART TX FIFO Control Register                                                */
@@ -81,17 +80,14 @@ typedef struct
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
-    union                                               /*  0x0000-0x07FC   FIFO Write Point for Data to Transmit                                        */
-    {
+typedef struct {
+    union {                                             /*  0x0000-0x07FC   FIFO Write Point for Data to Transmit                                        */
         __IO uint8_t  tx;
         __IO uint8_t  tx_8[2048];
         __IO uint16_t tx_16[1024];
         __IO uint32_t tx_32[512];
     };
-    union                                               /*  0x0800-0x0FFC   FIFO Read Point for Received Data                                            */
-    {
+    union {                                             /*  0x0800-0x0FFC   FIFO Read Point for Received Data                                            */
         __IO uint8_t  rx;
         __IO uint8_t  rx_8[2048];
         __IO uint16_t rx_16[1024];

@@ -30,8 +30,7 @@ extern "C" {
 #endif
 
 // wiring on PCB is unknown so implementations may vary
-typedef enum led_state
-{
+typedef enum led_state {
     GPIO_LED_OFF = 0,
     GPIO_LED_ON
 } gpio_led_state_t;

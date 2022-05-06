@@ -90,7 +90,7 @@ enum _flash_status
     kStatus_FLASH_AccessError =
         MAKE_STATUS(kStatusGroupFlashDriver, 3), /*!< Invalid instruction codes and out-of bound addresses */
     kStatus_FLASH_ProtectionViolation = MAKE_STATUS(
-                                            kStatusGroupFlashDriver, 4), /*!< The program/erase operation is requested to execute on protected areas */
+        kStatusGroupFlashDriver, 4), /*!< The program/erase operation is requested to execute on protected areas */
     kStatus_FLASH_CommandFailure =
         MAKE_STATUS(kStatusGroupFlashDriver, 5), /*!< Run-time error during command execution. */
     kStatus_FLASH_UnknownProperty = MAKE_STATUS(kStatusGroupFlashDriver, 6), /*!< Unknown property.*/
@@ -120,12 +120,12 @@ enum _flash_status
     kStatus_FLASH_EncryptedRegionsEraseNotDoneAtOnce =
         MAKE_STATUS(kStatusGroupFlashDriver, 0x22), /*!< Encrypted flash subregions are not erased at once. */
     kStatus_FLASH_ProgramVerificationNotAllowed = MAKE_STATUS(
-                kStatusGroupFlashDriver, 0x23), /*!< Program verification is not allowed when the encryption is enabled. */
+        kStatusGroupFlashDriver, 0x23), /*!< Program verification is not allowed when the encryption is enabled. */
     kStatus_FLASH_HashCheckError =
         MAKE_STATUS(kStatusGroupFlashDriver, 0x24), /*!< Hash check of page data is failed. */
     kStatus_FLASH_SealedFfrRegion      = MAKE_STATUS(kStatusGroupFlashDriver, 0x25), /*!< The FFR region is sealed. */
     kStatus_FLASH_FfrRegionWriteBroken = MAKE_STATUS(
-            kStatusGroupFlashDriver, 0x26), /*!< The FFR Spec region is not allowed to be written discontinuously. */
+        kStatusGroupFlashDriver, 0x26), /*!< The FFR Spec region is not allowed to be written discontinuously. */
     kStatus_FLASH_NmpaAccessNotAllowed =
         MAKE_STATUS(kStatusGroupFlashDriver, 0x27), /*!< The NMPA region is not allowed to be read/written/erased. */
     kStatus_FLASH_CmpaCfgDirectEraseNotAllowed =

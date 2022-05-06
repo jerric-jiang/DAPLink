@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t DAPLINK_RT1170_flash_prog_blob[] =
-{
+static const uint32_t DAPLINK_RT1170_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4770ba40, 0x4770ba40, 0x4770bac0, 0x4770bac0, 0x49414770, 0x4449b510, 0x460a483e, 0x493f6008,
     0x44492001, 0xf894f000, 0xd1062800, 0x2001493b, 0xf0004449, 0x2800f878, 0x2001d000, 0x2000bd10,
@@ -75,21 +74,18 @@ static const uint32_t flash_size = 0x00800000;
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x30000000, 0x00001000},
 };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000033,                         // .init
     0x2000005f,                         // .uninit
     0x20000081,                         // .erase_chip
     0x200000ad,                         // .erase_sector
     0x200000f1,                         // .program_page
     0x0,                                // .verify
-    {
-        // .sys_call_s
+    {                                   // .sys_call_s
         0x20000001,                     // .breakpoint   : start of blob + 1
         0x2000038C,                     // .static_base  : blob start + header + rw data offset
         0x20002800                      // .stack_pointer

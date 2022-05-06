@@ -22,8 +22,7 @@
 #include "target_family.h"
 #include "target_board.h"
 
-const board_info_t g_board_info =
-{
+const board_info_t g_board_info = {
     .board_id = "0235",
     .family_id = kStub_SWVectReset_FamilyID,
     .flags = kEnablePageErase,

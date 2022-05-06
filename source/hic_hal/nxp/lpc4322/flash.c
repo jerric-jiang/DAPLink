@@ -29,8 +29,7 @@
 #define FLASH_BANK_B    1
 
 /* IAP Structure */
-struct sIAP
-{
+struct sIAP {
     uint32_t cmd;           // Command
     uint32_t par[4];        // Parameters
     uint32_t stat;          // Status
@@ -38,20 +37,16 @@ struct sIAP
 } IAP;
 
 /* IAP Call */
-typedef void (*IAP_Entry)(uint32_t *cmd, uint32_t *stat);
+typedef void (*IAP_Entry) (uint32_t *cmd, uint32_t *stat);
 #define IAP_Call ((IAP_Entry) (*(volatile unsigned int *)(0x10400100)))
 
-uint32_t GetSecNum(uint32_t adr)
-{
+uint32_t GetSecNum (uint32_t adr) {
     uint32_t n;
     uint32_t flashadr = (adr & 0xFFFFFF);
 
-    if (flashadr < 0x10000)
-    {
+    if (flashadr < 0x10000) {
         n = flashadr >> 13;          //  8kB Sector
-    }
-    else
-    {
+    } else {
         n = (flashadr >> 16) + 7;    // 64kB Sector
     }
 
@@ -86,8 +81,7 @@ uint32_t EraseChip(void)
     IAP.par[1] = END_SECTOR;                    // End Sector
     IAP.par[2] = FLASH_BANK_A;                  // Flash Bank
     IAP_Call(&IAP.cmd, &IAP.stat);              // Call IAP Command
-    if (IAP.stat)
-    {
+    if (IAP.stat) {
         cortex_int_restore(local_state);
         return 1;  // Command Failed
     }
@@ -98,8 +92,7 @@ uint32_t EraseChip(void)
     IAP.par[2] = SystemCoreClock / 1000;        // CCLK in kHz
     IAP.par[3] = FLASH_BANK_A;                  // Flash Bank
     IAP_Call(&IAP.cmd, &IAP.stat);              // Call IAP Command
-    if (IAP.stat)
-    {
+    if (IAP.stat) {
         cortex_int_restore(local_state);
         return 1;  // Command Failed
     }
@@ -122,8 +115,7 @@ uint32_t EraseSector(uint32_t adr)
     IAP.par[1] = n;                             // End Sector
     IAP.par[2] = FLASH_BANK_A;                  // Flash Bank
     IAP_Call(&IAP.cmd, &IAP.stat);              // Call IAP Command
-    if (IAP.stat)
-    {
+    if (IAP.stat) {
         cortex_int_restore(local_state);
         return 1;  // Command Failed
     }
@@ -134,8 +126,7 @@ uint32_t EraseSector(uint32_t adr)
     IAP.par[2] = SystemCoreClock / 1000;        // CCLK in kHz
     IAP.par[3] = FLASH_BANK_A;                  // Flash Bank
     IAP_Call(&IAP.cmd, &IAP.stat);              // Call IAP Command
-    if (IAP.stat)
-    {
+    if (IAP.stat) {
         cortex_int_restore(local_state);
         return 1;  // Command Failed
     }
@@ -149,8 +140,7 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
 {
     uint32_t n;
 
-    if (adr == DAPLINK_ROM_START)                                // Check for Vector Table
-    {
+    if (adr == DAPLINK_ROM_START) {                              // Check for Vector Table
         n = *((unsigned long *)(buf + 0)) +
             *((unsigned long *)(buf + 1)) +
             *((unsigned long *)(buf + 2)) +
@@ -158,7 +148,7 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
             *((unsigned long *)(buf + 4)) +
             *((unsigned long *)(buf + 5)) +
             *((unsigned long *)(buf + 6));
-        *((unsigned long *)(buf + 7)) = 0 - n;  // Signature at Reserved Vector
+            *((unsigned long *)(buf + 7)) = 0 - n;  // Signature at Reserved Vector
     }
     n = GetSecNum(adr);                         // Get Sector Number
 
@@ -169,8 +159,7 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     IAP.par[1] = n;                             // End Sector
     IAP.par[2] = FLASH_BANK_A;                  // Flash Bank
     IAP_Call(&IAP.cmd, &IAP.stat);              // Call IAP Command
-    if (IAP.stat)
-    {
+    if (IAP.stat) {
         cortex_int_restore(local_state);
         return 1;  // Command Failed
     }
@@ -181,8 +170,7 @@ uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
     IAP.par[2] = 0x400;                         // Fixed Page Size
     IAP.par[3] = SystemCoreClock / 1000;        // CCLK in kHz
     IAP_Call(&IAP.cmd, &IAP.stat);              // Call IAP Command
-    if (IAP.stat)
-    {
+    if (IAP.stat) {
         cortex_int_restore(local_state);
         return 1;  // Command Failed
     }

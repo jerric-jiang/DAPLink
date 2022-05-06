@@ -21,8 +21,7 @@
 
 #include "flash_blob.h"
 
-static const uint32_t qspi_flash_prog_blob[] =
-{
+static const uint32_t qspi_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4604b570, 0x4616460d, 0x44484867, 0xb9e86800, 0x44784866, 0x44494966, 0x46086008, 0x44494965,
     0x46086008, 0x44494964, 0x68096008, 0xf0006808, 0x4961fc96, 0x68084449, 0xf0002101, 0xb108f9bb,
@@ -137,8 +136,7 @@ static const uint32_t qspi_flash_prog_blob[] =
     0x00000000, 0x00000000, 0x00000000, 0x00000004, 0x00800000, 0x00000000, 0x00000000
 };
 
-static const program_target_t qspi_flash =
-{
+static const program_target_t qspi_flash = {
     0x20000021, // Init
     0x20000071, // UnInit
     0x2000009d, // EraseChip
@@ -162,8 +160,7 @@ static const program_target_t qspi_flash =
     0x00000100                    // ram_to_flash_bytes_to_be_written
 };
 
-static const uint32_t musca_b_eflash_flash_prog_blob[] =
-{
+static const uint32_t musca_b_eflash_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4604b570, 0x4616460d, 0x44484866, 0xb9986800, 0x44484865, 0x44494965, 0x48656048, 0x60084448,
     0x49644608, 0x60084449, 0x49636808, 0xf8dbf000, 0x495c2001, 0x60084449, 0xbd702000, 0xb9414601,
@@ -216,8 +213,7 @@ static const uint32_t musca_b_eflash_flash_prog_blob[] =
     0x00000000
 };
 
-static const program_target_t eflash =
-{
+static const program_target_t eflash = {
     0x20000021, // Init
     0x2000005d, // UnInit
     0x20000077, // EraseChip
@@ -248,8 +244,7 @@ static const program_target_t eflash =
 * The last pair in the list will have sectors starting at that address and ending
 * at address flash_start + flash_size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x00000000, 0x00010000},
     {0x0a000000, 0x00004000},
 };

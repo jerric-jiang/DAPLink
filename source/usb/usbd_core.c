@@ -100,8 +100,7 @@ void usbd_reset_core(void)
 
 BOOL usbd_configured(void)
 {
-    if (USBD_Configuration)
-    {
+    if (USBD_Configuration) {
         return (__TRUE);
     }
 
@@ -131,17 +130,13 @@ void USBD_DataInStage(void)
 {
     U32 cnt;
 
-    if (USBD_EP0Data.Count > usbd_max_packet0)
-    {
+    if (USBD_EP0Data.Count > usbd_max_packet0) {
         cnt = usbd_max_packet0;
-    }
-    else
-    {
+    } else {
         cnt = USBD_EP0Data.Count;
     }
 
-    if (!cnt)
-    {
+    if (!cnt) {
         USBD_ZLP = 0;
     }
 
@@ -200,20 +195,16 @@ static inline BOOL USBD_ReqGetStatus(void)
 {
     U32 n, m;
 
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_DEVICE:
             USBD_EP0Data.pData = (U8 *)&USBD_DeviceStatus;
             break;
 
         case REQUEST_TO_INTERFACE:
-            if ((USBD_Configuration != 0) && (USBD_SetupPacket.wIndexL < USBD_NumInterfaces))
-            {
+            if ((USBD_Configuration != 0) && (USBD_SetupPacket.wIndexL < USBD_NumInterfaces)) {
                 __UNALIGNED_UINT16_WRITE(USBD_EP0Buf, 0);
                 USBD_EP0Data.pData = USBD_EP0Buf;
-            }
-            else
-            {
+            } else {
                 return (__FALSE);
             }
 
@@ -223,13 +214,10 @@ static inline BOOL USBD_ReqGetStatus(void)
             n = USBD_SetupPacket.wIndexL & 0x8F;
             m = (n & 0x80) ? ((1 << 16) << (n & 0x0F)) : (1 << n);
 
-            if (((USBD_Configuration != 0) || ((n & 0x0F) == 0)) && (USBD_EndPointMask & m))
-            {
+            if (((USBD_Configuration != 0) || ((n & 0x0F) == 0)) && (USBD_EndPointMask & m)) {
                 __UNALIGNED_UINT16_WRITE(USBD_EP0Buf, (USBD_EndPointHalt & m) ? 1 : 0);
                 USBD_EP0Data.pData = USBD_EP0Buf;
-            }
-            else
-            {
+            } else {
                 return (__FALSE);
             }
 
@@ -253,24 +241,17 @@ static inline BOOL USBD_ReqSetClrFeature(U32 sc)
 {
     U32 n, m;
 
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_DEVICE:
-            if (USBD_SetupPacket.wValue == USB_FEATURE_REMOTE_WAKEUP)
-            {
-                if (sc)
-                {
+            if (USBD_SetupPacket.wValue == USB_FEATURE_REMOTE_WAKEUP) {
+                if (sc) {
                     USBD_WakeUpCfg(__TRUE);
                     USBD_DeviceStatus |=  USB_GETSTATUS_REMOTE_WAKEUP;
-                }
-                else
-                {
+                } else {
                     USBD_WakeUpCfg(__FALSE);
                     USBD_DeviceStatus &= ~USB_GETSTATUS_REMOTE_WAKEUP;
                 }
-            }
-            else
-            {
+            } else {
                 return (__FALSE);
             }
 
@@ -283,19 +264,13 @@ static inline BOOL USBD_ReqSetClrFeature(U32 sc)
             n = USBD_SetupPacket.wIndexL & 0x8F;
             m = (n & 0x80) ? ((1 << 16) << (n & 0x0F)) : (1 << n);
 
-            if ((USBD_Configuration != 0) && ((n & 0x0F) != 0) && (USBD_EndPointMask & m))
-            {
-                if (USBD_SetupPacket.wValue == USB_FEATURE_ENDPOINT_STALL)
-                {
-                    if (sc)
-                    {
+            if ((USBD_Configuration != 0) && ((n & 0x0F) != 0) && (USBD_EndPointMask & m)) {
+                if (USBD_SetupPacket.wValue == USB_FEATURE_ENDPOINT_STALL) {
+                    if (sc) {
                         USBD_SetStallEP(n);
                         USBD_EndPointHalt |=  m;
-                    }
-                    else
-                    {
-                        if ((USBD_EndPointStall & m) != 0)
-                        {
+                    } else {
+                        if ((USBD_EndPointStall & m) != 0) {
                             return (__TRUE);
                         }
 
@@ -303,14 +278,10 @@ static inline BOOL USBD_ReqSetClrFeature(U32 sc)
                         USBD_ReqClrFeature_MSC(n);
                         USBD_EndPointHalt &= ~m;
                     }
-                }
-                else
-                {
+                } else {
                     return (__FALSE);
                 }
-            }
-            else
-            {
+            } else {
                 return (__FALSE);
             }
 
@@ -332,8 +303,7 @@ static inline BOOL USBD_ReqSetClrFeature(U32 sc)
 
 static inline BOOL USBD_ReqSetAddress(void)
 {
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_DEVICE:
             USBD_DeviceAddress = 0x80 | USBD_SetupPacket.wValueL;
             break;
@@ -357,28 +327,22 @@ static inline BOOL USBD_ReqGetDescriptor(void)
     U8  *pD;
     U32  len, n;
 
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_DEVICE:
-            switch (USBD_SetupPacket.wValueH)
-            {
+            switch (USBD_SetupPacket.wValueH) {
                 case USB_DEVICE_DESCRIPTOR_TYPE:
                     USBD_EP0Data.pData = (U8 *)USBD_DeviceDescriptor;
                     len = USB_DEVICE_DESC_SIZE;
                     break;
 
                 case USB_DEVICE_QUALIFIER_DESCRIPTOR_TYPE:
-                    if (!usbd_hs_enable)
-                    {
+                    if (!usbd_hs_enable) {
                         return (__FALSE);  /* High speed not enabled */
                     }
 
-                    if (USBD_HighSpeed == __FALSE)
-                    {
+                    if (USBD_HighSpeed == __FALSE) {
                         USBD_EP0Data.pData = (U8 *)USBD_DeviceQualifier;
-                    }
-                    else
-                    {
+                    } else {
                         USBD_EP0Data.pData = (U8 *)USBD_DeviceQualifier_HS;
                     }
 
@@ -386,32 +350,25 @@ static inline BOOL USBD_ReqGetDescriptor(void)
                     break;
 
                 case USB_CONFIGURATION_DESCRIPTOR_TYPE:
-                    if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE))
-                    {
+                    if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE)) {
                         return (__FALSE);  /* High speed request but high-speed not enabled */
                     }
 
-                    if (USBD_HighSpeed == __FALSE)
-                    {
+                    if (USBD_HighSpeed == __FALSE) {
                         pD = (U8 *)USBD_ConfigDescriptor;
                         ((USB_CONFIGURATION_DESCRIPTOR *)pD)->bDescriptorType = USB_CONFIGURATION_DESCRIPTOR_TYPE; //same descriptor is used in other configuration
-                    }
-                    else
-                    {
+                    } else {
                         pD = (U8 *)USBD_ConfigDescriptor_HS;
                         ((USB_CONFIGURATION_DESCRIPTOR *)pD)->bDescriptorType = USB_CONFIGURATION_DESCRIPTOR_TYPE; //same descriptor is used in other configuration
                     }
 
-                    for (n = 0; n != USBD_SetupPacket.wValueL; n++)
-                    {
-                        if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength != 0)
-                        {
+                    for (n = 0; n != USBD_SetupPacket.wValueL; n++) {
+                        if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength != 0) {
                             pD += ((USB_CONFIGURATION_DESCRIPTOR *)pD)->wTotalLength;
                         }
                     }
 
-                    if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength == 0)
-                    {
+                    if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength == 0) {
                         return (__FALSE);
                     }
 
@@ -420,32 +377,25 @@ static inline BOOL USBD_ReqGetDescriptor(void)
                     break;
 
                 case USB_OTHER_SPEED_CONFIG_DESCRIPTOR_TYPE:
-                    if (!usbd_hs_enable)
-                    {
+                    if (!usbd_hs_enable) {
                         return (__FALSE);  /* High speed not enabled */
                     }
 
-                    if (USBD_HighSpeed == __FALSE)
-                    {
+                    if (USBD_HighSpeed == __FALSE) {
                         pD = (U8 *)USBD_ConfigDescriptor_HS;
                         ((USB_CONFIGURATION_DESCRIPTOR *)pD)->bDescriptorType = USB_OTHER_SPEED_CONFIG_DESCRIPTOR_TYPE; //same descriptor is used in main configuration
-                    }
-                    else
-                    {
+                    } else {
                         pD = (U8 *)USBD_ConfigDescriptor;
                         ((USB_CONFIGURATION_DESCRIPTOR *)pD)->bDescriptorType = USB_OTHER_SPEED_CONFIG_DESCRIPTOR_TYPE; //same descriptor is used in main configuration
                     }
 
-                    for (n = 0; n != USBD_SetupPacket.wValueL; n++)
-                    {
-                        if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength != 0)
-                        {
+                    for (n = 0; n != USBD_SetupPacket.wValueL; n++) {
+                        if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength != 0) {
                             pD += ((USB_CONFIGURATION_DESCRIPTOR *)pD)->wTotalLength;
                         }
                     }
 
-                    if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength == 0)
-                    {
+                    if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bLength == 0) {
                         return (__FALSE);
                     }
 
@@ -457,23 +407,19 @@ static inline BOOL USBD_ReqGetDescriptor(void)
                     pD = (U8 *)USBD_StringDescriptor;
 
                     // added by sam to send unique id string descriptor
-                    if (USBD_SetupPacket.wValueL == 3)
-                    {
+                    if (USBD_SetupPacket.wValueL == 3) {
                         USBD_EP0Data.pData = (uint8_t *)info_get_unique_id_string_descriptor();
                         len = ((USB_STRING_DESCRIPTOR *)USBD_EP0Data.pData)->bLength;
                         break;
                     }
 
-                    for (n = 0; n != USBD_SetupPacket.wValueL; n++)
-                    {
-                        if (((USB_STRING_DESCRIPTOR *)pD)->bLength != 0)
-                        {
+                    for (n = 0; n != USBD_SetupPacket.wValueL; n++) {
+                        if (((USB_STRING_DESCRIPTOR *)pD)->bLength != 0) {
                             pD += ((USB_STRING_DESCRIPTOR *)pD)->bLength;
                         }
                     }
 
-                    if (((USB_STRING_DESCRIPTOR *)pD)->bLength == 0)
-                    {
+                    if (((USB_STRING_DESCRIPTOR *)pD)->bLength == 0) {
                         return (__FALSE);
                     }
 
@@ -482,16 +428,14 @@ static inline BOOL USBD_ReqGetDescriptor(void)
                     break;
 
                 case USB_BINARY_OBJECT_STORE_DESCRIPTOR_TYPE:
-                    if (!usbd_bos_enable)
-                    {
+                    if (!usbd_bos_enable) {
                         return (__FALSE);  /* High speed not enabled */
                     }
 
                     pD = (U8 *)USBD_BinaryObjectStoreDescriptor;
                     USBD_EP0Data.pData = pD;
 
-                    if (((USB_BINARY_OBJECT_STORE_DESCRIPTOR *)pD)->bLength == 0)
-                    {
+                    if (((USB_BINARY_OBJECT_STORE_DESCRIPTOR *)pD)->bLength == 0) {
                         return (__FALSE);
                     }
 
@@ -505,8 +449,7 @@ static inline BOOL USBD_ReqGetDescriptor(void)
             break;
 
         case REQUEST_TO_INTERFACE:
-            if (!USBD_ReqGetDescriptor_HID(&pD, &len))
-            {
+            if (!USBD_ReqGetDescriptor_HID(&pD, &len)) {
                 return (__FALSE);
             }
 
@@ -516,12 +459,10 @@ static inline BOOL USBD_ReqGetDescriptor(void)
             return (__FALSE);
     }
 
-    if (USBD_EP0Data.Count > len)
-    {
+    if (USBD_EP0Data.Count > len) {
         USBD_EP0Data.Count = len;
 
-        if (!(USBD_EP0Data.Count & (usbd_max_packet0 - 1)))
-        {
+        if (!(USBD_EP0Data.Count & (usbd_max_packet0 - 1))) {
             USBD_ZLP = 1;
         }
     }
@@ -538,8 +479,7 @@ static inline BOOL USBD_ReqGetDescriptor(void)
 
 static inline BOOL USBD_ReqGetConfiguration(void)
 {
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_DEVICE:
             USBD_EP0Data.pData = &USBD_Configuration;
             break;
@@ -564,50 +504,37 @@ static inline BOOL USBD_ReqSetConfiguration(void)
     U32                           alt = 0;
     U32                           n, m;
 
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_DEVICE:
-            if (USBD_SetupPacket.wValueL)
-            {
-                if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE))
-                {
+            if (USBD_SetupPacket.wValueL) {
+                if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE)) {
                     return (__FALSE);  /* High speed request but high-speed not enabled */
                 }
 
-                if (USBD_HighSpeed == __FALSE)
-                {
+                if (USBD_HighSpeed == __FALSE) {
                     pD = (USB_CONFIGURATION_DESCRIPTOR *)USBD_ConfigDescriptor;
-                }
-                else
-                {
+                } else {
                     pD = (USB_CONFIGURATION_DESCRIPTOR *)USBD_ConfigDescriptor_HS;
                 }
 
-                while (pD->bLength)
-                {
-                    switch (pD->bDescriptorType)
-                    {
+                while (pD->bLength) {
+                    switch (pD->bDescriptorType) {
                         case USB_CONFIGURATION_DESCRIPTOR_TYPE:
                         case USB_OTHER_SPEED_CONFIG_DESCRIPTOR_TYPE:
-                            if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bConfigurationValue == USBD_SetupPacket.wValueL)
-                            {
+                            if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bConfigurationValue == USBD_SetupPacket.wValueL) {
                                 USBD_Configuration = USBD_SetupPacket.wValueL;
                                 USBD_NumInterfaces = ((USB_CONFIGURATION_DESCRIPTOR *)pD)->bNumInterfaces;
 
-                                for (n = 0; n < usbd_if_num; n++)
-                                {
+                                for (n = 0; n < usbd_if_num; n++) {
                                     USBD_AltSetting[n] = 0;
                                 }
 
-                                for (n = 1; n < 16; n++)
-                                {
-                                    if (USBD_EndPointMask & (1 << n))
-                                    {
+                                for (n = 1; n < 16; n++) {
+                                    if (USBD_EndPointMask & (1 << n)) {
                                         USBD_DisableEP(n);
                                     }
 
-                                    if (USBD_EndPointMask & ((1 << 16) << n))
-                                    {
+                                    if (USBD_EndPointMask & ((1 << 16) << n)) {
                                         USBD_DisableEP(n | 0x80);
                                     }
                                 }
@@ -617,17 +544,12 @@ static inline BOOL USBD_ReqSetConfiguration(void)
                                 USBD_EndPointStall = 0x00000000;
                                 USBD_Configure(__TRUE);
 
-                                if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bmAttributes & USB_CONFIG_POWERED_MASK)
-                                {
+                                if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bmAttributes & USB_CONFIG_POWERED_MASK) {
                                     USBD_DeviceStatus |=  USB_GETSTATUS_SELF_POWERED;
-                                }
-                                else
-                                {
+                                } else {
                                     USBD_DeviceStatus &= ~USB_GETSTATUS_SELF_POWERED;
                                 }
-                            }
-                            else
-                            {
+                            } else {
                                 pD = (USB_CONFIGURATION_DESCRIPTOR *)((U8 *)pD + ((USB_CONFIGURATION_DESCRIPTOR *)pD)->wTotalLength);
                                 continue;
                             }
@@ -639,8 +561,7 @@ static inline BOOL USBD_ReqSetConfiguration(void)
                             break;
 
                         case USB_ENDPOINT_DESCRIPTOR_TYPE:
-                            if (alt == 0)
-                            {
+                            if (alt == 0) {
                                 n = ((USB_ENDPOINT_DESCRIPTOR *)pD)->bEndpointAddress & 0x8F;
                                 m = (n & 0x80) ? ((1 << 16) << (n & 0x0F)) : (1 << n);
                                 USBD_EndPointMask |= m;
@@ -654,20 +575,15 @@ static inline BOOL USBD_ReqSetConfiguration(void)
 
                     pD = (USB_CONFIGURATION_DESCRIPTOR *)((U8 *)pD + pD->bLength);
                 }
-            }
-            else
-            {
+            } else {
                 USBD_Configuration = 0;
 
-                for (n = 1; n < 16; n++)
-                {
-                    if (USBD_EndPointMask & (1 << n))
-                    {
+                for (n = 1; n < 16; n++) {
+                    if (USBD_EndPointMask & (1 << n)) {
                         USBD_DisableEP(n);
                     }
 
-                    if (USBD_EndPointMask & ((1 << 16) << n))
-                    {
+                    if (USBD_EndPointMask & ((1 << 16) << n)) {
                         USBD_DisableEP(n | 0x80);
                     }
                 }
@@ -678,8 +594,7 @@ static inline BOOL USBD_ReqSetConfiguration(void)
                 USBD_Configure(__FALSE);
             }
 
-            if (USBD_Configuration != USBD_SetupPacket.wValueL)
-            {
+            if (USBD_Configuration != USBD_SetupPacket.wValueL) {
                 return (__FALSE);
             }
 
@@ -701,15 +616,11 @@ static inline BOOL USBD_ReqSetConfiguration(void)
 
 static inline BOOL USBD_ReqGetInterface(void)
 {
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_INTERFACE:
-            if ((USBD_Configuration != 0) && (USBD_SetupPacket.wIndexL < USBD_NumInterfaces))
-            {
+            if ((USBD_Configuration != 0) && (USBD_SetupPacket.wIndexL < USBD_NumInterfaces)) {
                 USBD_EP0Data.pData = USBD_AltSetting + USBD_SetupPacket.wIndexL;
-            }
-            else
-            {
+            } else {
                 return (__FALSE);
             }
 
@@ -736,38 +647,29 @@ static inline BOOL USBD_ReqSetInterface(void)
     U32                    n, m;
     BOOL                   set;
 
-    switch (USBD_SetupPacket.bmRequestType.Recipient)
-    {
+    switch (USBD_SetupPacket.bmRequestType.Recipient) {
         case REQUEST_TO_INTERFACE:
-            if (USBD_Configuration == 0)
-            {
+            if (USBD_Configuration == 0) {
                 return (__FALSE);
             }
 
             set = __FALSE;
 
-            if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE))
-            {
+            if ((!usbd_hs_enable) && (USBD_HighSpeed == __TRUE)) {
                 return (__FALSE);  /* High speed request but high-speed not enabled */
             }
 
-            if (USBD_HighSpeed == __FALSE)
-            {
+            if (USBD_HighSpeed == __FALSE) {
                 pD = (USB_COMMON_DESCRIPTOR *)USBD_ConfigDescriptor;
-            }
-            else
-            {
+            } else {
                 pD = (USB_COMMON_DESCRIPTOR *)USBD_ConfigDescriptor_HS;
             }
 
-            while (pD->bLength)
-            {
-                switch (pD->bDescriptorType)
-                {
+            while (pD->bLength) {
+                switch (pD->bDescriptorType) {
                     case USB_CONFIGURATION_DESCRIPTOR_TYPE:
                     case USB_OTHER_SPEED_CONFIG_DESCRIPTOR_TYPE:
-                        if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bConfigurationValue != USBD_Configuration)
-                        {
+                        if (((USB_CONFIGURATION_DESCRIPTOR *)pD)->bConfigurationValue != USBD_Configuration) {
                             pD = (USB_COMMON_DESCRIPTOR *)((U8 *)pD + ((USB_CONFIGURATION_DESCRIPTOR *)pD)->wTotalLength);
                             continue;
                         }
@@ -779,8 +681,7 @@ static inline BOOL USBD_ReqSetInterface(void)
                         alt = ((USB_INTERFACE_DESCRIPTOR *)pD)->bAlternateSetting;
                         msk = 0;
 
-                        if ((ifn == USBD_SetupPacket.wIndexL) && (alt == USBD_SetupPacket.wValueL))
-                        {
+                        if ((ifn == USBD_SetupPacket.wIndexL) && (alt == USBD_SetupPacket.wValueL)) {
                             set = __TRUE;
                             old = USBD_AltSetting[ifn];
                             USBD_AltSetting[ifn] = (U8)alt;
@@ -789,22 +690,18 @@ static inline BOOL USBD_ReqSetInterface(void)
                         break;
 
                     case USB_ENDPOINT_DESCRIPTOR_TYPE:
-                        if (ifn == USBD_SetupPacket.wIndexL)
-                        {
+                        if (ifn == USBD_SetupPacket.wIndexL) {
                             n = ((USB_ENDPOINT_DESCRIPTOR *)pD)->bEndpointAddress & 0x8F;
                             m = (n & 0x80) ? ((1 << 16) << (n & 0x0F)) : (1 << n);
 
-                            if (alt == USBD_SetupPacket.wValueL)
-                            {
+                            if (alt == USBD_SetupPacket.wValueL) {
                                 USBD_EndPointMask |=  m;
                                 USBD_EndPointHalt &= ~m;
                                 USBD_ConfigEP((USB_ENDPOINT_DESCRIPTOR *)pD);
                                 USBD_EnableEP(n);
                                 USBD_ResetEP(n);
                                 msk |= m;
-                            }
-                            else if ((alt == old) && ((msk & m) == 0))
-                            {
+                            } else if ((alt == old) && ((msk & m) == 0)) {
                                 USBD_EndPointMask &= ~m;
                                 USBD_EndPointHalt &= ~m;
                                 USBD_DisableEP(n);
@@ -835,20 +732,16 @@ static inline BOOL USBD_ReqSetInterface(void)
 
 void USBD_EndPoint0(U32 event)
 {
-    if (event & USBD_EVT_SETUP)
-    {
+    if (event & USBD_EVT_SETUP) {
         USBD_SetupStage();
         USBD_DirCtrlEP(USBD_SetupPacket.bmRequestType.Dir);
         USBD_EP0Data.Count = USBD_SetupPacket.wLength;       /* Number of bytes to transfer */
 
-        switch (USBD_SetupPacket.bmRequestType.Type)
-        {
+        switch (USBD_SetupPacket.bmRequestType.Type) {
             case REQUEST_STANDARD:
-                switch (USBD_SetupPacket.bRequest)
-                {
+                switch (USBD_SetupPacket.bRequest) {
                     case USB_REQUEST_GET_STATUS:
-                        if (!USBD_ReqGetStatus())
-                        {
+                        if (!USBD_ReqGetStatus()) {
                             goto stall;
                         }
 
@@ -856,27 +749,21 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_CLEAR_FEATURE:
-                        if (!USBD_ReqSetClrFeature(0))
-                        {
+                        if (!USBD_ReqSetClrFeature(0)) {
                             goto stall;
                         }
 
                         USBD_StatusInStage();
 #ifdef __RTX
 
-                        if (__rtx)
-                        {
-                            if (USBD_RTX_CoreTask)
-                            {
+                        if (__rtx) {
+                            if (USBD_RTX_CoreTask) {
                                 usbd_os_evt_set(USBD_EVT_CLR_FEATURE, USBD_RTX_CoreTask);
                             }
-                        }
-                        else
-                        {
+                        } else {
 #endif
 
-                            if (USBD_P_Feature_Event)
-                            {
+                            if (USBD_P_Feature_Event) {
                                 USBD_P_Feature_Event();
                             }
 
@@ -887,27 +774,21 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_SET_FEATURE:
-                        if (!USBD_ReqSetClrFeature(1))
-                        {
+                        if (!USBD_ReqSetClrFeature(1)) {
                             goto stall;
                         }
 
                         USBD_StatusInStage();
 #ifdef __RTX
 
-                        if (__rtx)
-                        {
-                            if (USBD_RTX_CoreTask)
-                            {
+                        if (__rtx) {
+                            if (USBD_RTX_CoreTask) {
                                 usbd_os_evt_set(USBD_EVT_SET_FEATURE, USBD_RTX_CoreTask);
                             }
-                        }
-                        else
-                        {
+                        } else {
 #endif
 
-                            if (USBD_P_Feature_Event)
-                            {
+                            if (USBD_P_Feature_Event) {
                                 USBD_P_Feature_Event();
                             }
 
@@ -918,8 +799,7 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_SET_ADDRESS:
-                        if (!USBD_ReqSetAddress())
-                        {
+                        if (!USBD_ReqSetAddress()) {
                             goto stall;
                         }
 
@@ -928,8 +808,7 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_GET_DESCRIPTOR:
-                        if (!USBD_ReqGetDescriptor())
-                        {
+                        if (!USBD_ReqGetDescriptor()) {
                             goto stall;
                         }
 
@@ -940,8 +819,7 @@ void USBD_EndPoint0(U32 event)
                         goto stall;
 
                     case USB_REQUEST_GET_CONFIGURATION:
-                        if (!USBD_ReqGetConfiguration())
-                        {
+                        if (!USBD_ReqGetConfiguration()) {
                             goto stall;
                         }
 
@@ -949,27 +827,21 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_SET_CONFIGURATION:
-                        if (!USBD_ReqSetConfiguration())
-                        {
+                        if (!USBD_ReqSetConfiguration()) {
                             goto stall;
                         }
 
                         USBD_StatusInStage();
 #ifdef __RTX
 
-                        if (__rtx)
-                        {
-                            if (USBD_RTX_CoreTask)
-                            {
+                        if (__rtx) {
+                            if (USBD_RTX_CoreTask) {
                                 usbd_os_evt_set(USBD_EVT_SET_CFG, USBD_RTX_CoreTask);
                             }
-                        }
-                        else
-                        {
+                        } else {
 #endif
 
-                            if (USBD_P_Configure_Event)
-                            {
+                            if (USBD_P_Configure_Event) {
                                 USBD_P_Configure_Event();
                             }
 
@@ -980,8 +852,7 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_GET_INTERFACE:
-                        if (!USBD_ReqGetInterface())
-                        {
+                        if (!USBD_ReqGetInterface()) {
                             goto stall;
                         }
 
@@ -989,27 +860,21 @@ void USBD_EndPoint0(U32 event)
                         break;
 
                     case USB_REQUEST_SET_INTERFACE:
-                        if (!USBD_ReqSetInterface())
-                        {
+                        if (!USBD_ReqSetInterface()) {
                             goto stall;
                         }
 
                         USBD_StatusInStage();
 #ifdef __RTX
 
-                        if (__rtx)
-                        {
-                            if (USBD_RTX_CoreTask)
-                            {
+                        if (__rtx) {
+                            if (USBD_RTX_CoreTask) {
                                 usbd_os_evt_set(USBD_EVT_SET_IF, USBD_RTX_CoreTask);
                             }
-                        }
-                        else
-                        {
+                        } else {
 #endif
 
-                            if (USBD_P_Interface_Event)
-                            {
+                            if (USBD_P_Interface_Event) {
                                 USBD_P_Interface_Event();
                             }
 
@@ -1026,24 +891,20 @@ void USBD_EndPoint0(U32 event)
                 break;  /* end case REQUEST_STANDARD */
 
             case REQUEST_CLASS:
-                switch (USBD_SetupPacket.bmRequestType.Recipient)
-                {
+                switch (USBD_SetupPacket.bmRequestType.Recipient) {
                     case REQUEST_TO_DEVICE:
                         goto stall;                                                  /* not supported */
 
                     case REQUEST_TO_INTERFACE:
-                        if (USBD_EndPoint0_Setup_HID_ReqToIF())
-                        {
+                        if (USBD_EndPoint0_Setup_HID_ReqToIF()) {
                             goto setup_class_ok;
                         }
 
-                        if (USBD_EndPoint0_Setup_MSC_ReqToIF())
-                        {
+                        if (USBD_EndPoint0_Setup_MSC_ReqToIF()) {
                             goto setup_class_ok;
                         }
 
-                        if (USBD_EndPoint0_Setup_CDC_ReqToIF())
-                        {
+                        if (USBD_EndPoint0_Setup_CDC_ReqToIF()) {
                             goto setup_class_ok;
                         }
 
@@ -1060,20 +921,17 @@ void USBD_EndPoint0(U32 event)
                         goto stall;
                 }
 
-            setup_class_ok:                                                          /* request finished successfully */
+setup_class_ok:                                                          /* request finished successfully */
                 break;  /* end case REQUEST_CLASS */
 
             case REQUEST_VENDOR:
-                switch (USBD_SetupPacket.bmRequestType.Recipient)
-                {
+                switch (USBD_SetupPacket.bmRequestType.Recipient) {
                     case REQUEST_TO_DEVICE:
-                        if (USBD_EndPoint0_Setup_WebUSB_ReqToDevice())
-                        {
+                        if (USBD_EndPoint0_Setup_WebUSB_ReqToDevice()) {
                             goto setup_vendor_ok;
                         }
 
-                        if (USBD_EndPoint0_Setup_WinUSB_ReqToDevice())
-                        {
+                        if (USBD_EndPoint0_Setup_WinUSB_ReqToDevice()) {
                             goto setup_vendor_ok;
                         }
 
@@ -1082,18 +940,15 @@ void USBD_EndPoint0(U32 event)
                     default:
                         goto stall;
                 }
-            setup_vendor_ok:
+setup_vendor_ok:
                 break; /* end case REQUEST_VENDOR */
 
             default:
-            stall:
+stall:
                 if ((USBD_SetupPacket.bmRequestType.Dir == REQUEST_HOST_TO_DEVICE) &&
-                    (USBD_SetupPacket.wLength != 0))
-                {
+                        (USBD_SetupPacket.wLength != 0)) {
                     USBD_SetStallEP(0x00);
-                }
-                else
-                {
+                } else {
                     USBD_SetStallEP(0x80);
                 }
 
@@ -1102,35 +957,27 @@ void USBD_EndPoint0(U32 event)
         }
     }
 
-    if (event & USBD_EVT_OUT)
-    {
-        if (USBD_SetupPacket.bmRequestType.Dir == REQUEST_HOST_TO_DEVICE)
-        {
-            if (USBD_EP0Data.Count)                                            /* still data to receive ? */
-            {
+    if (event & USBD_EVT_OUT) {
+        if (USBD_SetupPacket.bmRequestType.Dir == REQUEST_HOST_TO_DEVICE) {
+            if (USBD_EP0Data.Count) {                                          /* still data to receive ? */
                 USBD_DataOutStage();                                             /* receive data */
 
-                if (USBD_EP0Data.Count == 0)                                     /* data complete ? */
-                {
-                    switch (USBD_SetupPacket.bmRequestType.Type)
-                    {
+                if (USBD_EP0Data.Count == 0) {                                   /* data complete ? */
+                    switch (USBD_SetupPacket.bmRequestType.Type) {
                         case REQUEST_STANDARD:
                             goto stall_i;                                              /* not supported */
 
                         case REQUEST_CLASS:
-                            switch (USBD_SetupPacket.bmRequestType.Recipient)
-                            {
+                            switch (USBD_SetupPacket.bmRequestType.Recipient) {
                                 case REQUEST_TO_DEVICE:
                                     goto stall_i;                                          /* not supported */
 
                                 case REQUEST_TO_INTERFACE:
-                                    if (USBD_EndPoint0_Out_HID_ReqToIF())
-                                    {
+                                    if (USBD_EndPoint0_Out_HID_ReqToIF()) {
                                         goto out_class_ok;
                                     }
 
-                                    if (USBD_EndPoint0_Out_CDC_ReqToIF())
-                                    {
+                                    if (USBD_EndPoint0_Out_CDC_ReqToIF()) {
                                         goto out_class_ok;
                                     }
 
@@ -1147,50 +994,40 @@ void USBD_EndPoint0(U32 event)
                                     goto stall_i;
                             }
 
-                        out_class_ok:                                                            /* request finished successfully */
+out_class_ok:                                                            /* request finished successfully */
                             break; /* end case REQUEST_CLASS */
 
                         default:
-                        stall_i:
+stall_i:
                             USBD_SetStallEP(0x80);
                             USBD_EP0Data.Count = 0;
                             break;
                     }
                 }
             }
-        }
-        else
-        {
+        } else {
             USBD_StatusOutStage();                                             /* receive Acknowledge */
         }
     }  /* end USBD_EVT_OUT */
 
-    if (event & USBD_EVT_IN)
-    {
-        if (USBD_SetupPacket.bmRequestType.Dir == REQUEST_DEVICE_TO_HOST)
-        {
-            if (USBD_EP0Data.Count || USBD_ZLP)
-            {
+    if (event & USBD_EVT_IN) {
+        if (USBD_SetupPacket.bmRequestType.Dir == REQUEST_DEVICE_TO_HOST) {
+            if (USBD_EP0Data.Count || USBD_ZLP) {
                 USBD_DataInStage();    /* send data */
             }
-        }
-        else
-        {
-            if (USBD_DeviceAddress & 0x80)
-            {
+        } else {
+            if (USBD_DeviceAddress & 0x80) {
                 USBD_DeviceAddress &= 0x7F;
                 USBD_SetAddress(USBD_DeviceAddress, 0);
             }
         }
     }  /* end USBD_EVT_IN */
 
-    if (event & USBD_EVT_OUT_STALL)
-    {
+    if (event & USBD_EVT_OUT_STALL) {
         USBD_ClrStallEP(0x00);
     }
 
-    if (event & USBD_EVT_IN_STALL)
-    {
+    if (event & USBD_EVT_IN_STALL) {
         USBD_ClrStallEP(0x80);
     }
 }
@@ -1205,8 +1042,7 @@ void USBD_EndPoint0(U32 event)
 #ifdef __RTX
 void USBD_RTX_EndPoint0(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
         USBD_EndPoint0(usbd_os_evt_get());
     }

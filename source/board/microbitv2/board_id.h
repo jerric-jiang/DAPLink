@@ -31,8 +31,7 @@ extern "C" {
 #define BOARD_ID_MB_2_2_833         "9905"
 #define BOARD_ID_MB_2_2_820         "9906"
 
-typedef enum
-{
+typedef enum {
     BOARD_VERSION_2_DEF = 0x9903,
     BOARD_VERSION_2_0 = 0x9904,
     BOARD_VERSION_2_2_833 = 0x9905,

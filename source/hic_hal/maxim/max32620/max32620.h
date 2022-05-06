@@ -60,8 +60,7 @@
 
 #endif
 
-typedef enum
-{
+typedef enum {
     NonMaskableInt_IRQn    = -14,
     HardFault_IRQn         = -13,
     MemoryManagement_IRQn  = -12,

@@ -23,7 +23,7 @@
 #define VIRTUAL_FS_H
 
 #include <stdint.h>
-#include <stdbool.h>
+#include <stdbool.h> 
 
 #ifdef __cplusplus
 extern "C" {
@@ -37,8 +37,7 @@ extern "C" {
 
 typedef char vfs_filename_t[11];
 
-typedef enum
-{
+typedef enum {
     VFS_FILE_ATTR_READ_ONLY     = (1 << 0),
     VFS_FILE_ATTR_HIDDEN        = (1 << 1),
     VFS_FILE_ATTR_SYSTEM        = (1 << 2),
@@ -47,8 +46,7 @@ typedef enum
     VFS_FILE_ATTR_ARCHIVE       = (1 << 5),
 } vfs_file_attr_bit_t;
 
-typedef enum
-{
+typedef enum {
     VFS_FILE_CREATED = 0,   /*!< A new file was created */
     VFS_FILE_DELETED,       /*!< An existing file was deleted */
     VFS_FILE_CHANGED,       /*!< Some attribute of the file changed.

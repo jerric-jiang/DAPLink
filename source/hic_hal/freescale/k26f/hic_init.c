@@ -31,8 +31,7 @@ static void busy_wait(uint32_t cycles)
     volatile uint32_t i;
     i = cycles;
 
-    while (i > 0)
-    {
+    while (i > 0) {
         i--;
     }
 }
@@ -115,9 +114,9 @@ void hic_enable_usb_clocks(void)
 
     // Set dividers before switching to SYSPLL.
     SIM->CLKDIV1 = SIM_CLKDIV1_OUTDIV1(0)       // System/core  /1 = 120MHz
-                   | SIM_CLKDIV1_OUTDIV2(1)    // Bus          /2 = 60Mhz
-                   | SIM_CLKDIV1_OUTDIV3(4)    // FlexBus      /5 = 24Mhz
-                   | SIM_CLKDIV1_OUTDIV4(4);   // Flash        /5 = 24MHz
+                    | SIM_CLKDIV1_OUTDIV2(1)    // Bus          /2 = 60Mhz
+                    | SIM_CLKDIV1_OUTDIV3(4)    // FlexBus      /5 = 24Mhz
+                    | SIM_CLKDIV1_OUTDIV4(4);   // Flash        /5 = 24MHz
 
     // 120MHz SYSPLL
     mcg_pll_config_t pllConfig;
@@ -139,8 +138,7 @@ void hic_power_target(void)
     // Keep powered off in bootloader mode
     // to prevent the target from effecting the state
     // of the reset line / reset button
-    if (!daplink_is_bootloader())
-    {
+    if (!daplink_is_bootloader()) {
         // configure pin as GPIO
         PIN_POWER_EN_PORT->PCR[PIN_POWER_EN_BIT] = PORT_PCR_MUX(1);
         // force always on logic 1

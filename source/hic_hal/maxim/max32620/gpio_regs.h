@@ -64,8 +64,7 @@ extern "C" {
 
 /*                                                          Offset          Register Description
                                                             =============   ============================================================================ */
-typedef struct
-{
+typedef struct {
     __IO uint32_t rst_mode[16];                          /*  0x0000-0x003C   Port P[0..15] Default (Power-On Reset) Output Drive Mode                      */
     __IO uint32_t free[16];                              /*  0x0040-0x007C   Port P[0..15] Free for GPIO Operation Flags                                   */
     __IO uint32_t out_mode[16];                          /*  0x0080-0x00BC   Port P[0..15] Output Drive Mode                                               */

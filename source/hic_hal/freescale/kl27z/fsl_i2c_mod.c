@@ -1,11 +1,11 @@
 /* This is a modification of the default fsl_i2c.c driver.
  *
- * Needed in order to be able to identify slave address that triggered the
+ * Needed in order to be able to identify slave address that triggered the 
  * kI2C_SlaveAddressMatchEvent from an address range configuration.
  * Address is saved the i2c slave hanlder user data pointer, which is passed
- * to the interrupt handler callback from the i2c_slave.c.
+ * to the interrupt handler callback from the i2c_slave.c. 
  */
-
+ 
 /*
  * Copyright (c) 2015, Freescale Semiconductor, Inc.
  * Copyright 2016-2017 NXP
@@ -39,7 +39,7 @@ enum _i2c_transfer_states
 /*! @brief Common sets of flags used by the driver. */
 enum _i2c_flag_constants
 {
-    /*! All flags which are cleared by the driver upon starting a transfer. */
+/*! All flags which are cleared by the driver upon starting a transfer. */
 #if defined(FSL_FEATURE_I2C_HAS_START_STOP_DETECT) && FSL_FEATURE_I2C_HAS_START_STOP_DETECT
     kClearFlags = kI2C_ArbitrationLostFlag | kI2C_IntPendingFlag | kI2C_StartDetectFlag | kI2C_StopDetectFlag,
     kIrqFlags   = kI2C_GlobalInterruptEnable | kI2C_StartStopDetectInterruptEnable,
@@ -128,13 +128,11 @@ static void I2C_TransferCommonIRQHandler(I2C_Type *base, void *handle);
 static void *s_i2cHandle[FSL_FEATURE_SOC_I2C_COUNT];
 
 /*! @brief SCL clock divider used to calculate baudrate. */
-static const uint16_t s_i2cDividerTable[] =
-{
+static const uint16_t s_i2cDividerTable[] = {
     20,  22,  24,  26,   28,   30,   34,   40,   28,   32,   36,   40,   44,   48,   56,   68,
     48,  56,  64,  72,   80,   88,   104,  128,  80,   96,   112,  128,  144,  160,  192,  240,
     160, 192, 224, 256,  288,  320,  384,  480,  320,  384,  448,  512,  576,  640,  768,  960,
-    640, 768, 896, 1024, 1152, 1280, 1536, 1920, 1280, 1536, 1792, 2048, 2304, 2560, 3072, 3840
-};
+    640, 768, 896, 1024, 1152, 1280, 1536, 1920, 1280, 1536, 1792, 2048, 2304, 2560, 3072, 3840};
 
 /*! @brief Pointers to i2c IRQ number for each instance. */
 static const IRQn_Type s_i2cIrqs[] = I2C_IRQS;
@@ -207,7 +205,7 @@ static void I2C_SetHoldTime(I2C_Type *base, uint32_t sclStopHoldTime_ns, uint32_
             /* Assume SCL hold(stop) value = s_i2cDividerTable[i]/2. */
             computedSclHoldTime = ((multiplier * s_i2cDividerTable[i]) * 500000U) / (sourceClock_Hz / 1000U);
             absError = sclStopHoldTime_ns > computedSclHoldTime ? (sclStopHoldTime_ns - computedSclHoldTime) :
-                       (computedSclHoldTime - sclStopHoldTime_ns);
+                                                                  (computedSclHoldTime - sclStopHoldTime_ns);
 
             if (absError < bestError)
             {
@@ -325,7 +323,7 @@ static status_t I2C_MasterTransferRunStateMachine(I2C_Type *base, i2c_master_han
     volatile uint8_t dummy = 0;
     uint32_t tmpDataSize   = handle->transfer.dataSize;
     bool ignoreNak         = ((handle->state == (uint8_t)kSendDataState) && (tmpDataSize == 0U)) ||
-                             ((handle->state == (uint8_t)kReceiveDataState) && (tmpDataSize == 1U));
+                     ((handle->state == (uint8_t)kReceiveDataState) && (tmpDataSize == 1U));
 
     /* Add this to avoid build warning. */
     dummy++;
@@ -606,7 +604,7 @@ void I2C_MasterInit(I2C_Type *base, const i2c_master_config_t *masterConfig, uin
     /* Write the register value back to the filter register. */
     base->FLT = fltReg;
 
-    /* Enable/Disable double buffering. */
+/* Enable/Disable double buffering. */
 #if defined(FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE) && FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE
     s2Reg    = (uint8_t)(base->S2 & (~I2C_S2_DFEN_MASK));
     base->S2 = s2Reg | I2C_S2_DFEN(masterConfig->enableDoubleBuffering);
@@ -655,7 +653,7 @@ void I2C_MasterGetDefaultConfig(i2c_master_config_t *masterConfig)
     /* Default baud rate at 100kbps. */
     masterConfig->baudRate_Bps = 100000U;
 
-    /* Default stop hold enable is disabled. */
+/* Default stop hold enable is disabled. */
 #if defined(FSL_FEATURE_I2C_HAS_STOP_HOLD_OFF) && FSL_FEATURE_I2C_HAS_STOP_HOLD_OFF
     masterConfig->enableStopHold = false;
 #endif
@@ -663,7 +661,7 @@ void I2C_MasterGetDefaultConfig(i2c_master_config_t *masterConfig)
     /* Default glitch filter value is no filter. */
     masterConfig->glitchFilterWidth = 0U;
 
-    /* Default enable double buffering. */
+/* Default enable double buffering. */
 #if defined(FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE) && FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE
     masterConfig->enableDoubleBuffering = true;
 #endif
@@ -1754,7 +1752,7 @@ void I2C_SlaveInit(I2C_Type *base, const i2c_slave_config_t *slaveConfig, uint32
     tmpReg |= I2C_C2_SBRC(slaveConfig->enableBaudRateCtl) | I2C_C2_GCAEN(slaveConfig->enableGeneralCall);
     base->C2 = tmpReg;
 
-    /* Enable/Disable double buffering. */
+/* Enable/Disable double buffering. */
 #if defined(FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE) && FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE
     tmpReg   = (uint8_t)(base->S2 & (~I2C_S2_DFEN_MASK));
     base->S2 = tmpReg | I2C_S2_DFEN(slaveConfig->enableDoubleBuffering);
@@ -1811,7 +1809,7 @@ void I2C_SlaveGetDefaultConfig(i2c_slave_config_t *slaveConfig)
     /* Independent slave mode baud rate at maximum frequency is disabled. */
     slaveConfig->enableBaudRateCtl = false;
 
-    /* Default enable double buffering. */
+/* Default enable double buffering. */
 #if defined(FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE) && FSL_FEATURE_I2C_HAS_DOUBLE_BUFFER_ENABLE
     slaveConfig->enableDoubleBuffering = true;
 #endif
@@ -1899,7 +1897,7 @@ status_t I2C_SlaveReadBlocking(I2C_Type *base, uint8_t *rxBuff, size_t rxSize)
     /* Add this to avoid build warning. */
     dummy++;
 
-    /* Wait until address match. */
+/* Wait until address match. */
 #if defined(FSL_FEATURE_I2C_HAS_START_STOP_DETECT) && FSL_FEATURE_I2C_HAS_START_STOP_DETECT
     /* Check start flag. */
     while (0U == (base->FLT & I2C_FLT_STARTF_MASK))

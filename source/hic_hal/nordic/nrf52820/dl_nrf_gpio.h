@@ -71,9 +71,9 @@
 /** @brief Pin configuration function */
 __STATIC_INLINE \
 void gpio_cfg(NRF_GPIO_Type *reg, uint32_t idx,
-              nrf_gpio_pin_dir_t dir, nrf_gpio_pin_input_t input,
-              nrf_gpio_pin_pull_t  pull, nrf_gpio_pin_drive_t drive,
-              nrf_gpio_pin_sense_t sense)
+                 nrf_gpio_pin_dir_t dir, nrf_gpio_pin_input_t input,
+                 nrf_gpio_pin_pull_t  pull, nrf_gpio_pin_drive_t drive,
+                 nrf_gpio_pin_sense_t sense)
 {
     reg->PIN_CNF[idx] = ((uint32_t)dir << GPIO_PIN_CNF_DIR_Pos)
                         | ((uint32_t)input << GPIO_PIN_CNF_INPUT_Pos)
@@ -125,12 +125,9 @@ __STATIC_INLINE void gpio_set_output_dir(NRF_GPIO_Type *reg, uint32_t idx)
 
 __STATIC_INLINE void gpio_write(NRF_GPIO_Type *reg, uint32_t idx, uint32_t value)
 {
-    if (value == 0)
-    {
+    if (value == 0) {
         gpio_clear(reg, idx);
-    }
-    else
-    {
+    } else {
         gpio_set(reg, idx);
     }
 }

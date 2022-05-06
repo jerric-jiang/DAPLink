@@ -88,8 +88,7 @@ extern "C" {
  * Structure type to access the Flash Controller registers with direct 32-bit
    access to each.
  */
-typedef struct
-{
+typedef struct {
     __IO uint32_t faddr;                   /**<  <tt>\b 0x0000:       </tt> FLC_FADDR Register - Flash Operation Address                                          */
     __IO uint32_t fckdiv;                  /**<  <tt>\b 0x0004:       </tt> FLC_FCKDIV Register - Flash Clock Pulse Divisor                                       */
     __IO uint32_t ctrl;                    /**<  <tt>\b 0x0008:       </tt> FLC_CTRL Register - Flash Control Register                                            */
@@ -342,12 +341,12 @@ typedef struct
 #define MXC_F_FLC_CTRL2_BYPASS_AHB_FAIL_POS                 8                                                                                       /**< BYPASS_AHB_FAIL Position           */
 #define MXC_F_FLC_CTRL2_BYPASS_AHB_FAIL                     ((uint32_t)(0x000000FFUL << MXC_F_FLC_CTRL2_BYPASS_AHB_FAIL_POS))                       /**< BYPASS_AHB_FAIL Mask               */
 /**@} end of group FLC_CTRL2*/
-/**
-* @defgroup   FLC_INTFL1_Register FLC_INTFL1
-* @ingroup    flc_registers
-* @brief      Field Positions and Bit Masks for the FLC_INTFL1 register.
-* @{
-*/
+   /**
+ * @defgroup   FLC_INTFL1_Register FLC_INTFL1
+ * @ingroup    flc_registers
+ * @brief      Field Positions and Bit Masks for the FLC_INTFL1 register.
+ * @{
+ */
 #define MXC_F_FLC_INTFL1_SRAM_ADDR_WRAPPED_POS              0                                                                                       /**< SRAM_ADDR_WRAPPED Position         */
 #define MXC_F_FLC_INTFL1_SRAM_ADDR_WRAPPED                  ((uint32_t)(0x00000001UL << MXC_F_FLC_INTFL1_SRAM_ADDR_WRAPPED_POS))                    /**< SRAM_ADDR_WRAPPED Mask             */
 #define MXC_F_FLC_INTFL1_INVALID_FLASH_ADDR_POS             1                                                                                       /**< INVALID_FLASH_ADDR Position        */

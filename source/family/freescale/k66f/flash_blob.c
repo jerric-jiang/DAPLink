@@ -21,8 +21,7 @@
 
 #include "flash_blob.h"
 
-static const uint32_t mk66f18_flash_prog_blob[] =
-{
+static const uint32_t mk66f18_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0xb510482e, 0x5120f24c, 0xf64d81c1, 0x81c11128, 0xf0218801, 0x80010101, 0x44484829, 0xf856f000,
     0xbf182800, 0xbd102001, 0x47702000, 0xb5104824, 0x44484924, 0xf926f000, 0x4821b920, 0x44482100,
@@ -69,20 +68,18 @@ static const uint32_t mk66f18_flash_prog_blob[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x00000000, 0x00001000},
-};
+ };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000021, // Init
     0x20000049, // UnInit
     0x2000004D, // EraseChip
     0x20000071, // EraseSector
     0x2000009F, // ProgramPage
     0x0,        // Verify
-
+    
     // BKPT : start of blob + 1
     // RSB  : blob start + header + rw data offset
     // RSP  : stack pointer

@@ -1,5 +1,5 @@
 /* -----------------------------------------------------------------------------
- * Copyright (c) 2013-2021 Arm Limited (or its affiliates). All
+ * Copyright (c) 2013-2021 Arm Limited (or its affiliates). All 
  * rights reserved.
  *
  * SPDX-License-Identifier: Apache-2.0
@@ -47,23 +47,21 @@
 #define I2C_DIR_RX         (1U)
 
 /* I2C Information (Run-Time) */
-typedef struct
-{
-    ARM_I2C_SignalEvent_t cb_event;             // Event Callback
-    nrfx_twis_config_t    config;
-    uint32_t              state;
-    uint32_t              tx_num;
-    uint32_t              rx_num;
-    uint8_t               dir;
-    uint8_t               err;
+typedef struct {
+  ARM_I2C_SignalEvent_t cb_event;             // Event Callback
+  nrfx_twis_config_t    config;
+  uint32_t              state;
+  uint32_t              tx_num;
+  uint32_t              rx_num;
+  uint8_t               dir;
+  uint8_t               err;
 } I2C_INFO;
 
 /* I2C Resources definition */
-typedef struct
-{
-    nrfx_twis_t                nrfx_twis;
-    nrfx_twis_event_handler_t  twis_event_handler;
-    I2C_INFO                   *info;                 // Run-Time information
+typedef struct {
+  nrfx_twis_t                nrfx_twis;
+  nrfx_twis_event_handler_t  twis_event_handler;
+  I2C_INFO                   *info;                 // Run-Time information
 } const I2C_RESOURCES;
 
 

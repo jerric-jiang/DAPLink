@@ -102,12 +102,9 @@ void EP_Reset(U32 EPNum)
     num = EPNum & 0x0F;
     val = EPxREG(num);
 
-    if (EPNum & 0x80)                     /* IN Endpoint                        */
-    {
+    if (EPNum & 0x80) {                   /* IN Endpoint                        */
         EPxREG(num) = val & (EP_MASK | EP_DTOG_TX);
-    }
-    else                                  /* OUT Endpoint                       */
-    {
+    } else {                              /* OUT Endpoint                       */
         EPxREG(num) = val & (EP_MASK | EP_DTOG_RX);
     }
 }
@@ -128,12 +125,9 @@ void EP_Status(U32 EPNum, U32 stat)
     num = EPNum & 0x0F;
     val = EPxREG(num);
 
-    if (EPNum & 0x80)                     /* IN Endpoint                        */
-    {
+    if (EPNum & 0x80) {                   /* IN Endpoint                        */
         EPxREG(num) = EP_VAL_UNCHANGED(val) | ((val ^ stat) & EP_STAT_TX);
-    }
-    else                                  /* OUT Endpoint                       */
-    {
+    } else {                              /* OUT Endpoint                       */
         EPxREG(num) = EP_VAL_UNCHANGED(val) | ((val ^ stat) & EP_STAT_RX);
     }
 }
@@ -181,16 +175,13 @@ void USBD_Init(void)
 
 void USBD_Connect(BOOL con)
 {
-    if (con)
-    {
+    if (con) {
         CNTR = CNTR_FRES;                   /* Force USB Reset                    */
         CNTR = 0;
         ISTR = 0;                           /* Clear Interrupt Status             */
         CNTR = CNTR_RESETM | CNTR_SUSPM | CNTR_WKUPM; /* USB Interrupt Mask       */
         USB_CONNECT_ON();
-    }
-    else
-    {
+    } else {
         CNTR = CNTR_FRES | CNTR_PDWN;       /* Switch Off USB Device              */
         USB_CONNECT_OFF();
     }
@@ -229,12 +220,9 @@ void USBD_Reset(void)
     pBUF_DSCR->ADDR_RX = FreeBufAddr;
     FreeBufAddr += USBD_MAX_PACKET0;
 
-    if (USBD_MAX_PACKET0 > 62)
-    {
+    if (USBD_MAX_PACKET0 > 62) {
         pBUF_DSCR->COUNT_RX = ((USBD_MAX_PACKET0 << 5) - 1) | 0x8000;
-    }
-    else
-    {
+    } else {
         pBUF_DSCR->COUNT_RX =   USBD_MAX_PACKET0 << 9;
     }
 
@@ -303,8 +291,7 @@ void USBD_WakeUpCfg(BOOL cfg)
 
 void USBD_SetAddress(U32 adr, U32 setup)
 {
-    if (setup)
-    {
+    if (setup) {
         return;
     }
 
@@ -320,8 +307,7 @@ void USBD_SetAddress(U32 adr, U32 setup)
 
 void USBD_Configure(BOOL cfg)
 {
-    if (cfg == __FALSE)
-    {
+    if (cfg == __FALSE) {
         FreeBufAddr  = EP_BUF_ADDR;
         FreeBufAddr += 2 * USBD_MAX_PACKET0; /* reset Buffer address               */
     }
@@ -341,22 +327,16 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
     num = pEPD->bEndpointAddress & 0x0F;
     val = pEPD->wMaxPacketSize;
 
-    if (pEPD->bEndpointAddress & USB_ENDPOINT_DIRECTION_MASK)
-    {
+    if (pEPD->bEndpointAddress & USB_ENDPOINT_DIRECTION_MASK) {
         (pBUF_DSCR + num)->ADDR_TX = FreeBufAddr;
         val = (val + 1) & ~1;
-    }
-    else
-    {
+    } else {
         (pBUF_DSCR + num)->ADDR_RX = FreeBufAddr;
 
-        if (val > 62)
-        {
+        if (val > 62) {
             val = (val + 31) & ~31;
             (pBUF_DSCR + num)->COUNT_RX = ((val << 5) - 1) | 0x8000;
-        }
-        else
-        {
+        } else {
             val = (val + 1)  & ~1;
             (pBUF_DSCR + num)->COUNT_RX =   val << 9;
         }
@@ -364,8 +344,7 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
 
     FreeBufAddr += val;
 
-    switch (pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK)
-    {
+    switch (pEPD->bmAttributes & USB_ENDPOINT_TYPE_MASK) {
         case USB_ENDPOINT_TYPE_CONTROL:
             val = EP_CONTROL;
             break;
@@ -377,8 +356,7 @@ void USBD_ConfigEP(USB_ENDPOINT_DESCRIPTOR *pEPD)
         case USB_ENDPOINT_TYPE_BULK:
             val = EP_BULK;
 
-            if (USB_DBL_BUF_EP & (1 << num))
-            {
+            if (USB_DBL_BUF_EP & (1 << num)) {
                 val |= EP_KIND;
             }
 
@@ -507,13 +485,11 @@ U32 USBD_ReadEP(U32 EPNum, U8 *pData, U32 bufsz)
     num = EPNum & 0x0F;
     pv  = (U32 *)(USB_PMA_ADDR + 2 * ((pBUF_DSCR + num)->ADDR_RX));
     cnt = (pBUF_DSCR + num)->COUNT_RX & EP_COUNT_MASK;
-    if (cnt > bufsz)
-    {
+    if (cnt > bufsz) {
         cnt = bufsz;
     }
 
-    for (n = 0; n < (cnt + 1) / 2; n++)
-    {
+    for (n = 0; n < (cnt + 1) / 2; n++) {
         __UNALIGNED_UINT16_WRITE(pData, *pv++);
         pData += 2;
     }
@@ -541,8 +517,7 @@ U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
     num = EPNum & 0x0F;
     pv  = (U32 *)(USB_PMA_ADDR + 2 * ((pBUF_DSCR + num)->ADDR_TX));
 
-    for (n = 0; n < (cnt + 1) / 2; n++)
-    {
+    for (n = 0; n < (cnt + 1) / 2; n++) {
         *pv++ = __UNALIGNED_UINT16_READ(pData);
         pData += 2;
     }
@@ -550,8 +525,7 @@ U32 USBD_WriteEP(U32 EPNum, U8 *pData, U32 cnt)
     (pBUF_DSCR + num)->COUNT_TX = cnt;
     statusEP = EPxREG(num);
 
-    if ((statusEP & EP_STAT_TX) != EP_TX_STALL)
-    {
+    if ((statusEP & EP_STAT_TX) != EP_TX_STALL) {
         EP_Status(EPNum, EP_TX_VALID);      /* do not make EP valid if stalled    */
     }
 
@@ -602,43 +576,33 @@ void USB_LP_CAN1_RX0_IRQHandler(void)
     LastIstr |= istr & ~(ISTR_DIR | ISTR_EP_ID);
     // Clear interrupts that are pending
     ISTR = ~(istr & USB_ISTR_W0C_MASK);
-    if (istr & ISTR_CTR)
-    {
-        while ((istr = ISTR) & ISTR_CTR)
-        {
+    if (istr & ISTR_CTR) {
+        while ((istr = ISTR) & ISTR_CTR) {
             num = istr & ISTR_EP_ID;
             val = EPxREG(num);
 
             // Process and filter out the zero length status out endpoint to prevent
             // the next SETUP packet from being dropped.
             if ((0 == num) && (val & EP_CTR_RX) && !(val & EP_SETUP)
-                && (0 == ((pBUF_DSCR + num)->COUNT_RX & EP_COUNT_MASK)))
-            {
-                if (val & EP_CTR_TX)
-                {
+                    && (0 == ((pBUF_DSCR + num)->COUNT_RX & EP_COUNT_MASK))) {
+                if (val & EP_CTR_TX) {
                     // Drop the RX event but not TX
                     stat_enque((((val & VAL_MASK) & ~EP_CTR_RX) << VAL_SHIFT) |
                                ((num & EP_NUM_MASK) << EP_NUM_SHIFT));
-                }
-                else
-                {
+                } else {
                     // Drop the event
                 }
-            }
-            else
-            {
+            } else {
                 stat_enque(((val & VAL_MASK) << VAL_SHIFT) |
                            ((num & EP_NUM_MASK) << EP_NUM_SHIFT));
             }
 
 
-            if (val & EP_CTR_RX)
-            {
+            if (val & EP_CTR_RX) {
                 EPxREG(num) = EP_VAL_UNCHANGED(val) & ~EP_CTR_RX;
             }
 
-            if (val & EP_CTR_TX)
-            {
+            if (val & EP_CTR_TX) {
                 EPxREG(num) = EP_VAL_UNCHANGED(val) & ~EP_CTR_TX;
             }
         }
@@ -659,21 +623,18 @@ void USBD_Handler(void)
     cortex_int_restore(state);
 
     /* USB Reset Request                                                        */
-    if (istr & ISTR_RESET)
-    {
+    if (istr & ISTR_RESET) {
         USBD_Reset();
         usbd_reset_core();
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_RESET, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Reset_Event)
-        {
+        if (USBD_P_Reset_Event) {
             USBD_P_Reset_Event();
         }
 
@@ -681,20 +642,17 @@ void USBD_Handler(void)
     }
 
     /* USB Suspend Request                                                      */
-    if (istr & ISTR_SUSP)
-    {
+    if (istr & ISTR_SUSP) {
         USBD_Suspend();
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_SUSPEND, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Suspend_Event)
-        {
+        if (USBD_P_Suspend_Event) {
             USBD_P_Suspend_Event();
         }
 
@@ -702,20 +660,17 @@ void USBD_Handler(void)
     }
 
     /* USB Wakeup                                                               */
-    if (istr & ISTR_WKUP)
-    {
+    if (istr & ISTR_WKUP) {
         USBD_WakeUp();
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_RESUME,  USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Resume_Event)
-        {
+        if (USBD_P_Resume_Event) {
             USBD_P_Resume_Event();
         }
 
@@ -723,19 +678,16 @@ void USBD_Handler(void)
     }
 
     /* Start of Frame                                                           */
-    if (istr & ISTR_SOF)
-    {
+    if (istr & ISTR_SOF) {
 #ifdef __RTX
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_SOF, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_SOF_Event)
-        {
+        if (USBD_P_SOF_Event) {
             USBD_P_SOF_Event();
         }
 
@@ -743,20 +695,17 @@ void USBD_Handler(void)
     }
 
     /* PMA Over/underrun                                                        */
-    if (istr & ISTR_PMAOVR)
-    {
+    if (istr & ISTR_PMAOVR) {
 #ifdef __RTX
         LastError = 2;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_ERROR, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Error_Event)
-        {
+        if (USBD_P_Error_Event) {
             USBD_P_Error_Event(2);
         }
 
@@ -764,20 +713,17 @@ void USBD_Handler(void)
     }
 
     /* Error: No Answer, CRC Error, Bit Stuff Error, Frame Format Error         */
-    if (istr & ISTR_ERR)
-    {
+    if (istr & ISTR_ERR) {
 #ifdef __RTX
         LastError = 1;
 
-        if (USBD_RTX_DevTask)
-        {
+        if (USBD_RTX_DevTask) {
             isr_evt_set(USBD_EVT_ERROR, USBD_RTX_DevTask);
         }
 
 #else
 
-        if (USBD_P_Error_Event)
-        {
+        if (USBD_P_Error_Event) {
             USBD_P_Error_Event(1);
         }
 
@@ -785,43 +731,36 @@ void USBD_Handler(void)
     }
 
     /* Endpoint Interrupts                                                      */
-    while ((istr & ISTR_CTR) && !stat_is_empty())
-    {
+    while ((istr & ISTR_CTR) && !stat_is_empty()) {
         num_val = stat_deque();
         num = (num_val >> EP_NUM_SHIFT) & EP_NUM_MASK;
         val = (num_val >> VAL_SHIFT) & VAL_MASK;
-        if (val & EP_CTR_TX)
-        {
+        if (val & EP_CTR_TX) {
 #ifdef __RTX
 
-            if (USBD_RTX_EPTask[num])
-            {
+            if (USBD_RTX_EPTask[num]) {
                 isr_evt_set(USBD_EVT_IN,  USBD_RTX_EPTask[num]);
             }
 
 #else
 
-            if (USBD_P_EP[num])
-            {
+            if (USBD_P_EP[num]) {
                 USBD_P_EP[num](USBD_EVT_IN);
             }
 
 #endif
         }
 
-        if (val & EP_CTR_RX)
-        {
+        if (val & EP_CTR_RX) {
 #ifdef __RTX
 
-            if (USBD_RTX_EPTask[num])
-            {
+            if (USBD_RTX_EPTask[num]) {
                 isr_evt_set((val & EP_SETUP) ? USBD_EVT_SETUP : USBD_EVT_OUT, USBD_RTX_EPTask[num]);
             }
 
 #else
 
-            if (USBD_P_EP[num])
-            {
+            if (USBD_P_EP[num]) {
                 USBD_P_EP[num]((val & EP_SETUP) ? USBD_EVT_SETUP : USBD_EVT_OUT);
             }
 

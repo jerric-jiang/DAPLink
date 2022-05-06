@@ -70,8 +70,7 @@ extern "C" {
 /**
  * Structure type for the UART peripheral registers allowing direct 32-bit access to each register.
  */
-typedef struct
-{
+typedef struct {
     __IO uint32_t ctrl;                                 /**< <tt>\b 0x0000:</tt> UART_CTRL Register - UART Control Register.                    */
     __IO uint32_t baud;                                 /**< <tt>\b 0x0004:</tt> UART_BAUD Register - UART Baud Control Register.               */
     __IO uint32_t tx_fifo_ctrl;                         /**< <tt>\b 0x0008:</tt> UART_TX_FIFO_CTRL Register - UART TX FIFO Control Register.    */
@@ -94,17 +93,14 @@ typedef struct
 /**
  * Structure type for accessing the UART Transmit and Receive FIFOs.
  */
-typedef struct
-{
-    union
-    {
+typedef struct {
+    union {
         __IO uint8_t  tx;                               /**< TX FIFO write point for data to transmit.                                          */
         __IO uint8_t  tx_8[2048];                       /**< 8-bit access to TX FIFO.                                                           */
         __IO uint16_t tx_16[1024];                      /**< 16-bit access to TX FIFO.                                                          */
         __IO uint32_t tx_32[512];                       /**< 32-bit access to TX FIFO.                                                          */
     };
-    union
-    {
+    union {
         __IO uint8_t  rx;                               /**< RX FIFO read point for received data.                                              */
         __IO uint8_t  rx_8[2048];                       /**< 8-bit access to RX FIFO.                                                           */
         __IO uint16_t rx_16[1024];                      /**< 16-bit access to RX FIFO.                                                          */

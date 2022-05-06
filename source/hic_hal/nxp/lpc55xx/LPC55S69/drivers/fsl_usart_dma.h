@@ -34,9 +34,9 @@ typedef struct _usart_dma_handle usart_dma_handle_t;
 
 /*! @brief UART transfer callback function. */
 typedef void (*usart_dma_transfer_callback_t)(USART_Type *base,
-        usart_dma_handle_t *handle,
-        status_t status,
-        void *userData);
+                                              usart_dma_handle_t *handle,
+                                              status_t status,
+                                              void *userData);
 
 /*!
  * @brief UART DMA handle

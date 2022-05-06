@@ -72,8 +72,7 @@ extern "C" {
 /**
  * Structure type to access the ICC Registers.
  */
-typedef struct
-{
+typedef struct {
     __IO uint32_t id;                                   /**< <tt>\b 0x0000: </tt> ICC_ID Register \warning INTERNAL USE ONLY, DO NOT MODIFY  */
     __IO uint32_t mem_cfg;                              /**< <tt>\b 0x0004: </tt> ICC_MEM_CFG Register                                       */
     __R  uint32_t rsv008[62];                           /**< <tt>\b 0x0008-0x00FC: </tt> RESERVED                                            */

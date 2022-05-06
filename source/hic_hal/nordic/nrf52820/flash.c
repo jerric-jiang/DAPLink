@@ -41,8 +41,7 @@ uint32_t EraseSector(uint32_t adr)
 {
     nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_ERASE);
     nrf_nvmc_page_erase_start(NRF_NVMC, adr);
-    while (!nrf_nvmc_ready_check(NRF_NVMC))
-    {
+    while (!nrf_nvmc_ready_check(NRF_NVMC)) {
         // Wait for controller to be ready
     }
     nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_READONLY);
@@ -53,11 +52,9 @@ uint32_t EraseSector(uint32_t adr)
 uint32_t ProgramPage(uint32_t adr, uint32_t sz, uint32_t *buf)
 {
     nrf_nvmc_mode_set(NRF_NVMC, NRF_NVMC_MODE_WRITE);
-    for (uint32_t i = 0; i < sz / 4; i++)
-    {
+    for (uint32_t i = 0; i < sz / 4; i++) {
         ((volatile uint32_t *)adr)[i] = buf[i];
-        while (!nrf_nvmc_ready_check(NRF_NVMC))
-        {
+        while (!nrf_nvmc_ready_check(NRF_NVMC)) {
             // Wait for controller to be ready
         }
     }

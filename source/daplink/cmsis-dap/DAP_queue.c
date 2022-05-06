@@ -37,8 +37,7 @@ void DAP_queue_init(DAP_queue * queue)
 
 BOOL DAP_queue_get_send_buf(DAP_queue * queue, uint8_t ** buf, int * len)
 {
-    if (queue->send_count)
-    {
+    if (queue->send_count) {
         queue->send_count--;
         *buf = queue->USB_Request[queue->send_idx];
         *len = queue->resp_size[queue->send_idx];
@@ -59,10 +58,8 @@ BOOL DAP_queue_get_send_buf(DAP_queue * queue, uint8_t ** buf, int * len)
 BOOL DAP_queue_execute_buf(DAP_queue * queue, const uint8_t *reqbuf, int len, uint8_t ** retbuf)
 {
     uint32_t rsize;
-    if (queue->free_count > 0)
-    {
-        if (len > DAP_PACKET_SIZE)
-        {
+    if (queue->free_count > 0) {
+        if (len > DAP_PACKET_SIZE) {
             len = DAP_PACKET_SIZE;
         }
         queue->free_count--;

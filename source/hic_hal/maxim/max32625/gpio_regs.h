@@ -77,8 +77,7 @@ extern "C" {
 /**
  * Structure type to access the GPIO Registers
  */
-typedef struct
-{
+typedef struct {
     __IO uint32_t rst_mode[16];                          /**< <tt>\b 0x0000-0x003C</tt> GPIO_RST_MODE_P[0..15] Registers - Power-On Reset Output Drive Mode     */
     __IO uint32_t free[16];                              /**< <tt>\b 0x0040-0x007C</tt> GPIO_FREE_P[0..15] Registers - Free for GPIO Operation Flags            */
     __IO uint32_t out_mode[16];                          /**< <tt>\b 0x0080-0x00BC</tt> GPIO_OUT_MODE_P[0..15] Registers - Output Drive Mode                    */
@@ -336,12 +335,12 @@ typedef struct
 /*
    Field positions and masks for module GPIO.
 */
-/**
-* @defgroup   GPIO_RST_MODE_Register GPIO_RST_MODE
-* @ingroup    gpio_registers
-* @brief      Field Positions and Bit Masks for the GPIO_RST_MODE register.
-* @{
-*/
+   /**
+ * @defgroup   GPIO_RST_MODE_Register GPIO_RST_MODE
+ * @ingroup    gpio_registers
+ * @brief      Field Positions and Bit Masks for the GPIO_RST_MODE register.
+ * @{
+ */
 #define MXC_F_GPIO_RST_MODE_PIN0_POS                        0                                                                 /**< PIN0 Position                  */
 #define MXC_F_GPIO_RST_MODE_PIN0                            ((uint32_t)(0x00000007UL << MXC_F_GPIO_RST_MODE_PIN0_POS))        /**< PIN0 Mask                      */
 #define MXC_F_GPIO_RST_MODE_PIN1_POS                        4                                                                 /**< PIN1 Position                  */

@@ -31,8 +31,7 @@
 extern "C" {
 #endif
 
-typedef enum
-{
+typedef enum {
     STREAM_TYPE_START = 0,
 
     STREAM_TYPE_BIN = STREAM_TYPE_START,

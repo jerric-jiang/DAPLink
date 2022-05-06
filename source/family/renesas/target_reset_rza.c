@@ -36,13 +36,10 @@ static uint8_t validate_bin_nvic_rza(const uint8_t *buf)
     // of the buffer is BINARY_DETECTION (LDR  PC, Label)
     // Compared with the high-order 3byte
     if ((buf[1] == ((BINARY_DETECTION >> 8)  & 0xFF))
-        && (buf[2] == ((BINARY_DETECTION >> 16) & 0xFF))
-        && (buf[3] == ((BINARY_DETECTION >> 24) & 0xFF)))
-    {
+     && (buf[2] == ((BINARY_DETECTION >> 16) & 0xFF))
+     && (buf[3] == ((BINARY_DETECTION >> 24) & 0xFF))) {
         return 1;
-    }
-    else
-    {
+    } else {
         return 0;
     }
 }
@@ -52,8 +49,7 @@ static uint8_t validate_hexfile_rza(const uint8_t *buf)
     return 0;
 }
 
-const target_family_descriptor_t g_renesas_family =
-{
+const target_family_descriptor_t g_renesas_family = {
     .family_id = kRenesas_FamilyID,
     .target_set_state = target_set_state_rza,
     .validate_bin_nvic = validate_bin_nvic_rza,

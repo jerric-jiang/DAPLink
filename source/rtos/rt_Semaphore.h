@@ -1,6 +1,6 @@
 /**
  * @file    rt_Semaphore.h
- * @brief
+ * @brief   
  *
  * DAPLink Interface Firmware
  * Copyright (c) 2009-2016, ARM Limited, All Rights Reserved
@@ -20,11 +20,11 @@
  */
 
 /* Functions */
-extern void      rt_sem_init(OS_ID semaphore, U16 token_count);
-extern OS_RESULT rt_sem_send(OS_ID semaphore);
-extern OS_RESULT rt_sem_wait(OS_ID semaphore, U16 timeout);
-extern void      isr_sem_send(OS_ID semaphore);
-extern void      rt_sem_psh(P_SCB p_CB);
+extern void      rt_sem_init (OS_ID semaphore, U16 token_count);
+extern OS_RESULT rt_sem_send (OS_ID semaphore);
+extern OS_RESULT rt_sem_wait (OS_ID semaphore, U16 timeout);
+extern void      isr_sem_send (OS_ID semaphore);
+extern void      rt_sem_psh (P_SCB p_CB);
 
 /*----------------------------------------------------------------------------
  * end of file

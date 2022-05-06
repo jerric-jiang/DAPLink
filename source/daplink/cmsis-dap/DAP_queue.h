@@ -33,8 +33,7 @@ extern "C" {
 #define FREE_COUNT_INIT          (DAP_PACKET_COUNT)
 #define SEND_COUNT_INIT          0
 
-typedef struct _DAP_queue
-{
+typedef struct _DAP_queue {
     uint8_t     USB_Request [DAP_PACKET_COUNT][DAP_PACKET_SIZE];  // Request  Buffer
     uint16_t    resp_size[DAP_PACKET_COUNT]; //track the return response size
     uint32_t    free_count;

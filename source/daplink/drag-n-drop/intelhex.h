@@ -35,8 +35,7 @@ extern "C" {
 /** Type of states that the parser can return
  *  @enum hexfile_parse_status_t
  */
-typedef enum
-{
+typedef enum {
     HEX_PARSE_OK = 0,       /*!< The input buffer was complete parsed and converted into the output buffer */
     HEX_PARSE_EOF,          /*!< EOF line found in the hex file */
     HEX_PARSE_UNALIGNED,    /*!< The address of decoded data isnt consecutive. Need to program what was returned and continue to parse the input buffer */

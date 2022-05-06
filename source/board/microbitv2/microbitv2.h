@@ -38,8 +38,7 @@
 #define RESET_LONG_PRESS        120  // x 30ms debounce time = 3600ms
 #define RESET_MAX_LENGTH_PRESS  RESET_LONG_PRESS
 
-typedef enum main_shutdown_state
-{
+typedef enum main_shutdown_state {
     MAIN_SHUTDOWN_WAITING = 0,
     MAIN_SHUTDOWN_WAITING_OFF,
     MAIN_SHUTDOWN_PENDING,

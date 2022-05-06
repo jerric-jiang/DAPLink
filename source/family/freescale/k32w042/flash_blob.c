@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-static const uint32_t k32w042s1m2_flash_prog_blob[] =
-{
+static const uint32_t k32w042s1m2_flash_prog_blob[] = {
     0xE00ABE00, 0x062D780D, 0x24084068, 0xD3000040, 0x1E644058, 0x1C49D1FA, 0x2A001E52, 0x4770D1F2,
     0x4838b510, 0x60414936, 0x60814937, 0x22806801, 0x22204391, 0x60014311, 0x69014834, 0x0f890589,
     0xd01c2902, 0x4a322100, 0x444a2900, 0xd0087011, 0x22036901, 0x43910212, 0x69016101, 0x0f890589,
@@ -106,13 +105,11 @@ static const uint32_t k32w042s1m2_flash_prog_blob[] =
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {0x00000000, 0x00001000},
-};
+ };
 
-static const program_target_t flash =
-{
+static const program_target_t flash = {
     0x20000021, // Init
     0x20000083, // UnInit
     0x200000ad, // EraseChip

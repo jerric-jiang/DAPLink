@@ -1158,8 +1158,7 @@ __WEAK void USBD_EndPoint15(U32 event);
 #endif
 
 /* USB Device - Endpoint Events Callback Pointers */
-void (* const USBD_P_EP[16])(U32 event) =
-{
+void (* const USBD_P_EP[16])(U32 event) = {
     USBD_EndPoint0,
     USBD_EndPoint1,
     USBD_EndPoint2,
@@ -1196,13 +1195,11 @@ __WEAK void USBD_RTX_Device(void)
 {
     U16 evt;
 
-    for (;;)
-    {
+    for (;;) {
         os_evt_wait_or(0xFFFF, 0xFFFF);         /* Wait for an Event */
         evt = os_evt_get();                     /* Get Event Flags */
 
-        if (evt & USBD_EVT_RESET)
-        {
+        if (evt & USBD_EVT_RESET) {
 #if (USBD_CDC_ACM_ENABLE)
             USBD_CDC_ACM_Reset_Event();
 #endif
@@ -1211,8 +1208,7 @@ __WEAK void USBD_RTX_Device(void)
 #endif
         }
 
-        if (evt & USBD_EVT_SOF)
-        {
+        if (evt & USBD_EVT_SOF) {
 #if (USBD_HID_ENABLE)
             USBD_HID_SOF_Event();
 #endif
@@ -1288,13 +1284,11 @@ __WEAK void USBD_RTX_Core(void)
 {
     U16 evt;
 
-    for (;;)
-    {
+    for (;;) {
         os_evt_wait_or(0xFFFF, 0xFFFF);         /* Wait for an Event */
         evt = os_evt_get();                     /* Get Event Flags */
 
-        if (evt & USBD_EVT_SET_CFG)
-        {
+        if (evt & USBD_EVT_SET_CFG) {
             USBD_HID_Configure_Event();
         }
     }
@@ -1307,8 +1301,7 @@ __WEAK void USBD_RTX_Core(void);
 void (* const USBD_RTX_P_Core)(void)  = USBD_RTX_Core;
 
 /* USB Device Endpoint Events Callback Pointers */
-void (* const USBD_RTX_P_EP[16])(void) =
-{
+void (* const USBD_RTX_P_EP[16])(void) = {
     USBD_RTX_EndPoint0,
     USBD_RTX_EndPoint1,
     USBD_RTX_EndPoint2,
@@ -1329,8 +1322,7 @@ void (* const USBD_RTX_P_EP[16])(void) =
 
 void usbd_os_evt_set(U16 event_flags, U32 task)
 {
-    if (task)
-    {
+    if (task) {
         os_evt_set(event_flags, task);
     }
 }
@@ -1362,8 +1354,7 @@ U32  usbd_os_evt_wait_or(U16 wait_flags, U16 timeout)
 
 #ifdef __RTX
 
-typedef struct
-{
+typedef struct {
     void *stack;
     U16 size;
 } user_stack_t;
@@ -1509,8 +1500,7 @@ static U64 usbd_cdc_acm_ep_bulkout_stack[USBD_CDC_ACM_EP_BULKOUT_STACK / 8];
 #error "Multiple CDC stacks defined for same EP"
 #endif
 
-static const user_stack_t user_stack_list[16] =
-{
+static const user_stack_t user_stack_list[16] = {
 #if USBD_ENABLE
     [0] = {usbd_endpoint0_stack, sizeof(usbd_endpoint0_stack)},
 #endif
@@ -1549,18 +1539,15 @@ void USBD_RTX_TaskInit(void)
     U32 i;
     USBD_RTX_DevTask = 0;
 
-    if (USBD_RTX_P_Device)
-    {
+    if (USBD_RTX_P_Device) {
         USBD_RTX_DevTask = os_tsk_create_user(USBD_RTX_Device, 3, usbd_device_stack,
                                               sizeof(usbd_device_stack));
     }
 
-    for (i = 0; i <= 15; i++)
-    {
+    for (i = 0; i <= 15; i++) {
         USBD_RTX_EPTask[i] = 0;
 
-        if (USBD_RTX_P_EP[i])
-        {
+        if (USBD_RTX_P_EP[i]) {
             // Set the control endpoint (endpoint 0) thread to a high priority.
             // According to the USB 2.0 specification, the time to complete standard
             // request with no data must be under 50ms.  If a long caluclation
@@ -1574,8 +1561,7 @@ void USBD_RTX_TaskInit(void)
 
     USBD_RTX_CoreTask = 0;
 
-    if (USBD_RTX_P_Core)
-    {
+    if (USBD_RTX_P_Core) {
         USBD_RTX_CoreTask = os_tsk_create_user(USBD_RTX_Core, 2, usbd_core_stack,
                                                sizeof(usbd_core_stack));
     }
@@ -1631,8 +1617,7 @@ void USBD_RTX_TaskInit(void)
 */
 
 __WEAK \
-const U8 USBD_HID_ReportDescriptor[] =
-{
+const U8 USBD_HID_ReportDescriptor[] = {
     HID_UsagePageVendor(0x00),
     HID_Usage(0x01),
     HID_Collection(HID_Application),
@@ -1671,8 +1656,7 @@ U16 USBD_HID_DescriptorOffset     = USBD_HID_DESC_OFS;
 
 /* USB Device Standard Descriptor */
 __WEAK \
-const U8 USBD_DeviceDescriptor[] =
-{
+const U8 USBD_DeviceDescriptor[] = {
     USB_DEVICE_DESC_SIZE,                 /* bLength */
     USB_DEVICE_DESCRIPTOR_TYPE,           /* bDescriptorType */
 #if (USBD_BOS_ENABLE)
@@ -1708,8 +1692,7 @@ const U8 USBD_DeviceDescriptor[] =
 #if (USBD_HS_ENABLE)
 /* USB Device Qualifier Descriptor (for Full Speed) */
 __WEAK \
-const U8 USBD_DeviceQualifier[] =
-{
+const U8 USBD_DeviceQualifier[] = {
     USB_DEVICE_QUALI_SIZE,                /* bLength */
     USB_DEVICE_QUALIFIER_DESCRIPTOR_TYPE, /* bDescriptorType */
 #if (USBD_BOS_ENABLE)
@@ -1727,8 +1710,7 @@ const U8 USBD_DeviceQualifier[] =
 
 /* USB Device Qualifier Descriptor for High Speed */
 __WEAK \
-const U8 USBD_DeviceQualifier_HS[] =
-{
+const U8 USBD_DeviceQualifier_HS[] = {
     USB_DEVICE_QUALI_SIZE,                /* bLength */
     USB_DEVICE_QUALIFIER_DESCRIPTOR_TYPE, /* bDescriptorType */
 #if (USBD_BOS_ENABLE)
@@ -1760,8 +1742,7 @@ const U8 USBD_DeviceQualifier_HS[] = { 0 };
 
 #define USBD_WINUSB_DESC_SET_LEN            (WINUSB_DESCRIPTOR_SET_HEADER_SIZE + USBD_WEBUSB_ENABLE * FUNCTION_SUBSET_LEN + USBD_BULK_ENABLE * FUNCTION_SUBSET_LEN)
 
-U8 USBD_WinUSBDescriptorSetDescriptor[] =
-{
+U8 USBD_WinUSBDescriptorSetDescriptor[] = {
     WBVAL(WINUSB_DESCRIPTOR_SET_HEADER_SIZE), /* wLength */
     WBVAL(WINUSB_SET_HEADER_DESCRIPTOR_TYPE), /* wDescriptorType */
     0x00, 0x00, 0x03, 0x06, /* >= Win 8.1 */  /* dwWindowsVersion*/
@@ -1780,17 +1761,17 @@ U8 USBD_WinUSBDescriptorSetDescriptor[] =
     WBVAL(WINUSB_FEATURE_REG_PROPERTY_TYPE),  // wDescriptorType
     WBVAL(WINUSB_PROP_DATA_TYPE_REG_MULTI_SZ), // wPropertyDataType
     WBVAL(42), // wPropertyNameLength
-    'D', 0, 'e', 0, 'v', 0, 'i', 0, 'c', 0, 'e', 0,
-    'I', 0, 'n', 0, 't', 0, 'e', 0, 'r', 0, 'f', 0, 'a', 0, 'c', 0, 'e', 0,
-    'G', 0, 'U', 0, 'I', 0, 'D', 0, 's', 0, 0, 0,
+    'D',0,'e',0,'v',0,'i',0,'c',0,'e',0,
+    'I',0,'n',0,'t',0,'e',0,'r',0,'f',0,'a',0,'c',0,'e',0,
+    'G',0,'U',0,'I',0,'D',0,'s',0,0,0,
     WBVAL(80), // wPropertyDataLength
-    '{', 0,
-    '9', 0, '2', 0, 'C', 0, 'E', 0, '6', 0, '4', 0, '6', 0, '2', 0, '-', 0,
-    '9', 0, 'C', 0, '7', 0, '7', 0, '-', 0,
-    '4', 0, '6', 0, 'F', 0, 'E', 0, '-', 0,
-    '9', 0, '3', 0, '3', 0, 'B', 0, '-',
-    0, '3', 0, '1', 0, 'C', 0, 'B', 0, '9', 0, 'C', 0, '5', 0, 'A', 0, 'A', 0, '3', 0, 'B', 0, '9', 0,
-    '}', 0, 0, 0, 0, 0,
+    '{',0,
+    '9',0,'2',0,'C',0,'E',0,'6',0,'4',0,'6',0,'2',0,'-',0,
+    '9',0,'C',0,'7',0,'7',0,'-',0,
+    '4',0,'6',0,'F',0,'E',0,'-',0,
+    '9',0,'3',0,'3',0,'B',0,'-',
+    0,'3',0,'1',0,'C',0,'B',0,'9',0,'C',0,'5',0,'A',0,'A',0,'3',0,'B',0,'9',0,
+    '}',0,0,0,0,0,
 #endif
 #if (USBD_BULK_ENABLE)
     WBVAL(WINUSB_FUNCTION_SUBSET_HEADER_SIZE),/* wLength */
@@ -1806,17 +1787,17 @@ U8 USBD_WinUSBDescriptorSetDescriptor[] =
     WBVAL(WINUSB_FEATURE_REG_PROPERTY_TYPE),  /* wDescriptorType */
     WBVAL(WINUSB_PROP_DATA_TYPE_REG_MULTI_SZ), /* wPropertyDataType */
     WBVAL(42), /* wPropertyNameLength */
-    'D', 0, 'e', 0, 'v', 0, 'i', 0, 'c', 0, 'e', 0,
-    'I', 0, 'n', 0, 't', 0, 'e', 0, 'r', 0, 'f', 0, 'a', 0, 'c', 0, 'e', 0,
-    'G', 0, 'U', 0, 'I', 0, 'D', 0, 's', 0, 0, 0,
+    'D',0,'e',0,'v',0,'i',0,'c',0,'e',0,
+    'I',0,'n',0,'t',0,'e',0,'r',0,'f',0,'a',0,'c',0,'e',0,
+    'G',0,'U',0,'I',0,'D',0,'s',0,0,0,
     WBVAL(80), /* wPropertyDataLength */
-    '{', 0,
-    'C', 0, 'D', 0, 'B', 0, '3', 0, 'B', 0, '5', 0, 'A', 0, 'D', 0, '-', 0,
-    '2', 0, '9', 0, '3', 0, 'B', 0, '-', 0,
-    '4', 0, '6', 0, '6', 0, '3', 0, '-', 0,
-    'A', 0, 'A', 0, '3', 0, '6', 0, '-',
-    0, '1', 0, 'A', 0, 'A', 0, 'E', 0, '4', 0, '6', 0, '4', 0, '6', 0, '3', 0, '7', 0, '7', 0, '6', 0,
-    '}', 0, 0, 0, 0, 0,
+    '{',0,
+    'C',0,'D',0,'B',0,'3',0,'B',0,'5',0,'A',0,'D',0,'-',0,
+    '2',0,'9',0,'3',0,'B',0,'-',0,
+    '4',0,'6',0,'6',0,'3',0,'-',0,
+    'A',0,'A',0,'3',0,'6',0,'-',
+    0,'1',0,'A',0,'A',0,'E',0,'4',0,'6',0,'4',0,'6',0,'3',0,'7',0,'7',0,'6',0,
+    '}',0,0,0,0,0,
 #endif
 };
 
@@ -1844,38 +1825,37 @@ BOOL USBD_EndPoint0_Setup_WinUSB_ReqToDevice(void)
                                            USBD_WINUSB_DESC_LEN * USBD_WINUSB_ENABLE)
 
 __WEAK \
-const U8 USBD_BinaryObjectStoreDescriptor[] =
-{
-    USB_BOS_DESC_SIZE,                      /* bLength */
-    USB_BINARY_OBJECT_STORE_DESCRIPTOR_TYPE,/* bDescriptorType */
-    WBVAL(USBD_BOS_WTOTALLENGTH),           /* wTotalLength */
-    USBD_NUM_DEV_CAPABILITIES,              /* bNumDeviceCaps */
+const U8 USBD_BinaryObjectStoreDescriptor[] = {
+	USB_BOS_DESC_SIZE,                      /* bLength */
+	USB_BINARY_OBJECT_STORE_DESCRIPTOR_TYPE,/* bDescriptorType */
+	WBVAL(USBD_BOS_WTOTALLENGTH),           /* wTotalLength */
+	USBD_NUM_DEV_CAPABILITIES,              /* bNumDeviceCaps */
 #if (USBD_WEBUSB_ENABLE)
-    USBD_WEBUSB_DESC_LEN,                   /* bLength */
-    USB_DEVICE_CAPABILITY_DESCRIPTOR_TYPE,  /* bDescriptorType */
-    USB_DEVICE_CAPABILITY_PLATFORM,         /* bDevCapabilityType */
-    0x00,                                   /* bReserved */
-    0x38, 0xB6, 0x08, 0x34,                 /* PlatformCapabilityUUID */
-    0xA9, 0x09, 0xA0, 0x47,
-    0x8B, 0xFD, 0xA0, 0x76,
-    0x88, 0x15, 0xB6, 0x65,
-    WBVAL(0x0100), /* 1.00 */               /* bcdVersion */
-    USBD_WEBUSB_VENDOR_CODE,                /* bVendorCode */
-    0,                                      /* iLandingPage */
+	USBD_WEBUSB_DESC_LEN,                   /* bLength */
+	USB_DEVICE_CAPABILITY_DESCRIPTOR_TYPE,  /* bDescriptorType */
+	USB_DEVICE_CAPABILITY_PLATFORM,         /* bDevCapabilityType */
+	0x00,                                   /* bReserved */
+	0x38, 0xB6, 0x08, 0x34,                 /* PlatformCapabilityUUID */
+	0xA9, 0x09, 0xA0, 0x47,
+	0x8B, 0xFD, 0xA0, 0x76,
+	0x88, 0x15, 0xB6, 0x65,
+	WBVAL(0x0100), /* 1.00 */               /* bcdVersion */
+	USBD_WEBUSB_VENDOR_CODE,                /* bVendorCode */
+	0,                                      /* iLandingPage */
 #endif
 #if (USBD_WINUSB_ENABLE)
-    USBD_WINUSB_DESC_LEN,                   /* bLength */
-    USB_DEVICE_CAPABILITY_DESCRIPTOR_TYPE,  /* bDescriptorType */
-    USB_DEVICE_CAPABILITY_PLATFORM,         /* bDevCapabilityType */
-    0x00,                                   /* bReserved */
-    0xDF, 0x60, 0xDD, 0xD8,                 /* PlatformCapabilityUUID */
-    0x89, 0x45, 0xC7, 0x4C,
-    0x9C, 0xD2, 0x65, 0x9D,
-    0x9E, 0x64, 0x8A, 0x9F,
-    0x00, 0x00, 0x03, 0x06, /* >= Win 8.1 *//* dwWindowsVersion*/
-    WBVAL(USBD_WINUSB_DESC_SET_LEN),        /* wDescriptorSetTotalLength */
-    USBD_WINUSB_VENDOR_CODE,                /* bVendorCode */
-    0,                                      /* bAltEnumCode */
+	USBD_WINUSB_DESC_LEN,                   /* bLength */
+	USB_DEVICE_CAPABILITY_DESCRIPTOR_TYPE,  /* bDescriptorType */
+	USB_DEVICE_CAPABILITY_PLATFORM,         /* bDevCapabilityType */
+	0x00,                                   /* bReserved */
+	0xDF, 0x60, 0xDD, 0xD8,                 /* PlatformCapabilityUUID */
+	0x89, 0x45, 0xC7, 0x4C,
+	0x9C, 0xD2, 0x65, 0x9D,
+	0x9E, 0x64, 0x8A, 0x9F,
+	0x00, 0x00, 0x03, 0x06, /* >= Win 8.1 *//* dwWindowsVersion*/
+	WBVAL(USBD_WINUSB_DESC_SET_LEN),        /* wDescriptorSetTotalLength */
+	USBD_WINUSB_VENDOR_CODE,                /* bVendorCode */
+	0,                                      /* bAltEnumCode */
 #endif
 };
 
@@ -2378,10 +2358,8 @@ COMPILER_ASSERT(sizeof(wchar_t) == 2);
  { sizeof(USBD_##n), USB_STRING_DESCRIPTOR_TYPE, USBD_##n }
 
 __WEAK \
-const struct
-{
-    struct
-    {
+const struct {
+    struct {
         U8  len;
         U8  type;
         U16 langid;
@@ -2413,8 +2391,7 @@ const struct
     USBD_STR_DEF(BULK_STRDESC);
 #endif
 } USBD_StringDescriptor
-=
-{
+= {
     { 4, USB_STRING_DESCRIPTOR_TYPE, USBD_STRDESC_LANGID },
     USBD_STR_VAL(STRDESC_MAN),
     USBD_STR_VAL(STRDESC_PROD),
@@ -2478,13 +2455,11 @@ const struct
 }
 
 __WEAK \
-struct
-{
+struct {
     WEBUSB_URL_DEF(WEBUSB_LANDING_URL);
     WEBUSB_URL_DEF(WEBUSB_ORIGIN_URL);
 } USBD_WebUSBURLDescriptor
-=
-{
+= {
     WEBUSB_HTTPS_URL_VAL(WEBUSB_LANDING_URL),
     WEBUSB_HTTPS_URL_VAL(WEBUSB_ORIGIN_URL),
 };
@@ -2503,11 +2478,9 @@ BOOL USBD_EndPoint0_Setup_WebUSB_ReqToDevice(void)
 
 extern uint8_t flash_algo_valid(void);
 
-static U16 start_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
-{
+static U16 start_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num) {
     U8 * pD = 0;
-    const U8 start_desc[] =
-    {
+    const U8 start_desc[] = {
         /* Configuration 1 */
         USB_CONFIGUARTION_DESC_SIZE,                // bLength
         USB_CONFIGURATION_DESCRIPTOR_TYPE,          // bDescriptorType
@@ -2530,34 +2503,31 @@ static U16 start_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
     return sizeof(start_desc);
 }
 
-static U16 hid_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
-{
+static U16 hid_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num) {
     U8 * pD = 0;
-    const U8 hid_desc[] =
-    {
+    const U8 hid_desc[] = {
         HID_DESC
-#if ((USBD_HID_EP_INTOUT != 0) && (USBD_HID_EP_INTIN != 0))
+    #if ((USBD_HID_EP_INTOUT != 0) && (USBD_HID_EP_INTIN != 0))
         HID_EP_INOUT
-#elif (USBD_HID_EP_INTIN != 0)
+    #elif (USBD_HID_EP_INTIN != 0)
         HID_EP_IN
-#elif (USBD_HID_EP_INTOUT != 0)
+    #elif (USBD_HID_EP_INTOUT != 0)
         HID_EP_OUT
-#endif
+    #endif
     };
     pD = config_desc;
     memcpy(pD, hid_desc, sizeof(hid_desc));
     ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num;
 #if (USBD_HS_ENABLE == 1)
-    const U8 hid_desc_hs[] =
-    {
+    const U8 hid_desc_hs[] = {
         HID_DESC
-#if ((USBD_HID_EP_INTOUT != 0) && (USBD_HID_EP_INTIN != 0))
+    #if ((USBD_HID_EP_INTOUT != 0) && (USBD_HID_EP_INTIN != 0))
         HID_EP_INOUT_HS
-#elif (USBD_HID_EP_INTIN != 0) //#else
+    #elif (USBD_HID_EP_INTIN != 0) //#else
         HID_EP_IN_HS
-#elif (USBD_HID_EP_INTOUT != 0)
+    #elif (USBD_HID_EP_INTOUT != 0)
         HID_EP_OUT_HS
-#endif
+    #endif
     };
     pD = config_desc_hs;
     memcpy(pD, hid_desc_hs, sizeof(hid_desc_hs));
@@ -2566,14 +2536,12 @@ static U16 hid_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
     return sizeof(hid_desc);
 }
 
-static U16 acm_cdc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
-{
+static U16 acm_cdc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num) {
     U8 * pD = 0;
-    const U8 cdc_desc[] =
-    {
-#if (USBD_MULTI_IF)
+    const U8 cdc_desc[] = {
+    #if (USBD_MULTI_IF)
         CDC_ACM_DESC_IAD(0, 2)
-#endif
+    #endif
         CDC_ACM_DESC_IF0
         CDC_ACM_EP_IF0
         CDC_ACM_DESC_IF1
@@ -2595,17 +2563,16 @@ static U16 acm_cdc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
     ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num + 1;
 
 #if (USBD_HS_ENABLE == 1)
-    const U8 cdc_desc_hs[] =
-    {
-#if (USBD_MULTI_IF)
+    const U8 cdc_desc_hs[] = {
+    #if (USBD_MULTI_IF)
         CDC_ACM_DESC_IAD(0, 2)
-#endif
+    #endif
         CDC_ACM_DESC_IF0
         CDC_ACM_EP_IF0_HS
         CDC_ACM_DESC_IF1
         CDC_ACM_EP_IF1_HS
     };
-    pD = config_desc_hs;
+     pD = config_desc_hs;
     memcpy(pD, cdc_desc_hs, sizeof(cdc_desc_hs));
 
 #if (USBD_MULTI_IF)
@@ -2618,16 +2585,14 @@ static U16 acm_cdc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
     ((UNION_FUNCTIONAL_DESCRIPTOR*)pD)->bMasterInterface = if_num;
     ((UNION_FUNCTIONAL_DESCRIPTOR*)pD)->bSlaveInterface0 = if_num + 1;
     pD += CDC_UNION_SIZE + USB_ENDPOINT_DESC_SIZE;
-    ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num + 1 ;
+    ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num +1 ;
 #endif  //(USBD_HS_ENABLE == 1)
     return sizeof(cdc_desc);
 }
 
-static U16 msc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
-{
+static U16 msc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num) {
     U8 * pD = 0;
-    const U8 msc_desc[] =
-    {
+    const U8 msc_desc[] = {
         MSC_DESC
         MSC_EP
     };
@@ -2637,8 +2602,7 @@ static U16 msc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
     ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num;
 
 #if (USBD_HS_ENABLE == 1)
-    const U8 msc_desc_hs[] =
-    {
+    const U8 msc_desc_hs[] = {
         MSC_DESC
         MSC_EP_HS
     };
@@ -2651,11 +2615,9 @@ static U16 msc_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
 }
 
 #if (USBD_WEBUSB_ENABLE)
-static U16 webusb_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
-{
+static U16 webusb_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num) {
     U8 * pD = 0;
-    const U8 webusb_desc[] =
-    {
+    const U8 webusb_desc[] = {
         WEBUSB_DESC
     };
     pD = config_desc;
@@ -2680,11 +2642,9 @@ static U16 webusb_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
 #endif
 
 #if (USBD_BULK_ENABLE)
-static U16 bulk_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
-{
+static U16 bulk_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num) {
     U8 * pD = 0;
-    const U8 bulk_desc[] =
-    {
+    const U8 bulk_desc[] = {
         BULK_DESC
         BULK_EP
     };
@@ -2692,12 +2652,11 @@ static U16 bulk_desc_fill(U8 * config_desc, U8 * config_desc_hs, U8 if_num)
     memcpy(pD, bulk_desc, sizeof(bulk_desc));
     ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num;
 #if (USBD_HS_ENABLE == 1)
-    const U8 bulk_desc_hs[] =
-    {
+    const U8 bulk_desc_hs[] = {
         BULK_DESC
         BULK_EP_HS
     };
-    pD = config_desc_hs;
+     pD = config_desc_hs;
     memcpy(pD, bulk_desc_hs, sizeof(bulk_desc_hs));
     ((USB_INTERFACE_DESCRIPTOR *)pD)->bInterfaceNumber = if_num;
 #endif
@@ -2732,8 +2691,7 @@ void usbd_class_init(void)
 
 #if !(defined(DAPLINK_BL)) &&  defined(DRAG_N_DROP_SUPPORT)
     //change descriptors here
-    if (config_ram_get_disable_msd() == 1 || flash_algo_valid() == 0)
-    {
+    if (config_ram_get_disable_msd() == 1 || flash_algo_valid()==0 ){
         usbd_if_num -= USBD_MSC_ENABLE;
         USB_CONFIGURATION_DESCRIPTOR * usb_conf_desc = (USB_CONFIGURATION_DESCRIPTOR *)USBD_ConfigDescriptor;
         usb_conf_desc->bNumInterfaces = usbd_if_num;
@@ -2747,13 +2705,12 @@ void usbd_class_init(void)
         usb_conf_desc->wTotalLength = usb_wtotal_len;
         USBD_ConfigDescriptor_HS[usb_wtotal_len] = 0;
 #endif
-    }
-    else
+    } else
 #endif
     {
-        usbd_msc_if_num = if_num++;
-        desc_ptr += msc_desc_fill(&USBD_ConfigDescriptor[desc_ptr], &USBD_ConfigDescriptor_HS[desc_ptr], usbd_msc_if_num);
-        usbd_msc_init();
+    usbd_msc_if_num = if_num++;
+    desc_ptr += msc_desc_fill(&USBD_ConfigDescriptor[desc_ptr], &USBD_ConfigDescriptor_HS[desc_ptr], usbd_msc_if_num);
+    usbd_msc_init();
 
     }
 #endif //#if (USBD_MSC_ENABLE)

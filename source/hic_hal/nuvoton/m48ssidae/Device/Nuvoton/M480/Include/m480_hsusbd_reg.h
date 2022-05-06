@@ -15,7 +15,7 @@
  *   3. Neither the name of Nuvoton Technology Corp. nor the names of its contributors
  *      may be used to endorse or promote products derived from this software
  *      without specific prior written permission.
- *
+ * 
  * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
  * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
  * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -44,8 +44,7 @@
     Memory Mapped Structure for HSUSBD Controller
 @{ */
 
-typedef struct
-{
+typedef struct {
 
     /**
      * @var HSUSBD_EP_T::EPDAT
@@ -297,8 +296,7 @@ typedef struct
      * |        |          |This is the end-address of the RAM space allocated for the endpoint A~L.
      */
 
-    union
-    {
+    union {
         __IO uint32_t EPDAT;
         __IO uint8_t  EPDAT_BYTE;
 
@@ -316,8 +314,7 @@ typedef struct
 
 } HSUSBD_EP_T;
 
-typedef struct
-{
+typedef struct {
 
     /**
      * @var HSUSBD_T::GINTSTS
@@ -901,8 +898,7 @@ typedef struct
     __IO uint32_t FADDR;                 /*!< [0x0020] USB Function Address Register                                    */
     __IO uint32_t TEST;                  /*!< [0x0024] USB Test Mode Register                                           */
 
-    union
-    {
+    union {
         __IO uint32_t CEPDAT;
         __IO uint8_t  CEPDAT_BYTE;
 

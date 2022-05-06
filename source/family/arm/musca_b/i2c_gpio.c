@@ -39,26 +39,24 @@
 void i2c_gpio_addr(unsigned int addr, unsigned int read)
 {
     unsigned int loop, data;
-
+    
     // Repeated Start condition (if required after Command)
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] &= ~PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Start condition 'S' (DATA > CLK)
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] |= PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] |= PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Addr is 7 bits so add Read
     data = (addr << 1) & 0xFE;
     if (read)
-    {
         data |= 0x01;
-    }
-
+    
     // Clock out the 8 bits
     for (loop = 0; loop < 8; loop++)
     {
@@ -86,7 +84,7 @@ void i2c_gpio_addr(unsigned int addr, unsigned int read)
     delay_us(I2CGPIO_FREQ);
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] |= PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Transmission clock 'A'
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
@@ -100,7 +98,7 @@ void i2c_gpio_addr(unsigned int addr, unsigned int read)
 void i2c_gpio_cmd(unsigned int cmd)
 {
     unsigned int loop;
-
+    
     // Clock out the 8 bits
     for (loop = 0; loop < 8; loop++)
     {
@@ -128,7 +126,7 @@ void i2c_gpio_cmd(unsigned int cmd)
     delay_us(I2CGPIO_FREQ);
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] |= PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Transmission clock 'A'
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
@@ -142,7 +140,7 @@ void i2c_gpio_cmd(unsigned int cmd)
 void i2c_gpio_write(unsigned int data)
 {
     unsigned int loop;
-
+    
     // Clock out the 8 bits
     for (loop = 0; loop < 8; loop++)
     {
@@ -170,13 +168,13 @@ void i2c_gpio_write(unsigned int data)
     delay_us(I2CGPIO_FREQ);
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] |= PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Transmission clock 'A'
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] |= PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Stop condition 'P'
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
@@ -190,11 +188,11 @@ void i2c_gpio_write(unsigned int data)
 void i2c_gpio_read(unsigned int *data, unsigned int ack)
 {
     unsigned int loop;
-
+    
     // Set SDA high (O/D) and allow PCA9537 to drive SDA
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] &= ~PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Clock in the 8 bits
     *data = 0;
     for (loop = 0; loop < 8; loop++)
@@ -202,9 +200,7 @@ void i2c_gpio_read(unsigned int *data, unsigned int ack)
         LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
         delay_us(I2CGPIO_FREQ);
         if (LPC_GPIO->DIR[PIN_I2C_SDA_PORT] & PIN_I2C_SDA)
-        {
             *data &= ~(0x80 >> loop);
-        }
         LPC_GPIO->DIR[PIN_I2C_SCL_PORT] |= PIN_I2C_SCL;
         delay_us(I2CGPIO_FREQ);
     }
@@ -212,15 +208,11 @@ void i2c_gpio_read(unsigned int *data, unsigned int ack)
     // Set data for acknowledge
     delay_us(I2CGPIO_FREQ);
     if (ack)
-    {
         LPC_GPIO->DIR[PIN_I2C_SDA_PORT] |= PIN_I2C_SDA;
-    }
     else
-    {
         LPC_GPIO->DIR[PIN_I2C_SDA_PORT] &= ~PIN_I2C_SDA;
-    }
     delay_us(I2CGPIO_FREQ);
-
+        
     // Transmission clock 'A'
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
@@ -230,7 +222,7 @@ void i2c_gpio_read(unsigned int *data, unsigned int ack)
     // End of acknowledge
     LPC_GPIO->DIR[PIN_I2C_SDA_PORT] |= PIN_I2C_SDA;
     delay_us(I2CGPIO_FREQ);
-
+    
     // Stop condition 'P'
     LPC_GPIO->DIR[PIN_I2C_SCL_PORT] &= ~PIN_I2C_SCL;
     delay_us(I2CGPIO_FREQ);
@@ -260,7 +252,7 @@ void i2c_gpio_rbyte(unsigned int cmd, unsigned int *data)
     i2c_gpio_addr(I2CGPIO_ADDR, I2CGPIO_WR);
     // Set command
     i2c_gpio_cmd(cmd);
-
+    
     // Set slave address write
     i2c_gpio_addr(I2CGPIO_ADDR, I2CGPIO_RD);
     // Read the data

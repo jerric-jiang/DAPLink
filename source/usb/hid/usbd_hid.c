@@ -79,8 +79,7 @@ BOOL USBD_HID_GetReport(void)
     /* Report Type   = USBD_SetupPacket.wValueH */
     /* Report ID     = USBD_SetupPacket.wValueL */
     /* Report Length = USBD_SetupPacket.wLength */
-    switch (USBD_SetupPacket.wValueH)
-    {
+    switch (USBD_SetupPacket.wValueH) {
         case HID_REPORT_INPUT:
             ptr_buf  = &USBD_HID_InReport[1];
             break;
@@ -112,8 +111,7 @@ BOOL USBD_HID_SetReport(void)
     /* Report Type   = USBD_SetupPacket.wValueH */
     /* Report ID     = USBD_SetupPacket.wValueL */
     /* Report Length = USBD_SetupPacket.wLength */
-    switch (USBD_SetupPacket.wValueH)
-    {
+    switch (USBD_SetupPacket.wValueH) {
         case HID_REPORT_INPUT:
             return (__FALSE);        /* Not Supported */
 
@@ -156,14 +154,10 @@ BOOL USBD_HID_SetIdle(void)
 {
     U8 i;
 
-    if (USBD_SetupPacket.wValueL)         /* If  > 0 Report ID specified        */
-    {
+    if (USBD_SetupPacket.wValueL) {       /* If  > 0 Report ID specified        */
         USBD_HID_IdleSet[USBD_SetupPacket.wValueL - 1] = USBD_SetupPacket.wValueH;
-    }
-    else                                  /* If == 0 all reports                */
-    {
-        for (i = 0; i < usbd_hid_inreport_num; i++)
-        {
+    } else {                              /* If == 0 all reports                */
+        for (i = 0; i < usbd_hid_inreport_num; i++) {
             USBD_HID_IdleSet[i] = USBD_SetupPacket.wValueH;
         }
     }
@@ -213,69 +207,51 @@ void USBD_HID_EP_INTIN_Event(U32 event)
 
     /* Check if sending is finished                                             */
     if ((DataOutSentLen >= DataOutToSendLen) &&
-        !DataOutEndWithShortPacket)       /* If all sent and short packet also  */
-    {
+            !DataOutEndWithShortPacket) {     /* If all sent and short packet also  */
         ptrDataOut          = NULL;
         DataOutSentLen      = 0;
         DataOutToSendLen    = usbd_hid_get_report(HID_REPORT_INPUT, USBD_HID_InReport[0], &USBD_HID_InReport[1], USBD_HID_REQ_EP_INT);
 
-        if (DataOutToSendLen)               /* If new send should be started      */
-        {
+        if (DataOutToSendLen) {             /* If new send should be started      */
             ptrDataOut        = USBD_HID_InReport;
 
-            if (usbd_hid_inreport_num <= 1)   /* If only in 1 report skip ReportID  */
-            {
+            if (usbd_hid_inreport_num <= 1) { /* If only in 1 report skip ReportID  */
                 ptrDataOut++;
-            }
-            else                              /* If more in reports, send ReportID  */
-            {
+            } else {                          /* If more in reports, send ReportID  */
                 DataOutToSendLen++;
             }
         }
     }
 
     /* Check if new data out sending should be started                          */
-    if (!DataOutToSendLen)                /* If send not in progress            */
-    {
-        if (DataOutAsyncReq)                /* If asynchronous send requested     */
-        {
+    if (!DataOutToSendLen) {              /* If send not in progress            */
+        if (DataOutAsyncReq) {              /* If asynchronous send requested     */
             DataOutAsyncReq = __FALSE;
-        }
-        else if (DataOutUpdateReqMask)      /* If update requested                */
-        {
-            if (usbd_hid_inreport_num <= 1)   /* If only one in report in system    */
-            {
-                if (DataOutUpdateReqMask)
-                {
+        } else if (DataOutUpdateReqMask) {  /* If update requested                */
+            if (usbd_hid_inreport_num <= 1) { /* If only one in report in system    */
+                if (DataOutUpdateReqMask) {
                     USBD_HID_InReport[0]  = 0;    /* ReportID = 0                       */
                     DataOutSentLen        = 0;
                     DataOutToSendLen      = usbd_hid_get_report(HID_REPORT_INPUT, 0, &USBD_HID_InReport[1], USBD_HID_REQ_PERIOD_UPDATE);
 
-                    if (DataOutToSendLen)
-                    {
+                    if (DataOutToSendLen) {
                         ptrDataOut          = &USBD_HID_InReport[1];
                     }
 
                     DataOutUpdateReqMask  = 0;
                 }
-            }
-            else                              /* If multiple reports in system      */
-            {
-                for (i = USBD_HID_InReport[0]; ; i++)
-                {
-                    if (i >= 32)
-                    {
+            } else {                          /* If multiple reports in system      */
+                for (i = USBD_HID_InReport[0]; ; i++) {
+                    if (i >= 32) {
                         i = 0;
                     }
 
-                    if (DataOutUpdateReqMask & (1 << i))
-                    {
+                    if (DataOutUpdateReqMask & (1 << i)) {
                         USBD_HID_InReport[0] = i + 1; /* ReportID                           */
                         DataOutSentLen      = 0;
                         DataOutToSendLen    = usbd_hid_get_report(HID_REPORT_INPUT, i + 1, &USBD_HID_InReport[1], USBD_HID_REQ_PERIOD_UPDATE);
 
-                        if (DataOutToSendLen)
-                        {
+                        if (DataOutToSendLen) {
                             ptrDataOut        = USBD_HID_InReport;
                             DataOutToSendLen++;
                         }
@@ -290,17 +266,14 @@ void USBD_HID_EP_INTIN_Event(U32 event)
 
     /* Check if data needs to be sent                                           */
     if (DataOutToSendLen ||
-        DataOutEndWithShortPacket)       /* If sending is in progress          */
-    {
+            DataOutEndWithShortPacket) {     /* If sending is in progress          */
         bytes_to_send = DataOutToSendLen - DataOutSentLen;
 
-        if (bytes_to_send > usbd_hid_maxpacketsize[USBD_HighSpeed])
-        {
+        if (bytes_to_send > usbd_hid_maxpacketsize[USBD_HighSpeed]) {
             bytes_to_send = usbd_hid_maxpacketsize[USBD_HighSpeed];
         }
 
-        if (usbd_hid_ep_intin != 0)   //control ep does the sending to host
-        {
+        if (usbd_hid_ep_intin != 0) { //control ep does the sending to host
             USBD_WriteEP(usbd_hid_ep_intin | 0x80, ptrDataOut, bytes_to_send);
         }
 
@@ -308,13 +281,10 @@ void USBD_HID_EP_INTIN_Event(U32 event)
         DataOutSentLen += bytes_to_send;
 
         if ((DataOutSentLen < usbd_hid_inreport_max_sz) &&
-            (bytes_to_send == usbd_hid_maxpacketsize[USBD_HighSpeed]))
-        {
+                (bytes_to_send == usbd_hid_maxpacketsize[USBD_HighSpeed])) {
             /* If short packet should be sent also*/
             DataOutEndWithShortPacket = __TRUE;
-        }
-        else
-        {
+        } else {
             DataOutEndWithShortPacket = __FALSE;
         }
     }
@@ -331,8 +301,7 @@ void USBD_HID_EP_INTOUT_Event(U32 event)
 {
     U16 bytes_rece;
 
-    if (!DataInReceLen)                   /* Check if new reception             */
-    {
+    if (!DataInReceLen) {                 /* Check if new reception             */
         ptrDataIn     = USBD_HID_OutReport;
         DataInReceMax = usbd_hid_outreport_max_sz;
         DataInReceLen = 0;
@@ -343,15 +312,11 @@ void USBD_HID_EP_INTOUT_Event(U32 event)
     DataInReceLen  += bytes_rece;
 
     if (!bytes_rece ||
-        (DataInReceLen >= usbd_hid_outreport_max_sz) ||
-        (bytes_rece    <  usbd_hid_maxpacketsize[USBD_HighSpeed]))
-    {
-        if (usbd_hid_outreport_num <= 1)    /* If only one out report in system   */
-        {
-            usbd_hid_set_report(HID_REPORT_OUTPUT,                    0,  USBD_HID_OutReport, DataInReceLen,   USBD_HID_REQ_EP_INT);
-        }
-        else
-        {
+            (DataInReceLen >= usbd_hid_outreport_max_sz) ||
+            (bytes_rece    <  usbd_hid_maxpacketsize[USBD_HighSpeed])) {
+        if (usbd_hid_outreport_num <= 1) {  /* If only one out report in system   */
+            usbd_hid_set_report(HID_REPORT_OUTPUT,                    0 ,  USBD_HID_OutReport   , DataInReceLen,   USBD_HID_REQ_EP_INT);
+        } else {
             usbd_hid_set_report(HID_REPORT_OUTPUT, USBD_HID_OutReport[0], &USBD_HID_OutReport[1], DataInReceLen - 1, USBD_HID_REQ_EP_INT);
         }
 
@@ -394,13 +359,11 @@ void USBD_HID_Configure_Event(void)
 
 void USBD_HID_EP_INT_Event(U32 event)
 {
-    if (event & USBD_EVT_IN)
-    {
+    if (event & USBD_EVT_IN) {
         USBD_HID_EP_INTIN_Event(event);
     }
 
-    if (event & USBD_EVT_OUT)
-    {
+    if (event & USBD_EVT_OUT) {
         USBD_HID_EP_INTOUT_Event(event);
     }
 }
@@ -419,43 +382,34 @@ void USBD_HID_SOF_Event(void)
     U8   i;
     BOOL tick_4ms, do_polling, polling_reload, idle_reload;
 
-    if (USBD_Configuration)
-    {
+    if (USBD_Configuration) {
         tick_4ms = __FALSE;
 
-        if (cnt_for_4ms++ >= ((4 << (3 * USBD_HighSpeed))) - 1)
-        {
+        if (cnt_for_4ms++ >= ((4 << (3 * USBD_HighSpeed))) - 1) {
             cnt_for_4ms = 0;
             tick_4ms    = __TRUE;
         }
 
         polling_reload = __FALSE;
 
-        if (USBD_HID_PollingCnt < 255)
-        {
+        if (USBD_HID_PollingCnt < 255) {
             USBD_HID_PollingCnt++;
         }
 
-        if (USBD_HID_PollingCnt == usbd_hid_interval[USBD_HighSpeed])
-        {
+        if (USBD_HID_PollingCnt == usbd_hid_interval[USBD_HighSpeed]) {
             polling_reload = __TRUE;          /* If polling interval expired        */
         }
 
-        for (i = 0; i < usbd_hid_inreport_num; i++)
-        {
+        for (i = 0; i < usbd_hid_inreport_num; i++) {
             idle_reload = __FALSE;
 
-            if (tick_4ms)
-            {
-                if (USBD_HID_IdleCnt[i] < 255)
-                {
+            if (tick_4ms) {
+                if (USBD_HID_IdleCnt[i] < 255) {
                     USBD_HID_IdleCnt[i]++;
                 }
 
-                if (USBD_HID_IdleReload[i])
-                {
-                    if (USBD_HID_IdleCnt[i] >= USBD_HID_IdleReload[i])
-                    {
+                if (USBD_HID_IdleReload[i]) {
+                    if (USBD_HID_IdleCnt[i] >= USBD_HID_IdleReload[i]) {
                         idle_reload = __TRUE;       /* If idle period expired             */
                     }
                 }
@@ -463,19 +417,15 @@ void USBD_HID_SOF_Event(void)
 
             do_polling = (usbd_hid_interval[USBD_HighSpeed] > ((U16)(USBD_HID_IdleReload[i]) << (2 << (3 * USBD_HighSpeed)))) && (USBD_HID_IdleReload[i] != 0);
 
-            if (polling_reload)
-            {
-                if (do_polling)
-                {
+            if (polling_reload) {
+                if (do_polling) {
                     /* If polling is longer than idle     */
                     DataOutUpdateReqMask |= (1 << i);
                 }
             }
 
-            if (USBD_HID_IdleReload[i] != USBD_HID_IdleSet[i])
-            {
-                if (USBD_HID_IdleCnt[i] >= USBD_HID_IdleSet[i])
-                {
+            if (USBD_HID_IdleReload[i] != USBD_HID_IdleSet[i]) {
+                if (USBD_HID_IdleCnt[i] >= USBD_HID_IdleSet[i]) {
                     DataOutUpdateReqMask |= (1 << i);
                     cnt_for_4ms = 0;
                 }
@@ -483,10 +433,8 @@ void USBD_HID_SOF_Event(void)
                 USBD_HID_IdleReload[i] = USBD_HID_IdleSet[i];
             }
 
-            if (idle_reload)
-            {
-                if (!do_polling)
-                {
+            if (idle_reload) {
+                if (!do_polling) {
                     DataOutUpdateReqMask |= (1 << i);
                 }
 
@@ -494,13 +442,11 @@ void USBD_HID_SOF_Event(void)
             }
         }
 
-        if (polling_reload)
-        {
+        if (polling_reload) {
             USBD_HID_PollingCnt = 0;
         }
 
-        if (DataOutUpdateReqMask && !DataOutToSendLen)          /* If pending     */
-        {
+        if (DataOutUpdateReqMask && !DataOutToSendLen) {        /* If pending     */
             /* refresh request and no active data */
             /* out then start data out            */
             USBD_HID_EP_INTIN_Event(0);
@@ -519,12 +465,10 @@ void USBD_HID_SOF_Event(void)
 
 void USBD_RTX_HID_EP_INTIN_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
 
-        if (usbd_os_evt_get() & USBD_EVT_IN)
-        {
+        if (usbd_os_evt_get() & USBD_EVT_IN) {
             USBD_HID_EP_INTIN_Event(0);
         }
     }
@@ -539,12 +483,10 @@ void USBD_RTX_HID_EP_INTIN_Event(void)
 
 void USBD_RTX_HID_EP_INTOUT_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
 
-        if (usbd_os_evt_get() & USBD_EVT_OUT)
-        {
+        if (usbd_os_evt_get() & USBD_EVT_OUT) {
             USBD_HID_EP_INTOUT_Event(0);
         }
     }
@@ -559,8 +501,7 @@ void USBD_RTX_HID_EP_INTOUT_Event(void)
 
 void USBD_RTX_HID_EP_INT_Event(void)
 {
-    for (;;)
-    {
+    for (;;) {
         usbd_os_evt_wait_or(0xFFFF, 0xFFFF);
         USBD_HID_EP_INT_Event(usbd_os_evt_get());
     }
@@ -578,19 +519,15 @@ void USBD_RTX_HID_EP_INT_Event(void)
 
 BOOL usbd_hid_get_report_trigger(U8 rid, U8 *buf, int len)
 {
-    if (len > usbd_hid_inreport_max_sz)
-    {
+    if (len > usbd_hid_inreport_max_sz) {
         return (__FALSE);
     }
 
-    if (USBD_Configuration)
-    {
+    if (USBD_Configuration) {
         DataOutAsyncReq    = __TRUE;        /* Asynchronous data out request      */
 
-        while (DataOutToSendLen)
-        {
-            if (!USBD_Configuration)          /* If device not configured reject rq */
-            {
+        while (DataOutToSendLen) {
+            if (!USBD_Configuration) {        /* If device not configured reject rq */
                 DataOutAsyncReq    = __FALSE;   /* Asynchronous data out request      */
                 ptrDataOut         = NULL;
                 DataOutSentLen     = 0;
@@ -605,12 +542,9 @@ BOOL usbd_hid_get_report_trigger(U8 rid, U8 *buf, int len)
         DataOutSentLen         = 0;
         DataOutToSendLen       = len;
 
-        if (usbd_hid_inreport_num <= 1)     /* If only 1 in report skip ReportID  */
-        {
+        if (usbd_hid_inreport_num <= 1) {   /* If only 1 in report skip ReportID  */
             ptrDataOut ++;
-        }
-        else                                /* If more in reports, send ReportID  */
-        {
+        } else {                            /* If more in reports, send ReportID  */
             DataOutToSendLen ++;
         }
 

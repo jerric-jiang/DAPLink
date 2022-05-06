@@ -26,8 +26,7 @@
 /*--------------------------- Data structures --------------------------------*/
 
 /* USB Device Core Endpoint Data Structure */
-typedef struct _USBD_EP_DATA
-{
+typedef struct _USBD_EP_DATA {
     U8 *pData;
     U16 Count;
 } USBD_EP_DATA;

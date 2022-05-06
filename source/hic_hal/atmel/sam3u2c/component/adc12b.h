@@ -38,32 +38,31 @@
 
 #if !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__))
 /** \brief Adc12b hardware registers */
-typedef struct
-{
-    WoReg ADC12B_CR;     /**< \brief (Adc12b Offset: 0x00) Control Register */
-    RwReg ADC12B_MR;     /**< \brief (Adc12b Offset: 0x04) Mode Register */
-    RoReg Reserved1[2];
-    WoReg ADC12B_CHER;   /**< \brief (Adc12b Offset: 0x10) Channel Enable Register */
-    WoReg ADC12B_CHDR;   /**< \brief (Adc12b Offset: 0x14) Channel Disable Register */
-    RoReg ADC12B_CHSR;   /**< \brief (Adc12b Offset: 0x18) Channel Status Register */
-    RoReg ADC12B_SR;     /**< \brief (Adc12b Offset: 0x1C) Status Register */
-    RoReg ADC12B_LCDR;   /**< \brief (Adc12b Offset: 0x20) Last Converted Data Register */
-    WoReg ADC12B_IER;    /**< \brief (Adc12b Offset: 0x24) Interrupt Enable Register */
-    WoReg ADC12B_IDR;    /**< \brief (Adc12b Offset: 0x28) Interrupt Disable Register */
-    RoReg ADC12B_IMR;    /**< \brief (Adc12b Offset: 0x2C) Interrupt Mask Register */
-    RoReg ADC12B_CDR[8]; /**< \brief (Adc12b Offset: 0x30) Channel Data Register */
-    RoReg Reserved2[5];
-    RwReg ADC12B_ACR;    /**< \brief (Adc12b Offset: 0x64) Analog Control Register */
-    RwReg ADC12B_EMR;    /**< \brief (Adc12b Offset: 0x68) Extended Mode Register */
-    RoReg Reserved3[37];
-    RwReg ADC12B_RPR;    /**< \brief (Adc12b Offset: 0x100) Receive Pointer Register */
-    RwReg ADC12B_RCR;    /**< \brief (Adc12b Offset: 0x104) Receive Counter Register */
-    RoReg Reserved4[2];
-    RwReg ADC12B_RNPR;   /**< \brief (Adc12b Offset: 0x110) Receive Next Pointer Register */
-    RwReg ADC12B_RNCR;   /**< \brief (Adc12b Offset: 0x114) Receive Next Counter Register */
-    RoReg Reserved5[2];
-    WoReg ADC12B_PTCR;   /**< \brief (Adc12b Offset: 0x120) Transfer Control Register */
-    RoReg ADC12B_PTSR;   /**< \brief (Adc12b Offset: 0x124) Transfer Status Register */
+typedef struct {
+  WoReg ADC12B_CR;     /**< \brief (Adc12b Offset: 0x00) Control Register */
+  RwReg ADC12B_MR;     /**< \brief (Adc12b Offset: 0x04) Mode Register */
+  RoReg Reserved1[2];
+  WoReg ADC12B_CHER;   /**< \brief (Adc12b Offset: 0x10) Channel Enable Register */
+  WoReg ADC12B_CHDR;   /**< \brief (Adc12b Offset: 0x14) Channel Disable Register */
+  RoReg ADC12B_CHSR;   /**< \brief (Adc12b Offset: 0x18) Channel Status Register */
+  RoReg ADC12B_SR;     /**< \brief (Adc12b Offset: 0x1C) Status Register */
+  RoReg ADC12B_LCDR;   /**< \brief (Adc12b Offset: 0x20) Last Converted Data Register */
+  WoReg ADC12B_IER;    /**< \brief (Adc12b Offset: 0x24) Interrupt Enable Register */
+  WoReg ADC12B_IDR;    /**< \brief (Adc12b Offset: 0x28) Interrupt Disable Register */
+  RoReg ADC12B_IMR;    /**< \brief (Adc12b Offset: 0x2C) Interrupt Mask Register */
+  RoReg ADC12B_CDR[8]; /**< \brief (Adc12b Offset: 0x30) Channel Data Register */
+  RoReg Reserved2[5];
+  RwReg ADC12B_ACR;    /**< \brief (Adc12b Offset: 0x64) Analog Control Register */
+  RwReg ADC12B_EMR;    /**< \brief (Adc12b Offset: 0x68) Extended Mode Register */
+  RoReg Reserved3[37];
+  RwReg ADC12B_RPR;    /**< \brief (Adc12b Offset: 0x100) Receive Pointer Register */
+  RwReg ADC12B_RCR;    /**< \brief (Adc12b Offset: 0x104) Receive Counter Register */
+  RoReg Reserved4[2];
+  RwReg ADC12B_RNPR;   /**< \brief (Adc12b Offset: 0x110) Receive Next Pointer Register */
+  RwReg ADC12B_RNCR;   /**< \brief (Adc12b Offset: 0x114) Receive Next Counter Register */
+  RoReg Reserved5[2];
+  WoReg ADC12B_PTCR;   /**< \brief (Adc12b Offset: 0x120) Transfer Control Register */
+  RoReg ADC12B_PTSR;   /**< \brief (Adc12b Offset: 0x124) Transfer Status Register */
 } Adc12b;
 #endif /* !(defined(__ASSEMBLY__) || defined(__IAR_SYSTEMS_ASM__)) */
 /* -------- ADC12B_CR : (ADC12B Offset: 0x00) Control Register -------- */

@@ -24,11 +24,10 @@
 #include "flash_blob.c"
 
 /* ME11 -- MAX32660 256KiB Flash, 96KiB RAM */
-target_cfg_t target_device =
-{
+target_cfg_t target_device = {
     .version                        = kTargetConfigVersion,
     .sectors_info                   = sectors_info,
-    .sector_info_length             = (sizeof(sectors_info)) / (sizeof(sector_info_t)),
+    .sector_info_length             = (sizeof(sectors_info))/(sizeof(sector_info_t)),
     .flash_regions[0].start         = 0x00000000,
     .flash_regions[0].end           = 0x00000000 + KB(256),
     .flash_regions[0].flags         = kRegionIsDefault,

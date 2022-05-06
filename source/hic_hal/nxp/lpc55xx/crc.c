@@ -33,28 +33,25 @@ static void crc_write_data_safely(const void *data, int count);
 //! Initialize the CRC engine peripheral for CRC-32.
 void hic_crc_init(void)
 {
-    crc_config_t config =
-    {
-        .polynomial = kCRC_Polynomial_CRC_32,
-        .reverseIn = true,
-        .complementIn = false,
-        .reverseOut = true,
-        .complementOut = true,
-        .seed = INITIAL_SEED,
-    };
+    crc_config_t config = {
+            .polynomial = kCRC_Polynomial_CRC_32,
+            .reverseIn = true,
+            .complementIn = false,
+            .reverseOut = true,
+            .complementOut = true,
+            .seed = INITIAL_SEED,
+        };
     CRC_Init(CRC_ENGINE, &config);
 
 #if TEST_CHECK_VALUE
     uint32_t sum = crc32("123456789", 9);
-    if (sum != CHECK_VALUE)
-    {
+    if (sum != CHECK_VALUE) {
         __BKPT(0);
     }
 
     sum = crc32("1234", 4);
     sum = crc32_continue(sum, "56789", 5);
-    if (sum != CHECK_VALUE)
-    {
+    if (sum != CHECK_VALUE) {
         __BKPT(0);
     }
 #endif
@@ -64,23 +61,19 @@ void hic_crc_init(void)
 //! write fake erased flash data.
 void crc_checked_write_data(const void *data, int count)
 {
-    if (flash_is_readable((uint32_t)data, count))
-    {
+    if (flash_is_readable((uint32_t)data, count)) {
         CRC_WriteData(CRC_ENGINE, data, count);
     }
-    else
-    {
+    else {
         // Write full words.
-        while (count >= sizeof(uint32_t))
-        {
+        while (count >= sizeof(uint32_t)) {
             CRC_ENGINE->WR_DATA = 0xFFFFFFFF;
             count -= sizeof(uint32_t);
         }
 
         // Write any trailing bytes.
-        while (count)
-        {
-            *((__O uint8_t *) & (CRC_ENGINE->WR_DATA)) = 0xFF;
+        while (count) {
+            *((__O uint8_t *)&(CRC_ENGINE->WR_DATA)) = 0xFF;
             --count;
         }
     }
@@ -91,24 +84,21 @@ void crc_checked_write_data(const void *data, int count)
 void crc_write_data_safely(const void *data, int count)
 {
     // Skip readability checks if the data is not in flash.
-    if (!((uint32_t)data >= DAPLINK_ROM_START && (uint32_t)data < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE)))
-    {
+    if (!((uint32_t)data >= DAPLINK_ROM_START && (uint32_t)data < (DAPLINK_ROM_START + DAPLINK_ROM_SIZE))) {
         CRC_WriteData(CRC_ENGINE, data, count);
         return;
     }
 
     // Check leading ragged edge.
     uint32_t n = ROUND_UP((uint32_t)data, DAPLINK_SECTOR_SIZE) - (uint32_t)data;
-    if (n)
-    {
+    if (n) {
         crc_checked_write_data(data, n);
         data += n;
         count -= n;
     }
 
     // Write sector-size chuncks as they are checked.
-    while (count >= DAPLINK_SECTOR_SIZE)
-    {
+    while (count >= DAPLINK_SECTOR_SIZE) {
         n = MIN(count, DAPLINK_SECTOR_SIZE);
         crc_checked_write_data(data, n);
         data += n;
@@ -116,8 +106,7 @@ void crc_write_data_safely(const void *data, int count)
     }
 
     // Check trailing ragged edge.
-    if (count)
-    {
+    if (count) {
         crc_checked_write_data(data, count);
         data += count;
         count -= count;

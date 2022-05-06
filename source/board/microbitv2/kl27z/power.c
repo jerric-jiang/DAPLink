@@ -99,21 +99,19 @@ void PORTCD_IRQHandler(void)
     if ((1U << PIN_WAKE_ON_EDGE_BIT) & PORT_GetPinsInterruptFlags(PIN_WAKE_ON_EDGE_PORT))
     {
         PORT_ClearPinsInterruptFlags(PIN_WAKE_ON_EDGE_PORT, (1U << PIN_WAKE_ON_EDGE_BIT));
-
+        
         power_source = pwr_mon_get_power_source();
 
         bool usb_on = (((PIN_WAKE_ON_EDGE_GPIO->PDIR) >> PIN_WAKE_ON_EDGE_BIT) & 0x01U) ? false : true;
 
-        if (usb_on == false)
-        {
+        if (usb_on == false) {
             /* Reset USB on cable detach (VBUS falling edge) */
             USBD_Reset();
             usbd_reset_core();
             usb_pc_connected = false;
             usb_state = USB_DISCONNECTED;
         }
-        else
-        {
+        else {
             // Cable inserted
             wake_from_usb = 1;
         }
@@ -124,7 +122,7 @@ void power_init(void)
 {
     // Configure pin as GPIO
     PORT_SetPinMux(PIN_WAKE_ON_EDGE_PORT, PIN_WAKE_ON_EDGE_BIT, kPORT_MuxAsGpio);
-
+    
     /* Power related. */
     SMC_SetPowerModeProtection(SMC, kSMC_AllowPowerModeAll);
     if (kRCM_SourceWakeup & RCM_GetPreviousResetSources(RCM)) /* Wakeup from VLLS. */
@@ -227,13 +225,13 @@ static void power_pre_switch_hook(smc_power_state_t originPowerState, app_power_
     PORT_SetPinMux(UART_PORT, PIN_UART_RX_BIT, kPORT_PinDisabledOrAnalog);
     PORT_SetPinMux(UART_PORT, PIN_UART_TX_BIT, kPORT_PinDisabledOrAnalog);
     PORT_SetPinMux(PIN_HID_LED_PORT, PIN_HID_LED_BIT, kPORT_PinDisabledOrAnalog);
-
+    
     /* Disable I/O pin SWCLK */
     PIN_SWCLK_PORT->PCR[PIN_SWCLK_BIT] = 0;
-
+    
     /* Disable I/O pin SWDIO */
     PIN_SWDIO_PORT->PCR[PIN_SWDIO_BIT] = 0;
-
+    
     /* If targetMode is VLLS0, disable I2C pins */
     if (kAPP_PowerModeVlls0 == targetMode)
     {
@@ -256,7 +254,7 @@ static void power_post_switch_hook(smc_power_state_t originPowerState, app_power
     PIN_SWDIO_PORT->PCR[PIN_SWDIO_BIT] = PORT_PCR_MUX(1)  |  /* GPIO */
                                          PORT_PCR_PE_MASK |  /* Pull enable */
                                          PORT_PCR_PS_MASK;   /* Pull-up */
-
+    
     /* re-configure pinmux of disabled pins */
     PORT_SetPinMux(UART_PORT, PIN_UART_RX_BIT, (port_mux_t)PIN_UART_RX_MUX_ALT);
     PORT_SetPinMux(UART_PORT, PIN_UART_TX_BIT, (port_mux_t)PIN_UART_TX_MUX_ALT);

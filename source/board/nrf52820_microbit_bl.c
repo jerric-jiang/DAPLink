@@ -50,16 +50,14 @@ COMPILER_ASSERT(DAPLINK_ROM_IF_SIZE == KB(92));
 * The last pair in the list will have sectors starting at that address and ending
 * at address start + size.
 */
-static const sector_info_t sectors_info[] =
-{
+static const sector_info_t sectors_info[] = {
     {DAPLINK_ROM_IF_START, 0x1000},
 };
 
 // nrf52820 target information
-target_cfg_t target_device =
-{
+target_cfg_t target_device = {
     .sectors_info               = sectors_info,
-    .sector_info_length         = (sizeof(sectors_info)) / (sizeof(sector_info_t)),
+    .sector_info_length         = (sizeof(sectors_info))/(sizeof(sector_info_t)),
     .flash_regions[0].start     = DAPLINK_ROM_IF_START,
     .flash_regions[0].end       = DAPLINK_ROM_IF_START + DAPLINK_ROM_IF_SIZE,
     .flash_regions[0].flags     = kRegionIsDefault,
@@ -73,8 +71,7 @@ const target_family_descriptor_t *g_target_family = NULL;
 
 // Use the 9905 board ID in the bootloader for both nRF52833 and nRF52820
 // Mainly used to identify which interface hex file to download from the micro:bit help page
-const board_info_t g_board_info =
-{
+const board_info_t g_board_info = {
     .info_version               = kBoardInfoVersion,
     .board_id                   = BOARD_ID_MB_2_2_833,
     .daplink_url_name           = "HELP_FAQHTM",
@@ -87,13 +84,10 @@ bool reset_button_pressed()
 {
     bool btn_pressed = false;
     // Bypass button check if we are waking from System OFF via GPIO (reset button)
-    if (NRF_POWER->RESETREAS & POWER_RESETREAS_OFF_Msk)
-    {
+    if (NRF_POWER->RESETREAS & POWER_RESETREAS_OFF_Msk) {
         // Do not clear the flag as it might be needed in the DAPlink interface
         btn_pressed = false;
-    }
-    else
-    {
+    } else {
         btn_pressed = gpio_get_reset_btn();
     }
     return btn_pressed;
@@ -103,28 +97,22 @@ bool board_bootloader_init()
 {
     uint32_t apply_protection = 0;
 
-    if (NRF_FICR->INFO.PART == 0x52833)
-    {
+    if (NRF_FICR->INFO.PART == 0x52833) {
         // nRF52833
         // Apply the flash protection if the NFC pins are not configured as GPIO
         volatile uint32_t* const nrf_uicr_nfcpins = (uint32_t *) NRF52833_UCIR_NFCPINS_ADDRESS;
         if ((*nrf_uicr_nfcpins & NRF52833_UICR_NFCPINS_PROTECT_Msk) ==
-            (NRF52833_UICR_NFCPINS_PROTECT_NFC << NRF52833_UICR_NFCPINS_PROTECT_Pos))
-        {
+                (NRF52833_UICR_NFCPINS_PROTECT_NFC << NRF52833_UICR_NFCPINS_PROTECT_Pos)) {
             apply_protection = 1;
         }
     }
 
-    if (!apply_protection)
-    {
+    if (!apply_protection) {
         uint32_t pin_bootmode;
-        if (NRF_FICR->INFO.PART == 0x52833)
-        {
+        if (NRF_FICR->INFO.PART == 0x52833) {
             // nRF52833
             pin_bootmode  = NRF_GPIO_PIN_MAP(0, 10);
-        }
-        else
-        {
+        } else {
             // nRF52820
             pin_bootmode  = NRF_GPIO_PIN_MAP(0, 17);
         }
@@ -134,11 +122,10 @@ bool board_bootloader_init()
         gpio_cfg_input(reg, idx, NRF_GPIO_PIN_PULLUP);
         apply_protection = gpio_read(reg, idx);
         gpio_cfg(reg, idx, NRF_GPIO_PIN_DIR_INPUT, NRF_GPIO_PIN_INPUT_DISCONNECT,
-                 NRF_GPIO_PIN_NOPULL, NRF_GPIO_PIN_S0S1, NRF_GPIO_PIN_NOSENSE);
+                NRF_GPIO_PIN_NOPULL, NRF_GPIO_PIN_S0S1, NRF_GPIO_PIN_NOSENSE);
     }
 
-    if (apply_protection)
-    {
+    if (apply_protection) {
         // Lock the bootloader flash, only protects until reset,
         // so needs to be executed in the bootloader on every startup
         uint8_t acl_region = 0;

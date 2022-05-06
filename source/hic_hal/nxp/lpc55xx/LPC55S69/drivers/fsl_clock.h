@@ -743,9 +743,9 @@ static inline void CLOCK_DisableClock(clock_ip_name_t clk)
  */
 status_t CLOCK_SetupFROClocking(uint32_t iFreq);
 /**
- * @brief   Set the flash wait states for the input freuqency.
- * @param   iFreq   : Input frequency
- * @return  Nothing
+ * @brief	Set the flash wait states for the input freuqency.
+ * @param	iFreq	: Input frequency
+ * @return	Nothing
  */
 void CLOCK_SetFLASHAccessCyclesForFreq(uint32_t iFreq);
 /**
@@ -968,8 +968,8 @@ __STATIC_INLINE bool CLOCK_IsPLL0Locked(void)
     return (bool)((SYSCON->PLL0STAT & SYSCON_PLL0STAT_LOCK_MASK) != 0UL);
 }
 
-/*! @brief  Check if PLL1 is locked or not
- *  @return true if the PLL1 is locked, false if not locked
+/*! @brief	Check if PLL1 is locked or not
+ *  @return	true if the PLL1 is locked, false if not locked
  */
 __STATIC_INLINE bool CLOCK_IsPLL1Locked(void)
 {
@@ -1058,7 +1058,7 @@ typedef struct _pll_config
     ss_progmoddp_t ss_mr; /*!< SS Programmable frequency modulation depth, only applicable when not using
                              PLL_CONFIGFLAG_FORCENOFRACT flag */
     ss_modwvctrl_t
-    ss_mc; /*!< SS Modulation waveform control, only applicable when not using PLL_CONFIGFLAG_FORCENOFRACT flag */
+        ss_mc; /*!< SS Modulation waveform control, only applicable when not using PLL_CONFIGFLAG_FORCENOFRACT flag */
     bool mfDither; /*!< false for fixed modulation frequency or true for dithering, only applicable when not using
                       PLL_CONFIGFLAG_FORCENOFRACT flag */
 
